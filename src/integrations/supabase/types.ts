@@ -14,6 +14,201 @@ export type Database = {
   }
   public: {
     Tables: {
+      dog_tricks: {
+        Row: {
+          created_at: string
+          dog_id: string
+          id: string
+          mastered_at: string | null
+          started_at: string | null
+          status: string
+          total_sessions: number | null
+          trick_id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          dog_id: string
+          id?: string
+          mastered_at?: string | null
+          started_at?: string | null
+          status?: string
+          total_sessions?: number | null
+          trick_id: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          dog_id?: string
+          id?: string
+          mastered_at?: string | null
+          started_at?: string | null
+          status?: string
+          total_sessions?: number | null
+          trick_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "dog_tricks_dog_id_fkey"
+            columns: ["dog_id"]
+            isOneToOne: false
+            referencedRelation: "dogs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "dog_tricks_trick_id_fkey"
+            columns: ["trick_id"]
+            isOneToOne: false
+            referencedRelation: "tricks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      dogs: {
+        Row: {
+          age: number | null
+          avatar_url: string | null
+          breed: string | null
+          created_at: string
+          gender: string | null
+          id: string
+          name: string
+          updated_at: string
+          user_id: string
+          weight: number | null
+        }
+        Insert: {
+          age?: number | null
+          avatar_url?: string | null
+          breed?: string | null
+          created_at?: string
+          gender?: string | null
+          id?: string
+          name: string
+          updated_at?: string
+          user_id: string
+          weight?: number | null
+        }
+        Update: {
+          age?: number | null
+          avatar_url?: string | null
+          breed?: string | null
+          created_at?: string
+          gender?: string | null
+          id?: string
+          name?: string
+          updated_at?: string
+          user_id?: string
+          weight?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "dogs_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      health_records: {
+        Row: {
+          created_at: string
+          date: string
+          description: string | null
+          dog_id: string
+          id: string
+          notes: string | null
+          record_type: string
+          title: string
+          updated_at: string
+          veterinarian: string | null
+        }
+        Insert: {
+          created_at?: string
+          date: string
+          description?: string | null
+          dog_id: string
+          id?: string
+          notes?: string | null
+          record_type: string
+          title: string
+          updated_at?: string
+          veterinarian?: string | null
+        }
+        Update: {
+          created_at?: string
+          date?: string
+          description?: string | null
+          dog_id?: string
+          id?: string
+          notes?: string | null
+          record_type?: string
+          title?: string
+          updated_at?: string
+          veterinarian?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "health_records_dog_id_fkey"
+            columns: ["dog_id"]
+            isOneToOne: false
+            referencedRelation: "dogs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      nutrition_plans: {
+        Row: {
+          brand: string | null
+          created_at: string
+          daily_amount: number | null
+          dog_id: string
+          feeding_times: number | null
+          food_type: string
+          id: string
+          is_active: boolean | null
+          meal_schedule: Json | null
+          special_instructions: string | null
+          updated_at: string
+        }
+        Insert: {
+          brand?: string | null
+          created_at?: string
+          daily_amount?: number | null
+          dog_id: string
+          feeding_times?: number | null
+          food_type: string
+          id?: string
+          is_active?: boolean | null
+          meal_schedule?: Json | null
+          special_instructions?: string | null
+          updated_at?: string
+        }
+        Update: {
+          brand?: string | null
+          created_at?: string
+          daily_amount?: number | null
+          dog_id?: string
+          feeding_times?: number | null
+          food_type?: string
+          id?: string
+          is_active?: boolean | null
+          meal_schedule?: Json | null
+          special_instructions?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "nutrition_plans_dog_id_fkey"
+            columns: ["dog_id"]
+            isOneToOne: false
+            referencedRelation: "dogs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           created_at: string
@@ -38,6 +233,93 @@ export type Database = {
           role?: string | null
           timezone?: string | null
           updated_at?: string
+        }
+        Relationships: []
+      }
+      training_sessions: {
+        Row: {
+          created_at: string
+          dog_id: string
+          duration_minutes: number | null
+          id: string
+          notes: string | null
+          progress_status: string | null
+          session_date: string
+          success_rating: number | null
+          trick_id: string
+        }
+        Insert: {
+          created_at?: string
+          dog_id: string
+          duration_minutes?: number | null
+          id?: string
+          notes?: string | null
+          progress_status?: string | null
+          session_date?: string
+          success_rating?: number | null
+          trick_id: string
+        }
+        Update: {
+          created_at?: string
+          dog_id?: string
+          duration_minutes?: number | null
+          id?: string
+          notes?: string | null
+          progress_status?: string | null
+          session_date?: string
+          success_rating?: number | null
+          trick_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "training_sessions_dog_id_fkey"
+            columns: ["dog_id"]
+            isOneToOne: false
+            referencedRelation: "dogs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "training_sessions_trick_id_fkey"
+            columns: ["trick_id"]
+            isOneToOne: false
+            referencedRelation: "tricks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tricks: {
+        Row: {
+          category: string
+          created_at: string
+          description: string
+          difficulty_level: number | null
+          estimated_time_weeks: number | null
+          id: string
+          instructions: string
+          name: string
+          prerequisites: string[] | null
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          description: string
+          difficulty_level?: number | null
+          estimated_time_weeks?: number | null
+          id?: string
+          instructions: string
+          name: string
+          prerequisites?: string[] | null
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          description?: string
+          difficulty_level?: number | null
+          estimated_time_weeks?: number | null
+          id?: string
+          instructions?: string
+          name?: string
+          prerequisites?: string[] | null
         }
         Relationships: []
       }
