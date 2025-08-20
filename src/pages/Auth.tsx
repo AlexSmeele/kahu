@@ -84,7 +84,12 @@ export default function Auth() {
   };
 
   const handleSocialSignIn = async (provider: 'google') => {
+    console.log('Google OAuth button clicked, starting authentication...');
+    
     try {
+      console.log('Attempting Supabase OAuth with provider:', provider);
+      console.log('Redirect URL:', `${window.location.origin}/`);
+      
       const { error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
@@ -92,14 +97,20 @@ export default function Auth() {
         }
       });
 
+      console.log('OAuth response:', { error });
+
       if (error) {
+        console.error('OAuth error:', error);
         toast({
           title: "Social sign-in failed",
           description: error.message,
           variant: "destructive",
         });
+      } else {
+        console.log('OAuth initiated successfully, should redirect to Google...');
       }
     } catch (error) {
+      console.error('Caught error during OAuth:', error);
       toast({
         title: "Something went wrong",
         description: "Please try again later.",
