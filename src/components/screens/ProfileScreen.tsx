@@ -2,6 +2,7 @@ import { User, Dog, Settings, CreditCard, Share, Download, HelpCircle, LogOut } 
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import { useAuth } from "@/contexts/AuthContext";
 import heroImage from "@/assets/hero-image.jpg";
 
 const menuItems = [
@@ -13,6 +14,7 @@ const menuItems = [
 ];
 
 export function ProfileScreen() {
+  const { signOut, user } = useAuth();
   return (
     <div className="flex flex-col h-full">
       {/* Header */}
@@ -39,8 +41,10 @@ export function ProfileScreen() {
               </AvatarFallback>
             </Avatar>
             <div className="flex-1">
-              <h2 className="text-xl font-semibold text-foreground">Alex Kim</h2>
-              <p className="text-muted-foreground">alex@example.com</p>
+              <h2 className="text-xl font-semibold text-foreground">
+                {user?.email?.split('@')[0] || 'User'}
+              </h2>
+              <p className="text-muted-foreground">{user?.email}</p>
               <Badge variant="outline" className="mt-1 text-primary border-primary/30">
                 Pro Member
               </Badge>
@@ -123,6 +127,7 @@ export function ProfileScreen() {
           <Button 
             variant="outline" 
             className="w-full text-destructive border-destructive/30 hover:bg-destructive/10"
+            onClick={signOut}
           >
             <LogOut className="w-4 h-4 mr-2" />
             Sign Out
