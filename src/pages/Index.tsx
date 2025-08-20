@@ -6,10 +6,20 @@ import { NutritionScreen } from "@/components/screens/NutritionScreen";
 import { ProfileScreen } from "@/components/screens/ProfileScreen";
 import { BottomNavigation, TabType } from "@/components/layout/BottomNavigation";
 import { QuickActionModal } from "@/components/layout/QuickActionModal";
+import { DogOnboarding } from "@/components/onboarding/DogOnboarding";
+import { useDogs } from "@/hooks/useDogs";
+import { useAuth } from "@/contexts/AuthContext";
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState<TabType>('trainer');
   const [isQuickActionOpen, setIsQuickActionOpen] = useState(false);
+  const { user } = useAuth();
+  const { dogs, loading } = useDogs();
+
+  // Show onboarding if user has no dogs
+  if (!loading && dogs.length === 0) {
+    return <DogOnboarding onComplete={() => window.location.reload()} />;
+  }
 
   const renderActiveScreen = () => {
     switch (activeTab) {
