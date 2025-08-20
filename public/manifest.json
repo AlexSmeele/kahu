@@ -1,0 +1,51 @@
+{
+  "name": "Kahu - AI Dog Training & Wellness",
+  "short_name": "Kahu",
+  "description": "Your compassionate AI-powered dog training and wellness companion",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#faf8f5",
+  "theme_color": "#2d7d58",
+  "orientation": "portrait-primary",
+  "categories": ["lifestyle", "health", "education"],
+  "lang": "en-NZ",
+  "dir": "ltr",
+  "icons": [
+    {
+      "src": "/icon-512x512.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshot-mobile.png",
+      "sizes": "390x844",
+      "type": "image/png",
+      "form_factor": "narrow"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Chat with AI Trainer",
+      "short_name": "AI Chat",
+      "description": "Start a conversation with Kahu AI",
+      "url": "/#trainer",
+      "icons": [{ "src": "/icon-512x512.png", "sizes": "512x512" }]
+    },
+    {
+      "name": "Log Weight",
+      "short_name": "Weight",
+      "description": "Quick weight entry",
+      "url": "/#health",
+      "icons": [{ "src": "/icon-512x512.png", "sizes": "512x512" }]
+    }
+  ]
+}
