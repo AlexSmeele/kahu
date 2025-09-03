@@ -9,6 +9,7 @@ interface AuthContextType {
   signUp: (email: string, password: string) => Promise<{ error: any }>;
   signIn: (email: string, password: string) => Promise<{ error: any }>;
   signOut: () => Promise<void>;
+  bypassAuth: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -63,6 +64,32 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     await supabase.auth.signOut();
   };
 
+  const bypassAuth = () => {
+    // Create a mock user for development purposes
+    const mockUser = {
+      id: 'dev-user-123',
+      email: 'dev@example.com',
+      user_metadata: { display_name: 'Dev User' },
+      app_metadata: {},
+      aud: 'authenticated',
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    } as User;
+
+    const mockSession = {
+      access_token: 'dev-token',
+      token_type: 'bearer',
+      expires_in: 3600,
+      expires_at: Date.now() / 1000 + 3600,
+      refresh_token: 'dev-refresh',
+      user: mockUser,
+    } as Session;
+
+    setUser(mockUser);
+    setSession(mockSession);
+    setLoading(false);
+  };
+
   const value = {
     user,
     session,
@@ -70,6 +97,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     signUp,
     signIn,
     signOut,
+    bypassAuth,
   };
 
   return (

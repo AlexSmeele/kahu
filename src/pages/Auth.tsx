@@ -16,7 +16,7 @@ export default function Auth() {
   const [displayName, setDisplayName] = useState('');
   const [loading, setLoading] = useState(false);
   
-  const { signUp, signIn, user } = useAuth();
+  const { signUp, signIn, user, bypassAuth } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
 
@@ -253,17 +253,30 @@ export default function Auth() {
             </Button>
           </form>
 
-          <div className="mt-6 text-center">
-            <button
-              type="button"
-              onClick={() => setIsSignUp(!isSignUp)}
-              className="text-sm text-primary hover:text-primary-hover transition-colors"
-            >
-              {isSignUp 
-                ? "Already have an account? Sign in" 
-                : "Don't have an account? Sign up"
-              }
-            </button>
+          <div className="mt-6 space-y-4">
+            <div className="text-center">
+              <button
+                type="button"
+                onClick={() => setIsSignUp(!isSignUp)}
+                className="text-sm text-primary hover:text-primary-hover transition-colors"
+              >
+                {isSignUp 
+                  ? "Already have an account? Sign in" 
+                  : "Don't have an account? Sign up"
+                }
+              </button>
+            </div>
+            
+            <div className="pt-4 border-t border-border">
+              <Button
+                type="button"
+                variant="outline"
+                className="w-full text-muted-foreground hover:text-foreground"
+                onClick={bypassAuth}
+              >
+                Skip Authentication (Dev Mode)
+              </Button>
+            </div>
           </div>
         </CardContent>
       </Card>
