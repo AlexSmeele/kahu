@@ -215,7 +215,7 @@ export function TrainerScreen({ onTypingChange }: { onTypingChange?: (typing: bo
           <Button
             onClick={sendMessage}
             disabled={!inputMessage.trim() || isLoading}
-            className="btn-primary px-3"
+            className="btn-primary h-10 w-10 p-0"
           >
             <Send className="w-5 h-5" />
           </Button>
