@@ -100,10 +100,10 @@ export function TrainerScreen({ onTypingChange }: { onTypingChange?: (typing: bo
       </header>
 
       {/* Content */}
-      <div className="flex-1 overflow-y-auto pb-32 safe-bottom">
+      <div className="flex-1 overflow-y-auto pb-24 safe-bottom">
         {messages.length === 0 ? (
           /* Welcome State */
-          <div className="flex flex-col items-center justify-center p-6 text-center min-h-full">
+          <div className="flex flex-col items-center justify-center p-6 text-center h-full">
             <div className="w-full max-w-sm mb-8">
               <img 
                 src={heroImage} 
@@ -113,7 +113,7 @@ export function TrainerScreen({ onTypingChange }: { onTypingChange?: (typing: bo
             </div>
             
             <h2 className="text-2xl font-bold text-foreground mb-3">
-              Welcome to Kahu! 🐕
+              Welcome to Kahu!
             </h2>
             <p className="text-muted-foreground mb-8 max-w-md leading-relaxed">
               I'm here to help you build a stronger bond with {currentDog?.name || 'your dog'} through positive, 
@@ -208,26 +208,25 @@ export function TrainerScreen({ onTypingChange }: { onTypingChange?: (typing: bo
               onChange={handleInputChange}
               onKeyPress={handleKeyPress}
               placeholder={`Ask about training ${currentDog?.name || 'your dog'}...`}
-              className="h-10"
+              className="resize-none"
               disabled={isLoading}
             />
           </div>
           <Button
             onClick={sendMessage}
             disabled={!inputMessage.trim() || isLoading}
-            className="h-10 px-3"
-            size="default"
+            className="btn-primary px-3"
           >
-            <Send className="w-4 h-4" />
+            <Send className="w-5 h-5" />
           </Button>
         </div>
         
-        <div className="flex gap-2 mt-3">
-          <Button variant="outline" size="default" className="flex-1 h-10" disabled>
+        <div className="flex gap-2 mt-2">
+          <Button variant="outline" size="sm" className="flex-1" disabled>
             <Camera className="w-4 h-4 mr-2" />
             Photo
           </Button>
-          <Button variant="outline" size="default" className="flex-1 h-10" disabled>
+          <Button variant="outline" size="sm" className="flex-1" disabled>
             <Mic className="w-4 h-4 mr-2" />
             Voice
           </Button>
