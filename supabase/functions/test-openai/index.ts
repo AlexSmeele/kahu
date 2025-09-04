@@ -15,7 +15,7 @@ serve(async (req) => {
   }
 
   try {
-    const openAIApiKey = Deno.env.get('OPENAI_API_KEY');
+    const openAIApiKey = Deno.env.get('OPENAI_API_KEY') || Deno.env.get('OpenAI API Key');
     
     console.log('=== DIAGNOSTIC INFO ===');
     console.log('OpenAI API key exists:', !!openAIApiKey);
