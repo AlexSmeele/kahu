@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { Search, Filter, ShoppingCart, Star } from "lucide-react";
+import { Search, Filter, ShoppingCart, Star, ShoppingBag } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -160,7 +160,12 @@ export function MarketplaceScreen() {
     <div className="h-full flex flex-col bg-background">
       {/* Header */}
       <div className="bg-card border-b border-border p-4">
-        <h1 className="text-2xl font-bold text-foreground mb-4">Pet Marketplace</h1>
+        <div className="flex items-center justify-between mb-4">
+          <h1 className="text-2xl font-bold text-foreground">Marketplace</h1>
+          <Button variant="ghost" size="sm" className="p-2">
+            <ShoppingBag className="w-5 h-5" />
+          </Button>
+        </div>
         
         {/* Search Bar */}
         <div className="relative mb-4">
@@ -174,7 +179,7 @@ export function MarketplaceScreen() {
         </div>
 
         {/* Filters */}
-        <div className="flex flex-wrap gap-2 items-center">
+        <div className="flex gap-2 items-start">
           <div className="flex gap-2 flex-wrap">
             {categories.map((category) => (
               <Badge
@@ -190,9 +195,9 @@ export function MarketplaceScreen() {
           
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" className="self-stretch min-h-[2.5rem]">
                 <Filter className="w-4 h-4 mr-2" />
-                Sort by {sortBy}
+                {sortBy}
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="bg-popover border border-border">
@@ -212,7 +217,7 @@ export function MarketplaceScreen() {
 
       {/* Product Grid */}
       <div className="flex-1 overflow-y-auto p-4">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {filteredProducts.map((product) => (
             <Card key={product.id} className="overflow-hidden bg-card border border-border">
               <CardHeader className="p-0">
