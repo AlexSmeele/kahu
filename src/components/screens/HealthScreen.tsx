@@ -83,45 +83,48 @@ export function HealthScreen() {
 
       {/* Health Summary Cards */}
       <div className="p-4 space-y-4">
-        {/* Weight Card */}
-        <div className="card-soft p-4 bg-gradient-to-r from-success/5 to-success/10">
-          <div className="flex items-center justify-between mb-2">
-            <h3 className="font-semibold text-foreground flex items-center gap-2">
-              <TrendingUp className="w-5 h-5 text-success" />
-              Current Weight
-            </h3>
-            <Badge variant="outline" className="text-success border-success/30">
-              {healthData.weight.trend} kg
-            </Badge>
-          </div>
-          <div className="flex items-end gap-1 mb-1">
-            <span className="text-2xl font-bold text-foreground">
-              {currentDog?.weight || healthData.weight.current}
-            </span>
-            <span className="text-sm text-muted-foreground mb-1">kg</span>
-          </div>
-          <p className="text-xs text-muted-foreground">Updated {healthData.weight.lastUpdated}</p>
-        </div>
-
-        {/* Vaccinations Card */}
-        <div className="card-soft p-4 bg-gradient-to-r from-warning/5 to-warning/10">
-          <div className="flex items-center justify-between mb-2">
-            <h3 className="font-semibold text-foreground flex items-center gap-2">
-              <Calendar className="w-5 h-5 text-warning" />
-              Vaccinations
-            </h3>
-            {healthData.vaccinations.due > 0 && (
-              <Badge variant="outline" className="text-warning border-warning/30">
-                {healthData.vaccinations.due} due
+        {/* Weight and Vaccination Cards - Side by Side */}
+        <div className="grid grid-cols-2 gap-4">
+          {/* Weight Card */}
+          <div className="card-soft p-4 bg-gradient-to-r from-success/5 to-success/10">
+            <div className="flex items-center justify-between mb-2">
+              <h3 className="font-medium text-foreground flex items-center gap-2">
+                <TrendingUp className="w-4 h-4 text-success" />
+                Weight
+              </h3>
+              <Badge variant="outline" className="text-success border-success/30 text-xs">
+                {healthData.weight.trend} kg
               </Badge>
-            )}
+            </div>
+            <div className="flex items-end gap-1 mb-1">
+              <span className="text-xl font-bold text-foreground">
+                {currentDog?.weight || healthData.weight.current}
+              </span>
+              <span className="text-xs text-muted-foreground mb-0.5">kg</span>
+            </div>
+            <p className="text-xs text-muted-foreground">Updated {healthData.weight.lastUpdated}</p>
           </div>
-          <p className="text-sm text-muted-foreground mb-2">
-            {healthData.vaccinations.upcoming}
-          </p>
-          <Button variant="outline" size="sm" className="text-xs">
-            View Schedule
-          </Button>
+
+          {/* Vaccinations Card */}
+          <div className="card-soft p-4 bg-gradient-to-r from-warning/5 to-warning/10">
+            <div className="flex items-center justify-between mb-2">
+              <h3 className="font-medium text-foreground flex items-center gap-2">
+                <Calendar className="w-4 h-4 text-warning" />
+                Vaccines
+              </h3>
+              {healthData.vaccinations.due > 0 && (
+                <Badge variant="outline" className="text-warning border-warning/30 text-xs">
+                  {healthData.vaccinations.due} due
+                </Badge>
+              )}
+            </div>
+            <p className="text-xs text-muted-foreground mb-2">
+              {healthData.vaccinations.upcoming}
+            </p>
+            <Button variant="outline" size="sm" className="text-xs h-7">
+              View Schedule
+            </Button>
+          </div>
         </div>
 
         {/* Quick Stats */}
