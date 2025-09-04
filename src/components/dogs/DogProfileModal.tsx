@@ -226,66 +226,16 @@ export function DogProfileModal({ isOpen, onClose, dog, mode }: DogProfileModalP
                     {formData.birthday ? format(formData.birthday, "MMM d, yyyy") : "Pick date"}
                   </Button>
                 </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
-                  <div className="flex items-center justify-between p-2 border-b">
-                    <Select
-                      value={formData.birthday ? formData.birthday.getMonth().toString() : ""}
-                      onValueChange={(value) => {
-                        const currentDate = formData.birthday || new Date();
-                        const newDate = new Date(currentDate);
-                        newDate.setMonth(parseInt(value));
-                        setFormData(prev => ({ ...prev, birthday: newDate }));
-                      }}
-                    >
-                      <SelectTrigger className="w-[120px]">
-                        <SelectValue placeholder="Month" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {Array.from({ length: 12 }, (_, i) => (
-                          <SelectItem key={i} value={i.toString()}>
-                            {format(new Date(2000, i, 1), "MMMM")}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    
-                    <Select
-                      value={formData.birthday ? formData.birthday.getFullYear().toString() : ""}
-                      onValueChange={(value) => {
-                        const currentDate = formData.birthday || new Date();
-                        const newDate = new Date(currentDate);
-                        newDate.setFullYear(parseInt(value));
-                        setFormData(prev => ({ ...prev, birthday: newDate }));
-                      }}
-                    >
-                      <SelectTrigger className="w-[100px]">
-                        <SelectValue placeholder="Year" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {Array.from({ length: 25 }, (_, i) => {
-                          const year = new Date().getFullYear() - i;
-                          return (
-                            <SelectItem key={year} value={year.toString()}>
-                              {year}
-                            </SelectItem>
-                          );
-                        })}
-                      </SelectContent>
-                    </Select>
-                  </div>
+                <PopoverContent className="w-auto p-0 pointer-events-auto" align="start">
                   <Calendar
                     mode="single"
                     selected={formData.birthday || undefined}
                     onSelect={(date) => setFormData(prev => ({ ...prev, birthday: date || null }))}
                     disabled={(date) => date > new Date() || date < new Date("1999-01-01")}
-                    month={formData.birthday || undefined}
-                    onMonthChange={(date) => {
-                      if (!formData.birthday) {
-                        setFormData(prev => ({ ...prev, birthday: date }));
-                      }
-                    }}
+                    defaultMonth={formData.birthday || undefined}
                     initialFocus
-                    className={cn("p-3 pointer-events-auto")}
+                    className="p-3 pointer-events-auto"
+                    showOutsideDays={false}
                   />
                 </PopoverContent>
               </Popover>
