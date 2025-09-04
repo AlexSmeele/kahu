@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { TrainerScreen } from "@/components/screens/TrainerScreen";
+import { TrainerScreenVariantSelector } from "@/components/screens/TrainerScreenVariantSelector";
 import { TricksScreen } from "@/components/screens/TricksScreen";
 import { HealthScreen } from "@/components/screens/HealthScreen";
 import { NutritionScreen } from "@/components/screens/NutritionScreen";
@@ -27,7 +27,7 @@ const Index = () => {
   const renderActiveScreen = () => {
     switch (activeTab) {
       case 'trainer':
-        return <TrainerScreen />;
+        return <TrainerScreenVariantSelector />;
       case 'tricks':
         return <TricksScreen />;
       case 'health':
@@ -37,7 +37,7 @@ const Index = () => {
       case 'profile':
         return <ProfileScreen />;
       default:
-        return <TrainerScreen />;
+        return <TrainerScreenVariantSelector />;
     }
   };
 
