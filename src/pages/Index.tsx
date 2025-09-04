@@ -44,7 +44,7 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       {/* Main Content */}
-      <main className="pb-20">
+      <main className="pb-20 safe-bottom">
         {renderActiveScreen()}
       </main>
 

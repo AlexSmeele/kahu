@@ -6,6 +6,10 @@
 
 @layer base {
   :root {
+    /* App dimensions - iPhone-like constraints */
+    --app-min-width: 360px;
+    --app-max-width: 430px;
+
     /* Core brand colors - calming greens and blues */
     --background: 42 15% 98%;
     --foreground: 158 29% 15%;
@@ -142,6 +146,17 @@
 }
 
 @layer components {
+  /* App shell for iPhone-like viewport */
+  .app-shell {
+    @apply flex justify-center min-h-screen bg-background;
+  }
+  
+  .app-viewport {
+    width: min(100vw, var(--app-max-width));
+    min-width: var(--app-min-width);
+    @apply min-h-screen relative;
+  }
+
   /* Card variants */
   .card-soft {
     @apply bg-card shadow-[var(--shadow-soft)] border border-border rounded-[var(--radius)];
@@ -168,9 +183,12 @@
     @apply btn-touch bg-gradient-to-r from-accent to-accent-hover text-accent-foreground hover:shadow-[var(--shadow-soft)] active:scale-95;
   }
 
-  /* Tab bar styles */
+  /* Tab bar styles - constrained to app width */
   .tab-bar {
-    @apply fixed bottom-0 left-0 right-0 bg-card border-t border-border safe-bottom;
+    @apply fixed bottom-0 bg-card border-t border-border safe-bottom;
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(100vw, var(--app-max-width));
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
   }
@@ -187,8 +205,9 @@
     @apply text-muted-foreground hover:text-foreground;
   }
 
-  /* Floating action button */
+  /* Floating action button - positioned within app width */
   .fab {
-    @apply fixed bottom-20 right-4 w-14 h-14 bg-gradient-to-r from-primary to-primary-hover text-primary-foreground rounded-full shadow-[var(--shadow-large)] flex items-center justify-center transition-transform duration-200 hover:scale-105 active:scale-95 z-40;
+    @apply fixed bottom-20 w-14 h-14 bg-gradient-to-r from-primary to-primary-hover text-primary-foreground rounded-full shadow-[var(--shadow-large)] flex items-center justify-center transition-transform duration-200 hover:scale-105 active:scale-95 z-40;
+    right: calc(max(1rem, (100vw - var(--app-max-width)) / 2 + 1rem));
   }
 }
