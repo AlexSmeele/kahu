@@ -189,15 +189,17 @@
     @apply btn-touch bg-gradient-to-r from-accent to-accent-hover text-accent-foreground hover:shadow-[var(--shadow-soft)] active:scale-95;
   }
 
-  /* Tab bar styles - positioned within app viewport */
+  /* Tab bar styles - positioned in document flow */
   .tab-bar {
-    @apply absolute bottom-0 left-0 right-0 bg-card border-t border-border safe-bottom;
+    @apply bg-card border-t border-border safe-bottom flex-shrink-0;
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
+    height: 4rem; /* Fixed height to match calc constraint */
   }
   
   .tab-item {
-    @apply flex-1 flex flex-col items-center justify-center py-2 px-1 min-h-16 transition-colors duration-200;
+    @apply flex-1 flex flex-col items-center justify-center py-2 px-1 transition-colors duration-200;
+    height: 4rem; /* Match tab-bar height */
   }
   
   .tab-item.active {
@@ -208,8 +210,8 @@
     @apply text-muted-foreground hover:text-foreground;
   }
 
-  /* Floating action button - positioned within app viewport */
+  /* Floating action button - positioned relative to navigation */
   .fab {
-    @apply absolute bottom-20 right-4 w-14 h-14 bg-gradient-to-r from-primary to-primary-hover text-primary-foreground rounded-full shadow-[var(--shadow-large)] flex items-center justify-center transition-transform duration-200 hover:scale-105 active:scale-95 z-40;
+    @apply fixed bottom-16 right-4 w-14 h-14 bg-gradient-to-r from-primary to-primary-hover text-primary-foreground rounded-full shadow-[var(--shadow-large)] flex items-center justify-center transition-transform duration-200 hover:scale-105 active:scale-95 z-40;
   }
 }

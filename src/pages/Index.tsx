@@ -43,13 +43,13 @@ const Index = () => {
   };
 
   return (
-    <div className="h-full flex flex-col overflow-hidden">
-      {/* Main Content - Constrained to viewport minus bottom nav */}
-      <main className="flex-1 overflow-hidden" style={{ height: 'calc(100% - 4rem)' }}>
+    <div className="h-full flex flex-col">
+      {/* Main Content - Flex grows to fill available space */}
+      <main className="flex-1 min-h-0 overflow-hidden">
         {renderActiveScreen()}
       </main>
 
-      {/* Bottom Navigation */}
+      {/* Bottom Navigation - Fixed height in document flow */}
       <BottomNavigation
         activeTab={activeTab}
         onTabChange={setActiveTab}
