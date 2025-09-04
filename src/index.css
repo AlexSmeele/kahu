@@ -9,6 +9,8 @@
     /* App dimensions - iPhone-like constraints */
     --app-min-width: 360px;
     --app-max-width: 430px;
+    --app-min-height: 600px;
+    --app-max-height: 844px;
 
     /* Core brand colors - calming greens and blues */
     --background: 42 15% 98%;
@@ -148,13 +150,17 @@
 @layer components {
   /* App shell for iPhone-like viewport */
   .app-shell {
-    @apply flex justify-center min-h-screen bg-background;
+    @apply flex justify-center items-center bg-background;
+    min-height: 100dvh;
+    height: min(100dvh, var(--app-max-height));
   }
   
   .app-viewport {
     width: min(100vw, var(--app-max-width));
     min-width: var(--app-min-width);
-    @apply min-h-screen relative;
+    height: min(100dvh, var(--app-max-height));
+    min-height: var(--app-min-height);
+    @apply relative;
   }
 
   /* Card variants */
