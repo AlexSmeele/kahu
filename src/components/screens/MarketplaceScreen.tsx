@@ -167,35 +167,20 @@ export function MarketplaceScreen() {
           </Button>
         </div>
         
-        {/* Search Bar */}
-        <div className="relative mb-4">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
-          <Input
-            placeholder="Search products, suppliers, or descriptions..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-10"
-          />
-        </div>
-
-        {/* Filters */}
-        <div className="flex gap-2 items-start">
-          <div className="flex gap-2 flex-wrap">
-            {categories.map((category) => (
-              <Badge
-                key={category}
-                variant={selectedCategory === category ? "default" : "secondary"}
-                className="cursor-pointer"
-                onClick={() => setSelectedCategory(category)}
-              >
-                {category}
-              </Badge>
-            ))}
+        {/* Search and Sort Bar */}
+        <div className="flex gap-2 mb-4">
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
+            <Input
+              placeholder="Search products, suppliers, or descriptions..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-10"
+            />
           </div>
-          
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm" className="self-stretch min-h-[2.5rem]">
+              <Button variant="outline" className="min-w-24">
                 <Filter className="w-4 h-4 mr-2" />
                 {sortBy}
               </Button>
@@ -213,6 +198,20 @@ export function MarketplaceScreen() {
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
+
+        {/* Categories */}
+        <div className="flex flex-wrap gap-2">
+          {categories.map((category) => (
+            <Badge
+              key={category}
+              variant={selectedCategory === category ? "default" : "secondary"}
+              className="cursor-pointer flex-grow text-center justify-center min-w-[80px]"
+              onClick={() => setSelectedCategory(category)}
+            >
+              {category}
+            </Badge>
+          ))}
+        </div>
       </div>
 
       {/* Product Grid */}
@@ -227,6 +226,9 @@ export function MarketplaceScreen() {
                     alt={product.name}
                     className="w-full h-48 object-cover"
                   />
+                  <div className="absolute bottom-2 right-2 bg-black/80 text-white px-2 py-1 rounded text-sm font-bold">
+                    ${product.price.toFixed(2)}
+                  </div>
                   {!product.inStock && (
                     <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
                       <Badge variant="destructive">Out of Stock</Badge>
@@ -246,15 +248,12 @@ export function MarketplaceScreen() {
                   <span className="text-sm text-muted-foreground">by</span>
                   <Badge variant="outline">{product.supplier}</Badge>
                 </div>
-                <div className="flex items-center gap-2 mb-3">
+                <div className="flex items-center gap-2">
                   <div className="flex items-center">
                     <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
                     <span className="text-sm text-foreground ml-1">{product.rating}</span>
                   </div>
                   <Badge variant="secondary">{product.category}</Badge>
-                </div>
-                <div className="text-lg font-bold text-primary">
-                  ${product.price.toFixed(2)}
                 </div>
               </CardContent>
               

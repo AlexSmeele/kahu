@@ -212,7 +212,8 @@
 
   /* Floating action button - positioned within safe viewport area */
   .fab {
-    @apply fixed bottom-24 right-4 w-14 h-14 bg-gradient-to-r from-primary to-primary-hover text-primary-foreground rounded-full shadow-[var(--shadow-large)] flex items-center justify-center transition-transform duration-200 hover:scale-105 active:scale-95 z-40;
-    /* Ensure it stays within viewport with proper spacing from bottom nav */
+    @apply fixed right-4 w-14 h-14 bg-gradient-to-r from-primary to-primary-hover text-primary-foreground rounded-full shadow-[var(--shadow-large)] flex items-center justify-center transition-transform duration-200 hover:scale-105 active:scale-95 z-40;
+    /* Position above tab bar (4rem) with safe spacing */
+    bottom: calc(4rem + 1rem);
   }
 }
