@@ -67,7 +67,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const bypassAuth = () => {
     // Create a mock user for development purposes
     const mockUser = {
-      id: 'dev-user-123',
+      id: '550e8400-e29b-41d4-a716-446655440000',
       email: 'dev@example.com',
       user_metadata: { display_name: 'Dev User' },
       app_metadata: {},
