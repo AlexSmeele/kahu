@@ -60,6 +60,23 @@ ${dogInfo ? `Current dog information:
 Keep responses friendly, practical, and encouraging. Provide specific steps when giving training advice. Remember that every dog learns at their own pace.`;
 
     console.log('Making OpenAI API call...');
+    
+    // First, test the API key with a simple call
+    const testResponse = await fetch('https://api.openai.com/v1/models', {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${openAIApiKey}`,
+      },
+    });
+    
+    if (!testResponse.ok) {
+      const testError = await testResponse.json();
+      console.error('API Key validation failed:', testError);
+      throw new Error(`API Key validation failed: ${testResponse.status} - ${JSON.stringify(testError)}`);
+    }
+    
+    console.log('API Key validated successfully');
+    
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -67,7 +84,7 @@ Keep responses friendly, practical, and encouraging. Provide specific steps when
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'gpt-4o-mini',
+        model: 'gpt-3.5-turbo',
         messages: [
           { role: 'system', content: systemPrompt },
           { role: 'user', content: prompt }
