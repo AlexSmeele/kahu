@@ -273,7 +273,7 @@ export function TricksScreen() {
       </div>
 
       {/* Content */}
-      <div className="flex-1 overflow-y-auto">
+      <div className="flex-1 overflow-y-auto" style={{ height: 'calc(100% - 4rem)' }}>
         <div className="p-4 space-y-6">
           {tricksByDifficulty.map(({ level, color, textColor, tricks: levelTricks }) => {
           if (levelTricks.length === 0) return null;
