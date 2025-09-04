@@ -164,79 +164,81 @@ export function NutritionScreen() {
       )}
 
       {/* Today's Meals */}
-      <div className="flex-1 overflow-y-auto p-4 pb-20 safe-bottom">
-        {nutritionPlan ? (
-          <>
-            <div className="flex items-center justify-between mb-3">
-              <h3 className="font-semibold text-foreground">Today's Meals</h3>
-              <NutritionPlanModal 
-                dogId={selectedDogId} 
-                nutritionPlan={nutritionPlan}
-                trigger={
-                  <Button variant="outline" size="sm">
-                    <Edit2 className="w-4 h-4 mr-1" />
-                    Edit Schedule
-                  </Button>
-                }
-              />
-            </div>
-            
-            <div className="space-y-3">
-              {todayMeals.map((meal) => (
-                <div key={meal.id} className="card-soft p-4">
-                  <div className="flex items-center justify-between mb-2">
-                    <div className="flex items-center gap-3">
-                      <div className={`w-2 h-2 rounded-full ${meal.completed ? 'bg-success' : 'bg-muted'}`} />
-                      <div>
-                        <h4 className="font-medium text-foreground">{meal.name}</h4>
-                        <p className="text-sm text-muted-foreground">{meal.time}</p>
+      <div className="flex-1 overflow-y-auto">
+        <div className="p-4 pb-24">
+          {nutritionPlan ? (
+            <>
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="font-semibold text-foreground">Today's Meals</h3>
+                <NutritionPlanModal 
+                  dogId={selectedDogId} 
+                  nutritionPlan={nutritionPlan}
+                  trigger={
+                    <Button variant="outline" size="sm">
+                      <Edit2 className="w-4 h-4 mr-1" />
+                      Edit Schedule
+                    </Button>
+                  }
+                />
+              </div>
+              
+              <div className="space-y-3">
+                {todayMeals.map((meal) => (
+                  <div key={meal.id} className="card-soft p-4">
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-3">
+                        <div className={`w-2 h-2 rounded-full ${meal.completed ? 'bg-success' : 'bg-muted'}`} />
+                        <div>
+                          <h4 className="font-medium text-foreground">{meal.name}</h4>
+                          <p className="text-sm text-muted-foreground">{meal.time}</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        {meal.reminder_enabled && (
+                          <Bell className="w-4 h-4 text-primary" />
+                        )}
+                        {!meal.completed && (
+                          <Button size="sm" className="btn-primary">
+                            Mark Fed
+                          </Button>
+                        )}
                       </div>
                     </div>
-                    <div className="flex items-center gap-2">
-                      {meal.reminder_enabled && (
-                        <Bell className="w-4 h-4 text-primary" />
-                      )}
-                      {!meal.completed && (
-                        <Button size="sm" className="btn-primary">
-                          Mark Fed
-                        </Button>
-                      )}
+                    
+                    <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                      <div className="flex items-center gap-1">
+                        <TrendingUp className="w-4 h-4" />
+                        {meal.amount} cups
+                      </div>
+                      <div>
+                        {nutritionPlan.food_type?.replace('_', ' ')}
+                      </div>
                     </div>
                   </div>
-                  
-                  <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                    <div className="flex items-center gap-1">
-                      <TrendingUp className="w-4 h-4" />
-                      {meal.amount} cups
-                    </div>
-                    <div>
-                      {nutritionPlan.food_type?.replace('_', ' ')}
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
 
-            {/* Diet Tips */}
-            <div className="mt-6 card-soft p-4 bg-gradient-to-r from-primary/5 to-primary/10">
-              <h4 className="font-semibold text-foreground mb-2 flex items-center gap-2">
-                <TrendingUp className="w-5 h-5 text-primary" />
-                Nutrition Tips
-              </h4>
-              <ul className="space-y-1 text-sm text-muted-foreground">
-                <li>• Monitor weight changes weekly</li>
-                <li>• Consistent feeding times help with digestion</li>
-                <li>• Fresh water should always be available</li>
-                <li>• Watch for food allergies or sensitivities</li>
-              </ul>
+              {/* Diet Tips */}
+              <div className="mt-6 card-soft p-4 bg-gradient-to-r from-primary/5 to-primary/10">
+                <h4 className="font-semibold text-foreground mb-2 flex items-center gap-2">
+                  <TrendingUp className="w-5 h-5 text-primary" />
+                  Nutrition Tips
+                </h4>
+                <ul className="space-y-1 text-sm text-muted-foreground">
+                  <li>• Monitor weight changes weekly</li>
+                  <li>• Consistent feeding times help with digestion</li>
+                  <li>• Fresh water should always be available</li>
+                  <li>• Watch for food allergies or sensitivities</li>
+                </ul>
+              </div>
+            </>
+          ) : (
+            <div className="text-center py-8">
+              <Apple className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
+              <p className="text-muted-foreground">Set up a diet plan to start tracking meals</p>
             </div>
-          </>
-        ) : (
-          <div className="text-center py-8">
-            <Apple className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
-            <p className="text-muted-foreground">Set up a diet plan to start tracking meals</p>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </div>
   );

@@ -138,10 +138,10 @@ export function HealthScreen() {
       </div>
 
       {/* Recent Records */}
-      <div className="flex-1 overflow-y-auto pb-20 safe-bottom">
+      <div className="flex-1 overflow-y-auto">
         <div className="p-4">
           <h3 className="font-semibold text-foreground mb-3">Recent Records</h3>
-          <div className="space-y-3">
+          <div className="space-y-3 pb-24">
             {recentRecords.map((record) => {
               const Icon = record.icon;
               return (
