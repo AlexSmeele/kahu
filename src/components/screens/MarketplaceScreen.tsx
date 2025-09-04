@@ -1,5 +1,8 @@
 import { useState, useMemo } from "react";
 import { Search, Filter, ShoppingCart, Star, ShoppingBag } from "lucide-react";
+import { CartDrawer } from "@/components/marketplace/CartDrawer";
+import { OrderHistoryModal } from "@/components/marketplace/OrderHistoryModal";
+import { useToast } from "@/hooks/use-toast";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -121,6 +124,16 @@ export function MarketplaceScreen() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [sortBy, setSortBy] = useState<'name' | 'price' | 'rating'>('name');
+  const [cartItems, setCartItems] = useState<Array<{
+    id: string;
+    name: string;
+    price: number;
+    quantity: number;
+    imageUrl: string;
+    supplier: string;
+  }>>([]);
+  const [isOrderHistoryOpen, setIsOrderHistoryOpen] = useState(false);
+  const { toast } = useToast();
 
   const filteredProducts = useMemo(() => {
     let filtered = mockProducts;
@@ -156,15 +169,89 @@ export function MarketplaceScreen() {
     return filtered;
   }, [searchQuery, selectedCategory, sortBy]);
 
+  const handleAddToCart = (product: Product) => {
+    setCartItems(prev => {
+      const existingItem = prev.find(item => item.id === product.id);
+      if (existingItem) {
+        return prev.map(item =>
+          item.id === product.id
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
+        );
+      }
+      return [...prev, {
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        quantity: 1,
+        imageUrl: product.imageUrl,
+        supplier: product.supplier,
+      }];
+    });
+    
+    toast({
+      title: "Added to cart",
+      description: `${product.name} has been added to your cart.`,
+    });
+  };
+
+  const handleUpdateCartQuantity = (id: string, quantity: number) => {
+    if (quantity === 0) {
+      handleRemoveFromCart(id);
+      return;
+    }
+    setCartItems(prev =>
+      prev.map(item =>
+        item.id === id ? { ...item, quantity } : item
+      )
+    );
+  };
+
+  const handleRemoveFromCart = (id: string) => {
+    setCartItems(prev => prev.filter(item => item.id !== id));
+  };
+
+  const handleCheckout = () => {
+    toast({
+      title: "Checkout successful!",
+      description: `Order placed for ${cartItems.length} items. Total: $${cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0).toFixed(2)}`,
+    });
+    setCartItems([]);
+  };
+
+  const handleReorder = (items: Array<{ id: string; name: string; price: number; quantity: number; imageUrl: string; supplier: string; }>) => {
+    setCartItems(prev => {
+      const newItems = [...prev];
+      items.forEach(reorderItem => {
+        const existingItemIndex = newItems.findIndex(item => item.id === reorderItem.id);
+        if (existingItemIndex >= 0) {
+          newItems[existingItemIndex].quantity += reorderItem.quantity;
+        } else {
+          newItems.push({ ...reorderItem });
+        }
+      });
+      return newItems;
+    });
+    
+    toast({
+      title: "Items added to cart",
+      description: `${items.length} items from your previous order have been added to cart.`,
+    });
+  };
+
   return (
     <div className="h-full flex flex-col bg-background">
       {/* Header */}
       <div className="bg-card border-b border-border p-4">
         <div className="flex items-center justify-between mb-4">
           <h1 className="text-2xl font-bold text-foreground">Marketplace</h1>
-          <Button variant="ghost" size="sm" className="p-2">
-            <ShoppingBag className="w-5 h-5" />
-          </Button>
+          <CartDrawer
+            cartItems={cartItems}
+            onUpdateQuantity={handleUpdateCartQuantity}
+            onRemoveItem={handleRemoveFromCart}
+            onCheckout={handleCheckout}
+            onViewOrderHistory={() => setIsOrderHistoryOpen(true)}
+          />
         </div>
         
         {/* Search and Sort Bar */}
@@ -262,6 +349,7 @@ export function MarketplaceScreen() {
                   className="w-full" 
                   disabled={!product.inStock}
                   variant={product.inStock ? "default" : "secondary"}
+                  onClick={() => product.inStock && handleAddToCart(product)}
                 >
                   <ShoppingCart className="w-4 h-4 mr-2" />
                   {product.inStock ? "Add to Cart" : "Out of Stock"}
@@ -277,6 +365,13 @@ export function MarketplaceScreen() {
           </div>
         )}
       </div>
+
+      {/* Order History Modal */}
+      <OrderHistoryModal
+        isOpen={isOrderHistoryOpen}
+        onClose={() => setIsOrderHistoryOpen(false)}
+        onReorder={handleReorder}
+      />
     </div>
   );
 }

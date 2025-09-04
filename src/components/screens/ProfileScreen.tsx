@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { User, Dog, Settings, CreditCard, Share, Download, HelpCircle, LogOut, Plus, Edit, Trash2 } from "lucide-react";
+import { User, Dog, Settings, CreditCard, Share, Download, HelpCircle, LogOut, Plus, Edit, Trash2, Package } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -9,9 +9,11 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useDogs, calculateAge } from "@/hooks/useDogs";
 import { useToast } from "@/hooks/use-toast";
 import { DogProfileModal } from "@/components/dogs/DogProfileModal";
+import { OrderHistoryModal } from "@/components/marketplace/OrderHistoryModal";
 import type { Dog as DogType } from "@/hooks/useDogs";
 
 const menuItems = [
+  { icon: Package, label: "Order History", action: "orders" },
   { icon: Settings, label: "Account Settings", action: "settings" },
   { icon: CreditCard, label: "Subscription", action: "billing", badge: "Pro" },
   { icon: Share, label: "Invite Family", action: "invite" },
@@ -26,6 +28,7 @@ export function ProfileScreen() {
   const [dogModalOpen, setDogModalOpen] = useState(false);
   const [editingDog, setEditingDog] = useState<DogType | null>(null);
   const [modalMode, setModalMode] = useState<'add' | 'edit'>('add');
+  const [isOrderHistoryOpen, setIsOrderHistoryOpen] = useState(false);
 
   const handleAddDog = () => {
     setEditingDog(null);
@@ -46,6 +49,21 @@ export function ProfileScreen() {
         title: 'Profile deleted',
         description: `${dogName}'s profile has been removed`,
       });
+    }
+  };
+
+  const handleReorder = (items: Array<{ id: string; name: string; price: number; quantity: number; imageUrl: string; supplier: string; }>) => {
+    toast({
+      title: "Items added to cart",
+      description: `${items.length} items from your previous order have been added to cart. Go to Marketplace to checkout.`,
+    });
+  };
+
+  const handleMenuClick = (action: string) => {
+    if (action === "orders") {
+      setIsOrderHistoryOpen(true);
+    } else {
+      console.log(action);
     }
   };
   return (
@@ -197,6 +215,7 @@ export function ProfileScreen() {
                 <button
                   key={item.action}
                   className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-secondary transition-colors text-left"
+                  onClick={() => handleMenuClick(item.action)}
                 >
                   <Icon className="w-5 h-5 text-muted-foreground" />
                   <span className="flex-1 text-foreground">{item.label}</span>
@@ -248,6 +267,13 @@ export function ProfileScreen() {
         onClose={() => setDogModalOpen(false)}
         dog={editingDog}
         mode={modalMode}
+      />
+
+      {/* Order History Modal */}
+      <OrderHistoryModal
+        isOpen={isOrderHistoryOpen}
+        onClose={() => setIsOrderHistoryOpen(false)}
+        onReorder={handleReorder}
       />
     </div>
   );
