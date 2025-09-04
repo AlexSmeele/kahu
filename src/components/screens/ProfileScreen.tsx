@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { useAuth } from "@/contexts/AuthContext";
 import { useDogs, calculateAge } from "@/hooks/useDogs";
 import { useToast } from "@/hooks/use-toast";
@@ -51,14 +52,17 @@ export function ProfileScreen() {
     <div className="flex flex-col h-full">
       {/* Header */}
       <header className="safe-top p-4 bg-card border-b border-border">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-gradient-to-r from-primary to-primary-hover rounded-full flex items-center justify-center">
-            <User className="w-6 h-6 text-primary-foreground" />
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-gradient-to-r from-primary to-primary-hover rounded-full flex items-center justify-center">
+              <User className="w-6 h-6 text-primary-foreground" />
+            </div>
+            <div>
+              <h1 className="text-xl font-semibold text-foreground">Profile</h1>
+              <p className="text-sm text-muted-foreground">Account & settings</p>
+            </div>
           </div>
-          <div>
-            <h1 className="text-xl font-semibold text-foreground">Profile</h1>
-            <p className="text-sm text-muted-foreground">Account & settings</p>
-          </div>
+          <ThemeToggle />
         </div>
       </header>
 
