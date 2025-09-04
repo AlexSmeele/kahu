@@ -208,25 +208,26 @@ export function TrainerScreen({ onTypingChange }: { onTypingChange?: (typing: bo
               onChange={handleInputChange}
               onKeyPress={handleKeyPress}
               placeholder={`Ask about training ${currentDog?.name || 'your dog'}...`}
-              className="resize-none"
+              className="h-10"
               disabled={isLoading}
             />
           </div>
           <Button
             onClick={sendMessage}
             disabled={!inputMessage.trim() || isLoading}
-            className="btn-primary px-3"
+            className="h-10 px-3"
+            size="default"
           >
-            <Send className="w-5 h-5" />
+            <Send className="w-4 h-4" />
           </Button>
         </div>
         
-        <div className="flex gap-2 mt-2">
-          <Button variant="outline" size="sm" className="flex-1" disabled>
+        <div className="flex gap-2 mt-3">
+          <Button variant="outline" size="default" className="flex-1 h-10" disabled>
             <Camera className="w-4 h-4 mr-2" />
             Photo
           </Button>
-          <Button variant="outline" size="sm" className="flex-1" disabled>
+          <Button variant="outline" size="default" className="flex-1 h-10" disabled>
             <Mic className="w-4 h-4 mr-2" />
             Voice
           </Button>
