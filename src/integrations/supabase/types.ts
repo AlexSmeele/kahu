@@ -102,15 +102,7 @@ export type Database = {
           user_id?: string
           weight?: number | null
         }
-        Relationships: [
-          {
-            foreignKeyName: "dogs_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       health_records: {
         Row: {
