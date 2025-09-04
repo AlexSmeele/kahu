@@ -165,7 +165,7 @@ export function NutritionScreen() {
 
       {/* Today's Meals */}
       <div className="flex-1 overflow-y-auto">
-        <div className="p-4 pb-24">
+        <div className="p-4">
           {nutritionPlan ? (
             <>
               <div className="flex items-center justify-between mb-3">

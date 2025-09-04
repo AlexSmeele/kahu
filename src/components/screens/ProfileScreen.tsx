@@ -63,10 +63,166 @@ export function ProfileScreen() {
       </header>
 
       <div className="flex-1 overflow-y-auto">
-        <div className="pb-24">
           {/* User Profile Section */}
           <div className="p-4 border-b border-border">
-...
+            <div className="flex items-center gap-4 mb-4">
+              <Avatar className="w-16 h-16">
+                <AvatarImage src="/placeholder-user.jpg" alt="Alex" />
+                <AvatarFallback className="bg-primary text-primary-foreground text-lg font-semibold">
+                  AK
+                </AvatarFallback>
+              </Avatar>
+              <div className="flex-1">
+                <h2 className="text-xl font-semibold text-foreground">
+                  {user?.email?.split('@')[0] || 'User'}
+                </h2>
+                <p className="text-muted-foreground">{user?.email}</p>
+                <Badge variant="outline" className="mt-1 text-primary border-primary/30">
+                  Pro Member
+                </Badge>
+              </div>
+              <Button variant="outline" size="sm">
+                Edit
+              </Button>
+            </div>
+          </div>
+
+          {/* Dogs Section */}
+          <div className="p-4 border-b border-border">
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="font-semibold text-foreground">Your Dogs</h3>
+              <Button variant="outline" size="sm" onClick={handleAddDog}>
+                <Plus className="w-4 h-4 mr-1" />
+                Add Dog
+              </Button>
+            </div>
+            
+            {dogsLoading ? (
+              <div className="space-y-3">
+                {[1, 2].map((i) => (
+                  <div key={i} className="card-soft p-4 animate-pulse">
+                    <div className="flex items-center gap-3">
+                      <div className="w-12 h-12 bg-muted rounded-full"></div>
+                      <div className="flex-1">
+                        <div className="h-4 bg-muted rounded w-20 mb-1"></div>
+                        <div className="h-3 bg-muted rounded w-32"></div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : dogs.length === 0 ? (
+              <div className="card-soft p-6 text-center">
+                <Dog className="w-12 h-12 mx-auto mb-3 text-muted-foreground" />
+                <p className="text-muted-foreground mb-3">No dogs added yet</p>
+                <Button onClick={handleAddDog}>
+                  <Plus className="w-4 h-4 mr-2" />
+                  Add Your First Dog
+                </Button>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                {dogs.map((dog) => (
+                  <div key={dog.id} className="card-soft p-4">
+                    <div className="flex items-center gap-3">
+                      <Avatar className="w-12 h-12">
+                        <AvatarImage src={dog.avatar_url} alt={dog.name} />
+                        <AvatarFallback className="bg-primary text-primary-foreground">
+                          {dog.name.charAt(0)}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="flex-1">
+                        <h4 className="font-medium text-foreground">{dog.name}</h4>
+                        <p className="text-sm text-muted-foreground">
+                          {[
+                            dog.breed,
+                            dog.birthday && `${calculateAge(dog.birthday)} years old`,
+                            dog.weight && `${dog.weight}kg`
+                          ].filter(Boolean).join(' • ')}
+                        </p>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleEditDog(dog)}
+                        >
+                          <Edit className="w-4 h-4" />
+                        </Button>
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="text-destructive hover:text-destructive"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>Delete {dog.name}?</AlertDialogTitle>
+                              <AlertDialogDescription>
+                                This will permanently delete {dog.name}'s profile and all associated training data. This action cannot be undone.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>Cancel</AlertDialogCancel>
+                              <AlertDialogAction
+                                onClick={() => handleDeleteDog(dog.id, dog.name)}
+                                className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                              >
+                                Delete
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Menu Items */}
+          <div className="p-4 space-y-2">
+            {menuItems.map((item) => {
+              const Icon = item.icon;
+              return (
+                <button
+                  key={item.action}
+                  className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-secondary transition-colors text-left"
+                >
+                  <Icon className="w-5 h-5 text-muted-foreground" />
+                  <span className="flex-1 text-foreground">{item.label}</span>
+                  {item.badge && (
+                    <Badge variant="outline" className="text-primary border-primary/30">
+                      {item.badge}
+                    </Badge>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Stats Section */}
+          <div className="p-4 border-t border-border">
+            <h3 className="font-semibold text-foreground mb-3">Your Progress</h3>
+            <div className="grid grid-cols-3 gap-4 text-center">
+              <div className="card-soft p-3">
+                <div className="text-lg font-bold text-primary">7</div>
+                <div className="text-xs text-muted-foreground">Days Active</div>
+              </div>
+              <div className="card-soft p-3">
+                <div className="text-lg font-bold text-accent">12</div>
+                <div className="text-xs text-muted-foreground">AI Chats</div>
+              </div>
+              <div className="card-soft p-3">
+                <div className="text-lg font-bold text-success">3</div>
+                <div className="text-xs text-muted-foreground">Tricks Learned</div>
+              </div>
+            </div>
           </div>
 
           {/* Sign Out */}
@@ -80,7 +236,6 @@ export function ProfileScreen() {
               Sign Out
             </Button>
           </div>
-        </div>
       </div>
 
       {/* Dog Profile Modal */}

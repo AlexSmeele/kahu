@@ -44,8 +44,8 @@ const Index = () => {
 
   return (
     <div className="h-full flex flex-col overflow-hidden">
-      {/* Main Content - Constrained to viewport */}
-      <main className="flex-1 overflow-hidden">
+      {/* Main Content - Constrained to viewport minus bottom nav */}
+      <main className="flex-1 overflow-hidden" style={{ height: 'calc(100% - 4rem)' }}>
         {renderActiveScreen()}
       </main>
 
