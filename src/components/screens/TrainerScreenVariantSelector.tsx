@@ -1,6 +1,12 @@
 import { useState } from "react";
+import { ChevronDown } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { TrainerScreen } from "./TrainerScreen";
 import { TrainerScreenVariant1 } from "./TrainerScreenVariant1";
 import { TrainerScreenVariant2 } from "./TrainerScreenVariant2";
@@ -39,24 +45,37 @@ export function TrainerScreenVariantSelector() {
 
   return (
     <div className="relative h-full">
-      {/* Variant Selector - Floating */}
-      <div className="absolute top-4 left-4 right-4 z-50 bg-card border border-border rounded-lg shadow-lg p-3">
-        <h2 className="text-sm font-medium text-foreground mb-3">Design Variants</h2>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2">
-          {variants.map((variant) => (
-            <Card 
-              key={variant.id}
-              className={`p-2 cursor-pointer transition-colors ${
-                selectedVariant === variant.id 
-                  ? 'bg-primary text-primary-foreground' 
-                  : 'hover:bg-secondary'
-              }`}
-              onClick={() => setSelectedVariant(variant.id)}
-            >
-              <div className="text-xs font-medium">{variant.name}</div>
-            </Card>
-          ))}
-        </div>
+      {/* Compact Dropdown Selector */}
+      <div className="absolute top-4 right-4 z-50">
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" size="sm" className="bg-background/95 backdrop-blur-sm shadow-lg border-border">
+              {variants.find(v => v.id === selectedVariant)?.name}
+              <ChevronDown className="w-4 h-4 ml-1" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent 
+            align="end" 
+            className="w-48 bg-background/95 backdrop-blur-sm border-border shadow-lg z-50"
+          >
+            {variants.map((variant) => (
+              <DropdownMenuItem
+                key={variant.id}
+                onClick={() => setSelectedVariant(variant.id)}
+                className={`cursor-pointer ${
+                  selectedVariant === variant.id 
+                    ? 'bg-primary text-primary-foreground' 
+                    : ''
+                }`}
+              >
+                <div>
+                  <div className="font-medium">{variant.name}</div>
+                  <div className="text-xs opacity-70">{variant.description}</div>
+                </div>
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
 
       {/* Selected Variant - Full Height */}
