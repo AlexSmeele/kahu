@@ -2,7 +2,19 @@ import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.55.0';
 
-const openAIApiKey = Deno.env.get('OPENAI_API_KEY') || Deno.env.get('OpenAI API Key');
+// Get API key with improved detection
+const allEnvVars = Deno.env.toObject();
+const possibleKeyNames = ['OPENAI_API_KEY', 'OpenAI API Key', 'OPENAI_KEY', 'OPENAI'];
+
+let openAIApiKey = null;
+for (const keyName of possibleKeyNames) {
+  const value = allEnvVars[keyName];
+  if (value && value.trim()) {
+    openAIApiKey = value.trim();
+    console.log(`Using API key from: ${keyName}`);
+    break;
+  }
+}
 const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
 const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
 

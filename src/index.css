@@ -210,8 +210,11 @@
     @apply text-muted-foreground hover:text-foreground;
   }
 
-  /* Floating action button - positioned relative to navigation */
+  /* Floating action button - positioned within safe viewport area */
   .fab {
-    @apply fixed bottom-16 right-4 w-14 h-14 bg-gradient-to-r from-primary to-primary-hover text-primary-foreground rounded-full shadow-[var(--shadow-large)] flex items-center justify-center transition-transform duration-200 hover:scale-105 active:scale-95 z-40;
+    @apply fixed bottom-20 right-4 w-14 h-14 bg-gradient-to-r from-primary to-primary-hover text-primary-foreground rounded-full shadow-[var(--shadow-large)] flex items-center justify-center transition-transform duration-200 hover:scale-105 active:scale-95 z-40;
+    /* Ensure it stays within viewport */
+    max-width: calc(100vw - 2rem);
+    max-height: calc(100vh - 6rem);
   }
 }
