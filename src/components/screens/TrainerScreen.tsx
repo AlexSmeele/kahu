@@ -100,10 +100,10 @@ export function TrainerScreen({ onTypingChange }: { onTypingChange?: (typing: bo
       </header>
 
       {/* Content */}
-      <div className="flex-1 overflow-y-auto pb-24 safe-bottom">
+      <div className="flex-1 overflow-y-auto" style={{ paddingBottom: '160px' }}>
         {messages.length === 0 ? (
           /* Welcome State */
-          <div className="flex flex-col items-center justify-center p-6 text-center min-h-[calc(100vh-200px)]">
+          <div className="flex flex-col items-center justify-center p-6 text-center h-full">
             <div className="w-full max-w-sm mb-8">
               <img 
                 src={heroImage} 
