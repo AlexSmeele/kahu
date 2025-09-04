@@ -86,14 +86,9 @@ export function TrainerScreen() {
     <div className="flex flex-col h-full">
       {/* Header */}
       <header className="safe-top p-4 bg-card border-b border-border">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-gradient-to-r from-primary to-primary-hover rounded-full flex items-center justify-center">
-            <MessageCircle className="w-6 h-6 text-primary-foreground" />
-          </div>
-          <div>
-            <h1 className="text-xl font-semibold text-foreground">Kahu AI Trainer</h1>
-            <p className="text-sm text-muted-foreground">Your compassionate dog training guide</p>
-          </div>
+        <div className="text-center">
+          <h1 className="text-xl font-semibold text-foreground">Kahu</h1>
+          <p className="text-sm text-muted-foreground">Your compassionate AI dog trainer</p>
         </div>
       </header>
 
