@@ -4,7 +4,6 @@ import { TrendingUp, TrendingDown, Minus, Calendar, Scale, Plus } from "lucide-r
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface WeightRecord {
   id: string;
@@ -165,105 +164,96 @@ export function WeightTracker({ isOpen, onClose, currentWeight, dogName, dogBirt
               ))}
             </div>
 
-            <Tabs defaultValue="chart" className="flex-1 min-h-0 flex flex-col">
-              <TabsList className="grid w-full grid-cols-2 flex-shrink-0 h-8">
-                <TabsTrigger value="chart" className="text-xs">Chart</TabsTrigger>
-                <TabsTrigger value="list" className="text-xs">List</TabsTrigger>
-              </TabsList>
-
-              <TabsContent value="chart" className="flex-1 min-h-0 overflow-y-auto">
-                <div className="space-y-2">
-                  {/* Current Weight Summary */}
-                  <div className="grid grid-cols-3 gap-2">
-                    <div className="card-soft p-2 text-center">
-                      <div className="text-base font-bold text-primary">{currentWeight} kg</div>
-                      <div className="text-xs text-muted-foreground">Current</div>
-                    </div>
-                    <div className="card-soft p-2 text-center">
-                      <div className="text-sm font-bold text-green-600">
-                        {filteredData.length > 0 ? `+${(currentWeight - filteredData[0].weight).toFixed(1)}` : '--'}
-                      </div>
-                      <div className="text-xs text-muted-foreground">Change</div>
-                    </div>
-                    <div className="card-soft p-2 text-center">
-                      <div className="text-sm font-bold text-blue-600">{filteredData.length}</div>
-                      <div className="text-xs text-muted-foreground">Records</div>
-                    </div>
-                  </div>
-
-                  {/* Chart */}
-                  <div className="card-soft p-2">
-                    <h3 className="font-semibold mb-2 text-xs">Weight Trend</h3>
-                    <div className="h-28">
-                      <ResponsiveContainer width="100%" height="100%">
-                        <LineChart data={chartData}>
-                          <CartesianGrid strokeDasharray="3 3" />
-                          <XAxis 
-                            dataKey="date" 
-                            fontSize={8}
-                            tick={{ fontSize: 8 }}
-                          />
-                          <YAxis 
-                            fontSize={8}
-                            tick={{ fontSize: 8 }}
-                            domain={['dataMin - 0.5', 'dataMax + 0.5']}
-                          />
-                          <Tooltip 
-                            formatter={(value: number) => [`${value} kg`, 'Weight']}
-                            labelFormatter={(label) => `Date: ${label}`}
-                          />
-                          <Line 
-                            type="monotone" 
-                            dataKey="weight" 
-                            stroke="hsl(var(--primary))" 
-                            strokeWidth={2}
-                            dot={{ fill: "hsl(var(--primary))", strokeWidth: 2, r: 2 }}
-                            activeDot={{ r: 4, stroke: "hsl(var(--primary))", strokeWidth: 2 }}
-                          />
-                        </LineChart>
-                      </ResponsiveContainer>
-                    </div>
-                  </div>
+            {/* Scrollable Content Area */}
+            <div className="flex-1 min-h-0 overflow-y-auto space-y-3">
+              {/* Current Weight Summary */}
+              <div className="grid grid-cols-3 gap-2">
+                <div className="card-soft p-2 text-center">
+                  <div className="text-base font-bold text-primary">{currentWeight} kg</div>
+                  <div className="text-xs text-muted-foreground">Current</div>
                 </div>
-              </TabsContent>
-
-              <TabsContent value="list" className="flex-1 min-h-0 overflow-hidden">
-                <div className="card-soft h-full flex flex-col">
-                  <div className="p-2 border-b flex-shrink-0">
-                    <h3 className="font-semibold text-xs">Weight Records</h3>
-                    <p className="text-xs text-muted-foreground">{filteredData.length} records</p>
+                <div className="card-soft p-2 text-center">
+                  <div className="text-sm font-bold text-green-600">
+                    {filteredData.length > 0 ? `+${(currentWeight - filteredData[0].weight).toFixed(1)}` : '--'}
                   </div>
-                  <div className="flex-1 min-h-0 overflow-y-auto p-2 space-y-2">
-                    {dataWithChanges.reverse().map((record, index) => (
-                      <div key={record.id} className="flex items-center justify-between p-2 bg-secondary/50 rounded-lg">
-                        <div className="flex items-center gap-2 flex-1 min-w-0">
-                          <div className="w-6 h-6 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
-                            <Scale className="w-3 h-3 text-primary" />
-                          </div>
-                          <div className="min-w-0 flex-1">
-                            <div className="font-medium text-sm">{record.weight} kg</div>
-                            <div className="text-xs text-muted-foreground flex items-center gap-1">
-                              <Calendar className="w-3 h-3 flex-shrink-0" />
-                              <span className="truncate">{format(record.date, 'MMM dd')}</span>
-                            </div>
+                  <div className="text-xs text-muted-foreground">Change</div>
+                </div>
+                <div className="card-soft p-2 text-center">
+                  <div className="text-sm font-bold text-blue-600">{filteredData.length}</div>
+                  <div className="text-xs text-muted-foreground">Records</div>
+                </div>
+              </div>
+
+              {/* Chart Section */}
+              <div className="card-soft p-2">
+                <h3 className="font-semibold mb-2 text-xs">Weight Trend</h3>
+                <div className="h-28">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <LineChart data={chartData}>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis 
+                        dataKey="date" 
+                        fontSize={8}
+                        tick={{ fontSize: 8 }}
+                      />
+                      <YAxis 
+                        fontSize={8}
+                        tick={{ fontSize: 8 }}
+                        domain={['dataMin - 0.5', 'dataMax + 0.5']}
+                      />
+                      <Tooltip 
+                        formatter={(value: number) => [`${value} kg`, 'Weight']}
+                        labelFormatter={(label) => `Date: ${label}`}
+                      />
+                      <Line 
+                        type="monotone" 
+                        dataKey="weight" 
+                        stroke="hsl(var(--primary))" 
+                        strokeWidth={2}
+                        dot={{ fill: "hsl(var(--primary))", strokeWidth: 2, r: 2 }}
+                        activeDot={{ r: 4, stroke: "hsl(var(--primary))", strokeWidth: 2 }}
+                      />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </div>
+              </div>
+
+              {/* List Section */}
+              <div className="card-soft">
+                <div className="p-2 border-b">
+                  <h3 className="font-semibold text-xs">Weight Records</h3>
+                  <p className="text-xs text-muted-foreground">{filteredData.length} records</p>
+                </div>
+                <div className="p-2 space-y-2 max-h-40 overflow-y-auto">
+                  {dataWithChanges.reverse().map((record, index) => (
+                    <div key={record.id} className="flex items-center justify-between p-2 bg-secondary/50 rounded-lg">
+                      <div className="flex items-center gap-2 flex-1 min-w-0">
+                        <div className="w-6 h-6 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
+                          <Scale className="w-3 h-3 text-primary" />
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <div className="font-medium text-sm">{record.weight} kg</div>
+                          <div className="text-xs text-muted-foreground flex items-center gap-1">
+                            <Calendar className="w-3 h-3 flex-shrink-0" />
+                            <span className="truncate">{format(record.date, 'MMM dd')}</span>
                           </div>
                         </div>
-                        <div className="text-right flex-shrink-0">
-                          {record.change !== 0 && (
-                            <div className={`flex items-center gap-1 ${getChangeColor(record.changeType)}`}>
-                              {getTrendIcon(record.changeType)}
-                              <span className="text-xs font-medium">
-                                {record.change > 0 ? '+' : ''}{record.change.toFixed(1)}
-                              </span>
-                            </div>
-                          )}
-                        </div>
                       </div>
-                    ))}
-                  </div>
+                      <div className="text-right flex-shrink-0">
+                        {record.change !== 0 && (
+                          <div className={`flex items-center gap-1 ${getChangeColor(record.changeType)}`}>
+                            {getTrendIcon(record.changeType)}
+                            <span className="text-xs font-medium">
+                              {record.change > 0 ? '+' : ''}{record.change.toFixed(1)}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  ))}
                 </div>
-              </TabsContent>
-            </Tabs>
+              </div>
+            </div>
           </div>
         </div>
       </DialogContent>
