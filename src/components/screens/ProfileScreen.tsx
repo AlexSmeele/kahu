@@ -62,7 +62,7 @@ export function ProfileScreen() {
         </div>
       </header>
 
-      <div className="flex-1 overflow-y-auto pb-32 safe-bottom">
+      <div className="flex-1 overflow-y-auto pb-4 safe-bottom">
         {/* User Profile Section */}
         <div className="p-4 border-b border-border">
           <div className="flex items-center gap-4 mb-4">

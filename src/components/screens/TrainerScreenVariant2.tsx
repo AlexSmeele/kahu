@@ -92,7 +92,7 @@ export function TrainerScreenVariant2() {
       </header>
 
       {/* Content */}
-      <div className="flex-1 overflow-y-auto pb-32 safe-bottom">
+      <div className="flex-1 overflow-y-auto pb-4 safe-bottom">
         {messages.length === 0 ? (
           /* Clean Welcome State */
           <div className="flex flex-col items-center justify-center p-6 text-center min-h-[60vh]">

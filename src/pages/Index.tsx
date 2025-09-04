@@ -42,9 +42,9 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Main Content */}
-      <main className="pb-20 safe-bottom">
+    <div className="h-full flex flex-col overflow-hidden">
+      {/* Main Content - Constrained to viewport */}
+      <main className="flex-1 overflow-hidden">
         {renderActiveScreen()}
       </main>
 
