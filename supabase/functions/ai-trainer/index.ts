@@ -25,8 +25,13 @@ serve(async (req) => {
     const { prompt, dogInfo, userContext } = await req.json();
     console.log('Request data:', { prompt, dogInfo, userContext });
 
+    // Debug logging for API key
+    console.log('Environment variables available:', Object.keys(Deno.env.toObject()));
+    console.log('OpenAI API key exists:', !!openAIApiKey);
+    console.log('OpenAI API key length:', openAIApiKey ? openAIApiKey.length : 'undefined');
+
     if (!openAIApiKey) {
-      console.error('OpenAI API key not found');
+      console.error('OpenAI API key not found - available env vars:', Object.keys(Deno.env.toObject()));
       return new Response(JSON.stringify({ error: 'OpenAI API key not configured' }), {
         status: 500,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
