@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useDogs } from "@/hooks/useDogs";
 import { DogSwitcher } from "@/components/dogs/DogSwitcher";
+import { WeightTracker } from "@/components/health/WeightTracker";
 
 const healthData = {
   weight: { current: 12.4, trend: "+0.2", lastUpdated: "3 days ago" },
@@ -45,6 +46,7 @@ const recentRecords = [
 
 export function HealthScreen() {
   const [selectedDogId, setSelectedDogId] = useState<string>('');
+  const [isWeightTrackerOpen, setIsWeightTrackerOpen] = useState(false);
   const { dogs } = useDogs();
   const currentDog = dogs.find(dog => dog.id === selectedDogId) || dogs[0];
 
@@ -86,7 +88,10 @@ export function HealthScreen() {
         {/* Weight and Vaccination Cards - Side by Side */}
         <div className="grid grid-cols-2 gap-4">
           {/* Weight Card */}
-          <div className="card-soft p-4 bg-gradient-to-r from-success/5 to-success/10">
+          <div 
+            className="card-soft p-4 bg-gradient-to-r from-success/5 to-success/10 cursor-pointer hover:shadow-md transition-shadow" 
+            onClick={() => setIsWeightTrackerOpen(true)}
+          >
             <div className="flex items-center justify-between mb-2">
               <h3 className="font-medium text-foreground flex items-center gap-2">
                 <TrendingUp className="w-4 h-4 text-success" />
@@ -167,6 +172,15 @@ export function HealthScreen() {
           </div>
         </div>
       </div>
+
+      {/* Weight Tracker Modal */}
+      <WeightTracker
+        isOpen={isWeightTrackerOpen}
+        onClose={() => setIsWeightTrackerOpen(false)}
+        currentWeight={currentDog?.weight || healthData.weight.current}
+        dogName={currentDog?.name || 'Your dog'}
+        dogBirthday={currentDog?.birthday ? new Date(currentDog.birthday) : undefined}
+      />
     </div>
   );
 }
