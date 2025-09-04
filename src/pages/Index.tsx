@@ -4,6 +4,7 @@ import { TricksScreen } from "@/components/screens/TricksScreen";
 import { HealthScreen } from "@/components/screens/HealthScreen";
 import { NutritionScreen } from "@/components/screens/NutritionScreen";
 import { ProfileScreen } from "@/components/screens/ProfileScreen";
+import { MarketplaceScreen } from "@/components/screens/MarketplaceScreen";
 import { BottomNavigation, TabType } from "@/components/layout/BottomNavigation";
 import { QuickActionModal } from "@/components/layout/QuickActionModal";
 import { DogOnboarding } from "@/components/onboarding/DogOnboarding";
@@ -35,6 +36,8 @@ const Index = () => {
         return <HealthScreen />;
       case 'nutrition':
         return <NutritionScreen />;
+      case 'marketplace':
+        return <MarketplaceScreen />;
       case 'profile':
         return <ProfileScreen />;
       default:
