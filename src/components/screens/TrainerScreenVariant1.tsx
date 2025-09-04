@@ -16,7 +16,7 @@ interface Message {
 }
 
 // Variant 1: Card-Based Welcome with Action Categories
-export function TrainerScreenVariant1() {
+export function TrainerScreenVariant1({ onTypingChange }: { onTypingChange?: (typing: boolean) => void }) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -74,6 +74,12 @@ export function TrainerScreenVariant1() {
       e.preventDefault();
       sendMessage();
     }
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setInputMessage(value);
+    onTypingChange?.(value.length > 0);
   };
 
   const sendSuggestedPrompt = (prompt: string) => {
@@ -228,7 +234,7 @@ export function TrainerScreenVariant1() {
           <div className="flex-1">
             <Input
               value={inputMessage}
-              onChange={(e) => setInputMessage(e.target.value)}
+              onChange={handleInputChange}
               onKeyPress={handleKeyPress}
               placeholder="Ask anything about training..."
               className="resize-none"

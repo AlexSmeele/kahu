@@ -16,7 +16,7 @@ interface Message {
 }
 
 // Variant 3: Dashboard-Style with Stats and Quick Actions
-export function TrainerScreenVariant3() {
+export function TrainerScreenVariant3({ onTypingChange }: { onTypingChange?: (typing: boolean) => void }) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -74,6 +74,12 @@ export function TrainerScreenVariant3() {
       e.preventDefault();
       sendMessage();
     }
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setInputMessage(value);
+    onTypingChange?.(value.length > 0);
   };
 
   const stats = [
@@ -185,7 +191,7 @@ export function TrainerScreenVariant3() {
               <div className="flex gap-2">
                 <Input
                   value={inputMessage}
-                  onChange={(e) => setInputMessage(e.target.value)}
+                  onChange={handleInputChange}
                   onKeyPress={handleKeyPress}
                   placeholder={`Ask about ${currentDog?.name || 'your dog'}...`}
                   disabled={isLoading}
@@ -252,7 +258,7 @@ export function TrainerScreenVariant3() {
             <div className="flex-1">
               <Input
                 value={inputMessage}
-                onChange={(e) => setInputMessage(e.target.value)}
+                onChange={handleInputChange}
                 onKeyPress={handleKeyPress}
                 placeholder="Continue conversation..."
                 disabled={isLoading}

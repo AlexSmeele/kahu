@@ -15,7 +15,7 @@ interface Message {
 }
 
 // Variant 2: Minimalist Search-Focused Design
-export function TrainerScreenVariant2() {
+export function TrainerScreenVariant2({ onTypingChange }: { onTypingChange?: (typing: boolean) => void }) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -75,6 +75,12 @@ export function TrainerScreenVariant2() {
     }
   };
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setInputMessage(value);
+    onTypingChange?.(value.length > 0);
+  };
+
   const quickSuggestions = [
     "Basic training tips",
     "Stop excessive barking", 
@@ -114,7 +120,7 @@ export function TrainerScreenVariant2() {
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                 <Input
                   value={inputMessage}
-                  onChange={(e) => setInputMessage(e.target.value)}
+                  onChange={handleInputChange}
                   onKeyPress={handleKeyPress}
                   placeholder="Ask about training, behavior, or care..."
                   className="pl-10 h-12 text-center"
@@ -201,7 +207,7 @@ export function TrainerScreenVariant2() {
             <div className="flex-1">
               <Input
                 value={inputMessage}
-                onChange={(e) => setInputMessage(e.target.value)}
+                onChange={handleInputChange}
                 onKeyPress={handleKeyPress}
                 placeholder="Continue the conversation..."
                 disabled={isLoading}

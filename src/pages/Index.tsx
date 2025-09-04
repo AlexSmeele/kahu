@@ -13,6 +13,7 @@ import { useAuth } from "@/contexts/AuthContext";
 const Index = () => {
   const [activeTab, setActiveTab] = useState<TabType>('trainer');
   const [isQuickActionOpen, setIsQuickActionOpen] = useState(false);
+  const [isUserTyping, setIsUserTyping] = useState(false);
   const { user } = useAuth();
   const { dogs, loading } = useDogs();
 
@@ -27,7 +28,7 @@ const Index = () => {
   const renderActiveScreen = () => {
     switch (activeTab) {
       case 'trainer':
-        return <TrainerScreenVariantSelector />;
+        return <TrainerScreenVariantSelector onTypingChange={setIsUserTyping} />;
       case 'tricks':
         return <TricksScreen />;
       case 'health':
@@ -37,7 +38,7 @@ const Index = () => {
       case 'profile':
         return <ProfileScreen />;
       default:
-        return <TrainerScreenVariantSelector />;
+        return <TrainerScreenVariantSelector onTypingChange={setIsUserTyping} />;
     }
   };
 
@@ -53,6 +54,7 @@ const Index = () => {
         activeTab={activeTab}
         onTabChange={setActiveTab}
         onQuickAction={() => setIsQuickActionOpen(true)}
+        hideFab={activeTab === 'trainer' && isUserTyping}
       />
 
       {/* Quick Action Modal */}

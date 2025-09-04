@@ -16,7 +16,7 @@ interface Message {
 }
 
 // Variant 4: Magazine/Blog Style Landing
-export function TrainerScreenVariant4() {
+export function TrainerScreenVariant4({ onTypingChange }: { onTypingChange?: (typing: boolean) => void }) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -74,6 +74,12 @@ export function TrainerScreenVariant4() {
       e.preventDefault();
       sendMessage();
     }
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setInputMessage(value);
+    onTypingChange?.(value.length > 0);
   };
 
   const featuredTopics = [
@@ -135,7 +141,7 @@ export function TrainerScreenVariant4() {
               <div className="flex gap-2">
                 <Input
                   value={inputMessage}
-                  onChange={(e) => setInputMessage(e.target.value)}
+                  onChange={handleInputChange}
                   onKeyPress={handleKeyPress}
                   placeholder="Ask me anything..."
                   className="flex-1"
@@ -259,7 +265,7 @@ export function TrainerScreenVariant4() {
           <div className="max-w-2xl mx-auto flex gap-2">
             <Input
               value={inputMessage}
-              onChange={(e) => setInputMessage(e.target.value)}
+              onChange={handleInputChange}
               onKeyPress={handleKeyPress}
               placeholder="Continue the conversation..."
               disabled={isLoading}

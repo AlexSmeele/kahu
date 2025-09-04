@@ -7,6 +7,7 @@ interface BottomNavigationProps {
   activeTab: TabType;
   onTabChange: (tab: TabType) => void;
   onQuickAction: () => void;
+  hideFab?: boolean;
 }
 
 const tabs = [
@@ -17,17 +18,19 @@ const tabs = [
   { id: 'profile' as TabType, label: 'Profile', icon: User },
 ];
 
-export function BottomNavigation({ activeTab, onTabChange, onQuickAction }: BottomNavigationProps) {
+export function BottomNavigation({ activeTab, onTabChange, onQuickAction, hideFab = false }: BottomNavigationProps) {
   return (
     <>
       {/* Floating Action Button */}
-      <button
-        onClick={onQuickAction}
-        className="fab"
-        aria-label="Quick add"
-      >
-        <Plus className="w-6 h-6" />
-      </button>
+      {!hideFab && (
+        <button
+          onClick={onQuickAction}
+          className="fab"
+          aria-label="Quick add"
+        >
+          <Plus className="w-6 h-6" />
+        </button>
+      )}
 
       {/* Bottom Tab Bar */}
       <nav className="tab-bar">

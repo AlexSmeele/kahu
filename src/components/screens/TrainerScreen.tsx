@@ -15,7 +15,7 @@ interface Message {
   timestamp: Date;
 }
 
-export function TrainerScreen() {
+export function TrainerScreen({ onTypingChange }: { onTypingChange?: (typing: boolean) => void }) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -35,6 +35,7 @@ export function TrainerScreen() {
 
     setMessages(prev => [...prev, userMessage]);
     setInputMessage('');
+    onTypingChange?.(false);
     setIsLoading(true);
 
     try {
@@ -69,6 +70,12 @@ export function TrainerScreen() {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setInputMessage(value);
+    onTypingChange?.(value.length > 0);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -192,13 +199,13 @@ export function TrainerScreen() {
         )}
       </div>
 
-      {/* Input Area */}
-      <div className="p-4 bg-card border-t border-border">
+      {/* Input Area - Fixed positioning with consistent spacing */}
+      <div className="absolute bottom-0 left-0 right-0 p-4 bg-card/95 backdrop-blur-sm border-t border-border safe-bottom">
         <div className="flex gap-2 items-end">
           <div className="flex-1">
             <Input
               value={inputMessage}
-              onChange={(e) => setInputMessage(e.target.value)}
+              onChange={handleInputChange}
               onKeyPress={handleKeyPress}
               placeholder={`Ask about training ${currentDog?.name || 'your dog'}...`}
               className="resize-none"

@@ -23,23 +23,23 @@ const variants = [
   { id: 'variant4' as VariantType, name: 'Magazine Style', description: 'Editorial layout with hero image' },
 ];
 
-export function TrainerScreenVariantSelector() {
+export function TrainerScreenVariantSelector({ onTypingChange }: { onTypingChange?: (typing: boolean) => void }) {
   const [selectedVariant, setSelectedVariant] = useState<VariantType>('current');
 
   const renderSelectedVariant = () => {
     switch (selectedVariant) {
       case 'current':
-        return <TrainerScreen />;
+        return <TrainerScreen onTypingChange={onTypingChange} />;
       case 'variant1':
-        return <TrainerScreenVariant1 />;
+        return <TrainerScreenVariant1 onTypingChange={onTypingChange} />;
       case 'variant2':
-        return <TrainerScreenVariant2 />;
+        return <TrainerScreenVariant2 onTypingChange={onTypingChange} />;
       case 'variant3':
-        return <TrainerScreenVariant3 />;
+        return <TrainerScreenVariant3 onTypingChange={onTypingChange} />;
       case 'variant4':
-        return <TrainerScreenVariant4 />;
+        return <TrainerScreenVariant4 onTypingChange={onTypingChange} />;
       default:
-        return <TrainerScreen />;
+        return <TrainerScreen onTypingChange={onTypingChange} />;
     }
   };
 
