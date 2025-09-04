@@ -16,15 +16,30 @@ export interface Dog {
 }
 
 // Utility function to calculate age from birthday
-export function calculateAge(birthday: string): number {
+export function calculateAge(birthday: string): string {
   const birthDate = new Date(birthday);
   const today = new Date();
-  let age = today.getFullYear() - birthDate.getFullYear();
-  const monthDiff = today.getMonth() - birthDate.getMonth();
-  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
-    age--;
+  
+  let years = today.getFullYear() - birthDate.getFullYear();
+  let months = today.getMonth() - birthDate.getMonth();
+  
+  if (months < 0) {
+    years--;
+    months += 12;
+  } else if (months === 0 && today.getDate() < birthDate.getDate()) {
+    years--;
+    months = 11;
+  } else if (today.getDate() < birthDate.getDate()) {
+    months--;
   }
-  return age;
+  
+  if (years === 0) {
+    return `${months} ${months === 1 ? 'month' : 'months'}`;
+  } else if (months === 0) {
+    return `${years} ${years === 1 ? 'year' : 'years'}`;
+  } else {
+    return `${years} ${years === 1 ? 'year' : 'years'}, ${months} ${months === 1 ? 'month' : 'months'}`;
+  }
 }
 
 export function useDogs() {
