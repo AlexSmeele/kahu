@@ -65,6 +65,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const bypassAuth = () => {
+    // Clear any existing session data first
+    setUser(null);
+    setSession(null);
+    
     // Create a mock user for development purposes
     const mockUser = {
       id: '550e8400-e29b-41d4-a716-446655440000',
