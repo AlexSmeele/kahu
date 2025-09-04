@@ -6,7 +6,7 @@ import { useToast } from '@/hooks/use-toast';
 export interface Trick {
   id: string;
   name: string;
-  category: 'basic' | 'intermediate' | 'advanced' | 'agility' | 'fun';
+  category: string;
   description: string;
   instructions: string;
   difficulty_level: number;
@@ -56,17 +56,32 @@ export function useTricks(dogId?: string) {
     if (!dogId || !user) return;
 
     try {
-      const { data, error } = await supabase
+      // First, get dog tricks without the join to avoid relation issues
+      const { data: dogTricksData, error: dogTricksError } = await supabase
         .from('dog_tricks')
-        .select(`
-          *,
-          trick:tricks(*)
-        `)
+        .select('*')
         .eq('dog_id', dogId)
         .order('created_at', { ascending: false });
 
-      if (error) throw error;
-      setDogTricks((data as DogTrick[]) || []);
+      if (dogTricksError) throw dogTricksError;
+
+      // Then get tricks separately and combine them
+      const { data: tricksData, error: tricksError } = await supabase
+        .from('tricks')
+        .select('*');
+
+      if (tricksError) throw tricksError;
+
+      // Create a map of tricks for quick lookup
+      const tricksMap = new Map(tricksData?.map(trick => [trick.id, trick]) || []);
+
+      // Combine the data
+      const combinedData = dogTricksData?.map(dogTrick => ({
+        ...dogTrick,
+        trick: tricksMap.get(dogTrick.trick_id)
+      })).filter(dt => dt.trick) || [];
+
+      setDogTricks(combinedData as DogTrick[]);
     } catch (error) {
       console.error('Error fetching dog tricks:', error);
       toast({
@@ -91,15 +106,25 @@ export function useTricks(dogId?: string) {
           status: 'learning',
           started_at: new Date().toISOString(),
         })
-        .select(`
-          *,
-          trick:tricks(*)
-        `)
+        .select('*')
         .single();
 
       if (error) throw error;
 
-      const newDogTrick = data as DogTrick;
+      // Get the trick details separately
+      const { data: trickData, error: trickError } = await supabase
+        .from('tricks')
+        .select('*')
+        .eq('id', trickId)
+        .single();
+
+      if (trickError) throw trickError;
+
+      const newDogTrick = {
+        ...data,
+        trick: trickData
+      } as DogTrick;
+
       setDogTricks(prev => [newDogTrick, ...prev]);
 
       toast({
@@ -130,15 +155,25 @@ export function useTricks(dogId?: string) {
         .from('dog_tricks')
         .update(updates)
         .eq('id', dogTrickId)
-        .select(`
-          *,
-          trick:tricks(*)
-        `)
+        .select('*')
         .single();
 
       if (error) throw error;
 
-      const updatedDogTrick = data as DogTrick;
+      // Get the trick details separately
+      const { data: trickData, error: trickError } = await supabase
+        .from('tricks')
+        .select('*')
+        .eq('id', data.trick_id)
+        .single();
+
+      if (trickError) throw trickError;
+
+      const updatedDogTrick = {
+        ...data,
+        trick: trickData
+      } as DogTrick;
+
       setDogTricks(prev => 
         prev.map(dt => dt.id === dogTrickId ? updatedDogTrick : dt)
       );

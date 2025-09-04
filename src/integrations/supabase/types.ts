@@ -56,13 +56,6 @@ export type Database = {
             referencedRelation: "dogs"
             referencedColumns: ["id"]
           },
-          {
-            foreignKeyName: "dog_tricks_trick_id_fkey"
-            columns: ["trick_id"]
-            isOneToOne: false
-            referencedRelation: "tricks"
-            referencedColumns: ["id"]
-          },
         ]
       }
       dogs: {
@@ -270,13 +263,6 @@ export type Database = {
             referencedRelation: "dogs"
             referencedColumns: ["id"]
           },
-          {
-            foreignKeyName: "training_sessions_trick_id_fkey"
-            columns: ["trick_id"]
-            isOneToOne: false
-            referencedRelation: "tricks"
-            referencedColumns: ["id"]
-          },
         ]
       }
       tricks: {
@@ -284,7 +270,7 @@ export type Database = {
           category: string
           created_at: string
           description: string
-          difficulty_level: number | null
+          difficulty_level: number
           estimated_time_weeks: number | null
           id: string
           instructions: string
@@ -295,7 +281,7 @@ export type Database = {
           category: string
           created_at?: string
           description: string
-          difficulty_level?: number | null
+          difficulty_level: number
           estimated_time_weeks?: number | null
           id?: string
           instructions: string
@@ -306,7 +292,7 @@ export type Database = {
           category?: string
           created_at?: string
           description?: string
-          difficulty_level?: number | null
+          difficulty_level?: number
           estimated_time_weeks?: number | null
           id?: string
           instructions?: string
