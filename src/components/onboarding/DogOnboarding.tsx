@@ -3,8 +3,12 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Heart, ArrowRight, ArrowLeft } from 'lucide-react';
-import { useDogs, Dog } from '@/hooks/useDogs';
+import { Calendar } from '@/components/ui/calendar';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Heart, ArrowRight, ArrowLeft, CalendarIcon, Upload, X } from 'lucide-react';
+import { format } from 'date-fns';
+import { cn } from '@/lib/utils';
+import { useDogs, Dog, calculateAge } from '@/hooks/useDogs';
 import heroImage from '@/assets/hero-image.jpg';
 
 interface DogOnboardingProps {
@@ -16,12 +20,31 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
   const [formData, setFormData] = useState({
     name: '',
     breed: '',
-    age: '',
+    birthday: null as Date | null,
     weight: '',
     gender: '' as 'male' | 'female' | '',
   });
+  const [photo, setPhoto] = useState<File | null>(null);
+  const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const { addDog } = useDogs();
+
+  const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setPhoto(file);
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setPhotoPreview(e.target?.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const removePhoto = () => {
+    setPhoto(null);
+    setPhotoPreview(null);
+  };
 
   const handleSubmit = async () => {
     setLoading(true);
@@ -29,12 +52,12 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
     const dogData = {
       name: formData.name,
       breed: formData.breed || undefined,
-      age: formData.age ? parseInt(formData.age) : undefined,
+      birthday: formData.birthday ? format(formData.birthday, 'yyyy-MM-dd') : undefined,
       weight: formData.weight ? parseFloat(formData.weight) : undefined,
       gender: formData.gender || undefined,
     };
 
-    const newDog = await addDog(dogData);
+    const newDog = await addDog(dogData, photo || undefined);
     if (newDog) {
       onComplete(newDog);
     }
@@ -155,16 +178,32 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <label className="block text-sm font-medium text-foreground">
-                  Age (years)
+                  Birthday
                 </label>
-                <Input
-                  type="number"
-                  value={formData.age}
-                  onChange={(e) => setFormData(prev => ({ ...prev, age: e.target.value }))}
-                  placeholder="2"
-                  min="0"
-                  max="30"
-                />
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      className={cn(
+                        "w-full justify-start text-left font-normal",
+                        !formData.birthday && "text-muted-foreground"
+                      )}
+                    >
+                      <CalendarIcon className="mr-2 h-4 w-4" />
+                      {formData.birthday ? format(formData.birthday, "PPP") : "Pick a date"}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <Calendar
+                      mode="single"
+                      selected={formData.birthday || undefined}
+                      onSelect={(date) => setFormData(prev => ({ ...prev, birthday: date || null }))}
+                      disabled={(date) => date > new Date() || date < new Date("1900-01-01")}
+                      initialFocus
+                      className={cn("p-3 pointer-events-auto")}
+                    />
+                  </PopoverContent>
+                </Popover>
               </div>
 
               <div className="space-y-2">
@@ -181,6 +220,46 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
                   step="0.1"
                 />
               </div>
+            </div>
+
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-foreground">
+                Photo (optional)
+              </label>
+              {photoPreview ? (
+                <div className="relative">
+                  <img
+                    src={photoPreview}
+                    alt="Dog preview"
+                    className="w-full h-32 object-cover rounded-lg"
+                  />
+                  <Button
+                    type="button"
+                    variant="destructive"
+                    size="sm"
+                    className="absolute top-2 right-2"
+                    onClick={removePhoto}
+                  >
+                    <X className="w-4 h-4" />
+                  </Button>
+                </div>
+              ) : (
+                <div className="border-2 border-dashed border-border rounded-lg p-6 text-center">
+                  <Upload className="w-8 h-8 mx-auto mb-2 text-muted-foreground" />
+                  <p className="text-sm text-muted-foreground mb-2">Upload a photo of {formData.name}</p>
+                  <Button type="button" variant="outline" asChild>
+                    <label className="cursor-pointer">
+                      Choose File
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handlePhotoChange}
+                        className="hidden"
+                      />
+                    </label>
+                  </Button>
+                </div>
+              )}
             </div>
 
             <div className="flex gap-3 pt-4">
@@ -229,8 +308,11 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
                 <p><span className="font-medium">Name:</span> {formData.name}</p>
                 {formData.breed && <p><span className="font-medium">Breed:</span> {formData.breed}</p>}
                 {formData.gender && <p><span className="font-medium">Gender:</span> {formData.gender}</p>}
-                {formData.age && <p><span className="font-medium">Age:</span> {formData.age} years</p>}
+                {formData.birthday && (
+                  <p><span className="font-medium">Age:</span> {calculateAge(format(formData.birthday, 'yyyy-MM-dd'))} years</p>
+                )}
                 {formData.weight && <p><span className="font-medium">Weight:</span> {formData.weight} kg</p>}
+                {photo && <p><span className="font-medium">Photo:</span> Uploaded</p>}
               </div>
             </div>
 

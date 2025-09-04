@@ -7,12 +7,24 @@ export interface Dog {
   id: string;
   name: string;
   breed?: string;
-  age?: number;
+  birthday?: string;
   weight?: number;
   gender?: 'male' | 'female';
   avatar_url?: string;
   created_at: string;
   updated_at: string;
+}
+
+// Utility function to calculate age from birthday
+export function calculateAge(birthday: string): number {
+  const birthDate = new Date(birthday);
+  const today = new Date();
+  let age = today.getFullYear() - birthDate.getFullYear();
+  const monthDiff = today.getMonth() - birthDate.getMonth();
+  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+    age--;
+  }
+  return age;
 }
 
 export function useDogs() {
@@ -44,7 +56,36 @@ export function useDogs() {
     }
   };
 
-  const addDog = async (dogData: Omit<Dog, 'id' | 'created_at' | 'updated_at'>) => {
+  const uploadDogPhoto = async (file: File, dogId: string): Promise<string | null> => {
+    if (!user) return null;
+
+    try {
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${user.id}/${dogId}.${fileExt}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('dog-photos')
+        .upload(fileName, file, { upsert: true });
+
+      if (uploadError) throw uploadError;
+
+      const { data } = supabase.storage
+        .from('dog-photos')
+        .getPublicUrl(fileName);
+
+      return data.publicUrl;
+    } catch (error) {
+      console.error('Error uploading photo:', error);
+      toast({
+        title: 'Error uploading photo',
+        description: 'Please try again',
+        variant: 'destructive',
+      });
+      return null;
+    }
+  };
+
+  const addDog = async (dogData: Omit<Dog, 'id' | 'created_at' | 'updated_at'>, photo?: File) => {
     if (!user) return null;
 
     try {
@@ -60,6 +101,23 @@ export function useDogs() {
       if (error) throw error;
 
       const newDog = data as Dog;
+
+      // Upload photo if provided
+      if (photo) {
+        const photoUrl = await uploadDogPhoto(photo, newDog.id);
+        if (photoUrl) {
+          const { data: updatedData, error: updateError } = await supabase
+            .from('dogs')
+            .update({ avatar_url: photoUrl })
+            .eq('id', newDog.id)
+            .select()
+            .single();
+
+          if (updateError) throw updateError;
+          newDog.avatar_url = updatedData.avatar_url;
+        }
+      }
+
       setDogs(prev => [newDog, ...prev]);
       
       toast({
