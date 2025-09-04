@@ -10,7 +10,7 @@ interface BottomNavigationProps {
 }
 
 const tabs = [
-  { id: 'trainer' as TabType, label: 'Trainer AI', icon: MessageCircle },
+  { id: 'trainer' as TabType, label: 'Ask', icon: MessageCircle },
   { id: 'tricks' as TabType, label: 'Tricks', icon: Award },
   { id: 'health' as TabType, label: 'Health', icon: Heart },
   { id: 'nutrition' as TabType, label: 'Nutrition', icon: Apple },

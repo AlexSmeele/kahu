@@ -6,7 +6,6 @@ import { Card } from "@/components/ui/card";
 import { useDogs } from "@/hooks/useDogs";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { DogSwitcher } from "@/components/dogs/DogSwitcher";
 import heroImage from "@/assets/hero-image.jpg";
 
 interface Message {
@@ -20,17 +19,9 @@ export function TrainerScreen() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedDogId, setSelectedDogId] = useState<string>('');
   const { dogs } = useDogs();
   const { toast } = useToast();
-  const currentDog = dogs.find(dog => dog.id === selectedDogId) || dogs[0];
-
-  // Update selected dog when dogs load
-  useState(() => {
-    if (dogs.length > 0 && !selectedDogId) {
-      setSelectedDogId(dogs[0].id);
-    }
-  });
+  const currentDog = dogs[0]; // Use first dog as default
 
   const sendMessage = async () => {
     if (!inputMessage.trim() || isLoading) return;
@@ -95,23 +86,15 @@ export function TrainerScreen() {
     <div className="flex flex-col h-full">
       {/* Header */}
       <header className="safe-top p-4 bg-card border-b border-border">
-        <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-r from-primary to-primary-hover rounded-full flex items-center justify-center">
-              <MessageCircle className="w-6 h-6 text-primary-foreground" />
-            </div>
-            <div>
-              <h1 className="text-xl font-semibold text-foreground">Kahu AI Trainer</h1>
-              <p className="text-sm text-muted-foreground">Your compassionate dog training guide</p>
-            </div>
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 bg-gradient-to-r from-primary to-primary-hover rounded-full flex items-center justify-center">
+            <MessageCircle className="w-6 h-6 text-primary-foreground" />
+          </div>
+          <div>
+            <h1 className="text-xl font-semibold text-foreground">Kahu AI Trainer</h1>
+            <p className="text-sm text-muted-foreground">Your compassionate dog training guide</p>
           </div>
         </div>
-        
-        {/* Dog Switcher */}
-        <DogSwitcher
-          selectedDogId={selectedDogId}
-          onDogChange={setSelectedDogId}
-        />
       </header>
 
       {/* Messages or Welcome State */}
