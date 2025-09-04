@@ -18,7 +18,10 @@ const Index = () => {
 
   // Show onboarding if user has no dogs
   if (!loading && dogs.length === 0) {
-    return <DogOnboarding onComplete={() => window.location.reload()} />;
+    return <DogOnboarding onComplete={() => {
+      // Dogs list will automatically update via the useDogs hook
+      // No need to reload the page
+    }} />;
   }
 
   const renderActiveScreen = () => {
