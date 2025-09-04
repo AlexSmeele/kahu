@@ -100,7 +100,7 @@ export function TrainerScreenVariant3() {
       </header>
 
       {/* Content */}
-      <div className="flex-1 overflow-y-auto">
+      <div className="flex-1 overflow-y-auto pb-20 safe-bottom">
         {messages.length === 0 ? (
           /* Dashboard Welcome */
           <div className="p-4 space-y-4">

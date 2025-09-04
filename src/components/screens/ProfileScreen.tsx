@@ -62,7 +62,7 @@ export function ProfileScreen() {
         </div>
       </header>
 
-      <div className="flex-1 overflow-y-auto">
+      <div className="flex-1 overflow-y-auto pb-20 safe-bottom">
         {/* User Profile Section */}
         <div className="p-4 border-b border-border">
           <div className="flex items-center gap-4 mb-4">
@@ -226,7 +226,7 @@ export function ProfileScreen() {
         </div>
 
         {/* Sign Out */}
-        <div className="p-4 pb-20">
+        <div className="p-4">
           <Button 
             variant="outline" 
             className="w-full text-destructive border-destructive/30 hover:bg-destructive/10"

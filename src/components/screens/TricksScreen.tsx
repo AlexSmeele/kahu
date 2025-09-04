@@ -273,8 +273,9 @@ export function TricksScreen() {
       </div>
 
       {/* Content */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-6">
-        {tricksByDifficulty.map(({ level, color, textColor, tricks: levelTricks }) => {
+      <div className="flex-1 overflow-y-auto pb-20 safe-bottom">
+        <div className="p-4 space-y-6">
+          {tricksByDifficulty.map(({ level, color, textColor, tricks: levelTricks }) => {
           if (levelTricks.length === 0) return null;
           
           const levelCompleted = levelTricks.filter(t => learnedTricksMap.get(t.id)?.status === 'mastered').length;
@@ -314,6 +315,7 @@ export function TricksScreen() {
             </div>
           );
         })}
+        </div>
       </div>
     </div>
   );

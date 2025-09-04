@@ -92,8 +92,8 @@ export function TrainerScreen() {
         </div>
       </header>
 
-      {/* Messages or Welcome State */}
-      <div className="flex-1 overflow-y-auto">
+      {/* Content */}
+      <div className="flex-1 overflow-y-auto pb-20 safe-bottom">
         {messages.length === 0 ? (
           /* Welcome State */
           <div className="flex flex-col items-center justify-center p-6 text-center h-full">
