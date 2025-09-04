@@ -273,8 +273,8 @@ export function TricksScreen() {
       </div>
 
       {/* Content */}
-      <div className="flex-1 overflow-y-auto h-[calc(100vh-20rem)]">
-        <div className="p-4 space-y-6">
+      <div className="flex-1 overflow-y-auto max-h-[calc(100vh-4rem)]">
+        <div className="p-4 space-y-6 pb-20">
           {tricksByDifficulty.map(({ level, color, textColor, tricks: levelTricks }) => {
           if (levelTricks.length === 0) return null;
           
