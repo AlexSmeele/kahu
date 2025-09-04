@@ -136,11 +136,11 @@ export function WeightTracker({ isOpen, onClose, currentWeight, dogName, dogBirt
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-hidden">
-        <DialogHeader>
+      <DialogContent className="max-w-[95vw] w-full max-h-[85vh] overflow-hidden flex flex-col">
+        <DialogHeader className="flex-shrink-0">
           <div className="flex items-center justify-between">
-            <DialogTitle className="text-xl font-bold flex items-center gap-2">
-              <Scale className="w-6 h-6 text-primary" />
+            <DialogTitle className="text-lg font-bold flex items-center gap-2">
+              <Scale className="w-5 h-5 text-primary" />
               {dogName}'s Weight History
             </DialogTitle>
             <Button onClick={() => setShowAddWeight(true)} size="sm">
@@ -150,62 +150,64 @@ export function WeightTracker({ isOpen, onClose, currentWeight, dogName, dogBirt
           </div>
         </DialogHeader>
 
-        <div className="space-y-4">
+        <div className="flex-1 min-h-0 overflow-hidden">
+          <div className="h-full flex flex-col space-y-4 py-2">
           {/* Time Period Selector */}
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2 flex-shrink-0">
             {availablePeriods.map((period) => (
               <Button
                 key={period.key}
                 variant={selectedPeriod === period.key ? "default" : "outline"}
                 size="sm"
                 onClick={() => setSelectedPeriod(period.key)}
-                className="text-xs"
+                className="text-xs h-8"
               >
                 {period.label}
               </Button>
             ))}
           </div>
 
-          <Tabs defaultValue="chart" className="space-y-4">
-            <TabsList className="grid w-full grid-cols-2">
+          <Tabs defaultValue="chart" className="flex-1 min-h-0 flex flex-col">
+            <TabsList className="grid w-full grid-cols-2 flex-shrink-0">
               <TabsTrigger value="chart">Chart View</TabsTrigger>
               <TabsTrigger value="list">List View</TabsTrigger>
             </TabsList>
 
-            <TabsContent value="chart" className="space-y-4">
+            <TabsContent value="chart" className="flex-1 min-h-0 overflow-y-auto">
+              <div className="space-y-3 pb-4">
               {/* Current Weight Summary */}
-              <div className="grid grid-cols-3 gap-4">
-                <div className="card-soft p-4 text-center">
-                  <div className="text-2xl font-bold text-primary">{currentWeight} kg</div>
-                  <div className="text-sm text-muted-foreground">Current Weight</div>
+              <div className="grid grid-cols-3 gap-3">
+                <div className="card-soft p-3 text-center">
+                  <div className="text-xl font-bold text-primary">{currentWeight} kg</div>
+                  <div className="text-xs text-muted-foreground">Current Weight</div>
                 </div>
-                <div className="card-soft p-4 text-center">
+                <div className="card-soft p-3 text-center">
                   <div className="text-lg font-bold text-green-600">
                     {filteredData.length > 0 ? `+${(currentWeight - filteredData[0].weight).toFixed(1)} kg` : '--'}
                   </div>
-                  <div className="text-sm text-muted-foreground">Total Change</div>
+                  <div className="text-xs text-muted-foreground">Total Change</div>
                 </div>
-                <div className="card-soft p-4 text-center">
+                <div className="card-soft p-3 text-center">
                   <div className="text-lg font-bold text-blue-600">{filteredData.length}</div>
-                  <div className="text-sm text-muted-foreground">Records</div>
+                  <div className="text-xs text-muted-foreground">Records</div>
                 </div>
               </div>
 
               {/* Chart */}
               <div className="card-soft p-4">
-                <h3 className="font-semibold mb-4">Weight Trend</h3>
-                <div className="h-64">
+                <h3 className="font-semibold mb-3 text-sm">Weight Trend</h3>
+                <div className="h-48">
                   <ResponsiveContainer width="100%" height="100%">
                     <LineChart data={chartData}>
                       <CartesianGrid strokeDasharray="3 3" />
                       <XAxis 
                         dataKey="date" 
-                        fontSize={12}
-                        tick={{ fontSize: 12 }}
+                        fontSize={10}
+                        tick={{ fontSize: 10 }}
                       />
                       <YAxis 
-                        fontSize={12}
-                        tick={{ fontSize: 12 }}
+                        fontSize={10}
+                        tick={{ fontSize: 10 }}
                         domain={['dataMin - 0.5', 'dataMax + 0.5']}
                       />
                       <Tooltip 
@@ -216,56 +218,57 @@ export function WeightTracker({ isOpen, onClose, currentWeight, dogName, dogBirt
                         type="monotone" 
                         dataKey="weight" 
                         stroke="hsl(var(--primary))" 
-                        strokeWidth={3}
-                        dot={{ fill: "hsl(var(--primary))", strokeWidth: 2, r: 4 }}
-                        activeDot={{ r: 6, stroke: "hsl(var(--primary))", strokeWidth: 2 }}
+                        strokeWidth={2}
+                        dot={{ fill: "hsl(var(--primary))", strokeWidth: 2, r: 3 }}
+                        activeDot={{ r: 5, stroke: "hsl(var(--primary))", strokeWidth: 2 }}
                       />
                     </LineChart>
                   </ResponsiveContainer>
                 </div>
               </div>
+              </div>
             </TabsContent>
 
-            <TabsContent value="list">
-              <div className="card-soft">
-                <div className="p-4 border-b">
-                  <h3 className="font-semibold">Weight Records</h3>
-                  <p className="text-sm text-muted-foreground">
+            <TabsContent value="list" className="flex-1 min-h-0">
+              <div className="card-soft h-full flex flex-col">
+                <div className="p-3 border-b flex-shrink-0">
+                  <h3 className="font-semibold text-sm">Weight Records</h3>
+                  <p className="text-xs text-muted-foreground">
                     Showing {filteredData.length} records from {selectedPeriod === 'all' ? 'all time' : TIME_PERIODS.find(p => p.key === selectedPeriod)?.label}
                   </p>
                 </div>
-                <ScrollArea className="h-96">
-                  <div className="p-4 space-y-3">
+                <ScrollArea className="flex-1 min-h-0">
+                  <div className="p-3 space-y-2">
                     {dataWithChanges.reverse().map((record, index) => (
-                      <div key={record.id} className="flex items-center justify-between p-3 bg-secondary/50 rounded-lg">
-                        <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
-                            <Scale className="w-5 h-5 text-primary" />
+                      <div key={record.id} className="flex items-center justify-between p-2 bg-secondary/50 rounded-lg">
+                        <div className="flex items-center gap-2">
+                          <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
+                            <Scale className="w-4 h-4 text-primary" />
                           </div>
-                          <div>
-                            <div className="font-medium">{record.weight} kg</div>
-                            <div className="text-sm text-muted-foreground flex items-center gap-1">
-                              <Calendar className="w-3 h-3" />
-                              {format(record.date, 'MMM dd, yyyy')}
+                          <div className="min-w-0 flex-1">
+                            <div className="font-medium text-sm">{record.weight} kg</div>
+                            <div className="text-xs text-muted-foreground flex items-center gap-1">
+                              <Calendar className="w-3 h-3 flex-shrink-0" />
+                              <span className="truncate">{format(record.date, 'MMM dd, yyyy')}</span>
                             </div>
                             {record.notes && (
-                              <div className="text-xs text-muted-foreground mt-1">{record.notes}</div>
+                              <div className="text-xs text-muted-foreground mt-1 truncate">{record.notes}</div>
                             )}
                           </div>
                         </div>
-                        <div className="text-right">
+                        <div className="text-right flex-shrink-0">
                           {record.change !== 0 && (
                             <div className={`flex items-center gap-1 ${getChangeColor(record.changeType)}`}>
                               {getTrendIcon(record.changeType)}
-                              <span className="text-sm font-medium">
+                              <span className="text-xs font-medium">
                                 {record.change > 0 ? '+' : ''}{record.change.toFixed(1)} kg
                               </span>
                             </div>
                           )}
                           {record.change === 0 && index !== dataWithChanges.length - 1 && (
                             <div className="flex items-center gap-1 text-gray-400">
-                              <Minus className="w-4 h-4" />
-                              <span className="text-sm">No change</span>
+                              <Minus className="w-3 h-3" />
+                              <span className="text-xs">No change</span>
                             </div>
                           )}
                         </div>
@@ -276,6 +279,7 @@ export function WeightTracker({ isOpen, onClose, currentWeight, dogName, dogBirt
               </div>
             </TabsContent>
           </Tabs>
+          </div>
         </div>
       </DialogContent>
     </Dialog>
