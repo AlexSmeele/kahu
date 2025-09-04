@@ -140,7 +140,7 @@ export function ProfileScreen() {
                         <p className="text-sm text-muted-foreground">
                           {[
                             dog.breed,
-                            dog.birthday && `${calculateAge(dog.birthday)} years old`,
+                            dog.birthday && calculateAge(dog.birthday),
                             dog.weight && `${dog.weight}kg`
                           ].filter(Boolean).join(' • ')}
                         </p>
