@@ -1,6 +1,9 @@
+import { useState } from "react";
 import { Apple, Calendar, TrendingUp, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { useDogs, calculateAge } from "@/hooks/useDogs";
+import { DogSwitcher } from "@/components/dogs/DogSwitcher";
 
 const nutritionData = {
   todayCalories: { consumed: 420, target: 480, percentage: 87 },
@@ -46,18 +49,31 @@ const weeklyPlan = [
 ];
 
 export function NutritionScreen() {
+  const [selectedDogId, setSelectedDogId] = useState<string>('');
+  const { dogs } = useDogs();
+  const currentDog = dogs.find(dog => dog.id === selectedDogId) || dogs[0];
+
+  // Update selected dog when dogs load
+  useState(() => {
+    if (dogs.length > 0 && !selectedDogId) {
+      setSelectedDogId(dogs[0].id);
+    }
+  });
+
+  // Calculate calories based on dog weight (rough estimation: 30 calories per pound)
+  const targetCalories = currentDog?.weight ? Math.round(currentDog.weight * 2.2 * 30) : 480;
   return (
     <div className="flex flex-col h-full">
       {/* Header */}
       <header className="safe-top p-4 bg-card border-b border-border">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-gradient-to-r from-warning to-warning/80 rounded-full flex items-center justify-center">
               <Apple className="w-6 h-6 text-warning-foreground" />
             </div>
             <div>
               <h1 className="text-xl font-semibold text-foreground">Nutrition</h1>
-              <p className="text-sm text-muted-foreground">Kira's meal planning</p>
+              <p className="text-sm text-muted-foreground">Meal planning & tracking</p>
             </div>
           </div>
           <Button variant="outline" size="sm">
@@ -65,6 +81,12 @@ export function NutritionScreen() {
             Plan Week
           </Button>
         </div>
+        
+        {/* Dog Switcher */}
+        <DogSwitcher
+          selectedDogId={selectedDogId}
+          onDogChange={setSelectedDogId}
+        />
       </header>
 
       {/* Today's Progress */}
@@ -79,12 +101,12 @@ export function NutritionScreen() {
         <div className="mb-3">
           <div className="flex justify-between text-sm text-muted-foreground mb-1">
             <span>Calories</span>
-            <span>{nutritionData.todayCalories.consumed} / {nutritionData.todayCalories.target} kcal</span>
+            <span>{nutritionData.todayCalories.consumed} / {targetCalories} kcal</span>
           </div>
           <div className="w-full bg-muted rounded-full h-3">
             <div 
               className="bg-gradient-to-r from-warning to-warning/80 h-3 rounded-full transition-all duration-300"
-              style={{ width: `${nutritionData.todayCalories.percentage}%` }}
+              style={{ width: `${Math.round((nutritionData.todayCalories.consumed / targetCalories) * 100)}%` }}
             />
           </div>
         </div>

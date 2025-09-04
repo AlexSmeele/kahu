@@ -171,11 +171,42 @@ export function useDogs() {
     fetchDogs();
   }, [user]);
 
+  const deleteDog = async (id: string): Promise<boolean> => {
+    if (!user) return false;
+
+    try {
+      const { error } = await supabase
+        .from('dogs')
+        .delete()
+        .eq('id', id);
+
+      if (error) throw error;
+
+      setDogs(prev => prev.filter(dog => dog.id !== id));
+      
+      toast({
+        title: 'Dog removed',
+        description: 'Dog profile has been deleted',
+      });
+
+      return true;
+    } catch (error) {
+      console.error('Error deleting dog:', error);
+      toast({
+        title: 'Error deleting dog',
+        description: 'Please try again',
+        variant: 'destructive',
+      });
+      return false;
+    }
+  };
+
   return {
     dogs,
     loading,
     addDog,
     updateDog,
+    deleteDog,
     refetch: fetchDogs,
   };
 }

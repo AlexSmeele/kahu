@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { useDogs } from "@/hooks/useDogs";
 import { useTricks } from "@/hooks/useTricks";
+import { DogSwitcher } from "@/components/dogs/DogSwitcher";
 
 const categoryColors = {
   Foundation: 'bg-emerald-500',
@@ -155,9 +156,17 @@ function TrickCard({ trick, dogTrick, onStart, onPractice, isLocked }: any) {
 
 export function TricksScreen() {
   const { dogs } = useDogs();
-  const currentDog = dogs[0];
+  const [selectedDogId, setSelectedDogId] = useState<string>('');
+  const currentDog = dogs.find(dog => dog.id === selectedDogId) || dogs[0];
   const { tricks, dogTricks, loading, startTrick } = useTricks(currentDog?.id);
   const [selectedDifficulty, setSelectedDifficulty] = useState<string>('all');
+
+  // Update selected dog when dogs load
+  useState(() => {
+    if (dogs.length > 0 && !selectedDogId) {
+      setSelectedDogId(dogs[0].id);
+    }
+  });
 
   if (loading) {
     return (
@@ -220,13 +229,21 @@ export function TricksScreen() {
               Trick Academy
             </h1>
             <p className="text-sm text-muted-foreground">
-              {currentDog ? `Training ${currentDog.name}` : 'Master skills step by step'} 🎯
+              Master skills step by step 🎯
             </p>
           </div>
           <div className="text-right">
             <div className="text-2xl font-bold text-primary">{completedCount}</div>
             <div className="text-xs text-muted-foreground">Mastered</div>
           </div>
+        </div>
+
+        {/* Dog Switcher */}
+        <div className="mb-4">
+          <DogSwitcher
+            selectedDogId={selectedDogId}
+            onDogChange={setSelectedDogId}
+          />
         </div>
 
         {/* Overall Progress */}

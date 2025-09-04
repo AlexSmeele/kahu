@@ -1,9 +1,14 @@
-import { User, Dog, Settings, CreditCard, Share, Download, HelpCircle, LogOut } from "lucide-react";
+import { useState } from "react";
+import { User, Dog, Settings, CreditCard, Share, Download, HelpCircle, LogOut, Plus, Edit, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { useAuth } from "@/contexts/AuthContext";
-import heroImage from "@/assets/hero-image.jpg";
+import { useDogs, calculateAge } from "@/hooks/useDogs";
+import { useToast } from "@/hooks/use-toast";
+import { DogProfileModal } from "@/components/dogs/DogProfileModal";
+import type { Dog as DogType } from "@/hooks/useDogs";
 
 const menuItems = [
   { icon: Settings, label: "Account Settings", action: "settings" },
@@ -15,6 +20,33 @@ const menuItems = [
 
 export function ProfileScreen() {
   const { signOut, user } = useAuth();
+  const { dogs, loading: dogsLoading, deleteDog } = useDogs();
+  const { toast } = useToast();
+  const [dogModalOpen, setDogModalOpen] = useState(false);
+  const [editingDog, setEditingDog] = useState<DogType | null>(null);
+  const [modalMode, setModalMode] = useState<'add' | 'edit'>('add');
+
+  const handleAddDog = () => {
+    setEditingDog(null);
+    setModalMode('add');
+    setDogModalOpen(true);
+  };
+
+  const handleEditDog = (dog: DogType) => {
+    setEditingDog(dog);
+    setModalMode('edit');
+    setDogModalOpen(true);
+  };
+
+  const handleDeleteDog = async (dogId: string, dogName: string) => {
+    const success = await deleteDog(dogId);
+    if (success) {
+      toast({
+        title: 'Profile deleted',
+        description: `${dogName}'s profile has been removed`,
+      });
+    }
+  };
   return (
     <div className="flex flex-col h-full">
       {/* Header */}
@@ -59,27 +91,98 @@ export function ProfileScreen() {
         <div className="p-4 border-b border-border">
           <div className="flex items-center justify-between mb-3">
             <h3 className="font-semibold text-foreground">Your Dogs</h3>
-            <Button variant="outline" size="sm">
+            <Button variant="outline" size="sm" onClick={handleAddDog}>
+              <Plus className="w-4 h-4 mr-1" />
               Add Dog
             </Button>
           </div>
           
-          <div className="card-soft p-4">
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-full overflow-hidden bg-muted">
-                <img 
-                  src={heroImage} 
-                  alt="Kira" 
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="flex-1">
-                <h4 className="font-medium text-foreground">Kira</h4>
-                <p className="text-sm text-muted-foreground">Shiba Inu • 2 years old • 12.4kg</p>
-              </div>
-              <Dog className="w-5 h-5 text-muted-foreground" />
+          {dogsLoading ? (
+            <div className="space-y-3">
+              {[1, 2].map((i) => (
+                <div key={i} className="card-soft p-4 animate-pulse">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 bg-muted rounded-full"></div>
+                    <div className="flex-1">
+                      <div className="h-4 bg-muted rounded w-20 mb-1"></div>
+                      <div className="h-3 bg-muted rounded w-32"></div>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
-          </div>
+          ) : dogs.length === 0 ? (
+            <div className="card-soft p-6 text-center">
+              <Dog className="w-12 h-12 mx-auto mb-3 text-muted-foreground" />
+              <p className="text-muted-foreground mb-3">No dogs added yet</p>
+              <Button onClick={handleAddDog}>
+                <Plus className="w-4 h-4 mr-2" />
+                Add Your First Dog
+              </Button>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              {dogs.map((dog) => (
+                <div key={dog.id} className="card-soft p-4">
+                  <div className="flex items-center gap-3">
+                    <Avatar className="w-12 h-12">
+                      <AvatarImage src={dog.avatar_url} alt={dog.name} />
+                      <AvatarFallback className="bg-primary text-primary-foreground">
+                        {dog.name.charAt(0)}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="flex-1">
+                      <h4 className="font-medium text-foreground">{dog.name}</h4>
+                      <p className="text-sm text-muted-foreground">
+                        {[
+                          dog.breed,
+                          dog.birthday && `${calculateAge(dog.birthday)} years old`,
+                          dog.weight && `${dog.weight}kg`
+                        ].filter(Boolean).join(' • ')}
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleEditDog(dog)}
+                      >
+                        <Edit className="w-4 h-4" />
+                      </Button>
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="text-destructive hover:text-destructive"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>Delete {dog.name}?</AlertDialogTitle>
+                            <AlertDialogDescription>
+                              This will permanently delete {dog.name}'s profile and all associated training data. This action cannot be undone.
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogAction
+                              onClick={() => handleDeleteDog(dog.id, dog.name)}
+                              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                            >
+                              Delete
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Menu Items */}
@@ -134,6 +237,14 @@ export function ProfileScreen() {
           </Button>
         </div>
       </div>
+
+      {/* Dog Profile Modal */}
+      <DogProfileModal
+        isOpen={dogModalOpen}
+        onClose={() => setDogModalOpen(false)}
+        dog={editingDog}
+        mode={modalMode}
+      />
     </div>
   );
 }

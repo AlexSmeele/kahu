@@ -1,6 +1,9 @@
+import { useState } from "react";
 import { Heart, TrendingUp, Calendar, AlertCircle, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { useDogs } from "@/hooks/useDogs";
+import { DogSwitcher } from "@/components/dogs/DogSwitcher";
 
 const healthData = {
   weight: { current: 12.4, trend: "+0.2", lastUpdated: "3 days ago" },
@@ -41,18 +44,28 @@ const recentRecords = [
 ];
 
 export function HealthScreen() {
+  const [selectedDogId, setSelectedDogId] = useState<string>('');
+  const { dogs } = useDogs();
+  const currentDog = dogs.find(dog => dog.id === selectedDogId) || dogs[0];
+
+  // Update selected dog when dogs load
+  useState(() => {
+    if (dogs.length > 0 && !selectedDogId) {
+      setSelectedDogId(dogs[0].id);
+    }
+  });
   return (
     <div className="flex flex-col h-full">
       {/* Header */}
       <header className="safe-top p-4 bg-card border-b border-border">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-gradient-to-r from-destructive to-destructive/80 rounded-full flex items-center justify-center">
               <Heart className="w-6 h-6 text-destructive-foreground" />
             </div>
             <div>
               <h1 className="text-xl font-semibold text-foreground">Health Dashboard</h1>
-              <p className="text-sm text-muted-foreground">Kira's wellness overview</p>
+              <p className="text-sm text-muted-foreground">Wellness overview & records</p>
             </div>
           </div>
           <Button variant="outline" size="sm">
@@ -60,6 +73,12 @@ export function HealthScreen() {
             Add Record
           </Button>
         </div>
+        
+        {/* Dog Switcher */}
+        <DogSwitcher
+          selectedDogId={selectedDogId}
+          onDogChange={setSelectedDogId}
+        />
       </header>
 
       {/* Health Summary Cards */}
@@ -76,7 +95,9 @@ export function HealthScreen() {
             </Badge>
           </div>
           <div className="flex items-end gap-1 mb-1">
-            <span className="text-2xl font-bold text-foreground">{healthData.weight.current}</span>
+            <span className="text-2xl font-bold text-foreground">
+              {currentDog?.weight || healthData.weight.current}
+            </span>
             <span className="text-sm text-muted-foreground mb-1">kg</span>
           </div>
           <p className="text-xs text-muted-foreground">Updated {healthData.weight.lastUpdated}</p>
