@@ -220,9 +220,9 @@ export function TricksScreen() {
   };
 
   return (
-    <div className="flex flex-col h-full bg-gradient-to-br from-primary/5 via-accent/5 to-secondary/10">
+    <div className="flex flex-col h-full bg-gradient-to-br from-primary/5 via-accent/5 to-secondary/10 overflow-hidden">
       {/* Header with Stats */}
-      <div className="bg-white/80 dark:bg-card/80 backdrop-blur-sm border-b p-4 sticky top-0 z-10">
+      <div className="bg-white/80 dark:bg-card/80 backdrop-blur-sm border-b p-4 flex-shrink-0 z-10">
         <div className="flex items-center justify-between mb-4">
           <div>
             <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-primary-hover bg-clip-text text-transparent">
