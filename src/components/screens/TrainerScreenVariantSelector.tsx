@@ -38,30 +38,29 @@ export function TrainerScreenVariantSelector() {
   };
 
   return (
-    <div className="flex flex-col h-full">
-      {/* Variant Selector */}
-      <div className="p-4 bg-card border-b border-border">
+    <div className="relative h-full">
+      {/* Variant Selector - Floating */}
+      <div className="absolute top-4 left-4 right-4 z-50 bg-card border border-border rounded-lg shadow-lg p-3">
         <h2 className="text-sm font-medium text-foreground mb-3">Design Variants</h2>
-        <div className="grid grid-cols-1 gap-2">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2">
           {variants.map((variant) => (
             <Card 
               key={variant.id}
-              className={`p-3 cursor-pointer transition-colors ${
+              className={`p-2 cursor-pointer transition-colors ${
                 selectedVariant === variant.id 
                   ? 'bg-primary text-primary-foreground' 
                   : 'hover:bg-secondary'
               }`}
               onClick={() => setSelectedVariant(variant.id)}
             >
-              <div className="text-sm font-medium">{variant.name}</div>
-              <div className="text-xs opacity-80">{variant.description}</div>
+              <div className="text-xs font-medium">{variant.name}</div>
             </Card>
           ))}
         </div>
       </div>
 
-      {/* Selected Variant */}
-      <div className="flex-1 overflow-hidden">
+      {/* Selected Variant - Full Height */}
+      <div className="h-full">
         {renderSelectedVariant()}
       </div>
     </div>
