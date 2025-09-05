@@ -199,7 +199,7 @@ export function NutritionPlanModal({ dogId, nutritionPlan, onSave, trigger }: Nu
           </Button>
         )}
       </DialogTrigger>
-      <DialogContent className="w-[calc(100vw-2rem)] max-w-4xl h-[calc(100vh-4rem)] max-h-[700px] overflow-hidden flex flex-col mx-auto my-8">
+      <DialogContent className="w-[calc(100vw-1rem)] max-w-4xl h-[calc(100vh-4rem)] max-h-[700px] overflow-hidden flex flex-col mx-2 my-8">
         <DialogHeader>
           <DialogTitle>
             {nutritionPlan ? 'Edit Nutrition Plan' : 'Create Nutrition Plan'}

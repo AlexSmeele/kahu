@@ -169,7 +169,7 @@ export function HealthNotesModal({ isOpen, onClose, dogName }: HealthNotesModalP
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="w-[calc(100vw-2rem)] max-w-2xl h-[calc(100vh-4rem)] max-h-[600px] flex flex-col mx-auto my-8">
+      <DialogContent className="w-[calc(100vw-1rem)] max-w-2xl h-[calc(100vh-4rem)] max-h-[600px] flex flex-col mx-2 my-8">
         <DialogHeader className="pb-4">
           <div className="flex items-center justify-between">
             <DialogTitle className="flex items-center gap-2">
