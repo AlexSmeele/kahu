@@ -56,7 +56,7 @@ export function CartDrawer({
           )}
         </Button>
       </DrawerTrigger>
-      <DrawerContent className="max-h-[calc(100vh-env(safe-area-inset-top)-env(safe-area-inset-bottom))] h-[85vh]">
+      <DrawerContent className="max-h-[80vh]">
         <DrawerHeader className="pb-4">
           <DrawerTitle className="flex items-center justify-between">
             <span>Shopping Cart</span>
