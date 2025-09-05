@@ -9,6 +9,7 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
+  DrawerPortal,
 } from "@/components/ui/drawer";
 import { Separator } from "@/components/ui/separator";
 
@@ -56,21 +57,22 @@ export function CartDrawer({
           )}
         </Button>
       </DrawerTrigger>
-      <DrawerContent className="max-h-[80vh]">
-        <DrawerHeader className="pb-4">
-          <DrawerTitle className="flex items-center justify-between">
-            <span>Shopping Cart</span>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={onViewOrderHistory}
-              className="flex items-center gap-2"
-            >
-              <Clock className="w-4 h-4" />
-              Order History
-            </Button>
-          </DrawerTitle>
-        </DrawerHeader>
+      <DrawerPortal container={document.querySelector('.app-viewport')}>
+        <DrawerContent className="max-h-[80vh] mx-auto max-w-full">
+          <DrawerHeader className="pb-4">
+            <DrawerTitle className="flex items-center justify-between">
+              <span>Shopping Cart</span>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={onViewOrderHistory}
+                className="flex items-center gap-2"
+              >
+                <Clock className="w-4 h-4" />
+                Order History
+              </Button>
+            </DrawerTitle>
+          </DrawerHeader>
         
         <div className="flex-1 overflow-y-auto px-4">
           {cartItems.length === 0 ? (
@@ -153,6 +155,7 @@ export function CartDrawer({
           </div>
         )}
       </DrawerContent>
+      </DrawerPortal>
     </Drawer>
   );
 }

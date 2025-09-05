@@ -8,6 +8,8 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogPortal,
+  DialogDescription,
 } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -110,13 +112,17 @@ export function OrderHistoryModal({ isOpen, onClose, onReorder }: OrderHistoryMo
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-[90vw] max-h-[80vh] flex flex-col">
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <Package className="w-5 h-5" />
-            Order History
-          </DialogTitle>
-        </DialogHeader>
+      <DialogPortal container={document.querySelector('.app-viewport')}>
+        <DialogContent className="max-w-[90vw] max-h-[80vh] flex flex-col mx-auto">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Package className="w-5 h-5" />
+              Order History
+            </DialogTitle>
+            <DialogDescription>
+              View your previous orders and reorder items
+            </DialogDescription>
+          </DialogHeader>
         
         <ScrollArea className="flex-1">
           <div className="space-y-4 pr-4">
@@ -206,6 +212,7 @@ export function OrderHistoryModal({ isOpen, onClose, onReorder }: OrderHistoryMo
           </div>
         </ScrollArea>
       </DialogContent>
+    </DialogPortal>
     </Dialog>
   );
 }
