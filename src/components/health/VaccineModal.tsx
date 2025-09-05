@@ -177,8 +177,22 @@ export function VaccineModal({ isOpen, onClose, dogName, dogBirthday }: VaccineM
     setShowAddForm(false);
   };
 
+  // Sort vaccines by days until due (overdue first, then due soon, then future)
+  const sortedVaccines = vaccines.sort((a, b) => {
+    const daysA = getDaysUntilDue(a.nextDue);
+    const daysB = getDaysUntilDue(b.nextDue);
+    
+    // Handle null values (vaccines with no due date go to end)
+    if (daysA === null && daysB === null) return 0;
+    if (daysA === null) return 1;
+    if (daysB === null) return -1;
+    
+    return daysA - daysB;
+  });
+
   const currentVaccines = vaccines.filter(v => v.status === 'current');
-  const dueVaccines = vaccines.filter(v => v.status === 'due' || v.status === 'overdue');
+  const dueVaccines = vaccines.filter(v => v.status === 'due');
+  const overdueVaccines = vaccines.filter(v => v.status === 'overdue');
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -190,17 +204,21 @@ export function VaccineModal({ isOpen, onClose, dogName, dogBirthday }: VaccineM
           </DialogTitle>
           
           {/* Summary Stats */}
-          <div className="grid grid-cols-3 gap-3 mt-4">
-            <div className="text-center p-3 bg-success/10 rounded-lg">
-              <div className="text-lg font-bold text-success">{currentVaccines.length}</div>
+          <div className="grid grid-cols-4 gap-2 mt-4">
+            <div className="text-center p-2 bg-success/10 rounded-lg">
+              <div className="text-sm font-bold text-success">{currentVaccines.length}</div>
               <div className="text-xs text-muted-foreground">Current</div>
             </div>
-            <div className="text-center p-3 bg-warning/10 rounded-lg">
-              <div className="text-lg font-bold text-warning">{dueVaccines.length}</div>
+            <div className="text-center p-2 bg-warning/10 rounded-lg">
+              <div className="text-sm font-bold text-warning">{dueVaccines.length}</div>
               <div className="text-xs text-muted-foreground">Due</div>
             </div>
-            <div className="text-center p-3 bg-primary/10 rounded-lg">
-              <div className="text-lg font-bold text-primary">{vaccines.length}</div>
+            <div className="text-center p-2 bg-destructive/10 rounded-lg">
+              <div className="text-sm font-bold text-destructive">{overdueVaccines.length}</div>
+              <div className="text-xs text-muted-foreground">Overdue</div>
+            </div>
+            <div className="text-center p-2 bg-primary/10 rounded-lg">
+              <div className="text-sm font-bold text-primary">{vaccines.length}</div>
               <div className="text-xs text-muted-foreground">Total</div>
             </div>
           </div>
@@ -259,7 +277,7 @@ export function VaccineModal({ isOpen, onClose, dogName, dogBirthday }: VaccineM
             )}
 
             {/* Vaccines List */}
-            {vaccines.map((vaccine) => {
+            {sortedVaccines.map((vaccine) => {
               const daysUntilDue = getDaysUntilDue(vaccine.nextDue);
               const progressValue = getProgressValue(vaccine);
 
@@ -297,7 +315,11 @@ export function VaccineModal({ isOpen, onClose, dogName, dogBirthday }: VaccineM
                             <span>
                               Next due: {format(vaccine.nextDue, 'MMM dd, yyyy')}
                               {daysUntilDue !== null && (
-                                <span className={`ml-1 ${daysUntilDue < 0 ? 'text-destructive' : daysUntilDue <= 30 ? 'text-warning' : 'text-muted-foreground'}`}>
+                                <span className={`ml-1 font-medium ${
+                                  daysUntilDue < 0 ? 'text-destructive' : 
+                                  daysUntilDue <= 30 ? 'text-warning' : 
+                                  'text-muted-foreground'
+                                }`}>
                                   ({daysUntilDue < 0 ? `${Math.abs(daysUntilDue)} days overdue` : 
                                     daysUntilDue === 0 ? 'Due today' :
                                     `${daysUntilDue} days remaining`})
