@@ -1,51 +1,36 @@
 import { useState } from "react";
-import { Heart, TrendingUp, Calendar, AlertCircle, Plus } from "lucide-react";
+import { Heart, TrendingUp, Calendar, AlertCircle, Plus, Award } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useDogs } from "@/hooks/useDogs";
+import { useHealthData } from "@/hooks/useHealthData";
 import { DogSwitcher } from "@/components/dogs/DogSwitcher";
 import { WeightTracker } from "@/components/health/WeightTracker";
 import { VaccineModal } from "@/components/health/VaccineModal";
 import { VetVisitsModal } from "@/components/health/VetVisitsModal";
 import { HealthNotesModal } from "@/components/health/HealthNotesModal";
 
-const healthData = {
-  weight: { current: 12.4, trend: "+0.2", lastUpdated: "3 days ago" },
-  vaccinations: { due: 1, upcoming: "Rabies - Due in 2 weeks" },
-  lastVetVisit: "2 months ago",
-  notes: 3
+const vaccinationData = {
+  due: 1, 
+  upcoming: "Rabies - Due in 2 weeks"
 };
 
-const recentRecords = [
-  {
-    id: 1,
-    type: "weight",
-    title: "Weight Check",
-    value: "12.4 kg",
-    date: "3 days ago",
-    trend: "up",
-    icon: TrendingUp,
-    color: "text-success"
-  },
-  {
-    id: 2,
-    type: "vaccination",
-    title: "Annual Vaccination",
-    value: "Completed",
-    date: "3 months ago",
-    icon: Calendar,
-    color: "text-primary"
-  },
-  {
-    id: 3,
-    type: "note",
-    title: "Slight limp on left paw",
-    value: "Monitoring",
-    date: "1 week ago",
-    icon: AlertCircle,
-    color: "text-warning"
+const getIconComponent = (iconName: string) => {
+  switch (iconName) {
+    case 'TrendingUp':
+      return TrendingUp;
+    case 'Calendar':
+      return Calendar;
+    case 'AlertCircle':
+      return AlertCircle;
+    case 'Heart':
+      return Heart;
+    case 'Award':
+      return Award;
+    default:
+      return AlertCircle;
   }
-];
+};
 
 export function HealthScreen() {
   const [selectedDogId, setSelectedDogId] = useState<string>('');
@@ -55,6 +40,7 @@ export function HealthScreen() {
   const [isHealthNotesModalOpen, setIsHealthNotesModalOpen] = useState(false);
   const { dogs } = useDogs();
   const currentDog = dogs.find(dog => dog.id === selectedDogId) || dogs[0];
+  const { weightData, recentRecords, healthRecordsCount, loading } = useHealthData(selectedDogId);
 
   // Update selected dog when dogs load
   useState(() => {
@@ -107,17 +93,30 @@ export function HealthScreen() {
                 <TrendingUp className="w-4 h-4 text-success" />
                 Weight
               </h3>
-              <Badge variant="outline" className="text-success border-success/30 text-xs">
-                {healthData.weight.trend} kg
-              </Badge>
+              {weightData?.change !== 0 && (
+                <Badge 
+                  variant="outline" 
+                  className={`text-xs border-opacity-30 ${
+                    weightData && weightData.change > 0 
+                      ? 'text-success border-success' 
+                      : weightData && weightData.change < 0 
+                      ? 'text-destructive border-destructive' 
+                      : 'text-muted-foreground border-muted'
+                  }`}
+                >
+                  {weightData?.trend || 'No change'}
+                </Badge>
+              )}
             </div>
             <div className="flex items-end gap-1 mb-1">
               <span className="text-xl font-bold text-foreground">
-                {currentDog?.weight || healthData.weight.current}
+                {weightData?.current || currentDog?.weight || 'No data'}
               </span>
               <span className="text-xs text-muted-foreground mb-0.5">kg</span>
             </div>
-            <p className="text-xs text-muted-foreground">Updated {healthData.weight.lastUpdated}</p>
+            <p className="text-xs text-muted-foreground">
+              {weightData?.lastUpdated || 'No recent updates'}
+            </p>
           </div>
 
           {/* Vaccinations Card */}
@@ -130,14 +129,14 @@ export function HealthScreen() {
                 <Calendar className="w-4 h-4 text-warning" />
                 Vaccines
               </h3>
-              {healthData.vaccinations.due > 0 && (
+              {vaccinationData.due > 0 && (
                 <Badge variant="outline" className="text-warning border-warning/30 text-xs">
-                  {healthData.vaccinations.due} due
+                  {vaccinationData.due} due
                 </Badge>
               )}
             </div>
             <p className="text-xs text-muted-foreground mb-2">
-              {healthData.vaccinations.upcoming}
+              {vaccinationData.upcoming}
             </p>
             <Button 
               variant="outline" 
@@ -159,14 +158,14 @@ export function HealthScreen() {
             className="card-soft p-3 text-center cursor-pointer hover:shadow-md transition-shadow"
             onClick={() => setIsVetVisitsModalOpen(true)}
           >
-            <div className="text-lg font-bold text-primary">{healthData.lastVetVisit}</div>
+            <div className="text-lg font-bold text-primary">No recent visits</div>
             <div className="text-xs text-muted-foreground">Last Vet Visit</div>
           </div>
           <div 
             className="card-soft p-3 text-center cursor-pointer hover:shadow-md transition-shadow"
             onClick={() => setIsHealthNotesModalOpen(true)}
           >
-            <div className="text-lg font-bold text-accent">{healthData.notes}</div>
+            <div className="text-lg font-bold text-accent">{healthRecordsCount}</div>
             <div className="text-xs text-muted-foreground">Health Notes</div>
           </div>
         </div>
@@ -177,25 +176,44 @@ export function HealthScreen() {
         <div className="p-4">
           <h3 className="font-semibold text-foreground mb-3">Recent Records</h3>
           <div className="space-y-3">
-            {recentRecords.map((record) => {
-              const Icon = record.icon;
-              return (
-                <div key={record.id} className="card-soft p-3">
+            {loading ? (
+              Array.from({ length: 3 }).map((_, i) => (
+                <div key={i} className="card-soft p-3 animate-pulse">
                   <div className="flex items-center gap-3">
-                    <div className={`w-8 h-8 rounded-full bg-secondary flex items-center justify-center`}>
-                      <Icon className={`w-4 h-4 ${record.color}`} />
-                    </div>
+                    <div className="w-8 h-8 rounded-full bg-muted"></div>
                     <div className="flex-1">
-                      <div className="flex items-center justify-between">
-                        <h4 className="font-medium text-foreground text-sm">{record.title}</h4>
-                        <span className="text-xs text-muted-foreground">{record.date}</span>
-                      </div>
-                      <p className="text-sm text-muted-foreground">{record.value}</p>
+                      <div className="h-4 bg-muted rounded w-24 mb-1"></div>
+                      <div className="h-3 bg-muted rounded w-16"></div>
                     </div>
                   </div>
                 </div>
-              );
-            })}
+              ))
+            ) : recentRecords.length > 0 ? (
+              recentRecords.map((record) => {
+                const Icon = getIconComponent(record.icon);
+                return (
+                  <div key={record.id} className="card-soft p-3">
+                    <div className="flex items-center gap-3">
+                      <div className={`w-8 h-8 rounded-full bg-secondary flex items-center justify-center`}>
+                        <Icon className={`w-4 h-4 ${record.color}`} />
+                      </div>
+                      <div className="flex-1">
+                        <div className="flex items-center justify-between">
+                          <h4 className="font-medium text-foreground text-sm">{record.title}</h4>
+                          <span className="text-xs text-muted-foreground">{record.formattedDate}</span>
+                        </div>
+                        <p className="text-sm text-muted-foreground">{record.value}</p>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })
+            ) : (
+              <div className="text-center py-8">
+                <Heart className="w-12 h-12 text-muted-foreground mx-auto mb-2" />
+                <p className="text-muted-foreground">No recent health records</p>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -204,7 +222,7 @@ export function HealthScreen() {
       <WeightTracker
         isOpen={isWeightTrackerOpen}
         onClose={() => setIsWeightTrackerOpen(false)}
-        currentWeight={currentDog?.weight || healthData.weight.current}
+        currentWeight={weightData?.current || currentDog?.weight || 0}
         dogName={currentDog?.name || 'Your dog'}
         dogBirthday={currentDog?.birthday ? new Date(currentDog.birthday) : undefined}
         dogId={currentDog?.id || ''}
