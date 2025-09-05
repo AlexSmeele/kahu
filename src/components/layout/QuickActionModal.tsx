@@ -1,6 +1,10 @@
-import { X, Scale, Apple, Heart, MessageCircle, Camera } from "lucide-react";
+import { useState } from "react";
+import { Scale, Apple, Heart, MessageCircle, Camera, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { AddWeightModal } from "@/components/health/AddWeightModal";
+import { HealthNotesModal } from "@/components/health/HealthNotesModal";
+import { useToast } from "@/hooks/use-toast";
 
 interface QuickActionModalProps {
   isOpen: boolean;
@@ -51,9 +55,49 @@ const quickActions = [
 ];
 
 export function QuickActionModal({ isOpen, onClose }: QuickActionModalProps) {
+  const { toast } = useToast();
+  const [isAddWeightOpen, setIsAddWeightOpen] = useState(false);
+  const [isHealthNotesOpen, setIsHealthNotesOpen] = useState(false);
+
   const handleAction = (actionId: string) => {
-    console.log('Quick action:', actionId);
+    switch (actionId) {
+      case 'weight':
+        setIsAddWeightOpen(true);
+        break;
+      case 'meal':
+        toast({
+          title: "Meal logging",
+          description: "Go to Nutrition screen to log meals and update feeding schedules.",
+        });
+        break;
+      case 'health':
+        setIsHealthNotesOpen(true);
+        break;
+      case 'ai-chat':
+        toast({
+          title: "AI Trainer",
+          description: "Go to Trainer screen to start a conversation with the AI assistant.",
+        });
+        break;
+      case 'photo':
+        toast({
+          title: "Camera feature",
+          description: "Photo capture feature coming soon!",
+        });
+        break;
+      default:
+        console.log('Quick action:', actionId);
+    }
     onClose();
+  };
+
+  const handleAddWeight = (weight: number, date: string, notes?: string) => {
+    // In a real app, this would save to the database
+    console.log('Adding weight:', { weight, date, notes });
+    toast({
+      title: "Weight logged!",
+      description: `Recorded ${weight}kg successfully.`,
+    });
   };
 
   return (
@@ -62,8 +106,8 @@ export function QuickActionModal({ isOpen, onClose }: QuickActionModalProps) {
         <DialogHeader>
           <DialogTitle className="flex items-center justify-between">
             Quick Actions
-            <Button variant="ghost" size="sm" onClick={onClose}>
-              <X className="w-4 h-4" />
+            <Button variant="ghost" size="sm" onClick={onClose} className="h-8 w-8 p-0">
+              <Plus className="w-4 h-4 rotate-45" />
             </Button>
           </DialogTitle>
         </DialogHeader>
@@ -87,6 +131,19 @@ export function QuickActionModal({ isOpen, onClose }: QuickActionModalProps) {
           })}
         </div>
       </DialogContent>
+
+      {/* Action Modals */}
+      <AddWeightModal
+        isOpen={isAddWeightOpen}
+        onClose={() => setIsAddWeightOpen(false)}
+        onSave={handleAddWeight}
+      />
+      
+      <HealthNotesModal
+        isOpen={isHealthNotesOpen}
+        onClose={() => setIsHealthNotesOpen(false)}
+        dogName="Your dog"
+      />
     </Dialog>
   );
 }

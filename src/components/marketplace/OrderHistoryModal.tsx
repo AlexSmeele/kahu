@@ -128,76 +128,76 @@ export function OrderHistoryModal({ isOpen, onClose, onReorder }: OrderHistoryMo
               const isExpanded = expandedOrders.has(order.id);
               
               return (
-                <Card key={order.id}>
-                  <CardHeader 
-                    className="cursor-pointer pb-3"
-                    onClick={() => toggleOrderExpanded(order.id)}
-                  >
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <div>
-                          <CardTitle className="text-base">{order.id}</CardTitle>
-                          <div className="flex items-center gap-2 text-sm text-muted-foreground mt-1">
-                            <Calendar className="w-4 h-4" />
-                            {format(order.date, "MMM dd, yyyy")}
-                          </div>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-3">
-                        <div className="text-right">
-                          <div className="font-semibold">${order.total.toFixed(2)}</div>
-                          <Badge variant={statusColors[order.status]} className="text-xs">
-                            {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
-                          </Badge>
-                        </div>
-                        {isExpanded ? (
-                          <ChevronUp className="w-4 h-4" />
-                        ) : (
-                          <ChevronDown className="w-4 h-4" />
-                        )}
-                      </div>
-                    </div>
-                  </CardHeader>
-                  
-                  {isExpanded && (
-                    <CardContent className="pt-0">
-                      <Separator className="mb-4" />
-                      <div className="space-y-3 mb-4">
-                        {order.items.map((item) => (
-                          <div key={item.id} className="flex gap-3">
-                            <img
-                              src={item.imageUrl}
-                              alt={item.name}
-                              className="w-12 h-12 rounded-lg object-cover"
-                            />
-                            <div className="flex-1">
-                              <h4 className="font-medium text-sm line-clamp-1">{item.name}</h4>
-                              <p className="text-xs text-muted-foreground">{item.supplier}</p>
-                              <div className="flex items-center justify-between mt-1">
-                                <span className="text-sm">Qty: {item.quantity}</span>
-                                <span className="text-sm font-semibold">
-                                  ${(item.price * item.quantity).toFixed(2)}
-                                </span>
-                              </div>
+                  <Card key={order.id}>
+                    <CardHeader 
+                      className="cursor-pointer pb-2"
+                      onClick={() => toggleOrderExpanded(order.id)}
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <div>
+                            <CardTitle className="text-base">{order.id}</CardTitle>
+                            <div className="flex items-center gap-2 text-sm text-muted-foreground mt-1">
+                              <Calendar className="w-4 h-4" />
+                              {format(order.date, "MMM dd, yyyy")}
                             </div>
                           </div>
-                        ))}
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <div className="text-right">
+                            <div className="font-semibold">${order.total.toFixed(2)}</div>
+                            <Badge variant={statusColors[order.status]} className="text-xs">
+                              {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
+                            </Badge>
+                          </div>
+                          {isExpanded ? (
+                            <ChevronUp className="w-4 h-4" />
+                          ) : (
+                            <ChevronDown className="w-4 h-4" />
+                          )}
+                        </div>
                       </div>
-                      
-                      <Button
-                        variant="outline"
-                        className="w-full"
-                        onClick={() => {
-                          onReorder(order.items);
-                          onClose();
-                        }}
-                      >
-                        <RotateCcw className="w-4 h-4 mr-2" />
-                        Reorder Items
-                      </Button>
-                    </CardContent>
-                  )}
-                </Card>
+                    </CardHeader>
+                    
+                    {isExpanded && (
+                      <CardContent className="pt-0">
+                        <Separator className="mb-3" />
+                        <div className="space-y-2 mb-3">
+                          {order.items.map((item) => (
+                            <div key={item.id} className="flex gap-3 p-2 rounded bg-muted/20">
+                              <img
+                                src={item.imageUrl}
+                                alt={item.name}
+                                className="w-12 h-12 rounded-lg object-cover flex-shrink-0"
+                              />
+                              <div className="flex-1 min-w-0">
+                                <h4 className="font-medium text-sm line-clamp-2">{item.name}</h4>
+                                <p className="text-xs text-muted-foreground">{item.supplier}</p>
+                                <div className="flex items-center justify-between mt-1">
+                                  <span className="text-sm">Qty: {item.quantity}</span>
+                                  <span className="text-sm font-semibold">
+                                    ${(item.price * item.quantity).toFixed(2)}
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                        
+                        <Button
+                          variant="outline"
+                          className="w-full"
+                          onClick={() => {
+                            onReorder(order.items);
+                            onClose();
+                          }}
+                        >
+                          <RotateCcw className="w-4 h-4 mr-2" />
+                          Reorder Items
+                        </Button>
+                      </CardContent>
+                    )}
+                  </Card>
               );
             })}
             

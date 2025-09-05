@@ -5,6 +5,9 @@ import { Badge } from "@/components/ui/badge";
 import { useDogs } from "@/hooks/useDogs";
 import { DogSwitcher } from "@/components/dogs/DogSwitcher";
 import { WeightTracker } from "@/components/health/WeightTracker";
+import { VaccineModal } from "@/components/health/VaccineModal";
+import { VetVisitsModal } from "@/components/health/VetVisitsModal";
+import { HealthNotesModal } from "@/components/health/HealthNotesModal";
 
 const healthData = {
   weight: { current: 12.4, trend: "+0.2", lastUpdated: "3 days ago" },
@@ -47,6 +50,9 @@ const recentRecords = [
 export function HealthScreen() {
   const [selectedDogId, setSelectedDogId] = useState<string>('');
   const [isWeightTrackerOpen, setIsWeightTrackerOpen] = useState(false);
+  const [isVaccineModalOpen, setIsVaccineModalOpen] = useState(false);
+  const [isVetVisitsModalOpen, setIsVetVisitsModalOpen] = useState(false);
+  const [isHealthNotesModalOpen, setIsHealthNotesModalOpen] = useState(false);
   const { dogs } = useDogs();
   const currentDog = dogs.find(dog => dog.id === selectedDogId) || dogs[0];
 
@@ -70,7 +76,11 @@ export function HealthScreen() {
               <p className="text-sm text-muted-foreground">Wellness overview & records</p>
             </div>
           </div>
-          <Button variant="outline" size="sm">
+          <Button 
+            variant="outline" 
+            size="sm"
+            onClick={() => setIsHealthNotesModalOpen(true)}
+          >
             <Plus className="w-4 h-4 mr-1" />
             Add Record
           </Button>
@@ -111,7 +121,10 @@ export function HealthScreen() {
           </div>
 
           {/* Vaccinations Card */}
-          <div className="card-soft p-4 bg-gradient-to-r from-warning/5 to-warning/10">
+          <div 
+            className="card-soft p-4 bg-gradient-to-r from-warning/5 to-warning/10 cursor-pointer hover:shadow-md transition-shadow"
+            onClick={() => setIsVaccineModalOpen(true)}
+          >
             <div className="flex items-center justify-between mb-2">
               <h3 className="font-medium text-foreground flex items-center gap-2">
                 <Calendar className="w-4 h-4 text-warning" />
@@ -126,7 +139,15 @@ export function HealthScreen() {
             <p className="text-xs text-muted-foreground mb-2">
               {healthData.vaccinations.upcoming}
             </p>
-            <Button variant="outline" size="sm" className="text-xs h-7">
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="text-xs h-7"
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsVaccineModalOpen(true);
+              }}
+            >
               View Schedule
             </Button>
           </div>
@@ -134,11 +155,17 @@ export function HealthScreen() {
 
         {/* Quick Stats */}
         <div className="grid grid-cols-2 gap-4">
-          <div className="card-soft p-3 text-center">
+          <div 
+            className="card-soft p-3 text-center cursor-pointer hover:shadow-md transition-shadow"
+            onClick={() => setIsVetVisitsModalOpen(true)}
+          >
             <div className="text-lg font-bold text-primary">{healthData.lastVetVisit}</div>
             <div className="text-xs text-muted-foreground">Last Vet Visit</div>
           </div>
-          <div className="card-soft p-3 text-center">
+          <div 
+            className="card-soft p-3 text-center cursor-pointer hover:shadow-md transition-shadow"
+            onClick={() => setIsHealthNotesModalOpen(true)}
+          >
             <div className="text-lg font-bold text-accent">{healthData.notes}</div>
             <div className="text-xs text-muted-foreground">Health Notes</div>
           </div>
@@ -173,13 +200,32 @@ export function HealthScreen() {
         </div>
       </div>
 
-      {/* Weight Tracker Modal */}
+      {/* Health Modals */}
       <WeightTracker
         isOpen={isWeightTrackerOpen}
         onClose={() => setIsWeightTrackerOpen(false)}
         currentWeight={currentDog?.weight || healthData.weight.current}
         dogName={currentDog?.name || 'Your dog'}
         dogBirthday={currentDog?.birthday ? new Date(currentDog.birthday) : undefined}
+      />
+      
+      <VaccineModal
+        isOpen={isVaccineModalOpen}
+        onClose={() => setIsVaccineModalOpen(false)}
+        dogName={currentDog?.name || 'Your dog'}
+        dogBirthday={currentDog?.birthday ? new Date(currentDog.birthday) : undefined}
+      />
+      
+      <VetVisitsModal
+        isOpen={isVetVisitsModalOpen}
+        onClose={() => setIsVetVisitsModalOpen(false)}
+        dogName={currentDog?.name || 'Your dog'}
+      />
+      
+      <HealthNotesModal
+        isOpen={isHealthNotesModalOpen}
+        onClose={() => setIsHealthNotesModalOpen(false)}
+        dogName={currentDog?.name || 'Your dog'}
       />
     </div>
   );

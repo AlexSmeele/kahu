@@ -6,6 +6,7 @@ import { useDogs, calculateAge } from "@/hooks/useDogs";
 import { DogSwitcher } from "@/components/dogs/DogSwitcher";
 import { useNutrition, MealTime } from "@/hooks/useNutrition";
 import { NutritionPlanModal } from "@/components/nutrition/NutritionPlanModal";
+import { WeekPlannerModal } from "@/components/nutrition/WeekPlannerModal";
 
 // Mock data for today's feeding progress
 const getTodayProgress = (mealSchedule?: MealTime[], dailyAmount?: number) => {
@@ -25,6 +26,7 @@ const getTodayProgress = (mealSchedule?: MealTime[], dailyAmount?: number) => {
 
 export function NutritionScreen() {
   const [selectedDogId, setSelectedDogId] = useState<string>('');
+  const [isWeekPlannerOpen, setIsWeekPlannerOpen] = useState(false);
   const { dogs } = useDogs();
   const currentDog = dogs.find(dog => dog.id === selectedDogId) || dogs[0];
   const { nutritionPlan, loading } = useNutrition(selectedDogId);
@@ -63,7 +65,11 @@ export function NutritionScreen() {
               <p className="text-sm text-muted-foreground">Meal planning & tracking</p>
             </div>
           </div>
-          <Button variant="outline" size="sm">
+          <Button 
+            variant="outline" 
+            size="sm"
+            onClick={() => setIsWeekPlannerOpen(true)}
+          >
             <Calendar className="w-4 h-4 mr-1" />
             Plan Week
           </Button>
@@ -240,6 +246,14 @@ export function NutritionScreen() {
           )}
         </div>
       </div>
+
+      {/* Week Planner Modal */}
+      <WeekPlannerModal
+        isOpen={isWeekPlannerOpen}
+        onClose={() => setIsWeekPlannerOpen(false)}
+        dogName={currentDog?.name || 'Your dog'}
+        currentPlan={nutritionPlan}
+      />
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Plus, Clock, Bell, Save } from "lucide-react";
+import { Plus, Clock, Bell, Save, Trash2, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -7,7 +7,20 @@ import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Badge } from "@/components/ui/badge";
 import { NutritionPlan, MealTime, useNutrition } from "@/hooks/useNutrition";
+
+interface MealComponent {
+  id: string;
+  name: string;
+  amount: number;
+  unit: string;
+  category: 'kibble' | 'wet' | 'raw' | 'treats' | 'supplements' | 'medication';
+}
+
+interface EnhancedMealTime extends Omit<MealTime, 'amount'> {
+  components: MealComponent[];
+}
 
 interface NutritionPlanModalProps {
   dogId: string;
@@ -15,6 +28,15 @@ interface NutritionPlanModalProps {
   onSave?: (plan: NutritionPlan) => void;
   trigger?: React.ReactNode;
 }
+
+const MEAL_CATEGORIES = [
+  { value: 'kibble', label: 'Kibble', color: 'bg-warning/10 text-warning' },
+  { value: 'wet', label: 'Wet Food', color: 'bg-primary/10 text-primary' },
+  { value: 'raw', label: 'Raw Food', color: 'bg-destructive/10 text-destructive' },
+  { value: 'treats', label: 'Treats', color: 'bg-success/10 text-success' },
+  { value: 'supplements', label: 'Supplements', color: 'bg-accent/10 text-accent' },
+  { value: 'medication', label: 'Medication', color: 'bg-muted/10 text-muted-foreground' },
+];
 
 export function NutritionPlanModal({ dogId, nutritionPlan, onSave, trigger }: NutritionPlanModalProps) {
   const [open, setOpen] = useState(false);
@@ -28,19 +50,63 @@ export function NutritionPlanModal({ dogId, nutritionPlan, onSave, trigger }: Nu
     special_instructions: nutritionPlan?.special_instructions || '',
   });
 
-  const [mealSchedule, setMealSchedule] = useState<MealTime[]>(
-    nutritionPlan?.meal_schedule || [
-      { time: '08:00', amount: 0, food_type: '', reminder_enabled: true },
-      { time: '18:00', amount: 0, food_type: '', reminder_enabled: true },
-    ]
-  );
+  // Enhanced meal schedule for complex meals
+  const [mealSchedule, setMealSchedule] = useState<EnhancedMealTime[]>(() => {
+    if (nutritionPlan?.meal_schedule) {
+      // Convert existing simple meal schedule to enhanced format
+      return nutritionPlan.meal_schedule.map((meal: MealTime) => ({
+        time: meal.time,
+        food_type: meal.food_type,
+        reminder_enabled: meal.reminder_enabled,
+        components: [
+          {
+            id: '1',
+            name: meal.food_type || 'Kibble',
+            amount: meal.amount,
+            unit: 'cups',
+            category: 'kibble' as const,
+          }
+        ]
+      }));
+    }
+    
+    return [
+      { 
+        time: '08:00', 
+        food_type: '', 
+        reminder_enabled: true,
+        components: [
+          { id: '1', name: 'Kibble', amount: 1.5, unit: 'scoops', category: 'kibble' },
+          { id: '2', name: 'Wet Food Sachet', amount: 1, unit: 'pieces', category: 'wet' },
+          { id: '3', name: 'Egg', amount: 1, unit: 'pieces', category: 'raw' },
+          { id: '4', name: 'Blueberries', amount: 4, unit: 'pieces', category: 'treats' }
+        ]
+      },
+      { 
+        time: '18:00', 
+        food_type: '', 
+        reminder_enabled: true,
+        components: [
+          { id: '5', name: 'Kibble', amount: 1.5, unit: 'scoops', category: 'kibble' }
+        ]
+      },
+    ];
+  });
 
   const handleSave = async () => {
+    // Convert enhanced meal schedule back to simple format for storage
+    const simpleMealSchedule: MealTime[] = mealSchedule.map(meal => ({
+      time: meal.time,
+      amount: meal.components.reduce((total, comp) => total + comp.amount, 0),
+      food_type: meal.components.length > 1 ? 'Mixed' : (meal.components[0]?.name || 'Mixed'),
+      reminder_enabled: meal.reminder_enabled,
+    }));
+
     const planData = {
       ...formData,
       dog_id: dogId,
       is_active: true,
-      meal_schedule: mealSchedule,
+      meal_schedule: simpleMealSchedule,
     };
 
     let result;
@@ -57,10 +123,16 @@ export function NutritionPlanModal({ dogId, nutritionPlan, onSave, trigger }: Nu
   };
 
   const addMealTime = () => {
-    setMealSchedule([
-      ...mealSchedule,
-      { time: '12:00', amount: 0, food_type: formData.food_type, reminder_enabled: true }
-    ]);
+    const newMeal: EnhancedMealTime = {
+      time: '12:00',
+      food_type: formData.food_type,
+      reminder_enabled: true,
+      components: [
+        { id: Date.now().toString(), name: 'Kibble', amount: 1, unit: 'cups', category: 'kibble' }
+      ]
+    };
+    
+    setMealSchedule([...mealSchedule, newMeal]);
     setFormData({ ...formData, feeding_times: mealSchedule.length + 1 });
   };
 
@@ -70,11 +142,50 @@ export function NutritionPlanModal({ dogId, nutritionPlan, onSave, trigger }: Nu
     setFormData({ ...formData, feeding_times: newSchedule.length });
   };
 
-  const updateMealTime = (index: number, updates: Partial<MealTime>) => {
+  const updateMealTime = (index: number, updates: Partial<EnhancedMealTime>) => {
     const newSchedule = mealSchedule.map((meal, i) => 
       i === index ? { ...meal, ...updates } : meal
     );
     setMealSchedule(newSchedule);
+  };
+
+  const addMealComponent = (mealIndex: number) => {
+    const newComponent: MealComponent = {
+      id: Date.now().toString(),
+      name: 'New Item',
+      amount: 0.5,
+      unit: 'cups',
+      category: 'kibble',
+    };
+
+    const updatedMeal = {
+      ...mealSchedule[mealIndex],
+      components: [...mealSchedule[mealIndex].components, newComponent]
+    };
+
+    updateMealTime(mealIndex, updatedMeal);
+  };
+
+  const removeMealComponent = (mealIndex: number, componentIndex: number) => {
+    const updatedMeal = {
+      ...mealSchedule[mealIndex],
+      components: mealSchedule[mealIndex].components.filter((_, i) => i !== componentIndex)
+    };
+
+    updateMealTime(mealIndex, updatedMeal);
+  };
+
+  const updateMealComponent = (mealIndex: number, componentIndex: number, updates: Partial<MealComponent>) => {
+    const updatedComponents = mealSchedule[mealIndex].components.map((comp, i) =>
+      i === componentIndex ? { ...comp, ...updates } : comp
+    );
+
+    updateMealTime(mealIndex, { components: updatedComponents });
+  };
+
+  const getCategoryStyle = (category: string) => {
+    const categoryInfo = MEAL_CATEGORIES.find(c => c.value === category);
+    return categoryInfo?.color || 'bg-muted/10 text-muted-foreground';
   };
 
   return (
@@ -87,14 +198,14 @@ export function NutritionPlanModal({ dogId, nutritionPlan, onSave, trigger }: Nu
           </Button>
         )}
       </DialogTrigger>
-      <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>
             {nutritionPlan ? 'Edit Nutrition Plan' : 'Create Nutrition Plan'}
           </DialogTitle>
         </DialogHeader>
 
-        <div className="space-y-4">
+        <div className="space-y-6">
           {/* Basic Diet Info */}
           <div className="space-y-3">
             <div>
@@ -116,49 +227,49 @@ export function NutritionPlanModal({ dogId, nutritionPlan, onSave, trigger }: Nu
               </Select>
             </div>
 
-            <div>
-              <Label htmlFor="brand">Brand (Optional)</Label>
-              <Input
-                id="brand"
-                value={formData.brand}
-                onChange={(e) => setFormData({ ...formData, brand: e.target.value })}
-                placeholder="e.g., Royal Canin, Hills Science"
-              />
-            </div>
-
-            <div>
-              <Label htmlFor="daily_amount">Daily Amount (cups/grams)</Label>
-              <Input
-                id="daily_amount"
-                type="number"
-                value={formData.daily_amount}
-                onChange={(e) => setFormData({ ...formData, daily_amount: parseFloat(e.target.value) })}
-                placeholder="Total daily amount"
-              />
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <Label htmlFor="brand">Brand (Optional)</Label>
+                <Input
+                  id="brand"
+                  value={formData.brand}
+                  onChange={(e) => setFormData({ ...formData, brand: e.target.value })}
+                  placeholder="e.g., Royal Canin, Hills Science"
+                />
+              </div>
+              <div>
+                <Label htmlFor="daily_amount">Daily Amount (cups/grams)</Label>
+                <Input
+                  id="daily_amount"
+                  type="number"
+                  value={formData.daily_amount}
+                  onChange={(e) => setFormData({ ...formData, daily_amount: parseFloat(e.target.value) })}
+                  placeholder="Total daily amount"
+                />
+              </div>
             </div>
           </div>
 
           {/* Meal Schedule */}
-          <div className="space-y-3">
+          <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <Label>Meal Schedule</Label>
+              <Label className="text-lg font-medium">Meal Schedule</Label>
               <Button 
                 type="button"
                 variant="outline" 
                 size="sm" 
                 onClick={addMealTime}
-                className="text-xs"
               >
-                <Plus className="w-3 h-3 mr-1" />
+                <Plus className="w-4 h-4 mr-1" />
                 Add Meal
               </Button>
             </div>
 
-            <div className="space-y-2">
+            <div className="space-y-4">
               {mealSchedule.map((meal, index) => (
-                <div key={index} className="card-soft p-3 space-y-2">
+                <div key={index} className="card-soft p-4 space-y-4">
                   <div className="flex items-center justify-between">
-                    <h4 className="font-medium text-sm">Meal {index + 1}</h4>
+                    <h4 className="font-medium">Meal {index + 1}</h4>
                     {mealSchedule.length > 1 && (
                       <Button
                         type="button"
@@ -167,42 +278,131 @@ export function NutritionPlanModal({ dogId, nutritionPlan, onSave, trigger }: Nu
                         onClick={() => removeMealTime(index)}
                         className="text-destructive hover:text-destructive"
                       >
-                        Remove
+                        <Trash2 className="w-4 h-4" />
                       </Button>
                     )}
                   </div>
                   
-                  <div className="grid grid-cols-2 gap-2">
+                  <div className="grid grid-cols-2 gap-3">
                     <div>
-                      <Label className="text-xs">Time</Label>
+                      <Label className="text-sm">Time</Label>
                       <Input
                         type="time"
                         value={meal.time}
                         onChange={(e) => updateMealTime(index, { time: e.target.value })}
-                        className="text-sm"
                       />
                     </div>
-                    <div>
-                      <Label className="text-xs">Amount</Label>
-                      <Input
-                        type="number"
-                        value={meal.amount}
-                        onChange={(e) => updateMealTime(index, { amount: parseFloat(e.target.value) })}
-                        placeholder="Portion size"
-                        className="text-sm"
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <Bell className="w-4 h-4 text-muted-foreground" />
+                        <Label className="text-sm">Reminder</Label>
+                      </div>
+                      <Switch
+                        checked={meal.reminder_enabled}
+                        onCheckedChange={(checked) => updateMealTime(index, { reminder_enabled: checked })}
                       />
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <Bell className="w-4 h-4 text-muted-foreground" />
-                      <Label className="text-xs">Feeding Reminder</Label>
+                  {/* Meal Components */}
+                  <div className="space-y-3">
+                    <Label className="text-sm font-medium">Food Items:</Label>
+                    {meal.components.map((component, compIndex) => (
+                      <div key={component.id} className="grid grid-cols-12 gap-2 items-center p-3 bg-background rounded border">
+                        <div className="col-span-4">
+                          <Input
+                            value={component.name}
+                            onChange={(e) => updateMealComponent(index, compIndex, { name: e.target.value })}
+                            placeholder="Food name"
+                            className="h-9"
+                          />
+                        </div>
+                        <div className="col-span-2">
+                          <Input
+                            type="number"
+                            step="0.25"
+                            value={component.amount}
+                            onChange={(e) => updateMealComponent(index, compIndex, { amount: parseFloat(e.target.value) || 0 })}
+                            className="h-9"
+                          />
+                        </div>
+                        <div className="col-span-2">
+                          <Select
+                            value={component.unit}
+                            onValueChange={(value) => updateMealComponent(index, compIndex, { unit: value })}
+                          >
+                            <SelectTrigger className="h-9">
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="cups">cups</SelectItem>
+                              <SelectItem value="scoops">scoops</SelectItem>
+                              <SelectItem value="grams">grams</SelectItem>
+                              <SelectItem value="pieces">pieces</SelectItem>
+                              <SelectItem value="tbsp">tbsp</SelectItem>
+                              <SelectItem value="tsp">tsp</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        <div className="col-span-3">
+                          <Select
+                            value={component.category}
+                            onValueChange={(value) => updateMealComponent(index, compIndex, { category: value as MealComponent['category'] })}
+                          >
+                            <SelectTrigger className="h-9">
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {MEAL_CATEGORIES.map(cat => (
+                                <SelectItem key={cat.value} value={cat.value}>
+                                  {cat.label}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        <div className="col-span-1">
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => removeMealComponent(index, compIndex)}
+                            className="h-9 w-9 p-0 text-destructive hover:text-destructive"
+                          >
+                            <X className="w-4 h-4" />
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => addMealComponent(index)}
+                      className="w-full"
+                    >
+                      <Plus className="w-4 h-4 mr-1" />
+                      Add Food Item
+                    </Button>
+                  </div>
+
+                  {/* Meal Summary */}
+                  <div className="pt-3 border-t border-border/50">
+                    <div className="flex flex-wrap gap-2">
+                      {MEAL_CATEGORIES.map(category => {
+                        const categoryItems = meal.components.filter(comp => comp.category === category.value);
+                        const totalAmount = categoryItems.reduce((sum, item) => sum + item.amount, 0);
+                        
+                        if (totalAmount === 0) return null;
+                        
+                        return (
+                          <Badge key={category.value} className={`${category.color} text-xs border`}>
+                            {category.label}: {totalAmount.toFixed(1)}
+                          </Badge>
+                        );
+                      })}
                     </div>
-                    <Switch
-                      checked={meal.reminder_enabled}
-                      onCheckedChange={(checked) => updateMealTime(index, { reminder_enabled: checked })}
-                    />
                   </div>
                 </div>
               ))}
@@ -216,7 +416,7 @@ export function NutritionPlanModal({ dogId, nutritionPlan, onSave, trigger }: Nu
               id="instructions"
               value={formData.special_instructions}
               onChange={(e) => setFormData({ ...formData, special_instructions: e.target.value })}
-              placeholder="Any special feeding instructions, supplements, or dietary notes..."
+              placeholder="Include medication reminders, dietary restrictions, or feeding notes..."
               rows={3}
             />
           </div>

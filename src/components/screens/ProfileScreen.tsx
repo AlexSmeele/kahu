@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { User, Dog, Settings, CreditCard, Share, Download, HelpCircle, LogOut, Plus, Edit, Trash2, Package } from "lucide-react";
+import { User, Dog, Settings, CreditCard, Share, Download, HelpCircle, LogOut, Plus, Edit, Trash2, Package, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -10,14 +10,21 @@ import { useDogs, calculateAge } from "@/hooks/useDogs";
 import { useToast } from "@/hooks/use-toast";
 import { DogProfileModal } from "@/components/dogs/DogProfileModal";
 import { OrderHistoryModal } from "@/components/marketplace/OrderHistoryModal";
+import { UserEditModal } from "@/components/profile/UserEditModal";
+import { AccountSettingsModal } from "@/components/profile/AccountSettingsModal";
+import { InviteFamilyModal } from "@/components/profile/InviteFamilyModal";
+import { BillingModal } from "@/components/profile/BillingModal";
+import { ExportDataModal } from "@/components/profile/ExportDataModal";
+import { FeedbackModal } from "@/components/profile/FeedbackModal";
 import type { Dog as DogType } from "@/hooks/useDogs";
 
 const menuItems = [
   { icon: Package, label: "Order History", action: "orders" },
+  { icon: CreditCard, label: "Billing & Payments", action: "billing" },
   { icon: Settings, label: "Account Settings", action: "settings" },
-  { icon: CreditCard, label: "Subscription", action: "billing", badge: "Pro" },
   { icon: Share, label: "Invite Family", action: "invite" },
   { icon: Download, label: "Export Data", action: "export" },
+  { icon: MessageSquare, label: "Send Feedback", action: "feedback" },
   { icon: HelpCircle, label: "Help & Support", action: "help" },
 ];
 
@@ -29,6 +36,12 @@ export function ProfileScreen() {
   const [editingDog, setEditingDog] = useState<DogType | null>(null);
   const [modalMode, setModalMode] = useState<'add' | 'edit'>('add');
   const [isOrderHistoryOpen, setIsOrderHistoryOpen] = useState(false);
+  const [isUserEditOpen, setIsUserEditOpen] = useState(false);
+  const [isAccountSettingsOpen, setIsAccountSettingsOpen] = useState(false);
+  const [isInviteFamilyOpen, setIsInviteFamilyOpen] = useState(false);
+  const [isBillingOpen, setIsBillingOpen] = useState(false);
+  const [isExportDataOpen, setIsExportDataOpen] = useState(false);
+  const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
 
   const handleAddDog = () => {
     setEditingDog(null);
@@ -60,10 +73,27 @@ export function ProfileScreen() {
   };
 
   const handleMenuClick = (action: string) => {
-    if (action === "orders") {
-      setIsOrderHistoryOpen(true);
-    } else {
-      console.log(action);
+    switch (action) {
+      case "orders":
+        setIsOrderHistoryOpen(true);
+        break;
+      case "billing":
+        setIsBillingOpen(true);
+        break;
+      case "settings":
+        setIsAccountSettingsOpen(true);
+        break;
+      case "invite":
+        setIsInviteFamilyOpen(true);
+        break;
+      case "export":
+        setIsExportDataOpen(true);
+        break;
+      case "feedback":
+        setIsFeedbackOpen(true);
+        break;
+      default:
+        console.log(action);
     }
   };
   return (
@@ -103,7 +133,11 @@ export function ProfileScreen() {
                   Pro Member
                 </Badge>
               </div>
-              <Button variant="outline" size="sm">
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={() => setIsUserEditOpen(true)}
+              >
                 Edit
               </Button>
             </div>
@@ -212,18 +246,13 @@ export function ProfileScreen() {
             {menuItems.map((item) => {
               const Icon = item.icon;
               return (
-                <button
+                 <button
                   key={item.action}
                   className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-secondary transition-colors text-left"
                   onClick={() => handleMenuClick(item.action)}
                 >
                   <Icon className="w-5 h-5 text-muted-foreground" />
                   <span className="flex-1 text-foreground">{item.label}</span>
-                  {item.badge && (
-                    <Badge variant="outline" className="text-primary border-primary/30">
-                      {item.badge}
-                    </Badge>
-                  )}
                 </button>
               );
             })}
@@ -269,11 +298,41 @@ export function ProfileScreen() {
         mode={modalMode}
       />
 
-      {/* Order History Modal */}
+      {/* All Profile Modals */}
       <OrderHistoryModal
         isOpen={isOrderHistoryOpen}
         onClose={() => setIsOrderHistoryOpen(false)}
         onReorder={handleReorder}
+      />
+      
+      <UserEditModal
+        isOpen={isUserEditOpen}
+        onClose={() => setIsUserEditOpen(false)}
+      />
+      
+      <AccountSettingsModal
+        isOpen={isAccountSettingsOpen}
+        onClose={() => setIsAccountSettingsOpen(false)}
+      />
+      
+      <InviteFamilyModal
+        isOpen={isInviteFamilyOpen}
+        onClose={() => setIsInviteFamilyOpen(false)}
+      />
+      
+      <BillingModal
+        isOpen={isBillingOpen}
+        onClose={() => setIsBillingOpen(false)}
+      />
+      
+      <ExportDataModal
+        isOpen={isExportDataOpen}
+        onClose={() => setIsExportDataOpen(false)}
+      />
+      
+      <FeedbackModal
+        isOpen={isFeedbackOpen}
+        onClose={() => setIsFeedbackOpen(false)}
       />
     </div>
   );
