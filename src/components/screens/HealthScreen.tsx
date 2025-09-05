@@ -40,7 +40,7 @@ export function HealthScreen() {
   const [isHealthNotesModalOpen, setIsHealthNotesModalOpen] = useState(false);
   const { dogs } = useDogs();
   const currentDog = dogs.find(dog => dog.id === selectedDogId) || dogs[0];
-  const { weightData, recentRecords, healthRecordsCount, loading } = useHealthData(selectedDogId);
+  const { weightData, recentRecords, healthRecordsCount, loading, refetch } = useHealthData(selectedDogId);
 
   // Update selected dog when dogs load
   useState(() => {
@@ -48,6 +48,22 @@ export function HealthScreen() {
       setSelectedDogId(dogs[0].id);
     }
   });
+
+  const handleRecordClick = (record: any) => {
+    switch (record.type) {
+      case 'weight':
+        setIsWeightTrackerOpen(true);
+        break;
+      case 'health':
+        setIsHealthNotesModalOpen(true);
+        break;
+      case 'training':
+        // Could open a training modal in the future
+        break;
+      default:
+        break;
+    }
+  };
   return (
     <div className="flex flex-col h-full">
       {/* Header */}
@@ -192,7 +208,11 @@ export function HealthScreen() {
               recentRecords.map((record) => {
                 const Icon = getIconComponent(record.icon);
                 return (
-                  <div key={record.id} className="card-soft p-3">
+                  <div 
+                    key={record.id} 
+                    className="card-soft p-3 cursor-pointer hover:shadow-md transition-shadow"
+                    onClick={() => handleRecordClick(record)}
+                  >
                     <div className="flex items-center gap-3">
                       <div className={`w-8 h-8 rounded-full bg-secondary flex items-center justify-center`}>
                         <Icon className={`w-4 h-4 ${record.color}`} />
@@ -221,7 +241,13 @@ export function HealthScreen() {
       {/* Health Modals */}
       <WeightTracker
         isOpen={isWeightTrackerOpen}
-        onClose={() => setIsWeightTrackerOpen(false)}
+        onClose={() => {
+          setIsWeightTrackerOpen(false);
+          // Refresh health data when closing weight tracker
+          setTimeout(() => {
+            refetch();
+          }, 500);
+        }}
         currentWeight={weightData?.current || currentDog?.weight || 0}
         dogName={currentDog?.name || 'Your dog'}
         dogBirthday={currentDog?.birthday ? new Date(currentDog.birthday) : undefined}

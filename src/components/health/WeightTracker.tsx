@@ -61,7 +61,7 @@ export function WeightTracker({ isOpen, onClose, currentWeight, dogName, dogBirt
 
   // Set default period based on dog age
   const defaultPeriod = useMemo(() => {
-    if (!dogBirthday) return '1y';
+    if (!dogBirthday) return 'all'; // Show all records by default if no birthday
     
     const dogAgeMonths = differenceInMonths(new Date(), dogBirthday);
     if (dogAgeMonths < 12) {
@@ -69,7 +69,7 @@ export function WeightTracker({ isOpen, onClose, currentWeight, dogName, dogBirt
       const maxPeriod = availablePeriods[availablePeriods.length - 1];
       return maxPeriod.key;
     }
-    return '1y';
+    return 'all'; // Show all records by default to avoid missing data
   }, [dogBirthday, availablePeriods]);
 
   // Set default period based on dog age and update when modal opens
@@ -97,17 +97,20 @@ export function WeightTracker({ isOpen, onClose, currentWeight, dogName, dogBirt
     fullDate: new Date(record.date),
   }));
 
-  // Calculate weight changes
-  const dataWithChanges = filteredData.map((record, index) => {
-    const previousRecord = index > 0 ? filteredData[index - 1] : null;
-    const change = previousRecord ? record.weight - previousRecord.weight : 0;
-    
-    return {
-      ...record,
-      change,
-      changeType: change > 0 ? 'increase' : change < 0 ? 'decrease' : 'stable',
-    };
-  });
+  // Calculate weight changes - sort by date first
+  const dataWithChanges = filteredData
+    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+    .map((record, index, sortedArray) => {
+      const previousRecord = index > 0 ? sortedArray[index - 1] : null;
+      const change = previousRecord ? record.weight - previousRecord.weight : 0;
+      
+      return {
+        ...record,
+        change,
+        changeType: change > 0 ? 'increase' : change < 0 ? 'decrease' : 'stable',
+      };
+    })
+    .reverse(); // Show newest first in the list
 
   const getTrendIcon = (changeType: string) => {
     switch (changeType) {
@@ -168,7 +171,9 @@ export function WeightTracker({ isOpen, onClose, currentWeight, dogName, dogBirt
                 </div>
                 <div className="card-soft p-2 text-center">
                   <div className="text-sm font-bold text-green-600">
-                    {filteredData.length > 0 ? `+${(currentWeight - filteredData[0].weight).toFixed(1)}` : '--'}
+                    {filteredData.length > 1 ? 
+                      `${(filteredData[0].weight - filteredData[filteredData.length - 1].weight) >= 0 ? '+' : ''}${(filteredData[0].weight - filteredData[filteredData.length - 1].weight).toFixed(1)}` : 
+                      '--'}
                   </div>
                   <div className="text-xs text-muted-foreground">Change</div>
                 </div>
@@ -219,7 +224,7 @@ export function WeightTracker({ isOpen, onClose, currentWeight, dogName, dogBirt
                   <p className="text-xs text-muted-foreground">{filteredData.length} records</p>
                 </div>
                 <div className="p-2 space-y-2">
-                  {dataWithChanges.reverse().map((record, index) => (
+                  {dataWithChanges.map((record, index) => (
                     <div 
                       key={record.id} 
                       className="flex items-center justify-between p-2 bg-secondary/50 rounded-lg cursor-pointer hover:bg-secondary/70 transition-colors"
