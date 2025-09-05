@@ -4,8 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { useDogs } from "@/hooks/useDogs";
-import { useTricks } from "@/hooks/useTricks";
+import { useTricks, Trick } from "@/hooks/useTricks";
 import { DogSwitcher } from "@/components/dogs/DogSwitcher";
+import { TrickDetailModal } from "@/components/tricks/TrickDetailModal";
 
 const categoryColors = {
   Foundation: 'bg-emerald-500',
@@ -36,7 +37,7 @@ const difficultyRanges = {
   'Expert': { min: 7, max: 10, color: 'bg-red-500', textColor: 'text-red-700' }
 };
 
-function TrickCard({ trick, dogTrick, onStart, onPractice, isLocked }: any) {
+function TrickCard({ trick, dogTrick, onStart, onPractice, onTrickClick, isLocked }: any) {
   const isCompleted = dogTrick?.status === 'mastered';
   const isInProgress = dogTrick && dogTrick.status !== 'not_started' && !isCompleted;
   const progress = isCompleted ? 100 : isInProgress ? Math.min((dogTrick.total_sessions / 10) * 100, 80) : 0;
@@ -69,11 +70,14 @@ function TrickCard({ trick, dogTrick, onStart, onPractice, isLocked }: any) {
   }
 
   return (
-    <div className={`bg-card rounded-2xl p-4 border-2 transition-all duration-200 hover:scale-105 ${
-      isCompleted ? 'border-green-400 bg-green-50 dark:bg-green-950/20' : 
-      isInProgress ? 'border-blue-400 bg-blue-50 dark:bg-blue-950/20' : 
-      'border-border hover:border-primary/50'
-    }`}>
+    <div 
+      onClick={() => onTrickClick(trick)}
+      className={`bg-card rounded-2xl p-4 border-2 transition-all duration-200 hover:scale-105 cursor-pointer ${
+        isCompleted ? 'border-green-400 bg-green-50 dark:bg-green-950/20' : 
+        isInProgress ? 'border-blue-400 bg-blue-50 dark:bg-blue-950/20' : 
+        'border-border hover:border-primary/50'
+      }`}
+    >
       <div className="flex items-center gap-3 mb-3">
         <div className={`w-12 h-12 ${categoryColor} rounded-xl flex items-center justify-center relative`}>
           <CategoryIcon className="w-6 h-6 text-white" />
@@ -124,7 +128,10 @@ function TrickCard({ trick, dogTrick, onStart, onPractice, isLocked }: any) {
       <div className="space-y-2">
         {!dogTrick && (
           <Button 
-            onClick={() => onStart(trick.id)}
+            onClick={(e) => {
+              e.stopPropagation();
+              onStart(trick.id);
+            }}
             className="w-full bg-gradient-to-r from-primary to-primary-hover hover:from-primary-hover hover:to-primary text-white font-bold py-3 rounded-xl"
           >
             Start Learning ✨
@@ -133,7 +140,10 @@ function TrickCard({ trick, dogTrick, onStart, onPractice, isLocked }: any) {
         
         {isInProgress && (
           <Button 
-            onClick={() => onPractice(trick.id)}
+            onClick={(e) => {
+              e.stopPropagation();
+              onPractice(trick.id);
+            }}
             className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold py-3 rounded-xl"
           >
             Continue Practice 🚀
@@ -142,7 +152,10 @@ function TrickCard({ trick, dogTrick, onStart, onPractice, isLocked }: any) {
         
         {isCompleted && (
           <Button 
-            onClick={() => onPractice(trick.id)}
+            onClick={(e) => {
+              e.stopPropagation();
+              onPractice(trick.id);
+            }}
             variant="outline"
             className="w-full border-2 border-green-400 text-green-700 hover:bg-green-50 dark:hover:bg-green-950/20 font-bold py-3 rounded-xl"
           >
@@ -158,8 +171,10 @@ export function TricksScreen() {
   const { dogs } = useDogs();
   const [selectedDogId, setSelectedDogId] = useState<string>('');
   const currentDog = dogs.find(dog => dog.id === selectedDogId) || dogs[0];
-  const { tricks, dogTricks, loading, startTrick } = useTricks(currentDog?.id);
+  const { tricks, dogTricks, loading, startTrick, addPracticeSession, updateTrickStatus } = useTricks(currentDog?.id);
   const [selectedDifficulty, setSelectedDifficulty] = useState<string>('all');
+  const [selectedTrick, setSelectedTrick] = useState<Trick | null>(null);
+  const [isTrickModalOpen, setIsTrickModalOpen] = useState(false);
 
   // Update selected dog when dogs load
   useState(() => {
@@ -215,8 +230,24 @@ export function TricksScreen() {
   };
 
   const handlePractice = (trickId: string) => {
-    // TODO: Navigate to practice session
-    console.log('Starting practice for trick:', trickId);
+    // Find the dogTrick for this trick
+    const dogTrick = learnedTricksMap.get(trickId);
+    if (dogTrick) {
+      addPracticeSession(dogTrick.id);
+    }
+  };
+
+  const handleTrickClick = (trick: Trick) => {
+    setSelectedTrick(trick);
+    setIsTrickModalOpen(true);
+  };
+
+  const handlePracticeSession = (dogTrickId: string) => {
+    addPracticeSession(dogTrickId);
+  };
+
+  const handleUpdateStatus = (dogTrickId: string, status: any) => {
+    updateTrickStatus(dogTrickId, status);
   };
 
   return (
@@ -299,24 +330,36 @@ export function TricksScreen() {
                 </div>
               </div>
 
-              {/* Tricks Grid */}
-              <div className="grid gap-4">
-                {levelTricks.map((trick) => (
-                  <TrickCard
-                    key={trick.id}
-                    trick={trick}
-                    dogTrick={learnedTricksMap.get(trick.id)}
-                    onStart={handleStart}
-                    onPractice={handlePractice}
-                    isLocked={!isUnlocked(trick)}
-                  />
-                ))}
-              </div>
+               {/* Tricks Grid */}
+               <div className="grid gap-4">
+                 {levelTricks.map((trick) => (
+                   <TrickCard
+                     key={trick.id}
+                     trick={trick}
+                     dogTrick={learnedTricksMap.get(trick.id)}
+                     onStart={handleStart}
+                     onPractice={handlePractice}
+                     onTrickClick={handleTrickClick}
+                     isLocked={!isUnlocked(trick)}
+                   />
+                 ))}
+               </div>
             </div>
           );
         })}
         </div>
       </div>
+
+      {/* Trick Detail Modal */}
+      <TrickDetailModal
+        isOpen={isTrickModalOpen}
+        onClose={() => setIsTrickModalOpen(false)}
+        trick={selectedTrick}
+        dogTrick={selectedTrick ? learnedTricksMap.get(selectedTrick.id) : undefined}
+        onStartTrick={handleStart}
+        onPracticeSession={handlePracticeSession}
+        onUpdateStatus={handleUpdateStatus}
+      />
     </div>
   );
 }

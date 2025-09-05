@@ -144,6 +144,80 @@ export function useTricks(dogId?: string) {
     }
   };
 
+  const addPracticeSession = async (dogTrickId: string) => {
+    try {
+      // First, get the current dog trick
+      const { data: currentDogTrick, error: fetchError } = await supabase
+        .from('dog_tricks')
+        .select('*')
+        .eq('id', dogTrickId)
+        .single();
+
+      if (fetchError) throw fetchError;
+
+      // Increment the total sessions
+      const newTotalSessions = (currentDogTrick.total_sessions || 0) + 1;
+
+      // Update the dog trick with new session count
+      const { data, error } = await supabase
+        .from('dog_tricks')
+        .update({ 
+          total_sessions: newTotalSessions,
+          status: newTotalSessions >= 10 ? 'practicing' : currentDogTrick.status || 'learning'
+        })
+        .eq('id', dogTrickId)
+        .select('*')
+        .single();
+
+      if (error) throw error;
+
+      // Get the trick details separately
+      const { data: trickData, error: trickError } = await supabase
+        .from('tricks')
+        .select('*')
+        .eq('id', data.trick_id)
+        .single();
+
+      if (trickError) throw trickError;
+
+      const updatedDogTrick = {
+        ...data,
+        trick: trickData
+      } as DogTrick;
+
+      setDogTricks(prev => 
+        prev.map(dt => dt.id === dogTrickId ? updatedDogTrick : dt)
+      );
+
+      // Create a training session record
+      await supabase
+        .from('training_sessions')
+        .insert({
+          dog_id: currentDogTrick.dog_id,
+          trick_id: currentDogTrick.trick_id,
+          duration_minutes: 10, // Default session length
+          success_rating: 3, // Neutral rating
+          progress_status: data.status,
+          notes: `Practice session ${newTotalSessions}`,
+        });
+
+      toast({
+        title: 'Great work! 🎯',
+        description: `Practice session ${newTotalSessions} completed for ${trickData.name}`,
+      });
+
+      return updatedDogTrick;
+    } catch (error) {
+      console.error('Error adding practice session:', error);
+      toast({
+        title: 'Error recording session',
+        description: 'Please try again',
+        variant: 'destructive',
+      });
+      return null;
+    }
+  };
+
   const updateTrickStatus = async (dogTrickId: string, status: DogTrick['status']) => {
     try {
       const updates: any = { status };
@@ -212,6 +286,7 @@ export function useTricks(dogId?: string) {
     dogTricks,
     loading,
     startTrick,
+    addPracticeSession,
     updateTrickStatus,
     refetch: () => {
       fetchTricks();
