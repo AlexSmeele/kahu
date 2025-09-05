@@ -11,6 +11,7 @@ import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { Dog, useDogs, calculateAge } from "@/hooks/useDogs";
 import { useToast } from "@/hooks/use-toast";
+import { ImageCropper, CropData } from "@/components/ui/image-cropper";
 
 interface DogProfileModalProps {
   isOpen: boolean;
@@ -29,6 +30,8 @@ export function DogProfileModal({ isOpen, onClose, dog, mode }: DogProfileModalP
   });
   const [photo, setPhoto] = useState<File | null>(null);
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
+  const [showCropper, setShowCropper] = useState(false);
+  const [cropData, setCropData] = useState<CropData>({ x: 0, y: 0, scale: 1 });
   const [loading, setLoading] = useState(false);
   const { addDog, updateDog } = useDogs();
   const { toast } = useToast();
@@ -63,6 +66,8 @@ export function DogProfileModal({ isOpen, onClose, dog, mode }: DogProfileModalP
       const reader = new FileReader();
       reader.onload = (e) => {
         setPhotoPreview(e.target?.result as string);
+        setShowCropper(true);
+        setCropData({ x: 0, y: 0, scale: 1 }); // Reset crop data for new image
       };
       reader.readAsDataURL(file);
     }
@@ -71,6 +76,8 @@ export function DogProfileModal({ isOpen, onClose, dog, mode }: DogProfileModalP
   const removePhoto = () => {
     setPhoto(null);
     setPhotoPreview(null);
+    setShowCropper(false);
+    setCropData({ x: 0, y: 0, scale: 1 });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -134,22 +141,67 @@ export function DogProfileModal({ isOpen, onClose, dog, mode }: DogProfileModalP
           <div className="space-y-2">
             <Label>Photo</Label>
             {photoPreview ? (
-              <div className="relative w-24 h-24 mx-auto">
-                <img
-                  src={photoPreview}
-                  alt="Dog preview"
-                  className="w-full h-full rounded-full object-cover"
-                />
-                <Button
-                  type="button"
-                  variant="destructive"
-                  size="sm"
-                  className="absolute -top-2 -right-2 w-6 h-6 p-0 rounded-full"
-                  onClick={removePhoto}
-                >
-                  <X className="w-3 h-3" />
-                </Button>
-              </div>
+              <>
+                {showCropper ? (
+                  <div className="space-y-4">
+                    <ImageCropper
+                      src={photoPreview}
+                      onCropChange={setCropData}
+                    />
+                    <div className="flex gap-2">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => setShowCropper(false)}
+                        className="flex-1"
+                      >
+                        Done
+                      </Button>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={removePhoto}
+                      >
+                        <X className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    <div className="relative w-24 h-24 mx-auto">
+                      <div className="w-full h-full rounded-full overflow-hidden border-2 border-border">
+                        <img
+                          src={photoPreview}
+                          alt="Dog preview"
+                          className="w-full h-full object-cover"
+                          style={{
+                            transform: `translate(${cropData.x}px, ${cropData.y}px) scale(${cropData.scale})`,
+                            transformOrigin: 'center center',
+                          }}
+                        />
+                      </div>
+                      <Button
+                        type="button"
+                        variant="destructive"
+                        size="sm"
+                        className="absolute -top-2 -right-2 w-6 h-6 p-0 rounded-full"
+                        onClick={removePhoto}
+                      >
+                        <X className="w-3 h-3" />
+                      </Button>
+                    </div>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setShowCropper(true)}
+                      className="w-full"
+                    >
+                      Adjust Crop
+                    </Button>
+                  </div>
+                )}
+              </>
             ) : (
               <div className="w-24 h-24 mx-auto border-2 border-dashed border-border rounded-full flex items-center justify-center">
                 <Button type="button" variant="ghost" size="sm" asChild>
