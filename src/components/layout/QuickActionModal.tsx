@@ -104,12 +104,7 @@ export function QuickActionModal({ isOpen, onClose }: QuickActionModalProps) {
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle className="flex items-center justify-between">
-            Quick Actions
-            <Button variant="ghost" size="sm" onClick={onClose} className="h-8 w-8 p-0">
-              <Plus className="w-4 h-4 rotate-45" />
-            </Button>
-          </DialogTitle>
+          <DialogTitle>Quick Actions</DialogTitle>
         </DialogHeader>
         
         <div className="grid grid-cols-2 gap-3 mt-4">
