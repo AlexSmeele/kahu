@@ -1,9 +1,10 @@
 import { useState, useMemo, useEffect } from "react";
 import { format, subMonths, differenceInMonths } from "date-fns";
-import { TrendingUp, TrendingDown, Minus, Calendar, Scale, Plus } from "lucide-react";
+import { TrendingUp, TrendingDown, Minus, Calendar, Scale, Plus, X } from "lucide-react";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { AddWeightModal } from "@/components/health/AddWeightModal";
 
 interface WeightRecord {
   id: string;
@@ -46,6 +47,11 @@ const TIME_PERIODS = [
 export function WeightTracker({ isOpen, onClose, currentWeight, dogName, dogBirthday }: WeightTrackerProps) {
   const [selectedPeriod, setSelectedPeriod] = useState<string>('1y');
   const [showAddWeight, setShowAddWeight] = useState(false);
+
+  const handleAddWeight = (weight: number, date: string, notes?: string) => {
+    // In a real app, this would save to the database
+    console.log('Adding weight:', { weight, date, notes });
+  };
 
   // Calculate dog's age and available time periods
   const availablePeriods = useMemo(() => {
@@ -140,9 +146,13 @@ export function WeightTracker({ isOpen, onClose, currentWeight, dogName, dogBirt
               <Scale className="w-4 h-4 text-primary" />
               Weight History
             </DialogTitle>
-            <Button onClick={() => setShowAddWeight(true)} size="sm" className="h-6 text-xs px-2">
-              <Plus className="w-3 h-3 mr-1" />
-              Add
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={onClose}
+              className="p-1 h-8 w-8"
+            >
+              <X className="w-4 h-4" />
             </Button>
           </div>
         </DialogHeader>
@@ -256,7 +266,24 @@ export function WeightTracker({ isOpen, onClose, currentWeight, dogName, dogBirt
             </div>
           </div>
         </div>
+
+        <div className="pt-4 border-t flex-shrink-0">
+          <Button
+            variant="outline"
+            onClick={() => setShowAddWeight(true)}
+            className="w-full"
+          >
+            <Plus className="w-4 h-4 mr-2" />
+            Add Weight Entry
+          </Button>
+        </div>
       </DialogContent>
+
+      <AddWeightModal
+        isOpen={showAddWeight}
+        onClose={() => setShowAddWeight(false)}
+        onSave={handleAddWeight}
+      />
     </Dialog>
   );
 }
