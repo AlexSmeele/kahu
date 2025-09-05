@@ -167,7 +167,7 @@ export function WeekPlannerModal({ isOpen, onClose, dogName, currentPlan }: Week
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="w-[calc(100vw-1rem)] max-w-4xl h-[calc(100vh-4rem)] max-h-[700px] flex flex-col mx-2 my-8">
+      <DialogContent className="max-w-4xl h-[calc(100vh-4rem)] max-h-[700px] flex flex-col">
         <DialogHeader className="pb-4">
           <div className="flex items-center justify-between">
             <DialogTitle className="flex items-center gap-2">

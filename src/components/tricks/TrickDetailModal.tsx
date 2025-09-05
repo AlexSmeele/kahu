@@ -104,7 +104,7 @@ export function TrickDetailModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="w-[calc(100vw-1rem)] max-w-[95vw] h-[calc(100vh-4rem)] max-h-[700px] flex flex-col p-0 mx-2 my-8">
+      <DialogContent className="max-w-[95vw] h-[calc(100vh-4rem)] max-h-[700px] flex flex-col p-0">
         {/* Header */}
         <DialogHeader className="p-6 pb-0">
           <div className="flex items-center gap-4">
