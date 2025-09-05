@@ -165,14 +165,9 @@ export function VaccineModal({ isOpen, onClose, dogName, dogBirthday }: VaccineM
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-lg h-[calc(100vh-4rem)] max-h-[600px] flex flex-col">
         <DialogHeader className="pb-4">
-          <DialogTitle className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <Syringe className="w-5 h-5 text-primary" />
-              {dogName}'s Vaccines
-            </div>
-            <Button variant="ghost" size="sm" onClick={onClose} className="h-8 w-8 p-0">
-              <X className="w-4 h-4" />
-            </Button>
+          <DialogTitle className="flex items-center gap-2">
+            <Syringe className="w-5 h-5 text-primary" />
+            {dogName}'s Vaccines
           </DialogTitle>
           
           {/* Summary Stats */}
