@@ -133,6 +133,23 @@ export function useDogs() {
         }
       }
 
+      // Add initial weight record if weight is provided
+      if (dogData.weight) {
+        const { error: weightError } = await supabase
+          .from('weight_records')
+          .insert({
+            dog_id: newDog.id,
+            weight: dogData.weight,
+            date: new Date().toISOString(),
+            notes: 'Initial weight recorded during profile creation',
+          });
+
+        if (weightError) {
+          console.error('Error adding initial weight record:', weightError);
+          // Don't fail the dog creation if weight record fails
+        }
+      }
+
       setDogs(prev => [newDog, ...prev]);
       
       toast({
