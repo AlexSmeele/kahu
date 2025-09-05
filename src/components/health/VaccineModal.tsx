@@ -27,54 +27,71 @@ interface VaccineModalProps {
   dogBirthday?: Date;
 }
 
+// Function to calculate vaccine status based on dates
+const calculateVaccineStatus = (lastGiven?: Date, nextDue?: Date): Vaccine['status'] => {
+  if (!lastGiven) return 'not_given';
+  if (!nextDue) return 'current';
+  
+  const today = new Date();
+  const daysUntilDue = differenceInDays(nextDue, today);
+  
+  if (daysUntilDue < 0) return 'overdue';
+  if (daysUntilDue <= 30) return 'due';
+  return 'current';
+};
+
 // Mock vaccine data - in a real app, this would come from the database
-const mockVaccines: Vaccine[] = [
-  {
-    id: "1",
-    name: "Rabies",
-    type: "core",
-    lastGiven: new Date(2024, 0, 15),
-    nextDue: new Date(2025, 0, 15),
-    frequency: 12,
-    status: "current",
-  },
-  {
-    id: "2", 
-    name: "DHPP (Distemper, Hepatitis, Parvovirus, Parainfluenza)",
-    type: "core",
-    lastGiven: new Date(2024, 2, 10),
-    nextDue: new Date(2025, 2, 10),
-    frequency: 12,
-    status: "current",
-  },
-  {
-    id: "3",
-    name: "Bordetella",
-    type: "non-core",
-    lastGiven: new Date(2024, 5, 20),
-    nextDue: new Date(2024, 11, 20),
-    frequency: 6,
-    status: "due",
-  },
-  {
-    id: "4",
-    name: "Lyme Disease", 
-    type: "non-core",
-    status: "not_given",
-  },
-  {
-    id: "5",
-    name: "Kennel Cough",
-    type: "annual",
-    lastGiven: new Date(2023, 8, 5),
-    nextDue: new Date(2024, 8, 5),
-    frequency: 12,
-    status: "overdue",
-  },
-];
+const createMockVaccines = (): Vaccine[] => {
+  const today = new Date();
+  const vaccines = [
+    {
+      id: "1",
+      name: "Rabies",
+      type: "core" as const,
+      lastGiven: new Date(2024, 8, 15), // September 15, 2024
+      nextDue: new Date(2025, 8, 15), // September 15, 2025
+      frequency: 12,
+    },
+    {
+      id: "2", 
+      name: "DHPP (Distemper, Hepatitis, Parvovirus, Parainfluenza)",
+      type: "core" as const,
+      lastGiven: new Date(2024, 10, 10), // November 10, 2024
+      nextDue: new Date(2025, 10, 10), // November 10, 2025
+      frequency: 12,
+    },
+    {
+      id: "3",
+      name: "Bordetella",
+      type: "non-core" as const,
+      lastGiven: new Date(2025, 2, 20), // March 20, 2025
+      nextDue: new Date(2025, 8, 20), // September 20, 2025
+      frequency: 6,
+    },
+    {
+      id: "4",
+      name: "Lyme Disease", 
+      type: "non-core" as const,
+    },
+    {
+      id: "5",
+      name: "Kennel Cough",
+      type: "annual" as const,
+      lastGiven: new Date(2024, 6, 5), // July 5, 2024
+      nextDue: new Date(2025, 6, 5), // July 5, 2025
+      frequency: 12,
+    },
+  ];
+  
+  // Calculate status for each vaccine
+  return vaccines.map(vaccine => ({
+    ...vaccine,
+    status: calculateVaccineStatus(vaccine.lastGiven, vaccine.nextDue),
+  }));
+};
 
 export function VaccineModal({ isOpen, onClose, dogName, dogBirthday }: VaccineModalProps) {
-  const [vaccines, setVaccines] = useState<Vaccine[]>(mockVaccines);
+  const [vaccines, setVaccines] = useState<Vaccine[]>(createMockVaccines());
   const [showAddForm, setShowAddForm] = useState(false);
   const [newVaccine, setNewVaccine] = useState({
     name: "",
@@ -130,11 +147,12 @@ export function VaccineModal({ isOpen, onClose, dogName, dogBirthday }: VaccineM
       if (v.id === vaccineId) {
         const lastGiven = new Date();
         const nextDue = v.frequency ? addDays(lastGiven, v.frequency * 30) : undefined;
+        const status = calculateVaccineStatus(lastGiven, nextDue);
         return {
           ...v,
           lastGiven,
           nextDue,
-          status: 'current' as const,
+          status,
         };
       }
       return v;
@@ -144,12 +162,13 @@ export function VaccineModal({ isOpen, onClose, dogName, dogBirthday }: VaccineM
   const handleAddVaccine = () => {
     if (!newVaccine.name.trim()) return;
 
+    const lastGiven = new Date(newVaccine.date);
     const vaccine: Vaccine = {
       id: Date.now().toString(),
       name: newVaccine.name,
       type: 'non-core',
-      lastGiven: new Date(newVaccine.date),
-      status: 'current',
+      lastGiven,
+      status: calculateVaccineStatus(lastGiven),
       notes: newVaccine.notes || undefined,
     };
 
