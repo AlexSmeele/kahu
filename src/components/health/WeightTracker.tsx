@@ -92,7 +92,7 @@ export function WeightTracker({ isOpen, onClose, currentWeight, dogName, dogBirt
 
   // Prepare chart data
   const chartData = filteredData.map(record => ({
-    date: format(new Date(record.date), 'MMM dd'),
+    date: format(new Date(record.date), 'MMM dd, yyyy'),
     weight: record.weight,
     fullDate: new Date(record.date),
   }));
@@ -135,20 +135,10 @@ export function WeightTracker({ isOpen, onClose, currentWeight, dogName, dogBirt
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="w-[calc(100%-1rem)] max-w-[380px] h-[calc(100%-2rem)] max-h-[560px] overflow-hidden flex flex-col p-3">
         <DialogHeader className="flex-shrink-0 pb-2">
-          <div className="flex items-center justify-between">
-            <DialogTitle className="text-sm font-bold flex items-center gap-2">
-              <Scale className="w-4 h-4 text-primary" />
-              Weight History
-            </DialogTitle>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={onClose}
-              className="p-1 h-8 w-8"
-            >
-              <X className="w-4 h-4" />
-            </Button>
-          </div>
+          <DialogTitle className="text-sm font-bold flex items-center gap-2">
+            <Scale className="w-4 h-4 text-primary" />
+            Weight History
+          </DialogTitle>
         </DialogHeader>
 
         <div className="flex-1 min-h-0 overflow-hidden">
@@ -228,7 +218,7 @@ export function WeightTracker({ isOpen, onClose, currentWeight, dogName, dogBirt
                   <h3 className="font-semibold text-xs">Weight Records</h3>
                   <p className="text-xs text-muted-foreground">{filteredData.length} records</p>
                 </div>
-                <div className="p-2 space-y-2 max-h-40 overflow-y-auto">
+                <div className="p-2 space-y-2">
                   {dataWithChanges.reverse().map((record, index) => (
                     <div 
                       key={record.id} 
@@ -243,7 +233,7 @@ export function WeightTracker({ isOpen, onClose, currentWeight, dogName, dogBirt
                           <div className="font-medium text-sm">{record.weight} kg</div>
                           <div className="text-xs text-muted-foreground flex items-center gap-1">
                             <Calendar className="w-3 h-3 flex-shrink-0" />
-                            <span className="truncate">{format(new Date(record.date), 'MMM dd')}</span>
+                            <span className="truncate">{format(new Date(record.date), 'MMM dd, yyyy')}</span>
                           </div>
                         </div>
                       </div>

@@ -41,20 +41,10 @@ export function UserEditModal({ isOpen, onClose }: UserEditModalProps) {
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-lg">
         <DialogHeader>
-          <div className="flex items-center justify-between">
-            <DialogTitle className="flex items-center gap-2">
-              <User className="w-5 h-5 text-primary" />
-              Edit Profile
-            </DialogTitle>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={onClose}
-              className="p-1 h-8 w-8"
-            >
-              <X className="w-4 h-4" />
-            </Button>
-          </div>
+          <DialogTitle className="flex items-center gap-2">
+            <User className="w-5 h-5 text-primary" />
+            Edit Profile
+          </DialogTitle>
         </DialogHeader>
 
         <div className="space-y-4">

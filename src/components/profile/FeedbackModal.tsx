@@ -71,20 +71,10 @@ export function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-lg">
         <DialogHeader>
-          <div className="flex items-center justify-between">
-            <DialogTitle className="flex items-center gap-2">
-              <MessageSquare className="w-5 h-5 text-primary" />
-              Send Feedback
-            </DialogTitle>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={onClose}
-              className="p-1 h-8 w-8"
-            >
-              <X className="w-4 h-4" />
-            </Button>
-          </div>
+          <DialogTitle className="flex items-center gap-2">
+            <MessageSquare className="w-5 h-5 text-primary" />
+            Send Feedback
+          </DialogTitle>
           <p className="text-sm text-muted-foreground">
             Help us improve by sharing your thoughts, reporting bugs, or suggesting new features.
           </p>
