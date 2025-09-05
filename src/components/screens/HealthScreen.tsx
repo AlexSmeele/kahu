@@ -207,6 +207,7 @@ export function HealthScreen() {
         currentWeight={currentDog?.weight || healthData.weight.current}
         dogName={currentDog?.name || 'Your dog'}
         dogBirthday={currentDog?.birthday ? new Date(currentDog.birthday) : undefined}
+        dogId={currentDog?.id || ''}
       />
       
       <VaccineModal

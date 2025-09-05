@@ -301,6 +301,36 @@ export type Database = {
         }
         Relationships: []
       }
+      weight_records: {
+        Row: {
+          created_at: string
+          date: string
+          dog_id: string
+          id: string
+          notes: string | null
+          updated_at: string
+          weight: number
+        }
+        Insert: {
+          created_at?: string
+          date?: string
+          dog_id: string
+          id?: string
+          notes?: string | null
+          updated_at?: string
+          weight: number
+        }
+        Update: {
+          created_at?: string
+          date?: string
+          dog_id?: string
+          id?: string
+          notes?: string | null
+          updated_at?: string
+          weight?: number
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

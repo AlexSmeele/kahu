@@ -5,13 +5,8 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { AddWeightModal } from "@/components/health/AddWeightModal";
-
-interface WeightRecord {
-  id: string;
-  weight: number;
-  date: Date;
-  notes?: string;
-}
+import { EditWeightModal } from "@/components/health/EditWeightModal";
+import { useWeightRecords, type WeightRecord } from "@/hooks/useWeightRecords";
 
 interface WeightTrackerProps {
   isOpen: boolean;
@@ -19,20 +14,9 @@ interface WeightTrackerProps {
   currentWeight: number;
   dogName: string;
   dogBirthday?: Date;
+  dogId: string;
 }
 
-// Mock data - in a real app, this would come from the database
-const mockWeightData: WeightRecord[] = [
-  { id: "1", weight: 8.2, date: new Date(2024, 0, 15), notes: "First vet visit" },
-  { id: "2", weight: 8.8, date: new Date(2024, 1, 15) },
-  { id: "3", weight: 9.4, date: new Date(2024, 2, 15) },
-  { id: "4", weight: 10.1, date: new Date(2024, 3, 15) },
-  { id: "5", weight: 10.8, date: new Date(2024, 4, 15) },
-  { id: "6", weight: 11.2, date: new Date(2024, 5, 15) },
-  { id: "7", weight: 11.6, date: new Date(2024, 6, 15) },
-  { id: "8", weight: 12.0, date: new Date(2024, 7, 15) },
-  { id: "9", weight: 12.4, date: new Date(2024, 8, 15) },
-];
 
 const TIME_PERIODS = [
   { key: '1m', label: '1M', months: 1 },
@@ -44,13 +28,23 @@ const TIME_PERIODS = [
   { key: 'all', label: 'All', months: Infinity },
 ];
 
-export function WeightTracker({ isOpen, onClose, currentWeight, dogName, dogBirthday }: WeightTrackerProps) {
+export function WeightTracker({ isOpen, onClose, currentWeight, dogName, dogBirthday, dogId }: WeightTrackerProps) {
   const [selectedPeriod, setSelectedPeriod] = useState<string>('1y');
   const [showAddWeight, setShowAddWeight] = useState(false);
+  const [editingRecord, setEditingRecord] = useState<WeightRecord | null>(null);
+  
+  const { weightRecords, loading, addWeightRecord, updateWeightRecord, deleteWeightRecord } = useWeightRecords(dogId);
 
-  const handleAddWeight = (weight: number, date: string, notes?: string) => {
-    // In a real app, this would save to the database
-    console.log('Adding weight:', { weight, date, notes });
+  const handleAddWeight = async (weight: number, date: string, notes?: string) => {
+    await addWeightRecord(weight, date, notes);
+  };
+
+  const handleEditWeight = async (id: string, weight: number, date: string, notes?: string) => {
+    await updateWeightRecord(id, weight, date, notes);
+  };
+
+  const handleDeleteWeight = async (id: string) => {
+    await deleteWeightRecord(id);
   };
 
   // Calculate dog's age and available time periods
@@ -89,18 +83,18 @@ export function WeightTracker({ isOpen, onClose, currentWeight, dogName, dogBirt
   const filteredData = useMemo(() => {
     const selectedPeriodConfig = TIME_PERIODS.find(p => p.key === selectedPeriod);
     if (!selectedPeriodConfig || selectedPeriod === 'all') {
-      return mockWeightData;
+      return weightRecords;
     }
 
     const cutoffDate = subMonths(new Date(), selectedPeriodConfig.months);
-    return mockWeightData.filter(record => record.date >= cutoffDate);
-  }, [selectedPeriod]);
+    return weightRecords.filter(record => new Date(record.date) >= cutoffDate);
+  }, [selectedPeriod, weightRecords]);
 
   // Prepare chart data
   const chartData = filteredData.map(record => ({
-    date: format(record.date, 'MMM dd'),
+    date: format(new Date(record.date), 'MMM dd'),
     weight: record.weight,
-    fullDate: record.date,
+    fullDate: new Date(record.date),
   }));
 
   // Calculate weight changes
@@ -236,7 +230,11 @@ export function WeightTracker({ isOpen, onClose, currentWeight, dogName, dogBirt
                 </div>
                 <div className="p-2 space-y-2 max-h-40 overflow-y-auto">
                   {dataWithChanges.reverse().map((record, index) => (
-                    <div key={record.id} className="flex items-center justify-between p-2 bg-secondary/50 rounded-lg">
+                    <div 
+                      key={record.id} 
+                      className="flex items-center justify-between p-2 bg-secondary/50 rounded-lg cursor-pointer hover:bg-secondary/70 transition-colors"
+                      onClick={() => setEditingRecord(record)}
+                    >
                       <div className="flex items-center gap-2 flex-1 min-w-0">
                         <div className="w-6 h-6 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
                           <Scale className="w-3 h-3 text-primary" />
@@ -245,7 +243,7 @@ export function WeightTracker({ isOpen, onClose, currentWeight, dogName, dogBirt
                           <div className="font-medium text-sm">{record.weight} kg</div>
                           <div className="text-xs text-muted-foreground flex items-center gap-1">
                             <Calendar className="w-3 h-3 flex-shrink-0" />
-                            <span className="truncate">{format(record.date, 'MMM dd')}</span>
+                            <span className="truncate">{format(new Date(record.date), 'MMM dd')}</span>
                           </div>
                         </div>
                       </div>
@@ -283,6 +281,14 @@ export function WeightTracker({ isOpen, onClose, currentWeight, dogName, dogBirt
         isOpen={showAddWeight}
         onClose={() => setShowAddWeight(false)}
         onSave={handleAddWeight}
+      />
+      
+      <EditWeightModal
+        isOpen={!!editingRecord}
+        onClose={() => setEditingRecord(null)}
+        record={editingRecord}
+        onSave={handleEditWeight}
+        onDelete={handleDeleteWeight}
       />
     </Dialog>
   );
