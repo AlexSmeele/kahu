@@ -43,7 +43,7 @@ export function DogSwitcher({ selectedDogId, onDogChange, showAddButton = false,
   return (
     <div className="w-full">
       <Tabs value={selectedDog?.id} onValueChange={onDogChange} className="w-full">
-        <TabsList className="w-full h-16 p-1 grid" style={{ gridTemplateColumns: `repeat(${dogs.length + (showAddButton ? 1 : 0)}, 1fr)` }}>
+        <TabsList className="w-full h-32 p-1 grid" style={{ gridTemplateColumns: `repeat(${dogs.length + (showAddButton ? 1 : 0)}, 1fr)` }}>
           {dogs.map((dog) => (
             <TabsTrigger 
               key={dog.id} 
