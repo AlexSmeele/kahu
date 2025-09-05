@@ -3,6 +3,7 @@ import { MessageCircle, Send, Sparkles, Clock, TrendingUp, BookOpen, Users } fro
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { useDogs } from "@/hooks/useDogs";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -113,13 +114,15 @@ export function TrainerScreenVariant3({ onTypingChange }: { onTypingChange?: (ty
             {/* Dog Profile Card */}
             <Card className="p-4">
               <div className="flex items-center gap-3 mb-3">
-                <div className="w-12 h-12 rounded-full overflow-hidden bg-secondary">
-                  <img 
+                <Avatar className="w-12 h-12">
+                  <AvatarImage 
                     src={currentDog?.avatar_url || heroImage} 
                     alt={currentDog?.name || "Dog"}
-                    className="w-full h-full object-cover"
                   />
-                </div>
+                  <AvatarFallback className="bg-primary text-primary-foreground">
+                    {currentDog?.name?.charAt(0) || "D"}
+                  </AvatarFallback>
+                </Avatar>
                 <div>
                   <h2 className="font-semibold text-foreground">{currentDog?.name || "Your Dog"}</h2>
                   <p className="text-sm text-muted-foreground">
