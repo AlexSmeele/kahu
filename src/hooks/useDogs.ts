@@ -169,8 +169,16 @@ export function useDogs() {
     }
   };
 
-  const updateDog = async (id: string, updates: Partial<Omit<Dog, 'id' | 'created_at' | 'updated_at'>>) => {
+  const updateDog = async (id: string, updates: Partial<Omit<Dog, 'id' | 'created_at' | 'updated_at'>>, photo?: File) => {
     try {
+      // Upload new photo if provided
+      if (photo) {
+        const photoUrl = await uploadDogPhoto(photo, id);
+        if (photoUrl) {
+          updates.avatar_url = photoUrl;
+        }
+      }
+
       const { data, error } = await supabase
         .from('dogs')
         .update(updates)

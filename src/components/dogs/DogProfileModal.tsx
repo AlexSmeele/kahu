@@ -96,7 +96,7 @@ export function DogProfileModal({ isOpen, onClose, dog, mode }: DogProfileModalP
 
     try {
       if (mode === 'edit' && dog) {
-        await updateDog(dog.id, dogData);
+        await updateDog(dog.id, dogData, photo || undefined);
         toast({
           title: 'Profile updated!',
           description: `${formData.name}'s profile has been updated`,
