@@ -18,7 +18,7 @@ const App = () => (
       <AuthProvider>
         <TooltipProvider>
           <div className="app-shell">
-            <div className="app-viewport">
+            <div className="app-viewport" style={{position: 'relative', overflow: 'hidden', contain: 'layout style paint'}}>
               <Toaster />
               <Sonner />
               <BrowserRouter>
