@@ -7,6 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
 import { NutritionPlan, MealTime, useNutrition } from "@/hooks/useNutrition";
 
@@ -198,14 +199,15 @@ export function NutritionPlanModal({ dogId, nutritionPlan, onSave, trigger }: Nu
           </Button>
         )}
       </DialogTrigger>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="w-[calc(100vw-2rem)] max-w-4xl h-[calc(100vh-4rem)] max-h-[700px] overflow-hidden flex flex-col mx-auto my-8">
         <DialogHeader>
           <DialogTitle>
             {nutritionPlan ? 'Edit Nutrition Plan' : 'Create Nutrition Plan'}
           </DialogTitle>
         </DialogHeader>
 
-        <div className="space-y-6">
+        <ScrollArea className="flex-1 overflow-y-auto">
+          <div className="space-y-6 p-1">
           {/* Basic Diet Info */}
           <div className="space-y-3">
             <div>
@@ -421,7 +423,14 @@ export function NutritionPlanModal({ dogId, nutritionPlan, onSave, trigger }: Nu
             />
           </div>
 
-          <Button onClick={handleSave} className="w-full">
+          </div>
+        </ScrollArea>
+
+        <div className="pt-4 border-t flex gap-2">
+          <Button variant="outline" onClick={() => setOpen(false)} className="flex-1">
+            Cancel
+          </Button>
+          <Button onClick={handleSave} className="flex-1">
             <Save className="w-4 h-4 mr-2" />
             {nutritionPlan ? 'Update Plan' : 'Create Plan'}
           </Button>
