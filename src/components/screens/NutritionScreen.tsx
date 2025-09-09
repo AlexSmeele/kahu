@@ -24,19 +24,16 @@ const getTodayProgress = (mealSchedule?: MealTime[], dailyAmount?: number) => {
   };
 };
 
-export function NutritionScreen() {
-  const [selectedDogId, setSelectedDogId] = useState<string>('');
+interface NutritionScreenProps {
+  selectedDogId: string;
+  onDogChange: (dogId: string) => void;
+}
+
+export function NutritionScreen({ selectedDogId, onDogChange }: NutritionScreenProps) {
   const [isWeekPlannerOpen, setIsWeekPlannerOpen] = useState(false);
   const { dogs } = useDogs();
   const currentDog = dogs.find(dog => dog.id === selectedDogId) || dogs[0];
   const { nutritionPlan, loading } = useNutrition(selectedDogId);
-
-  // Update selected dog when dogs load
-  useEffect(() => {
-    if (dogs.length > 0 && !selectedDogId) {
-      setSelectedDogId(dogs[0].id);
-    }
-  }, [dogs]);
 
   const todayProgress = getTodayProgress(nutritionPlan?.meal_schedule, nutritionPlan?.daily_amount);
   
@@ -78,7 +75,7 @@ export function NutritionScreen() {
         {/* Dog Switcher */}
         <DogSwitcher
           selectedDogId={selectedDogId}
-          onDogChange={setSelectedDogId}
+          onDogChange={onDogChange}
         />
       </header>
 

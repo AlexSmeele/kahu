@@ -167,21 +167,18 @@ function TrickCard({ trick, dogTrick, onStart, onPractice, onTrickClick, isLocke
   );
 }
 
-export function TricksScreen() {
+interface TricksScreenProps {
+  selectedDogId: string;
+  onDogChange: (dogId: string) => void;
+}
+
+export function TricksScreen({ selectedDogId, onDogChange }: TricksScreenProps) {
   const { dogs } = useDogs();
-  const [selectedDogId, setSelectedDogId] = useState<string>('');
   const currentDog = dogs.find(dog => dog.id === selectedDogId) || dogs[0];
   const { tricks, dogTricks, loading, startTrick, addPracticeSession, updateTrickStatus } = useTricks(currentDog?.id);
   const [selectedDifficulty, setSelectedDifficulty] = useState<string>('all');
   const [selectedTrick, setSelectedTrick] = useState<Trick | null>(null);
   const [isTrickModalOpen, setIsTrickModalOpen] = useState(false);
-
-  // Update selected dog when dogs load
-  useState(() => {
-    if (dogs.length > 0 && !selectedDogId) {
-      setSelectedDogId(dogs[0].id);
-    }
-  });
 
   if (loading) {
     return (
@@ -273,7 +270,7 @@ export function TricksScreen() {
         <div className="mb-4">
           <DogSwitcher
             selectedDogId={selectedDogId}
-            onDogChange={setSelectedDogId}
+            onDogChange={onDogChange}
           />
         </div>
 

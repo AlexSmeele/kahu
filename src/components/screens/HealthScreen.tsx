@@ -32,8 +32,12 @@ const getIconComponent = (iconName: string) => {
   }
 };
 
-export function HealthScreen() {
-  const [selectedDogId, setSelectedDogId] = useState<string>('');
+interface HealthScreenProps {
+  selectedDogId: string;
+  onDogChange: (dogId: string) => void;
+}
+
+export function HealthScreen({ selectedDogId, onDogChange }: HealthScreenProps) {
   const [isWeightTrackerOpen, setIsWeightTrackerOpen] = useState(false);
   const [isVaccineModalOpen, setIsVaccineModalOpen] = useState(false);
   const [isVetVisitsModalOpen, setIsVetVisitsModalOpen] = useState(false);
@@ -41,13 +45,6 @@ export function HealthScreen() {
   const { dogs } = useDogs();
   const currentDog = dogs.find(dog => dog.id === selectedDogId) || dogs[0];
   const { weightData, recentRecords, healthRecordsCount, loading, refetch } = useHealthData(selectedDogId);
-
-  // Update selected dog when dogs load
-  useState(() => {
-    if (dogs.length > 0 && !selectedDogId) {
-      setSelectedDogId(dogs[0].id);
-    }
-  });
 
   const handleRecordClick = (record: any) => {
     switch (record.type) {
@@ -91,7 +88,7 @@ export function HealthScreen() {
         {/* Dog Switcher */}
         <DogSwitcher
           selectedDogId={selectedDogId}
-          onDogChange={setSelectedDogId}
+          onDogChange={onDogChange}
         />
       </header>
 

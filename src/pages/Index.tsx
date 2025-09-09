@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { TrainerScreenVariantSelector } from "@/components/screens/TrainerScreenVariantSelector";
 import { TricksScreen } from "@/components/screens/TricksScreen";
 import { HealthScreen } from "@/components/screens/HealthScreen";
@@ -15,8 +15,16 @@ const Index = () => {
   const [activeTab, setActiveTab] = useState<TabType>('trainer');
   const [isQuickActionOpen, setIsQuickActionOpen] = useState(false);
   const [isUserTyping, setIsUserTyping] = useState(false);
+  const [selectedDogId, setSelectedDogId] = useState<string>('');
   const { user } = useAuth();
   const { dogs, loading } = useDogs();
+
+  // Update selected dog when dogs load
+  useEffect(() => {
+    if (dogs.length > 0 && !selectedDogId) {
+      setSelectedDogId(dogs[0].id);
+    }
+  }, [dogs, selectedDogId]);
 
   // Show onboarding if user has no dogs
   if (!loading && dogs.length === 0) {
@@ -31,11 +39,11 @@ const Index = () => {
       case 'trainer':
         return <TrainerScreenVariantSelector onTypingChange={setIsUserTyping} />;
       case 'tricks':
-        return <TricksScreen />;
+        return <TricksScreen selectedDogId={selectedDogId} onDogChange={setSelectedDogId} />;
       case 'health':
-        return <HealthScreen />;
+        return <HealthScreen selectedDogId={selectedDogId} onDogChange={setSelectedDogId} />;
       case 'nutrition':
-        return <NutritionScreen />;
+        return <NutritionScreen selectedDogId={selectedDogId} onDogChange={setSelectedDogId} />;
       case 'marketplace':
         return <MarketplaceScreen />;
       case 'profile':
