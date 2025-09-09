@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { User, Dog, Settings, CreditCard, Share, Download, HelpCircle, LogOut, Plus, Edit, Trash2, Package, MessageSquare } from "lucide-react";
+import { User, Dog, Settings, CreditCard, Share, Download, HelpCircle, LogOut, Plus, Edit, Trash2, Package, MessageSquare, ChevronUp, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -30,7 +30,7 @@ const menuItems = [
 
 export function ProfileScreen() {
   const { signOut, user } = useAuth();
-  const { dogs, loading: dogsLoading, deleteDog } = useDogs();
+  const { dogs, loading: dogsLoading, deleteDog, reorderDogs } = useDogs();
   const { toast } = useToast();
   const [dogModalOpen, setDogModalOpen] = useState(false);
   const [editingDog, setEditingDog] = useState<DogType | null>(null);
@@ -42,6 +42,7 @@ export function ProfileScreen() {
   const [isBillingOpen, setIsBillingOpen] = useState(false);
   const [isExportDataOpen, setIsExportDataOpen] = useState(false);
   const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
+  const [isReordering, setIsReordering] = useState(false);
 
   const handleAddDog = () => {
     setEditingDog(null);
@@ -70,6 +71,24 @@ export function ProfileScreen() {
       title: "Items added to cart",
       description: `${items.length} items from your previous order have been added to cart. Go to Marketplace to checkout.`,
     });
+  };
+
+  const moveDogUp = async (index: number) => {
+    if (index === 0) return;
+    
+    const newOrder = [...dogs];
+    [newOrder[index - 1], newOrder[index]] = [newOrder[index], newOrder[index - 1]];
+    
+    await reorderDogs(newOrder);
+  };
+
+  const moveDogDown = async (index: number) => {
+    if (index === dogs.length - 1) return;
+    
+    const newOrder = [...dogs];
+    [newOrder[index], newOrder[index + 1]] = [newOrder[index + 1], newOrder[index]];
+    
+    await reorderDogs(newOrder);
   };
 
   const handleMenuClick = (action: string) => {
@@ -147,10 +166,21 @@ export function ProfileScreen() {
           <div className="p-4 border-b border-border">
             <div className="flex items-center justify-between mb-3">
               <h3 className="font-semibold text-foreground">Your Dogs</h3>
-              <Button variant="outline" size="sm" onClick={handleAddDog}>
-                <Plus className="w-4 h-4 mr-1" />
-                Add Dog
-              </Button>
+              <div className="flex gap-2">
+                {dogs.length > 1 && (
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    onClick={() => setIsReordering(!isReordering)}
+                  >
+                    {isReordering ? 'Done' : 'Reorder'}
+                  </Button>
+                )}
+                <Button variant="outline" size="sm" onClick={handleAddDog}>
+                  <Plus className="w-4 h-4 mr-1" />
+                  Add Dog
+                </Button>
+              </div>
             </div>
             
             {dogsLoading ? (
@@ -178,9 +208,31 @@ export function ProfileScreen() {
               </div>
             ) : (
               <div className="space-y-3">
-                {dogs.map((dog) => (
-                  <div key={dog.id} className="card-soft p-4">
+                {dogs.map((dog, index) => (
+                  <div key={dog.id} className={`card-soft p-4 ${isReordering ? 'ring-2 ring-primary/20' : ''}`}>
                     <div className="flex items-center gap-3">
+                      {isReordering && dogs.length > 1 && (
+                        <div className="flex flex-col gap-1">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => moveDogUp(index)}
+                            disabled={index === 0}
+                            className="h-6 w-6 p-0"
+                          >
+                            <ChevronUp className="w-3 h-3" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => moveDogDown(index)}
+                            disabled={index === dogs.length - 1}
+                            className="h-6 w-6 p-0"
+                          >
+                            <ChevronDown className="w-3 h-3" />
+                          </Button>
+                        </div>
+                      )}
                       <Avatar className="w-12 h-12">
                         <AvatarImage src={dog.avatar_url} alt={dog.name} />
                         <AvatarFallback className="bg-primary text-primary-foreground">
@@ -197,43 +249,45 @@ export function ProfileScreen() {
                           ].filter(Boolean).join(' • ')}
                         </p>
                       </div>
-                      <div className="flex items-center gap-1">
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => handleEditDog(dog)}
-                        >
-                          <Edit className="w-4 h-4" />
-                        </Button>
-                        <AlertDialog>
-                          <AlertDialogTrigger asChild>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              className="text-destructive hover:text-destructive"
-                            >
-                              <Trash2 className="w-4 h-4" />
-                            </Button>
-                          </AlertDialogTrigger>
-                          <AlertDialogContent>
-                            <AlertDialogHeader>
-                              <AlertDialogTitle>Delete {dog.name}?</AlertDialogTitle>
-                              <AlertDialogDescription>
-                                This will permanently delete {dog.name}'s profile and all associated training data. This action cannot be undone.
-                              </AlertDialogDescription>
-                            </AlertDialogHeader>
-                            <AlertDialogFooter>
-                              <AlertDialogCancel>Cancel</AlertDialogCancel>
-                              <AlertDialogAction
-                                onClick={() => handleDeleteDog(dog.id, dog.name)}
-                                className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                      {!isReordering && (
+                        <div className="flex items-center gap-1">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => handleEditDog(dog)}
+                          >
+                            <Edit className="w-4 h-4" />
+                          </Button>
+                          <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="text-destructive hover:text-destructive"
                               >
-                                Delete
-                              </AlertDialogAction>
-                            </AlertDialogFooter>
-                          </AlertDialogContent>
-                        </AlertDialog>
-                      </div>
+                                <Trash2 className="w-4 h-4" />
+                              </Button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                              <AlertDialogHeader>
+                                <AlertDialogTitle>Delete {dog.name}?</AlertDialogTitle>
+                                <AlertDialogDescription>
+                                  This will permanently delete {dog.name}'s profile and all associated training data. This action cannot be undone.
+                                </AlertDialogDescription>
+                              </AlertDialogHeader>
+                              <AlertDialogFooter>
+                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                <AlertDialogAction
+                                  onClick={() => handleDeleteDog(dog.id, dog.name)}
+                                  className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                                >
+                                  Delete
+                                </AlertDialogAction>
+                              </AlertDialogFooter>
+                            </AlertDialogContent>
+                          </AlertDialog>
+                        </div>
+                      )}
                     </div>
                   </div>
                 ))}

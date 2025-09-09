@@ -11,6 +11,7 @@ export interface Dog {
   weight?: number;
   gender?: 'male' | 'female';
   avatar_url?: string;
+  sort_order?: number;
   created_at: string;
   updated_at: string;
 }
@@ -94,6 +95,7 @@ export function useDogs() {
       const { data, error } = await supabase
         .from('dogs')
         .select('*')
+        .order('sort_order', { ascending: true })
         .order('created_at', { ascending: false });
 
       if (error) throw error;
@@ -143,11 +145,23 @@ export function useDogs() {
     if (!user) return null;
 
     try {
+      // Get the next sort_order value for this user
+      const { data: existingDogs } = await supabase
+        .from('dogs')
+        .select('sort_order')
+        .order('sort_order', { ascending: false })
+        .limit(1);
+      
+      const nextSortOrder = existingDogs && existingDogs.length > 0 
+        ? (existingDogs[0].sort_order || 0) + 1 
+        : 1;
+
       const { data, error } = await supabase
         .from('dogs')
         .insert({
           ...dogData,
           user_id: user.id,
+          sort_order: nextSortOrder,
         })
         .select()
         .single();
@@ -283,12 +297,53 @@ export function useDogs() {
     }
   };
 
+  const reorderDogs = async (reorderedDogs: Dog[]): Promise<boolean> => {
+    if (!user) return false;
+
+    try {
+      // Update sort_order for all dogs
+      const updates = reorderedDogs.map((dog, index) => ({
+        id: dog.id,
+        sort_order: index + 1,
+      }));
+
+      // Use Promise.all to update all dogs concurrently
+      await Promise.all(
+        updates.map(update =>
+          supabase
+            .from('dogs')
+            .update({ sort_order: update.sort_order })
+            .eq('id', update.id)
+        )
+      );
+
+      // Update global state with new order
+      setGlobalDogsState(reorderedDogs);
+      
+      toast({
+        title: 'Order updated',
+        description: 'Dog profiles have been reordered',
+      });
+
+      return true;
+    } catch (error) {
+      console.error('Error reordering dogs:', error);
+      toast({
+        title: 'Error reordering dogs',
+        description: 'Please try again',
+        variant: 'destructive',
+      });
+      return false;
+    }
+  };
+
   return {
     dogs,
     loading,
     addDog,
     updateDog,
     deleteDog,
+    reorderDogs,
     refetch: fetchDogs,
   };
 }
