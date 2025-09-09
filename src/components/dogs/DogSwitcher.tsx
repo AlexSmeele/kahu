@@ -49,8 +49,9 @@ export function DogSwitcher({ selectedDogId, onDogChange, showAddButton = false,
       <div className="w-full">
         <Carousel
           opts={{
-            align: "start",
             loop: true,
+            skipSnaps: false,
+            dragFree: false,
           }}
           className="w-full"
         >
