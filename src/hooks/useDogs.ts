@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
@@ -42,14 +42,53 @@ export function calculateAge(birthday: string): string {
   }
 }
 
+// Global state management for dogs to ensure all components stay in sync
+let globalDogsState: Dog[] = [];
+let globalLoadingState = false;
+const subscribers = new Set<() => void>();
+
+const notifySubscribers = () => {
+  subscribers.forEach(callback => callback());
+};
+
+const setGlobalDogsState = (dogs: Dog[]) => {
+  globalDogsState = dogs;
+  notifySubscribers();
+};
+
+const setGlobalLoadingState = (loading: boolean) => {
+  globalLoadingState = loading;
+  notifySubscribers();
+};
+
 export function useDogs() {
-  const [dogs, setDogs] = useState<Dog[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [dogs, setDogs] = useState<Dog[]>(globalDogsState);
+  const [loading, setLoading] = useState(globalLoadingState);
   const { user } = useAuth();
   const { toast } = useToast();
 
-  const fetchDogs = async () => {
-    if (!user) return;
+  // Subscribe to global state changes
+  useEffect(() => {
+    const callback = () => {
+      setDogs([...globalDogsState]);
+      setLoading(globalLoadingState);
+    };
+    
+    subscribers.add(callback);
+    
+    return () => {
+      subscribers.delete(callback);
+    };
+  }, []);
+
+  const fetchDogs = useCallback(async () => {
+    if (!user) {
+      setGlobalDogsState([]);
+      setGlobalLoadingState(false);
+      return;
+    }
+    
+    setGlobalLoadingState(true);
     
     try {
       const { data, error } = await supabase
@@ -58,7 +97,7 @@ export function useDogs() {
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      setDogs((data as Dog[]) || []);
+      setGlobalDogsState((data as Dog[]) || []);
     } catch (error) {
       console.error('Error fetching dogs:', error);
       toast({
@@ -67,9 +106,9 @@ export function useDogs() {
         variant: 'destructive',
       });
     } finally {
-      setLoading(false);
+      setGlobalLoadingState(false);
     }
-  };
+  }, [user, toast]);
 
   const uploadDogPhoto = async (file: File, dogId: string): Promise<string | null> => {
     if (!user) return null;
@@ -150,7 +189,8 @@ export function useDogs() {
         }
       }
 
-      setDogs(prev => [newDog, ...prev]);
+      // Update global state instead of local state
+      setGlobalDogsState([newDog, ...globalDogsState]);
       
       toast({
         title: 'Dog added successfully!',
@@ -189,7 +229,8 @@ export function useDogs() {
       if (error) throw error;
 
       const updatedDog = data as Dog;
-      setDogs(prev => prev.map(dog => dog.id === id ? updatedDog : dog));
+      // Update global state instead of local state
+      setGlobalDogsState(globalDogsState.map(dog => dog.id === id ? updatedDog : dog));
       
       toast({
         title: 'Dog updated successfully!',
@@ -209,7 +250,7 @@ export function useDogs() {
 
   useEffect(() => {
     fetchDogs();
-  }, [user]);
+  }, [fetchDogs]);
 
   const deleteDog = async (id: string): Promise<boolean> => {
     if (!user) return false;
@@ -222,7 +263,8 @@ export function useDogs() {
 
       if (error) throw error;
 
-      setDogs(prev => prev.filter(dog => dog.id !== id));
+      // Update global state instead of local state
+      setGlobalDogsState(globalDogsState.filter(dog => dog.id !== id));
       
       toast({
         title: 'Dog removed',
