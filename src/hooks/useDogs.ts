@@ -3,6 +3,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 import { CropData } from '@/components/modals/EditPhotoModal';
+import { logger } from '@/lib/logger';
 
 export interface Dog {
   id: string;
@@ -50,15 +51,18 @@ let globalLoadingState = false;
 const subscribers = new Set<() => void>();
 
 const notifySubscribers = () => {
+  logger.debug('useDogs: Notifying subscribers of state change', { subscriberCount: subscribers.size });
   subscribers.forEach(callback => callback());
 };
 
 const setGlobalDogsState = (dogs: Dog[]) => {
+  logger.stateChange('useDogs', 'dogsUpdated', { dogCount: dogs.length });
   globalDogsState = dogs;
   notifySubscribers();
 };
 
 const setGlobalLoadingState = (loading: boolean) => {
+  logger.stateChange('useDogs', 'loadingUpdated', { loading });
   globalLoadingState = loading;
   notifySubscribers();
 };
@@ -85,14 +89,17 @@ export function useDogs() {
 
   const fetchDogs = useCallback(async () => {
     if (!user) {
+      logger.debug('useDogs: No user, clearing dogs state');
       setGlobalDogsState([]);
       setGlobalLoadingState(false);
       return;
     }
     
+    logger.info('useDogs: Fetching dogs for user', { userId: user.id });
     setGlobalLoadingState(true);
     
     try {
+      logger.apiCall('GET', '/dogs');
       const { data, error } = await supabase
         .from('dogs')
         .select('*')
@@ -100,9 +107,12 @@ export function useDogs() {
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      setGlobalDogsState((data as Dog[]) || []);
+      
+      const dogs = (data as Dog[]) || [];
+      logger.apiResponse('GET', '/dogs', 200, { dogCount: dogs.length });
+      setGlobalDogsState(dogs);
     } catch (error) {
-      console.error('Error fetching dogs:', error);
+      logger.error('useDogs: Error fetching dogs', error, { userId: user.id });
       toast({
         title: 'Error loading dogs',
         description: 'Please try refreshing the page',
@@ -215,6 +225,7 @@ export function useDogs() {
   const addDog = async (dogData: Omit<Dog, 'id' | 'created_at' | 'updated_at'>, photo?: File) => {
     if (!user) return null;
 
+    logger.info('useDogs: Adding new dog', { dogName: dogData.name, userId: user.id });
     try {
       // Get the next sort_order value for this user
       const { data: existingDogs } = await supabase

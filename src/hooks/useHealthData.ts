@@ -3,6 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { WeightRecord } from "./useWeightRecords";
 import { formatDistanceToNow } from "date-fns";
+import { logger } from "@/lib/logger";
 
 export interface HealthRecord {
   id: string;
@@ -310,6 +311,7 @@ export function useHealthData(dogId: string) {
   };
 
   const fetchAllData = async () => {
+    logger.info('useHealthData: Fetching all health data', { dogId });
     setLoading(true);
     try {
       await Promise.all([
@@ -319,6 +321,9 @@ export function useHealthData(dogId: string) {
         fetchVaccinationData(),
         fetchVetVisitData(),
       ]);
+      logger.info('useHealthData: Successfully fetched all health data', { dogId });
+    } catch (error) {
+      logger.error('useHealthData: Error fetching health data', error, { dogId });
     } finally {
       setLoading(false);
     }

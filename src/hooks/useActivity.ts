@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { logger } from "@/lib/logger";
 
 export interface ActivityGoal {
   id: string;
@@ -76,6 +77,7 @@ export const useActivity = (dogId: string) => {
   };
 
   const fetchGoal = async () => {
+    logger.info('useActivity: Fetching activity goal', { dogId });
     const { data, error } = await supabase
       .from('activity_goals')
       .select('*')
@@ -84,13 +86,16 @@ export const useActivity = (dogId: string) => {
       .maybeSingle();
 
     if (error && error.code !== 'PGRST116') {
+      logger.error('useActivity: Error fetching activity goal', error, { dogId });
       toast({ title: "Error loading activity goal", variant: "destructive" });
       return;
     }
 
     if (data) {
+      logger.info('useActivity: Found existing goal', { goalId: data.id, targetMinutes: data.target_minutes });
       setGoal(data);
     } else {
+      logger.info('useActivity: No goal found, creating default', { dogId });
       // Create default goal
       const defaults = await calculateDefaultGoal(dogId);
       const { data: newGoal } = await supabase
@@ -103,7 +108,10 @@ export const useActivity = (dogId: string) => {
         .select()
         .single();
 
-      if (newGoal) setGoal(newGoal);
+      if (newGoal) {
+        logger.info('useActivity: Created default goal', { goalId: newGoal.id, targetMinutes: newGoal.target_minutes });
+        setGoal(newGoal);
+      }
     }
   };
 
@@ -133,15 +141,18 @@ export const useActivity = (dogId: string) => {
   };
 
   const addActivity = async (activity: Omit<ActivityRecord, 'id' | 'dog_id' | 'created_at' | 'updated_at'>) => {
+    logger.info('useActivity: Adding activity', { dogId, activityType: activity.activity_type, duration: activity.duration_minutes });
     const { error } = await supabase
       .from('activity_records')
       .insert([{ ...activity, dog_id: dogId }]);
 
     if (error) {
+      logger.error('useActivity: Error adding activity', error, { dogId, activityType: activity.activity_type });
       toast({ title: "Error adding activity", variant: "destructive" });
       return false;
     }
 
+    logger.info('useActivity: Successfully added activity', { dogId, activityType: activity.activity_type });
     toast({ title: "Activity added successfully!" });
     await fetchTodayRecords();
     return true;
@@ -199,8 +210,12 @@ export const useActivity = (dogId: string) => {
 
   useEffect(() => {
     if (dogId) {
+      logger.info('useActivity: Hook initialized', { dogId });
       setLoading(true);
-      Promise.all([fetchGoal(), fetchTodayRecords()]).finally(() => setLoading(false));
+      Promise.all([fetchGoal(), fetchTodayRecords()]).finally(() => {
+        logger.info('useActivity: Data loading completed', { dogId });
+        setLoading(false);
+      });
     }
   }, [dogId]);
 

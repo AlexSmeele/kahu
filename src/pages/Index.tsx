@@ -10,6 +10,7 @@ import { QuickActionModal } from "@/components/layout/QuickActionModal";
 import { DogOnboarding } from "@/components/onboarding/DogOnboarding";
 import { useDogs } from "@/hooks/useDogs";
 import { useAuth } from "@/contexts/AuthContext";
+import { logger } from "@/lib/logger";
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState<TabType>('trainer');
@@ -19,22 +20,35 @@ const Index = () => {
   const { user } = useAuth();
   const { dogs, loading } = useDogs();
 
+  logger.info('Index: Component rendered', { 
+    activeTab, 
+    dogCount: dogs.length, 
+    loading, 
+    selectedDogId,
+    userId: user?.id 
+  });
+
   // Update selected dog when dogs load
   useEffect(() => {
     if (dogs.length > 0 && !selectedDogId) {
+      logger.info('Index: Auto-selecting first dog', { dogId: dogs[0].id, dogName: dogs[0].name });
       setSelectedDogId(dogs[0].id);
     }
   }, [dogs, selectedDogId]);
 
   // Show onboarding if user has no dogs
   if (!loading && dogs.length === 0) {
+    logger.info('Index: Showing dog onboarding - no dogs found');
     return <DogOnboarding onComplete={() => {
+      logger.info('Index: Dog onboarding completed');
       // Dogs list will automatically update via the useDogs hook
       // No need to reload the page
     }} />;
   }
 
   const renderActiveScreen = () => {
+    logger.debug('Index: Rendering screen', { activeTab, selectedDogId });
+    
     switch (activeTab) {
       case 'trainer':
         return <TrainerScreenVariantSelector onTypingChange={setIsUserTyping} />;
@@ -49,6 +63,7 @@ const Index = () => {
       case 'profile':
         return <ProfileScreen />;
       default:
+        logger.warn('Index: Unknown active tab, defaulting to trainer', { activeTab });
         return <TrainerScreenVariantSelector onTypingChange={setIsUserTyping} />;
     }
   };
@@ -63,8 +78,14 @@ const Index = () => {
       {/* Bottom Navigation - Fixed height in document flow */}
       <BottomNavigation
         activeTab={activeTab}
-        onTabChange={setActiveTab}
-        onQuickAction={() => setIsQuickActionOpen(true)}
+        onTabChange={(tab: TabType) => {
+          logger.userAction('tabChange', { from: activeTab, to: tab });
+          setActiveTab(tab);
+        }}
+        onQuickAction={() => {
+          logger.userAction('quickActionOpen');
+          setIsQuickActionOpen(true);
+        }}
         hideFab={activeTab === 'trainer' && isUserTyping}
       />
 
