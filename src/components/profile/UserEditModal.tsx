@@ -123,7 +123,6 @@ export function UserEditModal({ isOpen, onClose }: UserEditModalProps) {
     return new Promise((resolve, reject) => {
       const img = new Image();
       img.onload = () => {
-        // Create canvas for cropping
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
         if (!ctx) {
@@ -131,38 +130,44 @@ export function UserEditModal({ isOpen, onClose }: UserEditModalProps) {
           return;
         }
 
-        // Set canvas size to the desired output size (circular crop)
-        const outputSize = 400; // 400x400 output
+        const outputSize = 400;
         canvas.width = outputSize;
         canvas.height = outputSize;
 
-        // Calculate the crop area based on scale and position
-        const { x, y, scale } = cropData;
-        
-        // Clear canvas and create circular clipping path
         ctx.clearRect(0, 0, outputSize, outputSize);
         ctx.beginPath();
         ctx.arc(outputSize / 2, outputSize / 2, outputSize / 2, 0, 2 * Math.PI);
         ctx.clip();
 
-        // Calculate source dimensions based on scale
-        const scaledWidth = img.width * scale;
-        const scaledHeight = img.height * scale;
+        // Match the preview container size (ImageCropper uses 128px container)
+        const previewSize = 128;
+        const scale = outputSize / previewSize;
+
+        // Apply transformations
+        const scaledX = cropData.x * scale;
+        const scaledY = cropData.y * scale;
         
-        // Calculate the position to center the crop
+        // Calculate image size to fit the preview container initially
+        const containerRatio = Math.min(previewSize / img.width, previewSize / img.height);
+        const baseWidth = img.width * containerRatio;
+        const baseHeight = img.height * containerRatio;
+        
+        // Apply crop scale and output scale
+        const finalWidth = baseWidth * cropData.scale * scale;
+        const finalHeight = baseHeight * cropData.scale * scale;
+        
+        // Center the image
         const centerX = outputSize / 2;
         const centerY = outputSize / 2;
         
-        // Draw the scaled and positioned image
         ctx.drawImage(
           img,
-          centerX - scaledWidth / 2 + x,
-          centerY - scaledHeight / 2 + y,
-          scaledWidth,
-          scaledHeight
+          centerX - finalWidth / 2 + scaledX,
+          centerY - finalHeight / 2 + scaledY,
+          finalWidth,
+          finalHeight
         );
 
-        // Convert canvas to blob
         canvas.toBlob(
           (blob) => {
             if (blob) {
@@ -172,7 +177,7 @@ export function UserEditModal({ isOpen, onClose }: UserEditModalProps) {
             }
           },
           'image/jpeg',
-          0.9
+          0.95
         );
       };
       img.onerror = () => reject(new Error('Failed to load image'));
@@ -180,8 +185,36 @@ export function UserEditModal({ isOpen, onClose }: UserEditModalProps) {
     });
   };
 
+  const handleAdjustCrop = () => {
+    if (photoPreview) {
+      // If we have an existing photo but no file object, we need to fetch it
+      if (!photo && profile?.avatar_url) {
+        // For existing photos, start with fresh crop settings
+        setCropData({ x: 0, y: 0, scale: 1 });
+        setShowCropper(true);
+      } else if (photo) {
+        // For new uploads, use existing crop data
+        setShowCropper(true);
+      }
+    }
+  };
+
   const handlePhotoUpload = async () => {
-    if (!photo) return;
+    if (!photo) {
+      // If no new photo but we're in cropper mode, we need to handle existing photo re-cropping
+      if (showCropper && photoPreview && profile?.avatar_url) {
+        // For existing photos, we can't re-crop without the original file
+        // Just close the cropper for now
+        setShowCropper(false);
+        toast({
+          title: "Re-cropping existing photos",
+          description: "Please upload a new photo to use the cropping feature.",
+          variant: "default",
+        });
+        return;
+      }
+      return;
+    }
 
     setUploading(true);
     try {
@@ -275,7 +308,7 @@ export function UserEditModal({ isOpen, onClose }: UserEditModalProps) {
             <Label>Profile Photo</Label>
             {photoPreview ? (
               <>
-                {showCropper && photo ? (
+                {showCropper ? (
                   <div className="space-y-4">
                     <ImageCropper
                       src={photoPreview}
@@ -292,11 +325,22 @@ export function UserEditModal({ isOpen, onClose }: UserEditModalProps) {
                       </Button>
                       <Button
                         type="button"
-                        onClick={handlePhotoUpload}
+                        onClick={() => {
+                          if (photo) {
+                            handlePhotoUpload();
+                          } else {
+                            // For existing photos, close cropper and show message
+                            setShowCropper(false);
+                            toast({
+                              title: "Note",
+                              description: "To crop existing photos, please upload a new version.",
+                            });
+                          }
+                        }}
                         disabled={uploading}
                         className="flex-1"
                       >
-                        {uploading ? "Uploading..." : "Save"}
+                        {uploading ? "Uploading..." : photo ? "Save" : "Done"}
                       </Button>
                     </div>
                   </div>
@@ -328,33 +372,37 @@ export function UserEditModal({ isOpen, onClose }: UserEditModalProps) {
                         )}
                       </div>
                       <div className="flex flex-col gap-2">
-                        <input
-                          ref={fileInputRef}
-                          type="file"
-                          accept="image/*"
-                          onChange={handlePhotoChange}
-                          className="hidden"
-                        />
-                        <Button 
-                          variant="outline" 
-                          size="sm" 
-                          onClick={() => fileInputRef.current?.click()}
-                          disabled={uploading}
-                        >
-                          <Camera className="w-4 h-4 mr-2" />
-                          Change Photo
-                        </Button>
-                        {/* Always show Adjust Crop if there's any photo (new or existing) */}
-                        {photoPreview && (
-                          <Button
-                            type="button"
-                            variant="outline"
-                            size="sm"
-                            onClick={() => setShowCropper(true)}
+                        <div className="flex gap-2">
+                          <input
+                            ref={fileInputRef}
+                            type="file"
+                            accept="image/*"
+                            onChange={handlePhotoChange}
+                            className="hidden"
+                          />
+                          <Button 
+                            variant="outline" 
+                            size="sm" 
+                            onClick={() => fileInputRef.current?.click()}
+                            disabled={uploading}
+                            className="flex-1"
                           >
-                            Adjust Crop
+                            <Camera className="w-4 h-4 mr-2" />
+                            Change Photo
                           </Button>
-                        )}
+                          {/* Always show Adjust Crop if there's any photo (new or existing) */}
+                          {photoPreview && (
+                            <Button
+                              type="button"
+                              variant="outline"
+                              size="sm"
+                              onClick={handleAdjustCrop}
+                              className="flex-1"
+                            >
+                              Adjust Crop
+                            </Button>
+                          )}
+                        </div>
                       </div>
                     </div>
                   </div>

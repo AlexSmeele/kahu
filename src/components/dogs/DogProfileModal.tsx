@@ -84,7 +84,6 @@ export function DogProfileModal({ isOpen, onClose, dog, mode }: DogProfileModalP
     return new Promise((resolve, reject) => {
       const img = new Image();
       img.onload = () => {
-        // Create canvas for cropping
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
         if (!ctx) {
@@ -92,38 +91,44 @@ export function DogProfileModal({ isOpen, onClose, dog, mode }: DogProfileModalP
           return;
         }
 
-        // Set canvas size to the desired output size (circular crop)
-        const outputSize = 400; // 400x400 output
+        const outputSize = 400;
         canvas.width = outputSize;
         canvas.height = outputSize;
 
-        // Calculate the crop area based on scale and position
-        const { x, y, scale } = cropData;
-        
-        // Clear canvas and create circular clipping path
         ctx.clearRect(0, 0, outputSize, outputSize);
         ctx.beginPath();
         ctx.arc(outputSize / 2, outputSize / 2, outputSize / 2, 0, 2 * Math.PI);
         ctx.clip();
 
-        // Calculate source dimensions based on scale
-        const scaledWidth = img.width * scale;
-        const scaledHeight = img.height * scale;
+        // Match the preview container size (ImageCropper uses 128px container)
+        const previewSize = 128;
+        const scale = outputSize / previewSize;
+
+        // Apply transformations
+        const scaledX = cropData.x * scale;
+        const scaledY = cropData.y * scale;
         
-        // Calculate the position to center the crop
+        // Calculate image size to fit the preview container initially
+        const containerRatio = Math.min(previewSize / img.width, previewSize / img.height);
+        const baseWidth = img.width * containerRatio;
+        const baseHeight = img.height * containerRatio;
+        
+        // Apply crop scale and output scale
+        const finalWidth = baseWidth * cropData.scale * scale;
+        const finalHeight = baseHeight * cropData.scale * scale;
+        
+        // Center the image
         const centerX = outputSize / 2;
         const centerY = outputSize / 2;
         
-        // Draw the scaled and positioned image
         ctx.drawImage(
           img,
-          centerX - scaledWidth / 2 + x,
-          centerY - scaledHeight / 2 + y,
-          scaledWidth,
-          scaledHeight
+          centerX - finalWidth / 2 + scaledX,
+          centerY - finalHeight / 2 + scaledY,
+          finalWidth,
+          finalHeight
         );
 
-        // Convert canvas to blob
         canvas.toBlob(
           (blob) => {
             if (blob) {
@@ -133,7 +138,7 @@ export function DogProfileModal({ isOpen, onClose, dog, mode }: DogProfileModalP
             }
           },
           'image/jpeg',
-          0.9
+          0.95
         );
       };
       img.onerror = () => reject(new Error('Failed to load image'));
