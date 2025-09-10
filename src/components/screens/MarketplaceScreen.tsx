@@ -313,7 +313,6 @@ export function MarketplaceScreen() {
         <div className="flex items-center justify-between mb-4">
           <h1 className="text-2xl font-bold text-foreground">Marketplace</h1>
           <div className="flex items-center gap-2">
-            <NotificationsDrawer />
             <CartDrawer
               cartItems={cartItems}
               onUpdateQuantity={handleUpdateCartQuantity}
