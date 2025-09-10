@@ -166,16 +166,20 @@ export function MealPlanVariantSelector({ dogId, nutritionPlan, onSave, trigger 
         
         const VariantComponent = variant.component;
         return (
-          <VariantComponent
-            key={selectedVariant}
-            dogId={dogId}
-            nutritionPlan={nutritionPlan}
-            onSave={(plan) => {
-              onSave?.(plan);
-              setSelectedVariant(null);
-            }}
-            trigger={<div style={{ display: 'none' }} />} // Hidden trigger since we auto-open
-          />
+          <Dialog open={true} onOpenChange={() => setSelectedVariant(null)}>
+            <DialogContent className="max-w-6xl h-[calc(100vh-2rem)] max-h-[900px] overflow-hidden flex flex-col">
+              <VariantComponent
+                key={selectedVariant}
+                dogId={dogId}
+                nutritionPlan={nutritionPlan}
+                onSave={(plan) => {
+                  onSave?.(plan);
+                  setSelectedVariant(null);
+                }}
+                trigger={null} // No trigger needed since we control the dialog
+              />
+            </DialogContent>
+          </Dialog>
         );
       })()}
     </>
