@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { useDogs, calculateAge } from "@/hooks/useDogs";
 import { DogSwitcher } from "@/components/dogs/DogSwitcher";
 import { useNutrition, MealTime } from "@/hooks/useNutrition";
-import { NutritionPlanModal } from "@/components/nutrition/NutritionPlanModal";
+import { MealPlanVariantSelector } from "@/components/nutrition/MealPlanVariantSelector";
 import { WeekPlannerModal } from "@/components/nutrition/WeekPlannerModal";
 
 
@@ -91,7 +91,7 @@ export function NutritionScreen({ selectedDogId, onDogChange }: NutritionScreenP
             <p className="text-sm text-muted-foreground mb-4">
               Create a nutrition plan to track {currentDog?.name || 'your dog'}'s meals and feeding schedule.
             </p>
-            <NutritionPlanModal 
+            <MealPlanVariantSelector 
               dogId={selectedDogId} 
               trigger={
                 <Button className="btn-primary">
@@ -131,7 +131,7 @@ export function NutritionScreen({ selectedDogId, onDogChange }: NutritionScreenP
                 <Clock className="w-4 h-4" />
                 {nutritionPlan.feeding_times} meals per day
               </div>
-              <NutritionPlanModal 
+              <MealPlanVariantSelector 
                 dogId={selectedDogId} 
                 nutritionPlan={nutritionPlan}
                 trigger={
@@ -176,7 +176,7 @@ export function NutritionScreen({ selectedDogId, onDogChange }: NutritionScreenP
             <>
               <div className="flex items-center justify-between mb-3">
                 <h3 className="font-semibold text-foreground">Today's Meals</h3>
-                <NutritionPlanModal 
+                <MealPlanVariantSelector 
                   dogId={selectedDogId} 
                   nutritionPlan={nutritionPlan}
                   trigger={
@@ -247,12 +247,15 @@ export function NutritionScreen({ selectedDogId, onDogChange }: NutritionScreenP
         </div>
       </div>
 
-      {/* Week Planner Modal */}
-      <WeekPlannerModal
+      {/* Modals */}
+      <MealPlanVariantSelector 
+        dogId={selectedDogId} 
+        nutritionPlan={nutritionPlan}
+      />
+      <WeekPlannerModal 
         isOpen={isWeekPlannerOpen}
         onClose={() => setIsWeekPlannerOpen(false)}
-        dogName={currentDog?.name || 'Your dog'}
-        currentPlan={nutritionPlan}
+        dogName={currentDog?.name || 'Your Dog'}
       />
     </div>
   );
