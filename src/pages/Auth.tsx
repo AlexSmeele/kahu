@@ -117,12 +117,38 @@ export default function Auth() {
         
         // Try to redirect the top window if in iframe
         if (window.top && window.top !== window) {
-          console.log('Redirecting top window...');
-          window.top.location.href = data.url;
+          try {
+            console.log('Attempting top window redirect...');
+            window.top.location.href = data.url;
+          } catch (securityError) {
+            console.log('Top window redirect blocked, falling back to popup:', securityError);
+            // Fallback to popup when security restrictions prevent parent navigation
+            const popup = window.open(data.url, '_blank', 'width=500,height=600,scrollbars=yes,resizable=yes');
+            
+            if (!popup) {
+              console.error('Popup blocked');
+              toast({
+                title: "Popup blocked",
+                description: "Please allow popups and try again.",
+                variant: "destructive",
+              });
+              return;
+            }
+            
+            // Monitor popup for completion
+            const checkClosed = setInterval(() => {
+              if (popup && popup.closed) {
+                console.log('Popup closed, reloading...');
+                clearInterval(checkClosed);
+                // Check auth state after popup closes
+                window.location.reload();
+              }
+            }, 1000);
+          }
         } else {
           console.log('Opening popup window...');
           // Fallback to popup if parent redirect fails
-          const popup = window.open(data.url, '_blank', 'width=500,height=600');
+          const popup = window.open(data.url, '_blank', 'width=500,height=600,scrollbars=yes,resizable=yes');
           
           if (!popup) {
             console.error('Popup blocked');
