@@ -135,90 +135,82 @@ export function VaccineScheduleModal({
               </TabsTrigger>
             </TabsList>
 
-            <div className="flex-1 overflow-hidden">
-              <TabsContent value="core" className="h-full flex flex-col m-0">
-                <div className="flex items-center justify-between mb-4 flex-shrink-0">
-                  <div>
-                    <h3 className="font-semibold">Core Vaccines</h3>
-                    <p className="text-sm text-muted-foreground">Essential vaccines recommended for all dogs</p>
-                  </div>
+            <TabsContent value="core" className="flex-1 flex flex-col overflow-hidden mt-4">
+              <div className="flex items-center justify-between mb-4 flex-shrink-0">
+                <div>
+                  <h3 className="font-semibold">Core Vaccines</h3>
+                  <p className="text-sm text-muted-foreground">Essential vaccines recommended for all dogs</p>
                 </div>
-                <ScrollArea className="flex-1">
-                  <div className="grid grid-cols-1 gap-4 pr-4">
-                    {getCoreVaccines().map((vaccine) => (
-                      <VaccineCard key={vaccine.id} vaccine={vaccine} />
-                    ))}
-                  </div>
-                  {getCoreVaccines().length === 0 && (
-                    <p className="text-center text-muted-foreground py-8">No core vaccines found</p>
-                  )}
-                </ScrollArea>
-              </TabsContent>
+              </div>
+              <ScrollArea className="flex-1">
+                <div className="grid grid-cols-1 gap-4 pr-4">
+                  {getCoreVaccines().map((vaccine) => (
+                    <VaccineCard key={vaccine.id} vaccine={vaccine} />
+                  ))}
+                </div>
+                {getCoreVaccines().length === 0 && (
+                  <p className="text-center text-muted-foreground py-8">No core vaccines found</p>
+                )}
+              </ScrollArea>
+            </TabsContent>
 
-              <TabsContent value="lifestyle" className="h-full flex flex-col m-0">
-                <div className="flex items-center justify-between mb-4 flex-shrink-0">
-                  <div>
-                    <h3 className="font-semibold">Lifestyle Vaccines</h3>
-                    <p className="text-sm text-muted-foreground">Vaccines based on your dog's activities and environment</p>
-                  </div>
+            <TabsContent value="lifestyle" className="flex-1 flex flex-col overflow-hidden mt-4">
+              <div className="flex items-center justify-between mb-4 flex-shrink-0">
+                <div>
+                  <h3 className="font-semibold">Lifestyle Vaccines</h3>
+                  <p className="text-sm text-muted-foreground">Vaccines based on your dog's activities and environment</p>
                 </div>
-                <ScrollArea className="flex-1">
-                  <div className="grid grid-cols-1 gap-4 pr-4">
-                    {getLifestyleVaccines().map((vaccine) => (
-                      <VaccineCard key={vaccine.id} vaccine={vaccine} />
-                    ))}
-                  </div>
-                  {getLifestyleVaccines().length === 0 && (
-                    <p className="text-center text-muted-foreground py-8">No lifestyle vaccines found</p>
-                  )}
-                </ScrollArea>
-              </TabsContent>
+              </div>
+              <ScrollArea className="flex-1">
+                <div className="grid grid-cols-1 gap-4 pr-4">
+                  {getLifestyleVaccines().map((vaccine) => (
+                    <VaccineCard key={vaccine.id} vaccine={vaccine} />
+                  ))}
+                </div>
+                {getLifestyleVaccines().length === 0 && (
+                  <p className="text-center text-muted-foreground py-8">No lifestyle vaccines found</p>
+                )}
+              </ScrollArea>
+            </TabsContent>
 
-              <TabsContent value="regional" className="h-full flex flex-col m-0">
-                <div className="flex items-center justify-between mb-4 flex-shrink-0">
-                  <div>
-                    <h3 className="font-semibold">Regional Vaccines</h3>
-                    <p className="text-sm text-muted-foreground">Location-specific vaccines for your area</p>
-                  </div>
+            <TabsContent value="regional" className="flex-1 flex flex-col overflow-hidden mt-4">
+              <div className="flex items-center justify-between mb-4 flex-shrink-0">
+                <div>
+                  <h3 className="font-semibold">Regional Vaccines</h3>
+                  <p className="text-sm text-muted-foreground">Location-specific vaccines for your area</p>
                 </div>
-                <ScrollArea className="flex-1">
-                  <div className="grid grid-cols-1 gap-4 pr-4">
-                    {getRegionalVaccines().map((vaccine) => (
-                      <VaccineCard key={vaccine.id} vaccine={vaccine} />
-                    ))}
-                  </div>
-                  {getRegionalVaccines().length === 0 && (
-                    <p className="text-center text-muted-foreground py-8">No regional vaccines found</p>
-                  )}
-                </ScrollArea>
-              </TabsContent>
+              </div>
+              <ScrollArea className="flex-1">
+                <div className="grid grid-cols-1 gap-4 pr-4">
+                  {getRegionalVaccines().map((vaccine) => (
+                    <VaccineCard key={vaccine.id} vaccine={vaccine} />
+                  ))}
+                </div>
+                {getRegionalVaccines().length === 0 && (
+                  <p className="text-center text-muted-foreground py-8">No regional vaccines found</p>
+                )}
+              </ScrollArea>
+            </TabsContent>
 
-              <TabsContent value="therapies" className="h-full flex flex-col m-0">
-                <div className="flex items-center justify-between mb-4 flex-shrink-0">
-                  <div>
-                    <h3 className="font-semibold">Injectable Therapies</h3>
-                    <p className="text-sm text-muted-foreground">Non-vaccine injectable treatments</p>
-                  </div>
+            <TabsContent value="therapies" className="flex-1 flex flex-col overflow-hidden mt-4">
+              <div className="flex items-center justify-between mb-4 flex-shrink-0">
+                <div>
+                  <h3 className="font-semibold">Injectable Therapies</h3>
+                  <p className="text-sm text-muted-foreground">Non-vaccine injectable treatments</p>
                 </div>
-                <ScrollArea className="flex-1">
-                  <div className="grid grid-cols-1 gap-4 pr-4">
-                    {getInjectableTherapies().map((vaccine) => (
-                      <VaccineCard key={vaccine.id} vaccine={vaccine} />
-                    ))}
-                  </div>
-                  {getInjectableTherapies().length === 0 && (
-                    <p className="text-center text-muted-foreground py-8">No injectable therapies found</p>
-                  )}
-                </ScrollArea>
-              </TabsContent>
-            </div>
+              </div>
+              <ScrollArea className="flex-1">
+                <div className="grid grid-cols-1 gap-4 pr-4">
+                  {getInjectableTherapies().map((vaccine) => (
+                    <VaccineCard key={vaccine.id} vaccine={vaccine} />
+                  ))}
+                </div>
+                {getInjectableTherapies().length === 0 && (
+                  <p className="text-center text-muted-foreground py-8">No injectable therapies found</p>
+                )}
+              </ScrollArea>
+            </TabsContent>
           </Tabs>
-
-          <div className="flex justify-end gap-2 pt-4 border-t flex-shrink-0">
-            <Button variant="outline" onClick={onClose}>
-              Close
-            </Button>
-          </div>
         </DialogContent>
       </Dialog>
 
