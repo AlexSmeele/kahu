@@ -6,7 +6,7 @@ import { useDogs } from "@/hooks/useDogs";
 import { useHealthData } from "@/hooks/useHealthData";
 import { DogSwitcher } from "@/components/dogs/DogSwitcher";
 import { WeightTracker } from "@/components/health/WeightTracker";
-import { VaccineModal } from "@/components/health/VaccineModal";
+import { VaccineScheduleModal } from "@/components/health/VaccineScheduleModal";
 import { VetVisitsModal } from "@/components/health/VetVisitsModal";
 import { HealthNotesModal } from "@/components/health/HealthNotesModal";
 
@@ -245,9 +245,13 @@ export function HealthScreen({ selectedDogId, onDogChange }: HealthScreenProps) 
         dogId={currentDog?.id || ''}
       />
       
-      <VaccineModal
+      <VaccineScheduleModal
         isOpen={isVaccineModalOpen}
-        onClose={() => setIsVaccineModalOpen(false)}
+        onClose={() => {
+          setIsVaccineModalOpen(false);
+          refetch(); // Refresh health data when vaccine modal closes
+        }}
+        dogId={currentDog?.id || ''}
         dogName={currentDog?.name || 'Your dog'}
         dogBirthday={currentDog?.birthday ? new Date(currentDog.birthday) : undefined}
       />

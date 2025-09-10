@@ -213,32 +213,69 @@ export function useHealthData(dogId: string) {
     if (!dogId) return;
 
     try {
-      const { data: vaccinations, error } = await supabase
-        .from('health_records')
-        .select('*')
+      const { data: vaccinationRecords, error } = await supabase
+        .from('vaccination_records')
+        .select(`
+          *,
+          vaccine:vaccines(*)
+        `)
         .eq('dog_id', dogId)
-        .eq('record_type', 'vaccination')
-        .order('date', { ascending: false });
+        .order('administered_date', { ascending: false });
 
       if (error) throw error;
 
-      if (vaccinations && vaccinations.length > 0) {
-        // For now, just count total vaccinations
-        // In a real app, you'd check due dates against vaccine schedules
+      if (vaccinationRecords && vaccinationRecords.length > 0) {
+        // Count vaccines that might be due
+        let dueCount = 0;
+        let nextVaccine = '';
+        
+        // Get core vaccines that should be given
+        const { data: coreVaccines } = await supabase
+          .from('vaccines')
+          .select('*')
+          .eq('vaccine_type', 'core');
+
+        if (coreVaccines) {
+          // Check if core vaccines are up to date
+          for (const vaccine of coreVaccines) {
+            const latestRecord = vaccinationRecords
+              .filter(r => r.vaccine_id === vaccine.id)
+              .sort((a, b) => new Date(b.administered_date).getTime() - new Date(a.administered_date).getTime())[0];
+            
+            if (!latestRecord) {
+              dueCount++;
+              if (!nextVaccine) nextVaccine = vaccine.name;
+            } else if (latestRecord.due_date) {
+              const dueDate = new Date(latestRecord.due_date);
+              const now = new Date();
+              if (dueDate < now) {
+                dueCount++;
+                if (!nextVaccine) nextVaccine = vaccine.name;
+              }
+            }
+          }
+        }
+
         setVaccinationData({
-          dueCount: 0, // This would be calculated based on vaccine schedules
-          total: vaccinations.length,
-          upcoming: vaccinations.length > 0 ? 'Up to date' : undefined
+          dueCount,
+          total: vaccinationRecords.length,
+          upcoming: dueCount > 0 ? `${nextVaccine} - Review schedule` : 'Up to date'
         });
       } else {
+        // No vaccination records, assume core vaccines are needed
         setVaccinationData({
-          dueCount: 0,
+          dueCount: 2, // Rabies and DHPP are typically core
           total: 0,
-          upcoming: undefined
+          upcoming: 'Core vaccines needed'
         });
       }
     } catch (error) {
       console.error('Error fetching vaccination data:', error);
+      setVaccinationData({
+        dueCount: 0,
+        total: 0,
+        upcoming: undefined
+      });
     }
   };
 

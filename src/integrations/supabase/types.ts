@@ -304,6 +304,98 @@ export type Database = {
         }
         Relationships: []
       }
+      vaccination_records: {
+        Row: {
+          administered_date: string
+          batch_number: string | null
+          created_at: string
+          dog_id: string
+          due_date: string | null
+          id: string
+          notes: string | null
+          updated_at: string
+          vaccine_id: string
+          veterinarian: string | null
+        }
+        Insert: {
+          administered_date: string
+          batch_number?: string | null
+          created_at?: string
+          dog_id: string
+          due_date?: string | null
+          id?: string
+          notes?: string | null
+          updated_at?: string
+          vaccine_id: string
+          veterinarian?: string | null
+        }
+        Update: {
+          administered_date?: string
+          batch_number?: string | null
+          created_at?: string
+          dog_id?: string
+          due_date?: string | null
+          id?: string
+          notes?: string | null
+          updated_at?: string
+          vaccine_id?: string
+          veterinarian?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "vaccination_records_vaccine_id_fkey"
+            columns: ["vaccine_id"]
+            isOneToOne: false
+            referencedRelation: "vaccines"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      vaccines: {
+        Row: {
+          booster_required: boolean | null
+          created_at: string
+          frequency_months: number | null
+          id: string
+          lifestyle_factors: string[] | null
+          name: string
+          notes: string | null
+          protects_against: string
+          puppy_start_weeks: number | null
+          schedule_info: string
+          updated_at: string
+          vaccine_type: string
+        }
+        Insert: {
+          booster_required?: boolean | null
+          created_at?: string
+          frequency_months?: number | null
+          id?: string
+          lifestyle_factors?: string[] | null
+          name: string
+          notes?: string | null
+          protects_against: string
+          puppy_start_weeks?: number | null
+          schedule_info: string
+          updated_at?: string
+          vaccine_type: string
+        }
+        Update: {
+          booster_required?: boolean | null
+          created_at?: string
+          frequency_months?: number | null
+          id?: string
+          lifestyle_factors?: string[] | null
+          name?: string
+          notes?: string | null
+          protects_against?: string
+          puppy_start_weeks?: number | null
+          schedule_info?: string
+          updated_at?: string
+          vaccine_type?: string
+        }
+        Relationships: []
+      }
       weight_records: {
         Row: {
           created_at: string
