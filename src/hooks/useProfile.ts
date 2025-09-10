@@ -20,6 +20,28 @@ export function useProfile() {
   useEffect(() => {
     if (user) {
       fetchProfile();
+      
+      // Set up real-time subscription for profile updates
+      const channel = supabase
+        .channel('profile-changes')
+        .on(
+          'postgres_changes',
+          {
+            event: 'UPDATE',
+            schema: 'public',
+            table: 'profiles',
+            filter: `id=eq.${user.id}`
+          },
+          (payload) => {
+            console.log('Profile updated in real-time:', payload);
+            setProfile(payload.new as Profile);
+          }
+        )
+        .subscribe();
+
+      return () => {
+        supabase.removeChannel(channel);
+      };
     } else {
       setProfile(null);
       setLoading(false);
