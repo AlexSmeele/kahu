@@ -13,8 +13,10 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Checkbox } from "@/components/ui/checkbox";
 import { VetClinicAutocomplete } from "@/components/ui/vet-clinic-autocomplete";
 import { useVetClinics } from "@/hooks/useVetClinics";
+import { useDogs } from "@/hooks/useDogs";
 import { useToast } from "@/hooks/use-toast";
 
 interface VetClinic {
@@ -36,30 +38,43 @@ interface VetClinicsModalProps {
 
 export function VetClinicsModal({ isOpen, onClose, dogId, dogName }: VetClinicsModalProps) {
   const { dogVetClinics, primaryClinic, isLoading, error, addVetClinic, updateClinicRelationship, removeVetClinic } = useVetClinics(dogId);
+  const { dogs } = useDogs();
   const { toast } = useToast();
   const [showAddForm, setShowAddForm] = useState(false);
   const [selectedClinic, setSelectedClinic] = useState<VetClinic | null>(null);
   const [relationshipNotes, setRelationshipNotes] = useState('');
+  const [selectedDogIds, setSelectedDogIds] = useState<string[]>([]);
 
   const handleAddClinic = async () => {
-    if (!selectedClinic) return;
+    if (!selectedClinic || selectedDogIds.length === 0) return;
 
     try {
-      await addVetClinic(
-        dogId,
-        selectedClinic,
-        dogVetClinics.length === 0, // Set as primary if it's the first clinic
-        relationshipNotes || undefined
+      const dogsToAdd = selectedDogIds.length === dogs.length ? [dogId] : selectedDogIds;
+      
+      await Promise.all(
+        dogsToAdd.map(currentDogId => 
+          addVetClinic(
+            currentDogId,
+            selectedClinic,
+            false, // Don't automatically set as primary for multiple dogs
+            relationshipNotes || undefined
+          )
+        )
       );
+      
+      const dogNames = selectedDogIds.length === dogs.length 
+        ? "all dogs" 
+        : dogs.filter(dog => selectedDogIds.includes(dog.id)).map(dog => dog.name).join(", ");
       
       toast({
         title: "Vet clinic added",
-        description: `${selectedClinic.name} has been added to ${dogName}'s health records.`,
+        description: `${selectedClinic.name} has been added to ${dogNames}'s health records.`,
       });
       
       setShowAddForm(false);
       setSelectedClinic(null);
       setRelationshipNotes('');
+      setSelectedDogIds([]);
     } catch (error) {
       toast({
         title: "Error",
@@ -191,7 +206,10 @@ export function VetClinicsModal({ isOpen, onClose, dogId, dogName }: VetClinicsM
           {!showAddForm ? (
             <Button
               variant="outline"
-              onClick={() => setShowAddForm(true)}
+              onClick={() => {
+                setShowAddForm(true);
+                setSelectedDogIds(dogs.map(dog => dog.id)); // Default to all dogs
+              }}
               className="w-full"
             >
               <Plus className="w-4 h-4 mr-2" />
@@ -209,6 +227,42 @@ export function VetClinicsModal({ isOpen, onClose, dogId, dogName }: VetClinicsM
                     placeholder="Search for veterinary clinic..."
                   />
                 </div>
+
+                <div>
+                  <Label>Apply to Dogs</Label>
+                  <div className="space-y-2 mt-2">
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        id="all-dogs"
+                        checked={selectedDogIds.length === dogs.length}
+                        onCheckedChange={(checked) => {
+                          if (checked) {
+                            setSelectedDogIds(dogs.map(dog => dog.id));
+                          } else {
+                            setSelectedDogIds([]);
+                          }
+                        }}
+                      />
+                      <Label htmlFor="all-dogs" className="text-sm font-medium">All Dogs</Label>
+                    </div>
+                    {dogs.map((dog) => (
+                      <div key={dog.id} className="flex items-center space-x-2 ml-6">
+                        <Checkbox
+                          id={`dog-${dog.id}`}
+                          checked={selectedDogIds.includes(dog.id)}
+                          onCheckedChange={(checked) => {
+                            if (checked) {
+                              setSelectedDogIds([...selectedDogIds, dog.id]);
+                            } else {
+                              setSelectedDogIds(selectedDogIds.filter(id => id !== dog.id));
+                            }
+                          }}
+                        />
+                        <Label htmlFor={`dog-${dog.id}`} className="text-sm">{dog.name}</Label>
+                      </div>
+                    ))}
+                  </div>
+                </div>
                 
                 <div>
                   <Label htmlFor="relationship-notes">Notes (Optional)</Label>
@@ -225,7 +279,7 @@ export function VetClinicsModal({ isOpen, onClose, dogId, dogName }: VetClinicsM
                 <div className="flex gap-2">
                   <Button
                     onClick={handleAddClinic}
-                    disabled={!selectedClinic || isLoading}
+                    disabled={!selectedClinic || selectedDogIds.length === 0 || isLoading}
                     size="sm"
                   >
                     Add Clinic
@@ -236,6 +290,7 @@ export function VetClinicsModal({ isOpen, onClose, dogId, dogName }: VetClinicsM
                       setShowAddForm(false);
                       setSelectedClinic(null);
                       setRelationshipNotes('');
+                      setSelectedDogIds([]);
                     }}
                     size="sm"
                   >
