@@ -16,7 +16,7 @@ export default function Auth() {
   const [displayName, setDisplayName] = useState('');
   const [loading, setLoading] = useState(false);
   
-  const { signUp, signIn, user, bypassAuth } = useAuth();
+  const { signUp, signIn, user } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
 
@@ -346,19 +346,6 @@ export default function Auth() {
                 }
               </button>
             </div>
-            
-            {import.meta.env.MODE === 'development' && (
-              <div className="pt-4 border-t border-border">
-                <Button
-                  type="button"
-                  variant="outline"
-                  className="w-full text-muted-foreground hover:text-foreground"
-                  onClick={bypassAuth}
-                >
-                  Skip Authentication (Dev Mode)
-                </Button>
-              </div>
-            )}
           </div>
         </CardContent>
       </Card>
