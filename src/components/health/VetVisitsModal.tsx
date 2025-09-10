@@ -8,6 +8,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { VetClinicAutocomplete } from "@/components/ui/vet-clinic-autocomplete";
+import { supabase } from "@/integrations/supabase/client";
 import { format } from "date-fns";
 
 interface VetVisit {
@@ -28,8 +30,14 @@ interface VetClinic {
   id: string;
   name: string;
   address: string;
-  phone: string;
-  isDefault?: boolean;
+  phone?: string;
+  email?: string;
+  website?: string;
+  latitude?: number;
+  longitude?: number;
+  osm_place_id?: string;
+  services?: string[];
+  verified: boolean;
 }
 
 interface VetVisitsModalProps {
@@ -71,13 +79,16 @@ const mockVetClinics: VetClinic[] = [
     name: "Sunny Paws Veterinary Clinic",
     address: "123 Pet Street, Animal City, AC 12345",
     phone: "(555) 123-4567",
-    isDefault: true,
+    verified: true,
+    services: []
   },
   {
     id: "2", 
     name: "Emergency Pet Hospital",
     address: "456 Emergency Ave, Animal City, AC 12345",
     phone: "(555) 987-6543",
+    verified: true,
+    services: []
   },
 ];
 
@@ -98,13 +109,14 @@ export function VetVisitsModal({ isOpen, onClose, dogName }: VetVisitsModalProps
     followUpDate: '',
     cost: '',
   });
+  const [selectedClinic, setSelectedClinic] = useState<VetClinic | null>(null);
   const [newClinic, setNewClinic] = useState({
     name: '',
     address: '',
     phone: '',
   });
 
-  const defaultClinic = clinics.find(c => c.isDefault);
+  const defaultClinic = clinics[0]; // Use first clinic as default
 
   const getVisitTypeColor = (type: VetVisit['type']) => {
     switch (type) {
@@ -123,9 +135,26 @@ export function VetVisitsModal({ isOpen, onClose, dogName }: VetVisitsModalProps
     }
   };
 
-  const handleAddVisit = () => {
+  const handleAddVisit = async () => {
     if (!newVisit.date || !newVisit.type || !newVisit.veterinarian || !newVisit.reason) {
       return;
+    }
+
+    const clinicName = selectedClinic?.name || newVisit.clinic || defaultClinic?.name || '';
+    
+    // If a clinic was selected through autocomplete, save it to the database
+    if (selectedClinic && !selectedClinic.id.startsWith('osm_')) {
+      try {
+        await supabase.functions.invoke('upsert-vet-clinic', {
+          body: {
+            clinicData: selectedClinic,
+            dogId: 'current-dog-id', // This would be passed as a prop in real implementation
+            isPrimary: false
+          }
+        });
+      } catch (error) {
+        console.error('Error saving clinic:', error);
+      }
     }
 
     const visit: VetVisit = {
@@ -133,7 +162,7 @@ export function VetVisitsModal({ isOpen, onClose, dogName }: VetVisitsModalProps
       date: new Date(newVisit.date),
       type: newVisit.type as VetVisit['type'],
       veterinarian: newVisit.veterinarian,
-      clinic: newVisit.clinic || defaultClinic?.name || '',
+      clinic: clinicName,
       reason: newVisit.reason,
       diagnosis: newVisit.diagnosis || undefined,
       treatment: newVisit.treatment || undefined,
@@ -155,6 +184,7 @@ export function VetVisitsModal({ isOpen, onClose, dogName }: VetVisitsModalProps
       followUpDate: '',
       cost: '',
     });
+    setSelectedClinic(null);
     setShowAddForm(false);
   };
 
@@ -164,7 +194,8 @@ export function VetVisitsModal({ isOpen, onClose, dogName }: VetVisitsModalProps
     const clinic: VetClinic = {
       id: Date.now().toString(),
       ...newClinic,
-      isDefault: clinics.length === 0,
+      verified: false,
+      services: []
     };
 
     setClinics(prev => [...prev, clinic]);
@@ -262,29 +293,33 @@ export function VetVisitsModal({ isOpen, onClose, dogName }: VetVisitsModalProps
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-3">
-                  <div>
-                    <Label htmlFor="veterinarian">Veterinarian</Label>
-                    <Input
-                      id="veterinarian"
-                      value={newVisit.veterinarian}
-                      onChange={(e) => setNewVisit(prev => ({ ...prev, veterinarian: e.target.value }))}
-                      placeholder="Dr. Name"
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="clinic">Clinic</Label>
-                    <Select value={newVisit.clinic} onValueChange={(value) => setNewVisit(prev => ({ ...prev, clinic: value }))}>
-                      <SelectTrigger>
-                        <SelectValue placeholder={defaultClinic?.name || "Select clinic"} />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {clinics.map(clinic => (
-                          <SelectItem key={clinic.id} value={clinic.name}>{clinic.name}</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
+                <div>
+                  <Label htmlFor="veterinarian">Veterinarian</Label>
+                  <Input
+                    id="veterinarian"
+                    value={newVisit.veterinarian}
+                    onChange={(e) => setNewVisit(prev => ({ ...prev, veterinarian: e.target.value }))}
+                    placeholder="Dr. Name"
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="clinic">Clinic</Label>
+                  <VetClinicAutocomplete
+                    value={selectedClinic}
+                    onChange={(clinic) => {
+                      setSelectedClinic(clinic);
+                      if (clinic) {
+                        setNewVisit(prev => ({ ...prev, clinic: clinic.name }));
+                      }
+                    }}
+                    placeholder={defaultClinic?.name || "Search for a veterinary clinic..."}
+                  />
+                  {!selectedClinic && (
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Start typing to search for clinics, or add one manually if not found
+                    </p>
+                  )}
                 </div>
 
                 <div>

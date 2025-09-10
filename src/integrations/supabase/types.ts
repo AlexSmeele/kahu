@@ -45,7 +45,15 @@ export type Database = {
           target_minutes?: number
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "activity_goals_dog_id_fkey"
+            columns: ["dog_id"]
+            isOneToOne: false
+            referencedRelation: "dogs"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       activity_records: {
         Row: {
@@ -93,7 +101,15 @@ export type Database = {
           tracking_method?: string | null
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "activity_records_dog_id_fkey"
+            columns: ["dog_id"]
+            isOneToOne: false
+            referencedRelation: "dogs"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       dog_tricks: {
         Row: {
@@ -142,6 +158,44 @@ export type Database = {
             columns: ["trick_id"]
             isOneToOne: false
             referencedRelation: "tricks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      dog_vet_clinics: {
+        Row: {
+          created_at: string
+          dog_id: string
+          id: string
+          is_primary: boolean | null
+          relationship_notes: string | null
+          updated_at: string
+          vet_clinic_id: string
+        }
+        Insert: {
+          created_at?: string
+          dog_id: string
+          id?: string
+          is_primary?: boolean | null
+          relationship_notes?: string | null
+          updated_at?: string
+          vet_clinic_id: string
+        }
+        Update: {
+          created_at?: string
+          dog_id?: string
+          id?: string
+          is_primary?: boolean | null
+          relationship_notes?: string | null
+          updated_at?: string
+          vet_clinic_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "dog_vet_clinics_vet_clinic_id_fkey"
+            columns: ["vet_clinic_id"]
+            isOneToOne: false
+            referencedRelation: "vet_clinics"
             referencedColumns: ["id"]
           },
         ]
@@ -207,6 +261,7 @@ export type Database = {
           record_type: string
           title: string
           updated_at: string
+          vet_clinic_id: string | null
           veterinarian: string | null
         }
         Insert: {
@@ -219,6 +274,7 @@ export type Database = {
           record_type: string
           title: string
           updated_at?: string
+          vet_clinic_id?: string | null
           veterinarian?: string | null
         }
         Update: {
@@ -231,6 +287,7 @@ export type Database = {
           record_type?: string
           title?: string
           updated_at?: string
+          vet_clinic_id?: string | null
           veterinarian?: string | null
         }
         Relationships: [
@@ -239,6 +296,13 @@ export type Database = {
             columns: ["dog_id"]
             isOneToOne: false
             referencedRelation: "dogs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "health_records_vet_clinic_id_fkey"
+            columns: ["vet_clinic_id"]
+            isOneToOne: false
+            referencedRelation: "vet_clinics"
             referencedColumns: ["id"]
           },
         ]
@@ -470,6 +534,7 @@ export type Database = {
           notes: string | null
           updated_at: string
           vaccine_id: string
+          vet_clinic_id: string | null
           veterinarian: string | null
         }
         Insert: {
@@ -482,6 +547,7 @@ export type Database = {
           notes?: string | null
           updated_at?: string
           vaccine_id: string
+          vet_clinic_id?: string | null
           veterinarian?: string | null
         }
         Update: {
@@ -494,6 +560,7 @@ export type Database = {
           notes?: string | null
           updated_at?: string
           vaccine_id?: string
+          vet_clinic_id?: string | null
           veterinarian?: string | null
         }
         Relationships: [
@@ -509,6 +576,13 @@ export type Database = {
             columns: ["vaccine_id"]
             isOneToOne: false
             referencedRelation: "vaccines"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "vaccination_records_vet_clinic_id_fkey"
+            columns: ["vet_clinic_id"]
+            isOneToOne: false
+            referencedRelation: "vet_clinics"
             referencedColumns: ["id"]
           },
         ]
@@ -555,6 +629,60 @@ export type Database = {
           schedule_info?: string
           updated_at?: string
           vaccine_type?: string
+        }
+        Relationships: []
+      }
+      vet_clinics: {
+        Row: {
+          address: string
+          created_at: string
+          email: string | null
+          hours: Json | null
+          id: string
+          latitude: number | null
+          longitude: number | null
+          name: string
+          osm_place_id: string | null
+          osm_type: string | null
+          phone: string | null
+          services: string[] | null
+          updated_at: string
+          verified: boolean | null
+          website: string | null
+        }
+        Insert: {
+          address: string
+          created_at?: string
+          email?: string | null
+          hours?: Json | null
+          id?: string
+          latitude?: number | null
+          longitude?: number | null
+          name: string
+          osm_place_id?: string | null
+          osm_type?: string | null
+          phone?: string | null
+          services?: string[] | null
+          updated_at?: string
+          verified?: boolean | null
+          website?: string | null
+        }
+        Update: {
+          address?: string
+          created_at?: string
+          email?: string | null
+          hours?: Json | null
+          id?: string
+          latitude?: number | null
+          longitude?: number | null
+          name?: string
+          osm_place_id?: string | null
+          osm_type?: string | null
+          phone?: string | null
+          services?: string[] | null
+          updated_at?: string
+          verified?: boolean | null
+          website?: string | null
         }
         Relationships: []
       }
