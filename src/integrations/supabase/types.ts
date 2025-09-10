@@ -394,6 +394,13 @@ export type Database = {
         }
         Relationships: [
           {
+            foreignKeyName: "vaccination_records_dog_id_fkey"
+            columns: ["dog_id"]
+            isOneToOne: false
+            referencedRelation: "dogs"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "vaccination_records_vaccine_id_fkey"
             columns: ["vaccine_id"]
             isOneToOne: false
@@ -475,7 +482,15 @@ export type Database = {
           updated_at?: string
           weight?: number
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "weight_records_dog_id_fkey"
+            columns: ["dog_id"]
+            isOneToOne: false
+            referencedRelation: "dogs"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
