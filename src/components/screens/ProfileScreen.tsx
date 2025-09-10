@@ -8,6 +8,7 @@ import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { NotificationsDrawer } from "@/components/notifications/NotificationsDrawer";
 import { useAuth } from "@/contexts/AuthContext";
 import { useDogs, calculateAge } from "@/hooks/useDogs";
+import { useProfile } from "@/hooks/useProfile";
 import { useToast } from "@/hooks/use-toast";
 import { DogProfileModal } from "@/components/dogs/DogProfileModal";
 import { OrderHistoryModal } from "@/components/marketplace/OrderHistoryModal";
@@ -32,6 +33,7 @@ const menuItems = [
 export function ProfileScreen() {
   const { signOut, user } = useAuth();
   const { dogs, loading: dogsLoading, deleteDog, reorderDogs } = useDogs();
+  const { profile } = useProfile();
   const { toast } = useToast();
   const [dogModalOpen, setDogModalOpen] = useState(false);
   const [editingDog, setEditingDog] = useState<DogType | null>(null);
@@ -142,14 +144,14 @@ export function ProfileScreen() {
           <div className="p-4 border-b border-border">
             <div className="flex items-center gap-4 mb-4">
               <Avatar className="w-16 h-16">
-                <AvatarImage src="/placeholder-user.jpg" alt="Alex" />
+                <AvatarImage src={profile?.avatar_url || undefined} alt="Profile" />
                 <AvatarFallback className="bg-primary text-primary-foreground text-lg font-semibold">
-                  AK
+                  {profile?.display_name?.[0]?.toUpperCase() || user?.email?.[0]?.toUpperCase() || 'U'}
                 </AvatarFallback>
               </Avatar>
               <div className="flex-1">
                 <h2 className="text-xl font-semibold text-foreground">
-                  {user?.email?.split('@')[0] || 'User'}
+                  {profile?.display_name || user?.email?.split('@')[0] || 'User'}
                 </h2>
                 <p className="text-muted-foreground">{user?.email}</p>
                 <Badge variant="outline" className="mt-1 text-primary border-primary/30">

@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { User, Save, X } from "lucide-react";
+import { useState, useRef, useEffect } from "react";
+import { User, Save, Camera, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -7,6 +7,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
+import { useProfile } from "@/hooks/useProfile";
 
 interface UserEditModalProps {
   isOpen: boolean;
@@ -16,8 +17,11 @@ interface UserEditModalProps {
 export function UserEditModal({ isOpen, onClose }: UserEditModalProps) {
   const { user } = useAuth();
   const { toast } = useToast();
+  const { profile, updateProfile, uploadAvatar } = useProfile();
+  const fileInputRef = useRef<HTMLInputElement>(null);
   
   const [formData, setFormData] = useState({
+    displayName: '',
     firstName: '',
     lastName: '',
     email: user?.email || '',
@@ -27,14 +31,123 @@ export function UserEditModal({ isOpen, onClose }: UserEditModalProps) {
     country: '',
     postalCode: '',
   });
+  
+  const [uploading, setUploading] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
-  const handleSave = () => {
-    // Here you would typically update the user profile via API
-    toast({
-      title: "Profile updated",
-      description: "Your profile information has been saved successfully.",
+  // Update form data when profile loads or modal opens
+  useEffect(() => {
+    if (profile && isOpen) {
+      setFormData(prev => ({
+        ...prev,
+        displayName: profile.display_name || '',
+        firstName: profile.display_name?.split(' ')[0] || '',
+        lastName: profile.display_name?.split(' ').slice(1).join(' ') || '',
+      }));
+    }
+  }, [profile, isOpen]);
+
+  const validateAddress = () => {
+    const newErrors: Record<string, string> = {};
+    
+    if (formData.address && !formData.city) {
+      newErrors.city = 'City is required when address is provided';
+    }
+    if (formData.address && !formData.country) {
+      newErrors.country = 'Country is required when address is provided';
+    }
+    if (formData.postalCode && !/^[A-Za-z0-9\s-]{3,10}$/.test(formData.postalCode)) {
+      newErrors.postalCode = 'Please enter a valid postal code';
+    }
+    
+    return newErrors;
+  };
+
+  const handlePhotoUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    // Validate file size (5MB limit)
+    if (file.size > 5 * 1024 * 1024) {
+      toast({
+        title: "File too large",
+        description: "Please select an image under 5MB.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      toast({
+        title: "Invalid file type",
+        description: "Please select a valid image file (JPG, PNG, etc.).",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setUploading(true);
+    try {
+      const { error, url } = await uploadAvatar(file);
+      
+      if (error) {
+        toast({
+          title: "Upload failed",
+          description: error,
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Photo updated",
+          description: "Your profile photo has been updated successfully.",
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Upload failed",
+        description: "Failed to upload photo. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const handleSave = async () => {
+    const validationErrors = validateAddress();
+    setErrors(validationErrors);
+    
+    if (Object.keys(validationErrors).length > 0) {
+      toast({
+        title: "Validation errors",
+        description: "Please fix the errors before saving.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const displayName = formData.firstName && formData.lastName 
+      ? `${formData.firstName} ${formData.lastName}`.trim()
+      : formData.displayName || formData.firstName || user?.email?.split('@')[0] || '';
+
+    const { error } = await updateProfile({
+      display_name: displayName,
     });
-    onClose();
+
+    if (error) {
+      toast({
+        title: "Save failed",
+        description: error,
+        variant: "destructive",
+      });
+    } else {
+      toast({
+        title: "Profile updated",
+        description: "Your profile information has been saved successfully.",
+      });
+      onClose();
+    }
   };
 
   return (
@@ -51,14 +164,36 @@ export function UserEditModal({ isOpen, onClose }: UserEditModalProps) {
           {/* Profile Picture */}
           <div className="flex items-center gap-4">
             <Avatar className="w-20 h-20">
-              <AvatarImage src="/placeholder-user.jpg" alt="Profile" />
+              <AvatarImage src={profile?.avatar_url || undefined} alt="Profile" />
               <AvatarFallback className="bg-primary text-primary-foreground text-xl">
-                {formData.firstName?.[0] || user?.email?.[0]?.toUpperCase() || 'U'}
+                {formData.displayName?.[0] || formData.firstName?.[0] || user?.email?.[0]?.toUpperCase() || 'U'}
               </AvatarFallback>
             </Avatar>
             <div>
-              <Button variant="outline" size="sm">
-                Change Photo
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                onChange={handlePhotoUpload}
+                className="hidden"
+              />
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={() => fileInputRef.current?.click()}
+                disabled={uploading}
+              >
+                {uploading ? (
+                  <>
+                    <Upload className="w-4 h-4 mr-2 animate-spin" />
+                    Uploading...
+                  </>
+                ) : (
+                  <>
+                    <Camera className="w-4 h-4 mr-2" />
+                    Change Photo
+                  </>
+                )}
               </Button>
               <p className="text-xs text-muted-foreground mt-1">
                 JPG, PNG up to 5MB
@@ -96,7 +231,12 @@ export function UserEditModal({ isOpen, onClose }: UserEditModalProps) {
               value={formData.email}
               onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
               placeholder="email@example.com"
+              disabled
+              className="opacity-60"
             />
+            <p className="text-xs text-muted-foreground mt-1">
+              Email cannot be changed here
+            </p>
           </div>
 
           <div>
@@ -129,7 +269,11 @@ export function UserEditModal({ isOpen, onClose }: UserEditModalProps) {
                 value={formData.city}
                 onChange={(e) => setFormData(prev => ({ ...prev, city: e.target.value }))}
                 placeholder="City"
+                className={errors.city ? 'border-destructive' : ''}
               />
+              {errors.city && (
+                <p className="text-xs text-destructive mt-1">{errors.city}</p>
+              )}
             </div>
             <div>
               <Label htmlFor="country">Country</Label>
@@ -138,7 +282,11 @@ export function UserEditModal({ isOpen, onClose }: UserEditModalProps) {
                 value={formData.country}
                 onChange={(e) => setFormData(prev => ({ ...prev, country: e.target.value }))}
                 placeholder="Country"
+                className={errors.country ? 'border-destructive' : ''}
               />
+              {errors.country && (
+                <p className="text-xs text-destructive mt-1">{errors.country}</p>
+              )}
             </div>
             <div>
               <Label htmlFor="postalCode">Postal Code</Label>
@@ -147,7 +295,11 @@ export function UserEditModal({ isOpen, onClose }: UserEditModalProps) {
                 value={formData.postalCode}
                 onChange={(e) => setFormData(prev => ({ ...prev, postalCode: e.target.value }))}
                 placeholder="12345"
+                className={errors.postalCode ? 'border-destructive' : ''}
               />
+              {errors.postalCode && (
+                <p className="text-xs text-destructive mt-1">{errors.postalCode}</p>
+              )}
             </div>
           </div>
 
