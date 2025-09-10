@@ -7,6 +7,7 @@ import { DogSwitcher } from "@/components/dogs/DogSwitcher";
 import { useNutrition, MealTime } from "@/hooks/useNutrition";
 import { NutritionPlanModal } from "@/components/nutrition/NutritionPlanModal";
 import { WeekPlannerModal } from "@/components/nutrition/WeekPlannerModal";
+import { NotificationsDrawer } from "@/components/notifications/NotificationsDrawer";
 
 // Mock data for today's feeding progress
 const getTodayProgress = (mealSchedule?: MealTime[], dailyAmount?: number) => {
@@ -62,14 +63,17 @@ export function NutritionScreen({ selectedDogId, onDogChange }: NutritionScreenP
               <p className="text-sm text-muted-foreground">Meal planning & tracking</p>
             </div>
           </div>
-          <Button 
-            variant="outline" 
-            size="sm"
-            onClick={() => setIsWeekPlannerOpen(true)}
-          >
-            <Calendar className="w-4 h-4 mr-1" />
-            Plan Week
-          </Button>
+          <div className="flex items-center gap-2">
+            <NotificationsDrawer />
+            <Button 
+              variant="outline" 
+              size="sm"
+              onClick={() => setIsWeekPlannerOpen(true)}
+            >
+              <Calendar className="w-4 h-4 mr-1" />
+              Plan Week
+            </Button>
+          </div>
         </div>
         
         {/* Dog Switcher */}

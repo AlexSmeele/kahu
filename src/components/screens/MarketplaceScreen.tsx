@@ -1,7 +1,8 @@
 import { useState, useMemo } from "react";
 import { Search, Filter, ShoppingCart, Star, ShoppingBag } from "lucide-react";
 import { CartDrawer } from "@/components/marketplace/CartDrawer";
-import { OrderHistoryModal } from "@/components/marketplace/OrderHistoryModal";
+import { OrderHistoryModal } from "@/components/marketplace/OrderHistoryModal"; 
+import { NotificationsDrawer } from "@/components/notifications/NotificationsDrawer";
 import { useToast } from "@/hooks/use-toast";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -77,7 +78,7 @@ const mockProducts: Product[] = [
     name: "Orthopedic Dog Bed",
     price: 89.99,
     supplier: "PetSafe",
-    category: "Bedding",
+    category: "Beds",
     rating: 4.9,
     imageUrl: "https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?w=300&h=300&fit=crop",
     description: "Memory foam bed for joint support",
@@ -116,9 +117,75 @@ const mockProducts: Product[] = [
     description: "Real-time location tracking and activity monitoring",
     inStock: true,
   },
+  {
+    id: "9",
+    name: "Omega-3 Fish Oil Supplement",
+    price: 28.99,
+    supplier: "Zesty Paws",
+    category: "Health",
+    rating: 4.7,
+    imageUrl: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=300&h=300&fit=crop",
+    description: "Supports healthy skin, coat, and joints",
+    inStock: true,
+  },
+  {
+    id: "10",
+    name: "Dog Toothbrush Set",
+    price: 15.99,
+    supplier: "Arm & Hammer",
+    category: "Health",
+    rating: 4.4,
+    imageUrl: "https://images.unsplash.com/photo-1609081219090-a6d81d3085bf?w=300&h=300&fit=crop",
+    description: "Complete dental care kit with finger brush",
+    inStock: true,
+  },
+  {
+    id: "11",  
+    name: "Enzymatic Toothpaste",
+    price: 12.50,
+    supplier: "Virbac",
+    category: "Health",
+    rating: 4.6,
+    imageUrl: "https://images.unsplash.com/photo-1563865436874-9aef32095fda?w=300&h=300&fit=crop",
+    description: "Poultry-flavored enzymatic toothpaste",
+    inStock: true,
+  },
+  {
+    id: "12",
+    name: "Joint Support Supplement",
+    price: 34.99,
+    supplier: "Nutramax",
+    category: "Health",
+    rating: 4.8,
+    imageUrl: "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=300&h=300&fit=crop",
+    description: "Glucosamine and chondroitin for joint health",
+    inStock: true,
+  },
+  {
+    id: "13",
+    name: "Probiotic Chews",
+    price: 24.99,
+    supplier: "PetHonesty",
+    category: "Health", 
+    rating: 4.5,
+    imageUrl: "https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?w=300&h=300&fit=crop",
+    description: "Digestive health support with probiotics",
+    inStock: true,
+  },
+  {
+    id: "14",
+    name: "Ear Cleaning Solution",
+    price: 18.99,
+    supplier: "Vet's Best",
+    category: "Health",
+    rating: 4.3,
+    imageUrl: "https://images.unsplash.com/photo-1583337130417-3346a1be7dee?w=300&h=300&fit=crop",
+    description: "Gentle formula for regular ear cleaning",
+    inStock: true,
+  }
 ];
 
-const categories = ["All", "Food", "Toys", "Accessories", "Treats", "Bedding", "Training"];
+const categories = ["All", "Food", "Toys", "Accessories", "Treats", "Beds", "Training", "Health"];
 
 export function MarketplaceScreen() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -245,13 +312,16 @@ export function MarketplaceScreen() {
       <div className="bg-card border-b border-border p-4">
         <div className="flex items-center justify-between mb-4">
           <h1 className="text-2xl font-bold text-foreground">Marketplace</h1>
-          <CartDrawer
-            cartItems={cartItems}
-            onUpdateQuantity={handleUpdateCartQuantity}
-            onRemoveItem={handleRemoveFromCart}
-            onCheckout={handleCheckout}
-            onViewOrderHistory={() => setIsOrderHistoryOpen(true)}
-          />
+          <div className="flex items-center gap-2">
+            <NotificationsDrawer />
+            <CartDrawer
+              cartItems={cartItems}
+              onUpdateQuantity={handleUpdateCartQuantity}
+              onRemoveItem={handleRemoveFromCart}
+              onCheckout={handleCheckout}
+              onViewOrderHistory={() => setIsOrderHistoryOpen(true)}
+            />
+          </div>
         </div>
         
         {/* Search and Sort Bar */}
