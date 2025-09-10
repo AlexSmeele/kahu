@@ -47,10 +47,23 @@ export interface WeightData {
   change: number;
 }
 
+export interface VaccinationData {
+  dueCount: number;
+  upcoming?: string;
+  total: number;
+}
+
+export interface VetVisitData {
+  lastVisit?: string;
+  total: number;
+}
+
 export function useHealthData(dogId: string) {
   const [weightData, setWeightData] = useState<WeightData | null>(null);
   const [recentRecords, setRecentRecords] = useState<RecentRecord[]>([]);
   const [healthRecordsCount, setHealthRecordsCount] = useState(0);
+  const [vaccinationData, setVaccinationData] = useState<VaccinationData | null>(null);
+  const [vetVisitData, setVetVisitData] = useState<VetVisitData | null>(null);
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
 
@@ -80,6 +93,8 @@ export function useHealthData(dogId: string) {
           trend: `${trend} kg`,
           lastUpdated: formatDistanceToNow(new Date(latest.date), { addSuffix: true }),
         });
+      } else {
+        setWeightData(null);
       }
     } catch (error) {
       console.error('Error fetching weight data:', error);
@@ -139,7 +154,6 @@ export function useHealthData(dogId: string) {
                    record.record_type === 'vet_visit' ? 'text-destructive' : 'text-warning',
           });
         });
-        setHealthRecordsCount(healthRecords.length);
       }
 
       // Fetch recent training sessions
@@ -195,6 +209,69 @@ export function useHealthData(dogId: string) {
     }
   };
 
+  const fetchVaccinationData = async () => {
+    if (!dogId) return;
+
+    try {
+      const { data: vaccinations, error } = await supabase
+        .from('health_records')
+        .select('*')
+        .eq('dog_id', dogId)
+        .eq('record_type', 'vaccination')
+        .order('date', { ascending: false });
+
+      if (error) throw error;
+
+      if (vaccinations && vaccinations.length > 0) {
+        // For now, just count total vaccinations
+        // In a real app, you'd check due dates against vaccine schedules
+        setVaccinationData({
+          dueCount: 0, // This would be calculated based on vaccine schedules
+          total: vaccinations.length,
+          upcoming: vaccinations.length > 0 ? 'Up to date' : undefined
+        });
+      } else {
+        setVaccinationData({
+          dueCount: 0,
+          total: 0,
+          upcoming: undefined
+        });
+      }
+    } catch (error) {
+      console.error('Error fetching vaccination data:', error);
+    }
+  };
+
+  const fetchVetVisitData = async () => {
+    if (!dogId) return;
+
+    try {
+      const { data: vetVisits, error } = await supabase
+        .from('health_records')
+        .select('*')
+        .eq('dog_id', dogId)
+        .eq('record_type', 'vet_visit')
+        .order('date', { ascending: false })
+        .limit(1);
+
+      if (error) throw error;
+
+      if (vetVisits && vetVisits.length > 0) {
+        const lastVisit = vetVisits[0];
+        setVetVisitData({
+          lastVisit: formatDistanceToNow(new Date(lastVisit.date), { addSuffix: true }),
+          total: 1 // We'd count all visits in a real implementation
+        });
+      } else {
+        setVetVisitData({
+          total: 0
+        });
+      }
+    } catch (error) {
+      console.error('Error fetching vet visit data:', error);
+    }
+  };
+
   const fetchAllData = async () => {
     setLoading(true);
     try {
@@ -202,6 +279,8 @@ export function useHealthData(dogId: string) {
         fetchWeightData(),
         fetchRecentRecords(),
         fetchHealthRecordsCount(),
+        fetchVaccinationData(),
+        fetchVetVisitData(),
       ]);
     } finally {
       setLoading(false);
@@ -216,6 +295,8 @@ export function useHealthData(dogId: string) {
     weightData,
     recentRecords,
     healthRecordsCount,
+    vaccinationData,
+    vetVisitData,
     loading,
     refetch: fetchAllData,
   };

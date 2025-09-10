@@ -10,10 +10,6 @@ import { VaccineModal } from "@/components/health/VaccineModal";
 import { VetVisitsModal } from "@/components/health/VetVisitsModal";
 import { HealthNotesModal } from "@/components/health/HealthNotesModal";
 
-const vaccinationData = {
-  due: 1, 
-  upcoming: "Rabies - Due in 2 weeks"
-};
 
 const getIconComponent = (iconName: string) => {
   switch (iconName) {
@@ -44,7 +40,7 @@ export function HealthScreen({ selectedDogId, onDogChange }: HealthScreenProps) 
   const [isHealthNotesModalOpen, setIsHealthNotesModalOpen] = useState(false);
   const { dogs } = useDogs();
   const currentDog = dogs.find(dog => dog.id === selectedDogId) || dogs[0];
-  const { weightData, recentRecords, healthRecordsCount, loading, refetch } = useHealthData(selectedDogId);
+  const { weightData, recentRecords, healthRecordsCount, vaccinationData, vetVisitData, loading, refetch } = useHealthData(selectedDogId);
 
   const handleRecordClick = (record: any) => {
     switch (record.type) {
@@ -123,12 +119,12 @@ export function HealthScreen({ selectedDogId, onDogChange }: HealthScreenProps) 
             </div>
             <div className="flex items-end gap-1 mb-1">
               <span className="text-xl font-bold text-foreground">
-                {weightData?.current || currentDog?.weight || 'No data'}
+                {weightData?.current ? `${weightData.current}` : 'No data'}
               </span>
-              <span className="text-xs text-muted-foreground mb-0.5">kg</span>
+              {weightData?.current && <span className="text-xs text-muted-foreground mb-0.5">kg</span>}
             </div>
             <p className="text-xs text-muted-foreground">
-              {weightData?.lastUpdated || 'No recent updates'}
+              {weightData?.lastUpdated || 'No weight records yet'}
             </p>
           </div>
 
@@ -142,14 +138,14 @@ export function HealthScreen({ selectedDogId, onDogChange }: HealthScreenProps) 
                 <Calendar className="w-4 h-4 text-warning" />
                 Vaccines
               </h3>
-              {vaccinationData.due > 0 && (
+              {vaccinationData && vaccinationData.dueCount > 0 && (
                 <Badge variant="outline" className="text-warning border-warning/30 text-xs">
-                  {vaccinationData.due} due
+                  {vaccinationData.dueCount} due
                 </Badge>
               )}
             </div>
             <p className="text-xs text-muted-foreground mb-2">
-              {vaccinationData.upcoming}
+              {vaccinationData?.upcoming || 'No vaccination records'}
             </p>
             <Button 
               variant="outline" 
@@ -171,7 +167,7 @@ export function HealthScreen({ selectedDogId, onDogChange }: HealthScreenProps) 
             className="card-soft p-3 text-center cursor-pointer hover:shadow-md transition-shadow"
             onClick={() => setIsVetVisitsModalOpen(true)}
           >
-            <div className="text-lg font-bold text-primary">No recent visits</div>
+            <div className="text-lg font-bold text-primary">{vetVisitData?.lastVisit || 'No visits'}</div>
             <div className="text-xs text-muted-foreground">Last Vet Visit</div>
           </div>
           <div 
@@ -245,7 +241,7 @@ export function HealthScreen({ selectedDogId, onDogChange }: HealthScreenProps) 
             refetch();
           }, 500);
         }}
-        currentWeight={weightData?.current || currentDog?.weight || 0}
+        currentWeight={weightData?.current || 0}
         dogName={currentDog?.name || 'Your dog'}
         dogBirthday={currentDog?.birthday ? new Date(currentDog.birthday) : undefined}
         dogId={currentDog?.id || ''}
