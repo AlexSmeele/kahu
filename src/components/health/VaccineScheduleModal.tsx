@@ -135,7 +135,7 @@ export function VaccineScheduleModal({
               </TabsTrigger>
             </TabsList>
 
-            <TabsContent value="core" className="flex-1 flex flex-col overflow-hidden mt-4">
+            <TabsContent value="core" className="flex-1 flex flex-col overflow-hidden mt-4 data-[state=active]:flex data-[state=inactive]:hidden">
               <div className="flex items-center justify-between mb-4 flex-shrink-0">
                 <div>
                   <h3 className="font-semibold">Core Vaccines</h3>
@@ -154,7 +154,7 @@ export function VaccineScheduleModal({
               </ScrollArea>
             </TabsContent>
 
-            <TabsContent value="lifestyle" className="flex-1 flex flex-col overflow-hidden mt-4">
+            <TabsContent value="lifestyle" className="flex-1 flex flex-col overflow-hidden mt-4 data-[state=active]:flex data-[state=inactive]:hidden">
               <div className="flex items-center justify-between mb-4 flex-shrink-0">
                 <div>
                   <h3 className="font-semibold">Lifestyle Vaccines</h3>
@@ -173,7 +173,7 @@ export function VaccineScheduleModal({
               </ScrollArea>
             </TabsContent>
 
-            <TabsContent value="regional" className="flex-1 flex flex-col overflow-hidden mt-4">
+            <TabsContent value="regional" className="flex-1 flex flex-col overflow-hidden mt-4 data-[state=active]:flex data-[state=inactive]:hidden">
               <div className="flex items-center justify-between mb-4 flex-shrink-0">
                 <div>
                   <h3 className="font-semibold">Regional Vaccines</h3>
@@ -192,7 +192,7 @@ export function VaccineScheduleModal({
               </ScrollArea>
             </TabsContent>
 
-            <TabsContent value="therapies" className="flex-1 flex flex-col overflow-hidden mt-4">
+            <TabsContent value="therapies" className="flex-1 flex flex-col overflow-hidden mt-4 data-[state=active]:flex data-[state=inactive]:hidden">
               <div className="flex items-center justify-between mb-4 flex-shrink-0">
                 <div>
                   <h3 className="font-semibold">Injectable Therapies</h3>
