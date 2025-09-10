@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { useDogs, calculateAge } from "@/hooks/useDogs";
 import { DogSwitcher } from "@/components/dogs/DogSwitcher";
 import { useNutrition, MealTime } from "@/hooks/useNutrition";
-import { MealPlanVariantSelector } from "@/components/nutrition/MealPlanVariantSelector";
+import { MealPlanModal } from "@/components/nutrition/MealPlanModal";
 import { WeekPlannerModal } from "@/components/nutrition/WeekPlannerModal";
 
 
@@ -91,12 +91,12 @@ export function NutritionScreen({ selectedDogId, onDogChange }: NutritionScreenP
             <p className="text-sm text-muted-foreground mb-4">
               Create a nutrition plan to track {currentDog?.name || 'your dog'}'s meals and feeding schedule.
             </p>
-            <MealPlanVariantSelector 
+            <MealPlanModal 
               dogId={selectedDogId} 
               trigger={
                 <Button className="btn-primary">
                   <Plus className="w-4 h-4 mr-2" />
-                  Create Diet Plan
+                  Create Meal Plan
                 </Button>
               }
             />
@@ -131,7 +131,7 @@ export function NutritionScreen({ selectedDogId, onDogChange }: NutritionScreenP
                 <Clock className="w-4 h-4" />
                 {nutritionPlan.feeding_times} meals per day
               </div>
-              <MealPlanVariantSelector 
+              <MealPlanModal 
                 dogId={selectedDogId} 
                 nutritionPlan={nutritionPlan}
                 trigger={
@@ -176,7 +176,7 @@ export function NutritionScreen({ selectedDogId, onDogChange }: NutritionScreenP
             <>
               <div className="flex items-center justify-between mb-3">
                 <h3 className="font-semibold text-foreground">Today's Meals</h3>
-                <MealPlanVariantSelector 
+                <MealPlanModal 
                   dogId={selectedDogId} 
                   nutritionPlan={nutritionPlan}
                   trigger={
@@ -248,10 +248,6 @@ export function NutritionScreen({ selectedDogId, onDogChange }: NutritionScreenP
       </div>
 
       {/* Modals */}
-      <MealPlanVariantSelector 
-        dogId={selectedDogId} 
-        nutritionPlan={nutritionPlan}
-      />
       <WeekPlannerModal 
         isOpen={isWeekPlannerOpen}
         onClose={() => setIsWeekPlannerOpen(false)}
