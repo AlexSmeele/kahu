@@ -56,6 +56,13 @@ export type Database = {
             referencedRelation: "dogs"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "dog_tricks_trick_id_fkey"
+            columns: ["trick_id"]
+            isOneToOne: false
+            referencedRelation: "tricks"
+            referencedColumns: ["id"]
+          },
         ]
       }
       dogs: {
@@ -193,7 +200,15 @@ export type Database = {
           updated_at?: string
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "notifications_dog_id_fkey"
+            columns: ["dog_id"]
+            isOneToOne: false
+            referencedRelation: "dogs"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       nutrition_plans: {
         Row: {

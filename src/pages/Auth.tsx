@@ -33,7 +33,7 @@ export default function Auth() {
 
     try {
       if (isSignUp) {
-        const { error } = await signUp(email, password);
+        const { error } = await signUp(email, password, displayName);
         if (error) {
           if (error.message.includes('already registered')) {
             toast({
@@ -267,16 +267,18 @@ export default function Auth() {
               </button>
             </div>
             
-            <div className="pt-4 border-t border-border">
-              <Button
-                type="button"
-                variant="outline"
-                className="w-full text-muted-foreground hover:text-foreground"
-                onClick={bypassAuth}
-              >
-                Skip Authentication (Dev Mode)
-              </Button>
-            </div>
+            {process.env.NODE_ENV === 'development' && (
+              <div className="pt-4 border-t border-border">
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="w-full text-muted-foreground hover:text-foreground"
+                  onClick={bypassAuth}
+                >
+                  Skip Authentication (Dev Mode)
+                </Button>
+              </div>
+            )}
           </div>
         </CardContent>
       </Card>
