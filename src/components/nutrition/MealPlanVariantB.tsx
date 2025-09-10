@@ -464,7 +464,7 @@ export function MealPlanVariantB({ dogId, nutritionPlan, onSave, trigger }: Meal
           </Button>
         )}
       </DialogTrigger>
-      <DialogContent className="max-w-2xl h-[calc(100vh-4rem)] max-h-[700px] overflow-hidden flex flex-col">
+      <DialogContent className="max-w-[min(95vw,800px)] h-[min(90vh,700px)] max-h-[min(90vh,700px)] overflow-hidden flex flex-col">
         <DialogHeader>
           <DialogTitle>Nutrition Plan Setup - Step {currentStep} of 3</DialogTitle>
           <div className="w-full">

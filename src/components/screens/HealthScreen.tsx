@@ -181,18 +181,17 @@ export function HealthScreen({ selectedDogId, onDogChange }: HealthScreenProps) 
           </div>
         </div>
 
-        {/* Activity Monitor */}
-        <div className="mb-6">
-          <h3 className="text-lg font-semibold mb-4 px-4">Daily Activity</h3>
-          <div className="px-4">
-            <ActivityMonitor dogId={selectedDogId} />
-          </div>
-        </div>
       </div>
 
-      {/* Recent Records */}
+      {/* Scrollable Content - Activity Monitor and Recent Records */}
       <div className="flex-1 overflow-y-auto">
         <div className="p-4">
+          {/* Activity Monitor */}
+          <div className="mb-6">
+            <h3 className="text-lg font-semibold mb-4">Daily Activity</h3>
+            <ActivityMonitor dogId={selectedDogId} />
+          </div>
+
           <h3 className="font-semibold text-foreground mb-3">Recent Records</h3>
           <div className="space-y-3">
             {loading ? (

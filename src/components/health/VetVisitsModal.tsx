@@ -174,7 +174,7 @@ export function VetVisitsModal({ isOpen, onClose, dogName }: VetVisitsModalProps
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl h-[calc(100vh-4rem)] max-h-[600px] flex flex-col">
+      <DialogContent className="max-w-[min(95vw,800px)] h-[min(90vh,600px)] max-h-[min(90vh,600px)] flex flex-col">
         <DialogHeader className="pb-4">
           <DialogTitle className="flex items-center gap-2">
             <Stethoscope className="w-5 h-5 text-primary" />
