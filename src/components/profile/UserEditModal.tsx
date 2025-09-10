@@ -1,10 +1,11 @@
 import { useState, useRef, useEffect } from "react";
-import { User, Save, Camera, Upload } from "lucide-react";
+import { User, Save, Camera, Upload, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { ImageCropper, CropData } from "@/components/ui/image-cropper";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import { useProfile } from "@/hooks/useProfile";
@@ -32,6 +33,10 @@ export function UserEditModal({ isOpen, onClose }: UserEditModalProps) {
     postalCode: '',
   });
   
+  const [photo, setPhoto] = useState<File | null>(null);
+  const [photoPreview, setPhotoPreview] = useState<string | null>(null);
+  const [showCropper, setShowCropper] = useState(false);
+  const [cropData, setCropData] = useState<CropData>({ x: 0, y: 0, scale: 1 });
   const [uploading, setUploading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -44,6 +49,16 @@ export function UserEditModal({ isOpen, onClose }: UserEditModalProps) {
         firstName: profile.display_name?.split(' ')[0] || '',
         lastName: profile.display_name?.split(' ').slice(1).join(' ') || '',
       }));
+      setPhotoPreview(profile.avatar_url || null);
+    }
+    // Reset photo states when modal opens/closes
+    if (!isOpen) {
+      setPhoto(null);
+      setShowCropper(false);
+      setCropData({ x: 0, y: 0, scale: 1 });
+      if (!profile?.avatar_url) {
+        setPhotoPreview(null);
+      }
     }
   }, [profile, isOpen]);
 
@@ -63,7 +78,7 @@ export function UserEditModal({ isOpen, onClose }: UserEditModalProps) {
     return newErrors;
   };
 
-  const handlePhotoUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePhotoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
@@ -87,9 +102,29 @@ export function UserEditModal({ isOpen, onClose }: UserEditModalProps) {
       return;
     }
 
+    setPhoto(file);
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      setPhotoPreview(e.target?.result as string);
+      setShowCropper(true);
+      setCropData({ x: 0, y: 0, scale: 1 }); // Reset crop data for new image
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const removePhoto = () => {
+    setPhoto(null);
+    setPhotoPreview(profile?.avatar_url || null);
+    setShowCropper(false);
+    setCropData({ x: 0, y: 0, scale: 1 });
+  };
+
+  const handlePhotoUpload = async () => {
+    if (!photo) return;
+
     setUploading(true);
     try {
-      const { error, url } = await uploadAvatar(file);
+      const { error } = await uploadAvatar(photo);
       
       if (error) {
         toast({
@@ -102,6 +137,9 @@ export function UserEditModal({ isOpen, onClose }: UserEditModalProps) {
           title: "Photo updated",
           description: "Your profile photo has been updated successfully.",
         });
+        setPhoto(null);
+        setShowCropper(false);
+        setCropData({ x: 0, y: 0, scale: 1 });
       }
     } catch (error) {
       toast({
@@ -162,43 +200,124 @@ export function UserEditModal({ isOpen, onClose }: UserEditModalProps) {
 
         <div className="space-y-4">
           {/* Profile Picture */}
-          <div className="flex items-center gap-4">
-            <Avatar className="w-20 h-20">
-              <AvatarImage src={profile?.avatar_url || undefined} alt="Profile" />
-              <AvatarFallback className="bg-primary text-primary-foreground text-xl">
-                {formData.displayName?.[0] || formData.firstName?.[0] || user?.email?.[0]?.toUpperCase() || 'U'}
-              </AvatarFallback>
-            </Avatar>
-            <div>
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept="image/*"
-                onChange={handlePhotoUpload}
-                className="hidden"
-              />
-              <Button 
-                variant="outline" 
-                size="sm" 
-                onClick={() => fileInputRef.current?.click()}
-                disabled={uploading}
-              >
-                {uploading ? (
-                  <>
-                    <Upload className="w-4 h-4 mr-2 animate-spin" />
-                    Uploading...
-                  </>
+          <div className="space-y-3">
+            <Label>Profile Photo</Label>
+            {photoPreview ? (
+              <>
+                {showCropper && photo ? (
+                  <div className="space-y-4">
+                    <ImageCropper
+                      src={photoPreview}
+                      onCropChange={setCropData}
+                    />
+                    <div className="flex gap-2">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => setShowCropper(false)}
+                        className="flex-1"
+                      >
+                        Done
+                      </Button>
+                      <Button
+                        type="button"
+                        onClick={handlePhotoUpload}
+                        disabled={uploading}
+                        className="flex-1"
+                      >
+                        {uploading ? "Uploading..." : "Save Photo"}
+                      </Button>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={removePhoto}
+                      >
+                        <X className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  </div>
                 ) : (
-                  <>
-                    <Camera className="w-4 h-4 mr-2" />
-                    Change Photo
-                  </>
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-4">
+                      <div className="relative w-20 h-20">
+                        <div className="w-full h-full rounded-full overflow-hidden border-2 border-border">
+                          <img
+                            src={photoPreview}
+                            alt="Profile preview"
+                            className="w-full h-full object-cover"
+                            style={photo ? {
+                              transform: `translate(${cropData.x}px, ${cropData.y}px) scale(${cropData.scale})`,
+                              transformOrigin: 'center center',
+                            } : undefined}
+                          />
+                        </div>
+                        {photo && (
+                          <Button
+                            type="button"
+                            variant="destructive"
+                            size="sm"
+                            className="absolute -top-2 -right-2 w-6 h-6 p-0 rounded-full"
+                            onClick={removePhoto}
+                          >
+                            <X className="w-3 h-3" />
+                          </Button>
+                        )}
+                      </div>
+                      <div className="flex flex-col gap-2">
+                        <input
+                          ref={fileInputRef}
+                          type="file"
+                          accept="image/*"
+                          onChange={handlePhotoChange}
+                          className="hidden"
+                        />
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          onClick={() => fileInputRef.current?.click()}
+                          disabled={uploading}
+                        >
+                          <Camera className="w-4 h-4 mr-2" />
+                          Change Photo
+                        </Button>
+                        {photo && !showCropper && (
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            onClick={() => setShowCropper(true)}
+                          >
+                            Adjust Crop
+                          </Button>
+                        )}
+                      </div>
+                    </div>
+                  </div>
                 )}
-              </Button>
-              <p className="text-xs text-muted-foreground mt-1">
-                JPG, PNG up to 5MB
-              </p>
-            </div>
+              </>
+            ) : (
+              <div className="flex items-center gap-4">
+                <div className="w-20 h-20 border-2 border-dashed border-border rounded-full flex items-center justify-center">
+                  <Button type="button" variant="ghost" size="sm" asChild>
+                    <label className="cursor-pointer">
+                      <Upload className="w-6 h-6 text-muted-foreground" />
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handlePhotoChange}
+                        className="hidden"
+                      />
+                    </label>
+                  </Button>
+                </div>
+                <div>
+                  <p className="text-sm font-medium">Add profile photo</p>
+                  <p className="text-xs text-muted-foreground">
+                    JPG, PNG up to 5MB
+                  </p>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Personal Information */}
