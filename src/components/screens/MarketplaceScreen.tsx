@@ -2,7 +2,7 @@ import { useState, useMemo } from "react";
 import { Search, Filter, ShoppingCart, Star, ShoppingBag } from "lucide-react";
 import { CartDrawer } from "@/components/marketplace/CartDrawer";
 import { OrderHistoryModal } from "@/components/marketplace/OrderHistoryModal"; 
-import { NotificationsDrawer } from "@/components/notifications/NotificationsDrawer";
+
 import { useToast } from "@/hooks/use-toast";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -313,7 +313,6 @@ export function MarketplaceScreen() {
         <div className="flex items-center justify-between mb-4">
           <h1 className="text-2xl font-bold text-foreground">Marketplace</h1>
           <div className="flex items-center gap-2">
-            <NotificationsDrawer />
             <CartDrawer
               cartItems={cartItems}
               onUpdateQuantity={handleUpdateCartQuantity}

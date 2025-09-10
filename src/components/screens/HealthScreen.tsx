@@ -9,7 +9,7 @@ import { WeightTracker } from "@/components/health/WeightTracker";
 import { VaccineScheduleModal } from "@/components/health/VaccineScheduleModal";
 import { VetVisitsModal } from "@/components/health/VetVisitsModal";
 import { HealthNotesModal } from "@/components/health/HealthNotesModal";
-import { NotificationsDrawer } from "@/components/notifications/NotificationsDrawer";
+
 
 
 const getIconComponent = (iconName: string) => {
@@ -73,8 +73,7 @@ export function HealthScreen({ selectedDogId, onDogChange }: HealthScreenProps) 
             </div>
           </div>
           <div className="flex items-center gap-2">
-            <NotificationsDrawer />
-            <Button 
+            <Button
               variant="outline" 
               size="sm"
               onClick={() => setIsHealthNotesModalOpen(true)}
