@@ -112,22 +112,59 @@ export function useDogs() {
     }
   }, [user, toast]);
 
-  const uploadDogPhoto = async (file: File, dogId: string): Promise<string | null> => {
+  const uploadDogPhoto = async (originalFile: File, croppedBlob: Blob, cropData: { x: number; y: number; scale: number }, dogId: string): Promise<string | null> => {
     if (!user) return null;
 
     try {
-      const fileExt = file.name.split('.').pop();
-      const fileName = `${user.id}/${dogId}.${fileExt}`;
+      // Delete existing files if they exist
+      const existingDog = globalDogsState.find(dog => dog.id === dogId);
+      if (existingDog?.avatar_url) {
+        const oldPath = existingDog.avatar_url.split('/').pop();
+        if (oldPath) {
+          const baseName = oldPath.replace(/\.(jpg|jpeg|png|webp)$/i, '');
+          await supabase.storage
+            .from('dog-photos')
+            .remove([
+              `${user.id}/${oldPath}`,
+              `${user.id}/original_${baseName}.${originalFile.name.split('.').pop()}`,
+              `${user.id}/crop_data_${baseName}.json`
+            ]);
+        }
+      }
 
-      const { error: uploadError } = await supabase.storage
+      const timestamp = Date.now();
+      const fileExt = originalFile.name.split('.').pop();
+      const baseName = `${dogId}_${timestamp}`;
+      
+      // Upload original image
+      const originalPath = `${user.id}/original_${baseName}.${fileExt}`;
+      const { error: originalError } = await supabase.storage
         .from('dog-photos')
-        .upload(fileName, file, { upsert: true });
+        .upload(originalPath, originalFile);
 
-      if (uploadError) throw uploadError;
+      if (originalError) throw originalError;
 
+      // Upload cropped image
+      const croppedPath = `${user.id}/${baseName}.jpg`;
+      const { error: croppedError } = await supabase.storage
+        .from('dog-photos')
+        .upload(croppedPath, croppedBlob);
+
+      if (croppedError) throw croppedError;
+
+      // Store crop data
+      const cropDataPath = `${user.id}/crop_data_${baseName}.json`;
+      const cropDataBlob = new Blob([JSON.stringify({ ...cropData, originalPath, croppedPath })], 
+        { type: 'application/json' });
+      
+      await supabase.storage
+        .from('dog-photos')
+        .upload(cropDataPath, cropDataBlob);
+
+      // Get public URL for cropped image
       const { data } = supabase.storage
         .from('dog-photos')
-        .getPublicUrl(fileName);
+        .getPublicUrl(croppedPath);
 
       return data.publicUrl;
     } catch (error) {
@@ -137,6 +174,39 @@ export function useDogs() {
         description: 'Please try again',
         variant: 'destructive',
       });
+      return null;
+    }
+  };
+
+  const getDogOriginalImageData = async (avatarUrl: string) => {
+    if (!user || !avatarUrl) return null;
+
+    try {
+      const croppedPath = avatarUrl.split('/').pop();
+      if (!croppedPath) return null;
+
+      const baseName = croppedPath.replace(/\.(jpg|jpeg|png|webp)$/i, '');
+      
+      const cropDataPath = `${user.id}/crop_data_${baseName}.json`;
+      const { data: cropDataFile } = await supabase.storage
+        .from('dog-photos')
+        .download(cropDataPath);
+
+      if (!cropDataFile) return null;
+
+      const cropDataText = await cropDataFile.text();
+      const { originalPath, ...cropData } = JSON.parse(cropDataText);
+
+      const { data: { publicUrl: originalUrl } } = supabase.storage
+        .from('dog-photos')
+        .getPublicUrl(originalPath);
+
+      return {
+        originalUrl,
+        cropData: { x: cropData.x, y: cropData.y, scale: cropData.scale }
+      };
+    } catch (error) {
+      console.error('Error getting original image data:', error);
       return null;
     }
   };
@@ -170,21 +240,7 @@ export function useDogs() {
 
       const newDog = data as Dog;
 
-      // Upload photo if provided
-      if (photo) {
-        const photoUrl = await uploadDogPhoto(photo, newDog.id);
-        if (photoUrl) {
-          const { data: updatedData, error: updateError } = await supabase
-            .from('dogs')
-            .update({ avatar_url: photoUrl })
-            .eq('id', newDog.id)
-            .select()
-            .single();
-
-          if (updateError) throw updateError;
-          newDog.avatar_url = updatedData.avatar_url;
-        }
-      }
+      // Note: Photo upload will be handled by the EditPhotoModal separately
 
       // Add initial weight record if weight is provided
       if (dogData.weight) {
@@ -223,16 +279,8 @@ export function useDogs() {
     }
   };
 
-  const updateDog = async (id: string, updates: Partial<Omit<Dog, 'id' | 'created_at' | 'updated_at'>>, photo?: File) => {
+  const updateDog = async (id: string, updates: Partial<Omit<Dog, 'id' | 'created_at' | 'updated_at'>>) => {
     try {
-      // Upload new photo if provided
-      if (photo) {
-        const photoUrl = await uploadDogPhoto(photo, id);
-        if (photoUrl) {
-          updates.avatar_url = photoUrl;
-        }
-      }
-
       const { data, error } = await supabase
         .from('dogs')
         .update(updates)
@@ -258,6 +306,19 @@ export function useDogs() {
         description: 'Please try again',
         variant: 'destructive',
       });
+      return null;
+    }
+  };
+
+  const updateDogPhoto = async (dogId: string, originalFile: File, croppedBlob: Blob, cropData: { x: number; y: number; scale: number }) => {
+    try {
+      const photoUrl = await uploadDogPhoto(originalFile, croppedBlob, cropData, dogId);
+      if (photoUrl) {
+        return await updateDog(dogId, { avatar_url: photoUrl });
+      }
+      return null;
+    } catch (error) {
+      console.error('Error updating dog photo:', error);
       return null;
     }
   };
@@ -342,6 +403,8 @@ export function useDogs() {
     loading,
     addDog,
     updateDog,
+    updateDogPhoto,
+    getDogOriginalImageData,
     deleteDog,
     reorderDogs,
     refetch: fetchDogs,

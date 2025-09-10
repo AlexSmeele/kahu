@@ -95,38 +95,65 @@ export function useProfile() {
     }
   };
 
-  const uploadAvatar = async (file: File) => {
+  const uploadAvatar = async (originalFile: File, croppedBlob: Blob, cropData: { x: number; y: number; scale: number }) => {
     if (!user) return { error: 'No user logged in', url: null };
 
     try {
-      // Delete existing avatar if it exists
+      // Delete existing avatar files if they exist
       if (profile?.avatar_url) {
         const oldPath = profile.avatar_url.split('/').pop();
         if (oldPath) {
+          // Remove both cropped and original versions
+          const baseName = oldPath.replace(/\.(jpg|jpeg|png|webp)$/i, '');
           await supabase.storage
             .from('profile-photos')
-            .remove([`${user.id}/${oldPath}`]);
+            .remove([
+              `${user.id}/${oldPath}`,
+              `${user.id}/original_${baseName}.${originalFile.name.split('.').pop()}`,
+              `${user.id}/crop_data_${baseName}.json`
+            ]);
         }
       }
 
-      // Upload new avatar
-      const fileExt = file.name.split('.').pop();
-      const fileName = `${Date.now()}.${fileExt}`;
-      const filePath = `${user.id}/${fileName}`;
-
-      const { error: uploadError } = await supabase.storage
+      const timestamp = Date.now();
+      const fileExt = originalFile.name.split('.').pop();
+      const baseName = `avatar_${timestamp}`;
+      
+      // Upload original image
+      const originalPath = `${user.id}/original_${baseName}.${fileExt}`;
+      const { error: originalError } = await supabase.storage
         .from('profile-photos')
-        .upload(filePath, file);
+        .upload(originalPath, originalFile);
 
-      if (uploadError) {
-        console.error('Error uploading file:', uploadError);
-        return { error: uploadError.message, url: null };
+      if (originalError) {
+        console.error('Error uploading original file:', originalError);
+        return { error: originalError.message, url: null };
       }
 
-      // Get public URL
+      // Upload cropped image
+      const croppedPath = `${user.id}/${baseName}.jpg`;
+      const { error: croppedError } = await supabase.storage
+        .from('profile-photos')
+        .upload(croppedPath, croppedBlob);
+
+      if (croppedError) {
+        console.error('Error uploading cropped file:', croppedError);
+        return { error: croppedError.message, url: null };
+      }
+
+      // Store crop data
+      const cropDataPath = `${user.id}/crop_data_${baseName}.json`;
+      const cropDataBlob = new Blob([JSON.stringify({ ...cropData, originalPath, croppedPath })], 
+        { type: 'application/json' });
+      
+      await supabase.storage
+        .from('profile-photos')
+        .upload(cropDataPath, cropDataBlob);
+
+      // Get public URL for cropped image
       const { data: { publicUrl } } = supabase.storage
         .from('profile-photos')
-        .getPublicUrl(filePath);
+        .getPublicUrl(croppedPath);
 
       // Update profile with new avatar URL
       const { error: updateError } = await updateProfile({ avatar_url: publicUrl });
@@ -135,10 +162,47 @@ export function useProfile() {
         return { error: updateError, url: null };
       }
 
-      return { error: null, url: publicUrl };
+      return { error: null, url: publicUrl, originalPath, cropData };
     } catch (error) {
       console.error('Error uploading avatar:', error);
       return { error: 'Failed to upload avatar', url: null };
+    }
+  };
+
+  const getOriginalImageData = async (avatarUrl: string) => {
+    if (!user || !avatarUrl) return null;
+
+    try {
+      // Extract the cropped filename from the URL
+      const croppedPath = avatarUrl.split('/').pop();
+      if (!croppedPath) return null;
+
+      // Get the base name without extension
+      const baseName = croppedPath.replace(/\.(jpg|jpeg|png|webp)$/i, '');
+      
+      // Try to get the crop data
+      const cropDataPath = `${user.id}/crop_data_${baseName}.json`;
+      const { data: cropDataFile } = await supabase.storage
+        .from('profile-photos')
+        .download(cropDataPath);
+
+      if (!cropDataFile) return null;
+
+      const cropDataText = await cropDataFile.text();
+      const { originalPath, ...cropData } = JSON.parse(cropDataText);
+
+      // Get the original image URL
+      const { data: { publicUrl: originalUrl } } = supabase.storage
+        .from('profile-photos')
+        .getPublicUrl(originalPath);
+
+      return {
+        originalUrl,
+        cropData: { x: cropData.x, y: cropData.y, scale: cropData.scale }
+      };
+    } catch (error) {
+      console.error('Error getting original image data:', error);
+      return null;
     }
   };
 
@@ -147,6 +211,7 @@ export function useProfile() {
     loading,
     updateProfile,
     uploadAvatar,
+    getOriginalImageData,
     refetch: fetchProfile,
   };
 }
