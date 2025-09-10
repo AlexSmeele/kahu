@@ -85,6 +85,8 @@ export default function Auth() {
 
   const handleSocialSignIn = async (provider: 'google') => {
     try {
+      console.log('Starting Google OAuth flow...');
+      
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
@@ -93,7 +95,10 @@ export default function Auth() {
         }
       });
 
+      console.log('OAuth response:', { data, error });
+
       if (error) {
+        console.error('OAuth error:', error);
         toast({
           title: "Social sign-in failed",
           description: error.message,
@@ -104,27 +109,54 @@ export default function Auth() {
 
       // Handle manual redirect outside iframe
       if (data?.url) {
+        console.log('Got OAuth URL:', data.url);
+        console.log('Window context:', { 
+          isInIframe: window.top !== window,
+          hasTop: !!window.top 
+        });
+        
         // Try to redirect the top window if in iframe
         if (window.top && window.top !== window) {
+          console.log('Redirecting top window...');
           window.top.location.href = data.url;
         } else {
+          console.log('Opening popup window...');
           // Fallback to popup if parent redirect fails
           const popup = window.open(data.url, '_blank', 'width=500,height=600');
+          
+          if (!popup) {
+            console.error('Popup blocked');
+            toast({
+              title: "Popup blocked",
+              description: "Please allow popups and try again.",
+              variant: "destructive",
+            });
+            return;
+          }
           
           // Monitor popup for completion
           const checkClosed = setInterval(() => {
             if (popup && popup.closed) {
+              console.log('Popup closed, reloading...');
               clearInterval(checkClosed);
               // Check auth state after popup closes
               window.location.reload();
             }
           }, 1000);
         }
+      } else {
+        console.error('No OAuth URL received');
+        toast({
+          title: "OAuth setup error",
+          description: "No redirect URL received from provider.",
+          variant: "destructive",
+        });
       }
     } catch (error) {
+      console.error('OAuth catch block error:', error);
       toast({
         title: "Something went wrong",
-        description: "Please try again later.",
+        description: error instanceof Error ? error.message : "Please try again later.",
         variant: "destructive",
       });
     }
