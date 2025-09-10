@@ -88,7 +88,8 @@ export default function Auth() {
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
-          redirectTo: `${window.location.origin}/`
+          redirectTo: `${window.location.origin}/`,
+          skipBrowserRedirect: true
         }
       });
 
@@ -98,6 +99,27 @@ export default function Auth() {
           description: error.message,
           variant: "destructive",
         });
+        return;
+      }
+
+      // Handle manual redirect outside iframe
+      if (data?.url) {
+        // Try to redirect the top window if in iframe
+        if (window.top && window.top !== window) {
+          window.top.location.href = data.url;
+        } else {
+          // Fallback to popup if parent redirect fails
+          const popup = window.open(data.url, '_blank', 'width=500,height=600');
+          
+          // Monitor popup for completion
+          const checkClosed = setInterval(() => {
+            if (popup && popup.closed) {
+              clearInterval(checkClosed);
+              // Check auth state after popup closes
+              window.location.reload();
+            }
+          }, 1000);
+        }
       }
     } catch (error) {
       toast({
@@ -267,7 +289,7 @@ export default function Auth() {
               </button>
             </div>
             
-            {process.env.NODE_ENV === 'development' && (
+            {import.meta.env.MODE === 'development' && (
               <div className="pt-4 border-t border-border">
                 <Button
                   type="button"
