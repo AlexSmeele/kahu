@@ -141,7 +141,7 @@ export function VaccineScheduleModal({
                   <p className="text-sm text-muted-foreground">Essential vaccines recommended for all dogs</p>
                 </div>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 gap-4">
                 {getCoreVaccines().map((vaccine) => (
                   <VaccineCard key={vaccine.id} vaccine={vaccine} />
                 ))}
@@ -158,7 +158,7 @@ export function VaccineScheduleModal({
                   <p className="text-sm text-muted-foreground">Vaccines based on your dog's activities and environment</p>
                 </div>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 gap-4">
                 {getLifestyleVaccines().map((vaccine) => (
                   <VaccineCard key={vaccine.id} vaccine={vaccine} />
                 ))}
@@ -175,7 +175,7 @@ export function VaccineScheduleModal({
                   <p className="text-sm text-muted-foreground">Location-specific vaccines for your area</p>
                 </div>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 gap-4">
                 {getRegionalVaccines().map((vaccine) => (
                   <VaccineCard key={vaccine.id} vaccine={vaccine} />
                 ))}
@@ -192,7 +192,7 @@ export function VaccineScheduleModal({
                   <p className="text-sm text-muted-foreground">Non-vaccine injectable treatments</p>
                 </div>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 gap-4">
                 {getInjectableTherapies().map((vaccine) => (
                   <VaccineCard key={vaccine.id} vaccine={vaccine} />
                 ))}
