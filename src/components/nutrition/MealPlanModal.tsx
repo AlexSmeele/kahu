@@ -38,7 +38,8 @@ export function MealPlanModal({ dogId, nutritionPlan, onSave, trigger }: MealPla
   
   const [mealTime, setMealTime] = useState('08:00');
   const [selectedDays, setSelectedDays] = useState<string[]>(DAYS);
-  const [mealsPerDay, setMealsPerDay] = useState<number>(2);
+  const [mealName, setMealName] = useState('Breakfast');
+  const [customMealName, setCustomMealName] = useState('');
   const [foodItems, setFoodItems] = useState<FoodItem[]>([]);
   const [reminderEnabled, setReminderEnabled] = useState(true);
 
@@ -71,23 +72,22 @@ export function MealPlanModal({ dogId, nutritionPlan, onSave, trigger }: MealPla
   const handleSave = async () => {
     if (foodItems.length === 0) return;
 
-    // Generate meal schedule based on meals per day
-    const mealTimes = mealsPerDay === 2 ? ['08:00', '18:00'] : ['08:00', '13:00', '18:00'];
     const totalAmount = foodItems.reduce((sum, item) => sum + (item.amount || 0), 0);
+    const finalMealName = mealName === 'Other' ? customMealName : mealName;
     
-    const mealSchedule: MealTime[] = mealTimes.map(time => ({
-      time,
-      amount: totalAmount / mealsPerDay,
+    const mealSchedule: MealTime[] = [{
+      time: mealTime,
+      amount: totalAmount,
       food_type: foodItems.find(item => item.type === 'food')?.name || 'Mixed',
       reminder_enabled: reminderEnabled,
-    }));
+    }];
 
     const planData = {
       dog_id: dogId,
       food_type: 'mixed',
       brand: foodItems.find(item => item.type === 'food')?.supplier || '',
       daily_amount: totalAmount,
-      feeding_times: mealsPerDay,
+      feeding_times: 1,
       meal_schedule: mealSchedule,
       is_active: true,
       special_instructions: foodItems
@@ -110,7 +110,8 @@ export function MealPlanModal({ dogId, nutritionPlan, onSave, trigger }: MealPla
       setFoodItems([]);
       setMealTime('08:00');
       setSelectedDays(DAYS);
-      setMealsPerDay(2);
+      setMealName('Breakfast');
+      setCustomMealName('');
     }
   };
 
@@ -129,45 +130,58 @@ export function MealPlanModal({ dogId, nutritionPlan, onSave, trigger }: MealPla
             </Button>
           )}
         </DialogTrigger>
-        <DialogContent className="max-w-[min(95vw,600px)] h-[min(90vh,700px)] max-h-[min(90vh,700px)] overflow-hidden flex flex-col">
+        <DialogContent className="max-w-[min(95vw,500px)] h-[min(90vh,600px)] max-h-[min(90vh,600px)] overflow-hidden flex flex-col">
           <DialogHeader>
             <DialogTitle>
-              {nutritionPlan ? 'Edit Meal Plan' : 'Create Meal Plan'}
+              Meal 1
             </DialogTitle>
           </DialogHeader>
 
           <ScrollArea className="flex-1 overflow-y-auto">
-            <div className="space-y-6 p-1">
-              {/* Time & Schedule Section */}
+            <div className="space-y-6 pr-4">
+              {/* Meal Name Section */}
+              <div className="space-y-4">
+                <div>
+                  <Label className="text-base font-medium">Meal Name</Label>
+                </div>
+                <div className="space-y-2">
+                  <Select value={mealName} onValueChange={setMealName}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Breakfast">Breakfast</SelectItem>
+                      <SelectItem value="Lunch">Lunch</SelectItem>
+                      <SelectItem value="Dinner">Dinner</SelectItem>
+                      <SelectItem value="Other">Other</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  {mealName === 'Other' && (
+                    <Input
+                      placeholder="Enter custom meal name"
+                      value={customMealName}
+                      onChange={(e) => setCustomMealName(e.target.value)}
+                    />
+                  )}
+                </div>
+              </div>
+
+              {/* Time Section */}
               <div className="space-y-4">
                 <div>
                   <Label className="text-base font-medium flex items-center gap-2">
                     <Clock className="w-4 h-4" />
-                    Meal Schedule
+                    Meal Time
                   </Label>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label className="text-sm">Primary Meal Time</Label>
-                    <Input
-                      type="time"
-                      value={mealTime}
-                      onChange={(e) => setMealTime(e.target.value)}
-                    />
-                  </div>
-                  <div>
-                    <Label className="text-sm">Meals Per Day</Label>
-                    <Select value={mealsPerDay.toString()} onValueChange={(value) => setMealsPerDay(parseInt(value))}>
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="2">2 times a day</SelectItem>
-                        <SelectItem value="3">3 times a day</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
+                <div>
+                  <Label className="text-sm">Time</Label>
+                  <Input
+                    type="time"
+                    value={mealTime}
+                    onChange={(e) => setMealTime(e.target.value)}
+                  />
                 </div>
 
                 <div className="flex items-center space-x-2">
@@ -198,6 +212,11 @@ export function MealPlanModal({ dogId, nutritionPlan, onSave, trigger }: MealPla
                     </Button>
                   ))}
                 </div>
+                <p className="text-sm text-muted-foreground">
+                  {selectedDays.length === 0 ? "0 days per week" : 
+                   selectedDays.length === 1 ? "1 day per week" : 
+                   `${selectedDays.length} days per week`}
+                </p>
               </div>
 
               {/* Food Section */}
