@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-import { EditPhotoModal } from '@/components/modals/EditPhotoModal';
+import { EditPhotoModal, CropData } from '@/components/modals/EditPhotoModal';
 import { useDogs } from '@/hooks/useDogs';
 import { useToast } from '@/hooks/use-toast';
 import { Camera } from 'lucide-react';
@@ -32,7 +32,7 @@ export function DogProfileModal({ isOpen, onClose, dog, mode }: DogProfileModalP
   const [showPhotoModal, setShowPhotoModal] = useState(false);
   const [currentImageData, setCurrentImageData] = useState<{
     url: string;
-    cropData?: { x: number; y: number; scale: number };
+    cropData?: CropData;
   } | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -80,7 +80,7 @@ export function DogProfileModal({ isOpen, onClose, dog, mode }: DogProfileModalP
     }
   };
 
-  const handlePhotoSave = async (originalFile: File, croppedBlob: Blob, cropData: { x: number; y: number; scale: number }) => {
+  const handlePhotoSave = async (originalFile: File, croppedBlob: Blob, cropData: CropData) => {
     if (mode === 'edit' && dog) {
       // Update existing dog photo
       const result = await updateDogPhoto(dog.id, originalFile, croppedBlob, cropData);

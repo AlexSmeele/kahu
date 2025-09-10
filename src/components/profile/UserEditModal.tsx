@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-import { EditPhotoModal } from '@/components/modals/EditPhotoModal';
+import { EditPhotoModal, CropData } from '@/components/modals/EditPhotoModal';
 import { useProfile } from '@/hooks/useProfile';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
@@ -35,7 +35,7 @@ export function UserEditModal({ isOpen, onClose }: UserEditModalProps) {
   const [showPhotoModal, setShowPhotoModal] = useState(false);
   const [currentImageData, setCurrentImageData] = useState<{
     url: string;
-    cropData?: { x: number; y: number; scale: number };
+    cropData?: CropData;
   } | null>(null);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
@@ -88,7 +88,7 @@ export function UserEditModal({ isOpen, onClose }: UserEditModalProps) {
     }
   };
 
-  const handlePhotoSave = async (originalFile: File, croppedBlob: Blob, cropData: { x: number; y: number; scale: number }) => {
+  const handlePhotoSave = async (originalFile: File, croppedBlob: Blob, cropData: CropData) => {
     try {
       const result = await uploadAvatar(originalFile, croppedBlob, cropData);
       

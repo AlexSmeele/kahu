@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
+import { CropData } from '@/components/modals/EditPhotoModal';
 
 export interface Dog {
   id: string;
@@ -112,7 +113,7 @@ export function useDogs() {
     }
   }, [user, toast]);
 
-  const uploadDogPhoto = async (originalFile: File, croppedBlob: Blob, cropData: { x: number; y: number; scale: number }, dogId: string): Promise<string | null> => {
+  const uploadDogPhoto = async (originalFile: File, croppedBlob: Blob, cropData: CropData, dogId: string): Promise<string | null> => {
     if (!user) return null;
 
     try {
@@ -178,7 +179,7 @@ export function useDogs() {
     }
   };
 
-  const getDogOriginalImageData = async (avatarUrl: string) => {
+  const getDogOriginalImageData = async (avatarUrl: string): Promise<{ originalUrl: string; cropData: CropData } | null> => {
     if (!user || !avatarUrl) return null;
 
     try {
@@ -203,7 +204,7 @@ export function useDogs() {
 
       return {
         originalUrl,
-        cropData: { x: cropData.x, y: cropData.y, scale: cropData.scale }
+        cropData: { x: cropData.x, y: cropData.y, scale: cropData.scale } as CropData
       };
     } catch (error) {
       console.error('Error getting original image data:', error);
@@ -310,7 +311,7 @@ export function useDogs() {
     }
   };
 
-  const updateDogPhoto = async (dogId: string, originalFile: File, croppedBlob: Blob, cropData: { x: number; y: number; scale: number }) => {
+  const updateDogPhoto = async (dogId: string, originalFile: File, croppedBlob: Blob, cropData: CropData) => {
     try {
       const photoUrl = await uploadDogPhoto(originalFile, croppedBlob, cropData, dogId);
       if (photoUrl) {

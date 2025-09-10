@@ -2,9 +2,19 @@ import { useState, useRef, useCallback, useEffect } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
-import { ImageCropper, CropData } from "@/components/ui/image-cropper";
 import { Upload, ZoomIn, ZoomOut } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+
+// Constants to ensure preview and save math match exactly
+const CONTAINER_SIZE = 256; // Preview container size (w-64 h-64)
+const CROP_DIAMETER = 128;  // Crop circle diameter (w-32 h-32)
+const CROP_RADIUS = 64;     // Crop circle radius (used in mask)
+
+export interface CropData {
+  x: number;
+  y: number;
+  scale: number;
+}
 
 interface EditPhotoModalProps {
   isOpen: boolean;
@@ -94,48 +104,55 @@ export function EditPhotoModal({
           return;
         }
 
-        // Set canvas size to desired output size (256x256 for profile photos)
-        const outputSize = 256;
-        canvas.width = outputSize;
-        canvas.height = outputSize;
+        // Use same output size as crop diameter for 1:1 mapping
+        canvas.width = CROP_DIAMETER;
+        canvas.height = CROP_DIAMETER;
 
-        // Calculate the crop area in the original image
-        const containerSize = 128; // Size of the crop circle in the UI
         const imageAspect = img.width / img.height;
         
-        // Calculate how the image is displayed in the container
+        // Calculate how the image is displayed in the preview container (object-fit: cover)
         let displayWidth, displayHeight, offsetX = 0, offsetY = 0;
         
         if (imageAspect > 1) {
-          // Image is wider than tall
-          displayHeight = containerSize;
-          displayWidth = containerSize * imageAspect;
-          offsetX = (displayWidth - containerSize) / 2;
+          // Image is wider than tall - height fills container, width overflows
+          displayHeight = CONTAINER_SIZE;
+          displayWidth = CONTAINER_SIZE * imageAspect;
+          offsetX = (displayWidth - CONTAINER_SIZE) / 2;
         } else {
-          // Image is taller than wide
-          displayWidth = containerSize;
-          displayHeight = containerSize / imageAspect;
-          offsetY = (displayHeight - containerSize) / 2;
+          // Image is taller than wide - width fills container, height overflows  
+          displayWidth = CONTAINER_SIZE;
+          displayHeight = CONTAINER_SIZE / imageAspect;
+          offsetY = (displayHeight - CONTAINER_SIZE) / 2;
         }
 
-        // Apply scale
+        // Apply user's scale transformation
         displayWidth *= cropData.scale;
         displayHeight *= cropData.scale;
-        offsetX = (displayWidth - containerSize) / 2;
-        offsetY = (displayHeight - containerSize) / 2;
+        
+        // Recalculate offsets after scaling (scale from center)
+        offsetX = (displayWidth - CONTAINER_SIZE) / 2;
+        offsetY = (displayHeight - CONTAINER_SIZE) / 2;
 
-        // Calculate source coordinates
+        // Calculate the crop area center in the container
+        const cropCenterX = CONTAINER_SIZE / 2;
+        const cropCenterY = CONTAINER_SIZE / 2;
+        
+        // Calculate source coordinates in the original image
+        // The crop circle is positioned at the center, offset by the crop area position
+        const circleOffsetX = (CONTAINER_SIZE - CROP_DIAMETER) / 2;
+        const circleOffsetY = (CONTAINER_SIZE - CROP_DIAMETER) / 2;
+        
         const scaleX = img.width / displayWidth;
         const scaleY = img.height / displayHeight;
         
-        const sourceX = Math.max(0, (offsetX - cropData.x) * scaleX);
-        const sourceY = Math.max(0, (offsetY - cropData.y) * scaleY);
-        const sourceWidth = Math.min(img.width - sourceX, containerSize * scaleX);
-        const sourceHeight = Math.min(img.height - sourceY, containerSize * scaleY);
+        const sourceX = Math.max(0, (offsetX - cropData.x + circleOffsetX) * scaleX);
+        const sourceY = Math.max(0, (offsetY - cropData.y + circleOffsetY) * scaleY);
+        const sourceWidth = Math.min(img.width - sourceX, CROP_DIAMETER * scaleX);
+        const sourceHeight = Math.min(img.height - sourceY, CROP_DIAMETER * scaleY);
 
         // Create circular clipping path
         ctx.beginPath();
-        ctx.arc(outputSize / 2, outputSize / 2, outputSize / 2, 0, Math.PI * 2);
+        ctx.arc(CROP_DIAMETER / 2, CROP_DIAMETER / 2, CROP_DIAMETER / 2, 0, Math.PI * 2);
         ctx.closePath();
         ctx.clip();
 
@@ -143,7 +160,7 @@ export function EditPhotoModal({
         ctx.drawImage(
           img,
           sourceX, sourceY, sourceWidth, sourceHeight,
-          0, 0, outputSize, outputSize
+          0, 0, CROP_DIAMETER, CROP_DIAMETER
         );
 
         canvas.toBlob(resolve, 'image/jpeg', 0.9);
@@ -291,9 +308,9 @@ export function EditPhotoModal({
                     {/* Overlay that dims everything except the circle */}
                     <div 
                       className="absolute inset-0 bg-black opacity-50"
-                      style={{
-                        mask: 'radial-gradient(circle 64px at center, transparent 64px, black 64px)',
-                        WebkitMask: 'radial-gradient(circle 64px at center, transparent 64px, black 64px)',
+                     style={{
+                        mask: `radial-gradient(circle ${CROP_RADIUS}px at center, transparent ${CROP_RADIUS}px, black ${CROP_RADIUS}px)`,
+                        WebkitMask: `radial-gradient(circle ${CROP_RADIUS}px at center, transparent ${CROP_RADIUS}px, black ${CROP_RADIUS}px)`,
                       }}
                     />
                     {/* Circle border */}

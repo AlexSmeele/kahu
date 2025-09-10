@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
+import { CropData } from '@/components/modals/EditPhotoModal';
 
 export interface Profile {
   id: string;
@@ -95,7 +96,7 @@ export function useProfile() {
     }
   };
 
-  const uploadAvatar = async (originalFile: File, croppedBlob: Blob, cropData: { x: number; y: number; scale: number }) => {
+  const uploadAvatar = async (originalFile: File, croppedBlob: Blob, cropData: CropData) => {
     if (!user) return { error: 'No user logged in', url: null };
 
     try {
@@ -169,7 +170,7 @@ export function useProfile() {
     }
   };
 
-  const getOriginalImageData = async (avatarUrl: string) => {
+  const getOriginalImageData = async (avatarUrl: string): Promise<{ originalUrl: string; cropData: CropData } | null> => {
     if (!user || !avatarUrl) return null;
 
     try {
@@ -198,7 +199,7 @@ export function useProfile() {
 
       return {
         originalUrl,
-        cropData: { x: cropData.x, y: cropData.y, scale: cropData.scale }
+        cropData: { x: cropData.x, y: cropData.y, scale: cropData.scale } as CropData
       };
     } catch (error) {
       console.error('Error getting original image data:', error);
