@@ -130,7 +130,7 @@ export function MealPlanModal({ dogId, nutritionPlan, onSave, trigger }: MealPla
             </Button>
           )}
         </DialogTrigger>
-        <DialogContent className="max-w-[min(95vw,500px)] h-[min(90vh,600px)] max-h-[min(90vh,600px)] overflow-hidden flex flex-col">
+        <DialogContent className="max-w-[min(95vw,480px)] h-[min(90vh,600px)] max-h-[min(90vh,600px)] overflow-hidden flex flex-col">
           <DialogHeader>
             <DialogTitle>
               Meal 1
@@ -138,9 +138,9 @@ export function MealPlanModal({ dogId, nutritionPlan, onSave, trigger }: MealPla
           </DialogHeader>
 
           <ScrollArea className="flex-1 overflow-y-auto">
-            <div className="space-y-6 pr-4">
+            <div className="space-y-6 px-1 pb-4">
               {/* Meal Name Section */}
-              <div className="space-y-4">
+              <div className="space-y-3">
                 <div>
                   <Label className="text-base font-medium">Meal Name</Label>
                 </div>
@@ -167,7 +167,7 @@ export function MealPlanModal({ dogId, nutritionPlan, onSave, trigger }: MealPla
               </div>
 
               {/* Time Section */}
-              <div className="space-y-4">
+              <div className="space-y-3">
                 <div>
                   <Label className="text-base font-medium flex items-center gap-2">
                     <Clock className="w-4 h-4" />
@@ -195,18 +195,19 @@ export function MealPlanModal({ dogId, nutritionPlan, onSave, trigger }: MealPla
               </div>
 
               {/* Days Section */}
-              <div className="space-y-4">
+              <div className="space-y-3">
                 <Label className="text-base font-medium flex items-center gap-2">
                   <Calendar className="w-4 h-4" />
                   Days
                 </Label>
-                <div className="flex flex-wrap gap-2">
+                <div className="grid grid-cols-4 gap-2">
                   {DAYS.map(day => (
                     <Button
                       key={day}
                       variant={selectedDays.includes(day) ? "default" : "outline"}
                       size="sm"
                       onClick={() => toggleDay(day)}
+                      className="text-xs"
                     >
                       {day.slice(0, 3)}
                     </Button>
@@ -220,7 +221,7 @@ export function MealPlanModal({ dogId, nutritionPlan, onSave, trigger }: MealPla
               </div>
 
               {/* Food Section */}
-              <div className="space-y-4">
+              <div className="space-y-3">
                 <Label className="text-base font-medium">Food & Supplements</Label>
                 
                 {/* Food Items */}
@@ -229,10 +230,10 @@ export function MealPlanModal({ dogId, nutritionPlan, onSave, trigger }: MealPla
                     <Label className="text-sm text-muted-foreground">Food</Label>
                     <div className="space-y-2 mt-2">
                       {getFoodItemsByType('food').map(item => (
-                        <div key={item.id} className="flex items-center justify-between p-3 border rounded-lg">
-                          <div>
-                            <p className="font-medium">{item.name}</p>
-                            <p className="text-sm text-muted-foreground">
+                        <div key={item.id} className="flex items-center justify-between p-2 border rounded-lg min-w-0">
+                          <div className="flex-1 min-w-0">
+                            <p className="font-medium truncate">{item.name}</p>
+                            <p className="text-sm text-muted-foreground truncate">
                               {item.supplier} • {item.amount} {item.unit}
                             </p>
                           </div>
@@ -240,6 +241,7 @@ export function MealPlanModal({ dogId, nutritionPlan, onSave, trigger }: MealPla
                             variant="ghost"
                             size="sm"
                             onClick={() => removeFoodItem(item.id)}
+                            className="shrink-0 ml-2"
                           >
                             <Trash2 className="w-4 h-4" />
                           </Button>
@@ -255,10 +257,10 @@ export function MealPlanModal({ dogId, nutritionPlan, onSave, trigger }: MealPla
                     <Label className="text-sm text-muted-foreground">Supplements</Label>
                     <div className="space-y-2 mt-2">
                       {getFoodItemsByType('supplement').map(item => (
-                        <div key={item.id} className="flex items-center justify-between p-3 border rounded-lg">
-                          <div>
-                            <p className="font-medium">{item.name}</p>
-                            <p className="text-sm text-muted-foreground">
+                        <div key={item.id} className="flex items-center justify-between p-2 border rounded-lg min-w-0">
+                          <div className="flex-1 min-w-0">
+                            <p className="font-medium truncate">{item.name}</p>
+                            <p className="text-sm text-muted-foreground truncate">
                               {item.supplier} • {item.amount} {item.unit}
                             </p>
                           </div>
@@ -266,6 +268,7 @@ export function MealPlanModal({ dogId, nutritionPlan, onSave, trigger }: MealPla
                             variant="ghost"
                             size="sm"
                             onClick={() => removeFoodItem(item.id)}
+                            className="shrink-0 ml-2"
                           >
                             <Trash2 className="w-4 h-4" />
                           </Button>
@@ -281,10 +284,10 @@ export function MealPlanModal({ dogId, nutritionPlan, onSave, trigger }: MealPla
                     <Label className="text-sm text-muted-foreground">Medication</Label>
                     <div className="space-y-2 mt-2">
                       {getFoodItemsByType('medication').map(item => (
-                        <div key={item.id} className="flex items-center justify-between p-3 border rounded-lg">
-                          <div>
-                            <p className="font-medium">{item.name}</p>
-                            <p className="text-sm text-muted-foreground">
+                        <div key={item.id} className="flex items-center justify-between p-2 border rounded-lg min-w-0">
+                          <div className="flex-1 min-w-0">
+                            <p className="font-medium truncate">{item.name}</p>
+                            <p className="text-sm text-muted-foreground truncate">
                               {item.supplier} • {item.amount} {item.unit}
                             </p>
                           </div>
@@ -292,6 +295,7 @@ export function MealPlanModal({ dogId, nutritionPlan, onSave, trigger }: MealPla
                             variant="ghost"
                             size="sm"
                             onClick={() => removeFoodItem(item.id)}
+                            className="shrink-0 ml-2"
                           >
                             <Trash2 className="w-4 h-4" />
                           </Button>
@@ -302,7 +306,7 @@ export function MealPlanModal({ dogId, nutritionPlan, onSave, trigger }: MealPla
                 )}
 
                 {/* Add Buttons */}
-                <div className="flex gap-2">
+                <div className="grid grid-cols-1 gap-2">
                   <Button
                     variant="outline"
                     size="sm"
@@ -311,22 +315,24 @@ export function MealPlanModal({ dogId, nutritionPlan, onSave, trigger }: MealPla
                     <Plus className="w-4 h-4 mr-1" />
                     Add Food
                   </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => handleAddFood('supplement')}
-                  >
-                    <Plus className="w-4 h-4 mr-1" />
-                    Add Supplements
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => handleAddFood('medication')}
-                  >
-                    <Plus className="w-4 h-4 mr-1" />
-                    Add Medication
-                  </Button>
+                  <div className="grid grid-cols-2 gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handleAddFood('supplement')}
+                    >
+                      <Plus className="w-4 h-4 mr-1" />
+                      Supplements
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handleAddFood('medication')}
+                    >
+                      <Plus className="w-4 h-4 mr-1" />
+                      Medication
+                    </Button>
+                  </div>
                 </div>
               </div>
             </div>
