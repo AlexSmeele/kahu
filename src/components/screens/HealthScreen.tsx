@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Heart, TrendingUp, Calendar, AlertCircle, Plus, Award, Scale, Syringe } from "lucide-react";
+import { Heart, TrendingUp, Calendar, AlertCircle, Plus, Award, Scale, Syringe, Stethoscope } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useDogs } from "@/hooks/useDogs";
@@ -8,6 +8,7 @@ import { DogSwitcher } from "@/components/dogs/DogSwitcher";
 import { WeightTracker } from "@/components/health/WeightTracker";
 import { VaccineScheduleModal } from "@/components/health/VaccineScheduleModal";
 import { VetVisitsModal } from "@/components/health/VetVisitsModal";
+import { VetClinicsModal } from "@/components/health/VetClinicsModal";
 import { HealthNotesModal } from "@/components/health/HealthNotesModal";
 import { ActivityMonitor } from "@/components/health/ActivityMonitor";
 
@@ -39,6 +40,7 @@ export function HealthScreen({ selectedDogId, onDogChange }: HealthScreenProps) 
   const [isWeightTrackerOpen, setIsWeightTrackerOpen] = useState(false);
   const [isVaccineModalOpen, setIsVaccineModalOpen] = useState(false);
   const [isVetVisitsModalOpen, setIsVetVisitsModalOpen] = useState(false);
+  const [isVetClinicsModalOpen, setIsVetClinicsModalOpen] = useState(false);
   const [isHealthNotesModalOpen, setIsHealthNotesModalOpen] = useState(false);
   const { dogs } = useDogs();
   const currentDog = dogs.find(dog => dog.id === selectedDogId) || dogs[0];
@@ -163,6 +165,33 @@ export function HealthScreen({ selectedDogId, onDogChange }: HealthScreenProps) 
           </div>
         </div>
 
+        {/* Vet Clinics Card */}
+        <div 
+          className="card-soft p-4 bg-gradient-to-r from-primary/5 to-primary/10 cursor-pointer hover:shadow-md transition-shadow mb-4"
+          onClick={() => setIsVetClinicsModalOpen(true)}
+        >
+          <div className="flex items-center justify-between mb-2">
+            <h3 className="font-medium text-foreground flex items-center gap-2">
+              <Stethoscope className="w-4 h-4 text-primary" />
+              Veterinary Clinics
+            </h3>
+          </div>
+          <p className="text-xs text-muted-foreground mb-2">
+            Manage veterinary clinic information
+          </p>
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="text-xs h-7"
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsVetClinicsModalOpen(true);
+            }}
+          >
+            Manage Clinics
+          </Button>
+        </div>
+
         {/* Quick Stats */}
         <div className="grid grid-cols-2 gap-4">
           <div 
@@ -270,6 +299,13 @@ export function HealthScreen({ selectedDogId, onDogChange }: HealthScreenProps) 
       <VetVisitsModal
         isOpen={isVetVisitsModalOpen}
         onClose={() => setIsVetVisitsModalOpen(false)}
+        dogName={currentDog?.name || 'Your dog'}
+      />
+      
+      <VetClinicsModal
+        isOpen={isVetClinicsModalOpen}
+        onClose={() => setIsVetClinicsModalOpen(false)}
+        dogId={currentDog?.id || ''}
         dogName={currentDog?.name || 'Your dog'}
       />
       
