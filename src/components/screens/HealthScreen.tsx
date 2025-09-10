@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Heart, TrendingUp, Calendar, AlertCircle, Plus, Award } from "lucide-react";
+import { Heart, TrendingUp, Calendar, AlertCircle, Plus, Award, Scale, Syringe } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useDogs } from "@/hooks/useDogs";
@@ -9,6 +9,7 @@ import { WeightTracker } from "@/components/health/WeightTracker";
 import { VaccineScheduleModal } from "@/components/health/VaccineScheduleModal";
 import { VetVisitsModal } from "@/components/health/VetVisitsModal";
 import { HealthNotesModal } from "@/components/health/HealthNotesModal";
+import { ActivityMonitor } from "@/components/health/ActivityMonitor";
 
 
 
@@ -177,6 +178,14 @@ export function HealthScreen({ selectedDogId, onDogChange }: HealthScreenProps) 
           >
             <div className="text-lg font-bold text-accent">{healthRecordsCount}</div>
             <div className="text-xs text-muted-foreground">Health Notes</div>
+          </div>
+        </div>
+
+        {/* Activity Monitor */}
+        <div className="mb-6">
+          <h3 className="text-lg font-semibold mb-4 px-4">Daily Activity</h3>
+          <div className="px-4">
+            <ActivityMonitor dogId={selectedDogId} />
           </div>
         </div>
       </div>

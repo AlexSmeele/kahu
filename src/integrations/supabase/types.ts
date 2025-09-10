@@ -14,6 +14,87 @@ export type Database = {
   }
   public: {
     Tables: {
+      activity_goals: {
+        Row: {
+          activity_level: string
+          created_at: string
+          dog_id: string
+          id: string
+          is_active: boolean | null
+          target_distance_km: number | null
+          target_minutes: number
+          updated_at: string
+        }
+        Insert: {
+          activity_level?: string
+          created_at?: string
+          dog_id: string
+          id?: string
+          is_active?: boolean | null
+          target_distance_km?: number | null
+          target_minutes?: number
+          updated_at?: string
+        }
+        Update: {
+          activity_level?: string
+          created_at?: string
+          dog_id?: string
+          id?: string
+          is_active?: boolean | null
+          target_distance_km?: number | null
+          target_minutes?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      activity_records: {
+        Row: {
+          activity_type: string
+          calories_burned: number | null
+          created_at: string
+          distance_km: number | null
+          dog_id: string
+          duration_minutes: number | null
+          end_time: string | null
+          gps_data: Json | null
+          id: string
+          notes: string | null
+          start_time: string
+          tracking_method: string | null
+          updated_at: string
+        }
+        Insert: {
+          activity_type: string
+          calories_burned?: number | null
+          created_at?: string
+          distance_km?: number | null
+          dog_id: string
+          duration_minutes?: number | null
+          end_time?: string | null
+          gps_data?: Json | null
+          id?: string
+          notes?: string | null
+          start_time: string
+          tracking_method?: string | null
+          updated_at?: string
+        }
+        Update: {
+          activity_type?: string
+          calories_burned?: number | null
+          created_at?: string
+          distance_km?: number | null
+          dog_id?: string
+          duration_minutes?: number | null
+          end_time?: string | null
+          gps_data?: Json | null
+          id?: string
+          notes?: string | null
+          start_time?: string
+          tracking_method?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       dog_tricks: {
         Row: {
           created_at: string
