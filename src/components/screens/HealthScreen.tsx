@@ -102,18 +102,16 @@ export function HealthScreen({ selectedDogId, onDogChange }: HealthScreenProps) 
                 <TrendingUp className="w-4 h-4 text-success" />
                 Weight
               </h3>
-              {weightData?.change !== 0 && (
+              {weightData && weightData.change !== 0 && (
                 <Badge 
                   variant="outline" 
                   className={`text-xs border-opacity-30 ${
-                    weightData && weightData.change > 0 
+                    weightData.change > 0 
                       ? 'text-success border-success' 
-                      : weightData && weightData.change < 0 
-                      ? 'text-destructive border-destructive' 
-                      : 'text-muted-foreground border-muted'
+                      : 'text-destructive border-destructive'
                   }`}
                 >
-                  {weightData?.trend || 'No change'}
+                  {weightData.trend}
                 </Badge>
               )}
             </div>
