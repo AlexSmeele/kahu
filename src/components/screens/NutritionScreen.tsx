@@ -63,14 +63,17 @@ export function NutritionScreen({ selectedDogId, onDogChange }: NutritionScreenP
               <p className="text-sm text-muted-foreground">Meal planning & tracking</p>
             </div>
           </div>
-          <Button 
-            variant="outline" 
-            size="sm"
-            onClick={() => setIsWeekPlannerOpen(true)}
-          >
-            <Calendar className="w-4 h-4 mr-1" />
-            Plan Week
-          </Button>
+          <div className="flex items-center gap-2">
+            <NotificationsDrawer />
+            <Button 
+              variant="outline" 
+              size="sm"
+              onClick={() => setIsWeekPlannerOpen(true)}
+            >
+              <Calendar className="w-4 h-4 mr-1" />
+              Plan Week
+            </Button>
+          </div>
         </div>
         
         {/* Dog Switcher */}

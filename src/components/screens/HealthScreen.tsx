@@ -72,14 +72,17 @@ export function HealthScreen({ selectedDogId, onDogChange }: HealthScreenProps) 
               <p className="text-sm text-muted-foreground">Wellness overview & records</p>
             </div>
           </div>
-          <Button 
-            variant="outline" 
-            size="sm"
-            onClick={() => setIsHealthNotesModalOpen(true)}
-          >
-            <Plus className="w-4 h-4 mr-1" />
-            Add Record
-          </Button>
+          <div className="flex items-center gap-2">
+            <NotificationsDrawer />
+            <Button 
+              variant="outline" 
+              size="sm"
+              onClick={() => setIsHealthNotesModalOpen(true)}
+            >
+              <Plus className="w-4 h-4 mr-1" />
+              Add Record
+            </Button>
+          </div>
         </div>
         
         {/* Dog Switcher */}

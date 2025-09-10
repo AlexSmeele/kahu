@@ -184,38 +184,36 @@ export function WeightTracker({ isOpen, onClose, currentWeight, dogName, dogBirt
               </div>
 
               {/* Chart Section */}
-              <div className="card-soft py-4 px-2">
-                <h3 className="font-semibold mb-4 text-xs text-center">Weight Trend</h3>
-                <div className="flex justify-center">
-                  <div className="w-full max-w-[280px] h-32">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <LineChart data={chartData}>
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis 
-                          dataKey="date" 
-                          fontSize={8}
-                          tick={{ fontSize: 8 }}
-                        />
-                        <YAxis 
-                          fontSize={8}
-                          tick={{ fontSize: 8 }}
-                          domain={['dataMin - 0.5', 'dataMax + 0.5']}
-                        />
-                        <Tooltip 
-                          formatter={(value: number) => [`${value} kg`, 'Weight']}
-                          labelFormatter={(label) => `Date: ${label}`}
-                        />
-                        <Line 
-                          type="monotone" 
-                          dataKey="weight" 
-                          stroke="hsl(var(--primary))" 
-                          strokeWidth={2}
-                          dot={{ fill: "hsl(var(--primary))", strokeWidth: 2, r: 2 }}
-                          activeDot={{ r: 4, stroke: "hsl(var(--primary))", strokeWidth: 2 }}
-                        />
-                      </LineChart>
-                    </ResponsiveContainer>
-                  </div>
+              <div className="card-soft p-2">
+                <h3 className="font-semibold mb-2 text-xs">Weight Trend</h3>
+                <div className="h-28">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <LineChart data={chartData}>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis 
+                        dataKey="date" 
+                        fontSize={8}
+                        tick={{ fontSize: 8 }}
+                      />
+                      <YAxis 
+                        fontSize={8}
+                        tick={{ fontSize: 8 }}
+                        domain={['dataMin - 0.5', 'dataMax + 0.5']}
+                      />
+                      <Tooltip 
+                        formatter={(value: number) => [`${value} kg`, 'Weight']}
+                        labelFormatter={(label) => `Date: ${label}`}
+                      />
+                      <Line 
+                        type="monotone" 
+                        dataKey="weight" 
+                        stroke="hsl(var(--primary))" 
+                        strokeWidth={2}
+                        dot={{ fill: "hsl(var(--primary))", strokeWidth: 2, r: 2 }}
+                        activeDot={{ r: 4, stroke: "hsl(var(--primary))", strokeWidth: 2 }}
+                      />
+                    </LineChart>
+                  </ResponsiveContainer>
                 </div>
               </div>
 
