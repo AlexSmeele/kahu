@@ -119,12 +119,83 @@ export function UserEditModal({ isOpen, onClose }: UserEditModalProps) {
     setCropData({ x: 0, y: 0, scale: 1 });
   };
 
+  const createCroppedImage = async (file: File, cropData: CropData): Promise<Blob> => {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => {
+        // Create canvas for cropping
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        if (!ctx) {
+          reject(new Error('Could not get canvas context'));
+          return;
+        }
+
+        // Set canvas size to the desired output size (circular crop)
+        const outputSize = 400; // 400x400 output
+        canvas.width = outputSize;
+        canvas.height = outputSize;
+
+        // Calculate the crop area based on scale and position
+        const { x, y, scale } = cropData;
+        
+        // Clear canvas and create circular clipping path
+        ctx.clearRect(0, 0, outputSize, outputSize);
+        ctx.beginPath();
+        ctx.arc(outputSize / 2, outputSize / 2, outputSize / 2, 0, 2 * Math.PI);
+        ctx.clip();
+
+        // Calculate source dimensions based on scale
+        const scaledWidth = img.width * scale;
+        const scaledHeight = img.height * scale;
+        
+        // Calculate the position to center the crop
+        const centerX = outputSize / 2;
+        const centerY = outputSize / 2;
+        
+        // Draw the scaled and positioned image
+        ctx.drawImage(
+          img,
+          centerX - scaledWidth / 2 + x,
+          centerY - scaledHeight / 2 + y,
+          scaledWidth,
+          scaledHeight
+        );
+
+        // Convert canvas to blob
+        canvas.toBlob(
+          (blob) => {
+            if (blob) {
+              resolve(blob);
+            } else {
+              reject(new Error('Failed to create cropped image'));
+            }
+          },
+          'image/jpeg',
+          0.9
+        );
+      };
+      img.onerror = () => reject(new Error('Failed to load image'));
+      img.src = URL.createObjectURL(file);
+    });
+  };
+
   const handlePhotoUpload = async () => {
     if (!photo) return;
 
     setUploading(true);
     try {
-      const { error } = await uploadAvatar(photo);
+      // Create cropped version if crop data exists
+      const fileToUpload = cropData.scale !== 1 || cropData.x !== 0 || cropData.y !== 0
+        ? await createCroppedImage(photo, cropData)
+        : photo;
+
+      // Convert blob to file if needed
+      const finalFile = fileToUpload instanceof Blob && !(fileToUpload instanceof File)
+        ? new File([fileToUpload], photo.name, { type: 'image/jpeg' })
+        : fileToUpload as File;
+
+      const { error } = await uploadAvatar(finalFile);
       
       if (error) {
         toast({
@@ -214,10 +285,10 @@ export function UserEditModal({ isOpen, onClose }: UserEditModalProps) {
                       <Button
                         type="button"
                         variant="outline"
-                        onClick={() => setShowCropper(false)}
+                        onClick={() => setCropData({ x: 0, y: 0, scale: 1 })}
                         className="flex-1"
                       >
-                        Done
+                        Reset
                       </Button>
                       <Button
                         type="button"
@@ -225,14 +296,7 @@ export function UserEditModal({ isOpen, onClose }: UserEditModalProps) {
                         disabled={uploading}
                         className="flex-1"
                       >
-                        {uploading ? "Uploading..." : "Save Photo"}
-                      </Button>
-                      <Button
-                        type="button"
-                        variant="outline"
-                        onClick={removePhoto}
-                      >
-                        <X className="w-4 h-4" />
+                        {uploading ? "Uploading..." : "Save"}
                       </Button>
                     </div>
                   </div>
@@ -280,7 +344,8 @@ export function UserEditModal({ isOpen, onClose }: UserEditModalProps) {
                           <Camera className="w-4 h-4 mr-2" />
                           Change Photo
                         </Button>
-                        {photo && !showCropper && (
+                        {/* Always show Adjust Crop if there's any photo (new or existing) */}
+                        {photoPreview && (
                           <Button
                             type="button"
                             variant="outline"
