@@ -277,31 +277,27 @@ export function EditPhotoModal({
                     document.addEventListener('touchend', handleTouchEnd);
                   }}
                 >
-                  {/* Background Image with Opacity */}
+                  {/* Single Image */}
                   <img
                     src={previewUrl}
                     alt="Edit preview"
-                    className="w-full h-full object-cover select-none pointer-events-none opacity-50"
+                    className="w-full h-full object-cover select-none pointer-events-none"
                     style={imageStyle}
                     draggable={false}
                   />
                   
-                  {/* Crop Circle Overlay */}
+                  {/* Crop Circle Overlay - creates the effect */}
                   <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <div className="relative w-32 h-32">
-                      {/* Full opacity image within circle */}
-                      <div className="w-full h-full rounded-full overflow-hidden border-2 border-primary bg-background">
-                        <img
-                          src={previewUrl}
-                          alt="Crop preview"
-                          className="w-full h-full object-cover select-none pointer-events-none"
-                          style={imageStyle}
-                          draggable={false}
-                        />
-                      </div>
-                      {/* Circle border */}
-                      <div className="absolute inset-0 rounded-full border-2 border-primary pointer-events-none" />
-                    </div>
+                    {/* Overlay that dims everything except the circle */}
+                    <div 
+                      className="absolute inset-0 bg-black opacity-50"
+                      style={{
+                        mask: 'radial-gradient(circle 64px at center, transparent 64px, black 64px)',
+                        WebkitMask: 'radial-gradient(circle 64px at center, transparent 64px, black 64px)',
+                      }}
+                    />
+                    {/* Circle border */}
+                    <div className="relative w-32 h-32 rounded-full border-2 border-primary pointer-events-none" />
                   </div>
                 </div>
               </div>
