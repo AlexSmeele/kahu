@@ -226,6 +226,11 @@ export function VetClinicsModal({ isOpen, onClose, dogId, dogName }: VetClinicsM
                     onChange={setSelectedClinic}
                     placeholder="Search for veterinary clinic..."
                   />
+                  
+                  {/* Attribution for OpenStreetMap data */}
+                  <p className="text-xs text-muted-foreground mt-2">
+                    Search results powered by © <a href="https://openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer" className="underline hover:text-foreground">OpenStreetMap contributors</a>
+                  </p>
                 </div>
 
                 <div>

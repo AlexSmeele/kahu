@@ -11,3 +11,6 @@ verify_jwt = false
 
 [functions.upsert-vet-clinic]
 verify_jwt = true
+
+[functions.admin-seed-vet-clinics]
+verify_jwt = true

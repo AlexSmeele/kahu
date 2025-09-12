@@ -693,6 +693,56 @@ export type Database = {
         }
         Relationships: []
       }
+      vet_search_analytics: {
+        Row: {
+          created_at: string
+          database_results_count: number | null
+          error_message: string | null
+          id: string
+          osm_results_count: number | null
+          response_time_ms: number | null
+          search_query: string
+          selected_clinic_id: string | null
+          total_results_count: number | null
+          user_id: string | null
+          user_location_provided: boolean | null
+        }
+        Insert: {
+          created_at?: string
+          database_results_count?: number | null
+          error_message?: string | null
+          id?: string
+          osm_results_count?: number | null
+          response_time_ms?: number | null
+          search_query: string
+          selected_clinic_id?: string | null
+          total_results_count?: number | null
+          user_id?: string | null
+          user_location_provided?: boolean | null
+        }
+        Update: {
+          created_at?: string
+          database_results_count?: number | null
+          error_message?: string | null
+          id?: string
+          osm_results_count?: number | null
+          response_time_ms?: number | null
+          search_query?: string
+          selected_clinic_id?: string | null
+          total_results_count?: number | null
+          user_id?: string | null
+          user_location_provided?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "vet_search_analytics_selected_clinic_id_fkey"
+            columns: ["selected_clinic_id"]
+            isOneToOne: false
+            referencedRelation: "vet_clinics"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       weight_records: {
         Row: {
           created_at: string
@@ -736,7 +786,38 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      gtrgm_compress: {
+        Args: { "": unknown }
+        Returns: unknown
+      }
+      gtrgm_decompress: {
+        Args: { "": unknown }
+        Returns: unknown
+      }
+      gtrgm_in: {
+        Args: { "": unknown }
+        Returns: unknown
+      }
+      gtrgm_options: {
+        Args: { "": unknown }
+        Returns: undefined
+      }
+      gtrgm_out: {
+        Args: { "": unknown }
+        Returns: unknown
+      }
+      set_limit: {
+        Args: { "": number }
+        Returns: number
+      }
+      show_limit: {
+        Args: Record<PropertyKey, never>
+        Returns: number
+      }
+      show_trgm: {
+        Args: { "": string }
+        Returns: string[]
+      }
     }
     Enums: {
       [_ in never]: never
