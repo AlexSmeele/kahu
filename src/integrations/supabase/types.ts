@@ -192,6 +192,13 @@ export type Database = {
         }
         Relationships: [
           {
+            foreignKeyName: "dog_vet_clinics_dog_id_fkey"
+            columns: ["dog_id"]
+            isOneToOne: false
+            referencedRelation: "dogs"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "dog_vet_clinics_vet_clinic_id_fkey"
             columns: ["vet_clinic_id"]
             isOneToOne: false
