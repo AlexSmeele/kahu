@@ -1114,6 +1114,17 @@ export type Database = {
         Args: { "": string }
         Returns: string[]
       }
+      validate_invitation_token: {
+        Args: { _token: string }
+        Returns: {
+          accepted_at: string
+          email: string
+          expires_at: string
+          family_id: string
+          invitation_id: string
+          role: string
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never
