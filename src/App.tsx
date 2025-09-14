@@ -9,6 +9,7 @@ import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
+import AcceptInvitation from "./pages/AcceptInvitation";
 import NotFound from "./pages/NotFound";
 import { logger } from "@/lib/logger";
 
@@ -45,6 +46,7 @@ const App = () => {
                 <BrowserRouter>
                   <Routes>
                     <Route path="/auth" element={<Auth />} />
+                    <Route path="/accept-invitation" element={<AcceptInvitation />} />
                     <Route path="/" element={
                       <ProtectedRoute>
                         <Index />

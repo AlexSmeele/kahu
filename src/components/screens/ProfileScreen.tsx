@@ -14,7 +14,7 @@ import { DogProfileModal } from "@/components/dogs/DogProfileModal";
 import { OrderHistoryModal } from "@/components/marketplace/OrderHistoryModal";
 import { UserEditModal } from "@/components/profile/UserEditModal";
 import { AccountSettingsModal } from "@/components/profile/AccountSettingsModal";
-import { InviteFamilyModal } from "@/components/profile/InviteFamilyModal";
+import InviteFamilyModal from "@/components/profile/InviteFamilyModal";
 import { BillingModal } from "@/components/profile/BillingModal";
 import { ExportDataModal } from "@/components/profile/ExportDataModal";
 import { FeedbackModal } from "@/components/profile/FeedbackModal";
