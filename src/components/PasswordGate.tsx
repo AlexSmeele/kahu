@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 
-const ACCESS_PASSWORD = "doggy2024"; // Change this password as needed
+const ACCESS_PASSWORD = "mydawgs"; // Change this password as needed
 const STORAGE_KEY = "password_gate_access";
 
 interface PasswordGateProps {
