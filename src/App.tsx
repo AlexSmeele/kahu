@@ -11,6 +11,7 @@ import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import AcceptInvitation from "./pages/AcceptInvitation";
 import NotFound from "./pages/NotFound";
+import { PasswordGate } from "@/components/PasswordGate";
 import { logger } from "@/lib/logger";
 
 const queryClient = new QueryClient({
@@ -45,7 +46,11 @@ const App = () => {
                 <Sonner />
                 <BrowserRouter>
                   <Routes>
-                    <Route path="/auth" element={<Auth />} />
+                    <Route path="/auth" element={
+                      <PasswordGate>
+                        <Auth />
+                      </PasswordGate>
+                    } />
                     <Route path="/accept-invitation" element={<AcceptInvitation />} />
                     <Route path="/" element={
                       <ProtectedRoute>
