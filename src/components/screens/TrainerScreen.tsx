@@ -158,11 +158,11 @@ export function TrainerScreen({ onTypingChange }: { onTypingChange?: (typing: bo
         </div>
       </header>
 
-      {/* Content */}
-      <div className="flex-1 overflow-y-auto" style={{ paddingBottom: '120px' }}>
+      {/* Content - Scrollable area that takes remaining space */}
+      <div className="flex-1 overflow-y-auto">
         {messages.length === 0 ? (
           /* Welcome State */
-          <div className="flex flex-col items-center justify-center p-6 text-center h-full">
+          <div className="flex flex-col items-center justify-center p-6 text-center min-h-full">
             <div className="w-full max-w-sm mb-8">
               <img 
                 src={heroImage} 
@@ -180,7 +180,7 @@ export function TrainerScreen({ onTypingChange }: { onTypingChange?: (typing: bo
             </p>
 
             {/* Suggested Prompts */}
-            <div className="w-full max-w-md">
+            <div className="w-full max-w-md pb-6">
               <p className="text-sm text-muted-foreground mb-3">Try asking:</p>
               <div className="space-y-2">
                 {[
@@ -201,7 +201,7 @@ export function TrainerScreen({ onTypingChange }: { onTypingChange?: (typing: bo
           </div>
         ) : (
           /* Chat Messages */
-          <div className="p-4 space-y-4">
+          <div className="p-4 space-y-4 pb-6">
             {messages.map((message) => (
               <div
                 key={message.id}
@@ -285,8 +285,8 @@ export function TrainerScreen({ onTypingChange }: { onTypingChange?: (typing: bo
         )}
       </div>
 
-      {/* Input Area - Fixed positioning with consistent spacing */}
-      <div className="absolute bottom-0 left-0 right-0 p-4 bg-card/95 backdrop-blur-sm border-t border-border safe-bottom">
+      {/* Input Area - Sticky footer in document flow */}
+      <div className="flex-shrink-0 p-4 bg-card/95 backdrop-blur-sm border-t border-border safe-bottom">
         <div className="flex gap-2 items-end">
           <div className="flex-1">
             <Input

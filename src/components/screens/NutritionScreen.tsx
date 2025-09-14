@@ -81,7 +81,7 @@ export function NutritionScreen({ selectedDogId, onDogChange }: NutritionScreenP
         />
       </header>
 
-      {/* Current Diet Plan */}
+      {/* Current Diet Plan - Today's Progress */}
       {!nutritionPlan ? (
         <div className="p-4 bg-gradient-to-r from-warning/5 to-warning/10 border-b border-border">
           <div className="text-center">
@@ -102,77 +102,77 @@ export function NutritionScreen({ selectedDogId, onDogChange }: NutritionScreenP
           </div>
         </div>
       ) : (
-        <>
-          {/* Today's Progress */}
-          <div className="p-4 bg-gradient-to-r from-warning/5 to-warning/10 border-b border-border">
-            <div className="flex items-center justify-between mb-3">
-              <h3 className="font-semibold text-foreground">Today's Progress</h3>
-              <Badge variant="outline" className="text-warning border-warning/30">
-                {todayProgress.percentage}% complete
-              </Badge>
+        <div className="p-4 bg-gradient-to-r from-warning/5 to-warning/10 border-b border-border">
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="font-semibold text-foreground">Today's Progress</h3>
+            <Badge variant="outline" className="text-warning border-warning/30">
+              {todayProgress.percentage}% complete
+            </Badge>
+          </div>
+          
+          <div className="mb-3">
+            <div className="flex justify-between text-sm text-muted-foreground mb-1">
+              <span>Daily Amount</span>
+              <span>{nutritionPlan.daily_amount} cups</span>
             </div>
-            
-            <div className="mb-3">
-              <div className="flex justify-between text-sm text-muted-foreground mb-1">
-                <span>Daily Amount</span>
-                <span>{nutritionPlan.daily_amount} cups</span>
-              </div>
-              <div className="w-full bg-muted rounded-full h-3">
-                <div 
-                  className="bg-gradient-to-r from-warning to-warning/80 h-3 rounded-full transition-all duration-300"
-                  style={{ width: `${todayProgress.percentage}%` }}
-                />
-              </div>
-            </div>
-
-            <div className="flex items-center justify-between text-sm">
-              <div className="flex items-center gap-1 text-muted-foreground">
-                <Clock className="w-4 h-4" />
-                {nutritionPlan.feeding_times} meals per day
-              </div>
-              <MealPlanModal 
-                dogId={selectedDogId} 
-                nutritionPlan={nutritionPlan}
-                trigger={
-                  <Button variant="ghost" size="sm">
-                    <Edit2 className="w-4 h-4 mr-1" />
-                    Edit
-                  </Button>
-                }
+            <div className="w-full bg-muted rounded-full h-3">
+              <div 
+                className="bg-gradient-to-r from-warning to-warning/80 h-3 rounded-full transition-all duration-300"
+                style={{ width: `${todayProgress.percentage}%` }}
               />
             </div>
           </div>
 
-          {/* Diet Details */}
-          <div className="p-4 border-b border-border">
-            <h3 className="font-semibold text-foreground mb-3">Diet Details</h3>
-            <div className="grid grid-cols-2 gap-4 text-sm">
-              <div>
-                <span className="text-muted-foreground">Food Type:</span>
-                <p className="font-medium">{nutritionPlan.food_type?.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}</p>
-              </div>
-              {nutritionPlan.brand && (
-                <div>
-                  <span className="text-muted-foreground">Brand:</span>
-                  <p className="font-medium">{nutritionPlan.brand}</p>
-                </div>
-              )}
+          <div className="flex items-center justify-between text-sm">
+            <div className="flex items-center gap-1 text-muted-foreground">
+              <Clock className="w-4 h-4" />
+              {nutritionPlan.feeding_times} meals per day
             </div>
-            {nutritionPlan.special_instructions && (
-              <div className="mt-3">
-                <span className="text-muted-foreground text-sm">Special Instructions:</span>
-                <p className="text-sm mt-1">{nutritionPlan.special_instructions}</p>
-              </div>
-            )}
+            <MealPlanModal 
+              dogId={selectedDogId} 
+              nutritionPlan={nutritionPlan}
+              trigger={
+                <Button variant="ghost" size="sm">
+                  <Edit2 className="w-4 h-4 mr-1" />
+                  Edit
+                </Button>
+              }
+            />
           </div>
-        </>
+        </div>
       )}
 
-      {/* Today's Meals */}
+      {/* Scrollable Content Area */}
       <div className="flex-1 overflow-y-auto">
         <div className="p-4">
           {nutritionPlan ? (
             <>
+              {/* Diet Details - Now scrollable with meals */}
+              <div className="mb-6">
+                <h3 className="font-semibold text-foreground mb-3">Diet Details</h3>
+                <div className="card-soft p-4">
+                  <div className="grid grid-cols-2 gap-4 text-sm">
+                    <div>
+                      <span className="text-muted-foreground">Food Type:</span>
+                      <p className="font-medium">{nutritionPlan.food_type?.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}</p>
+                    </div>
+                    {nutritionPlan.brand && (
+                      <div>
+                        <span className="text-muted-foreground">Brand:</span>
+                        <p className="font-medium">{nutritionPlan.brand}</p>
+                      </div>
+                    )}
+                  </div>
+                  {nutritionPlan.special_instructions && (
+                    <div className="mt-3">
+                      <span className="text-muted-foreground text-sm">Special Instructions:</span>
+                      <p className="text-sm mt-1">{nutritionPlan.special_instructions}</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Today's Meals */}
               <div className="flex items-center justify-between mb-3">
                 <h3 className="font-semibold text-foreground">Today's Meals</h3>
                 <MealPlanModal 

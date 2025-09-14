@@ -69,9 +69,9 @@ const Index = () => {
   };
 
   return (
-    <div className="h-full flex flex-col">
-      {/* Main Content - Flex grows to fill available space */}
-      <main className="flex-1 min-h-0 overflow-hidden">
+    <div className="h-screen flex flex-col">
+      {/* Main Content - Uses flex-1 to take remaining space after bottom nav */}
+      <main className="flex-1 min-h-0">
         {renderActiveScreen()}
       </main>
 
