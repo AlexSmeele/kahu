@@ -71,7 +71,7 @@ const Index = () => {
   return (
     <div className="h-screen flex flex-col">
       {/* Main Content - Takes remaining space above nav */}
-      <main className="flex-1 min-h-0 overflow-hidden">
+      <main className="content-area flex flex-col min-h-0">
         {renderActiveScreen()}
       </main>
 

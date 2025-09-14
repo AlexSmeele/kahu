@@ -52,6 +52,8 @@
 
     --radius: 1rem;
 
+    --tabbar-height: 4rem;
+
     /* Gradients */
     --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(158 64% 45%));
     --gradient-secondary: linear-gradient(135deg, hsl(var(--secondary)), hsl(45 23% 96%));
@@ -193,12 +195,12 @@
     @apply btn-touch bg-gradient-to-r from-accent to-accent-hover text-accent-foreground hover:shadow-[var(--shadow-soft)] active:scale-95;
   }
 
-  /* Tab bar styles - Takes its natural space in layout */
+  /* Tab bar styles - Anchored to viewport bottom */
   .tab-bar {
-    @apply bg-card border-t border-border safe-bottom w-full z-50;
+    @apply bg-card border-t border-border safe-bottom fixed bottom-0 left-0 right-0 z-50;
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    height: 4rem;
+    height: var(--tabbar-height);
   }
   
   .tab-item {
@@ -218,7 +220,15 @@
   .fab {
     @apply absolute w-14 h-14 bg-gradient-to-r from-primary to-primary-hover text-primary-foreground rounded-full shadow-[var(--shadow-large)] flex items-center justify-center transition-transform duration-200 hover:scale-105 active:scale-95 z-40;
     right: 1rem;
-    bottom: calc(4rem + env(safe-area-inset-bottom) + 1rem);
+    bottom: calc(var(--tabbar-height) + env(safe-area-inset-bottom) + 1rem);
+  }
+
+  /* Content area constrained above tab bar */
+  .content-area {
+    height: calc(100dvh - var(--tabbar-height) - env(safe-area-inset-bottom));
+    min-height: calc(100dvh - var(--tabbar-height) - env(safe-area-inset-bottom));
+    max-height: calc(100dvh - var(--tabbar-height) - env(safe-area-inset-bottom));
+    @apply overflow-auto;
   }
 }
 
