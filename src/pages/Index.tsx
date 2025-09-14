@@ -70,8 +70,8 @@ const Index = () => {
 
   return (
     <div className="h-screen flex flex-col">
-      {/* Main Content - Account for fixed bottom navigation */}
-      <main className="flex-1 min-h-0 pb-16">
+      {/* Main Content - Account for bottom nav height + safe area */}
+      <main className="flex-1 min-h-0 pb-tabbar-safe">
         {renderActiveScreen()}
       </main>
 

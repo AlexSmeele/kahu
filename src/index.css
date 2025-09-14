@@ -221,3 +221,10 @@
     bottom: calc(4rem + env(safe-area-inset-bottom) + 1rem);
   }
 }
+
+@layer utilities {
+  /* Ensures content never sits under the bottom nav */
+  .pb-tabbar-safe {
+    padding-bottom: calc(4rem + env(safe-area-inset-bottom));
+  }
+}
