@@ -136,7 +136,7 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground overflow-hidden;
     min-height: 100vh;
     min-height: 100dvh; /* Dynamic viewport height for mobile browsers */
     /* Enable smooth scrolling on iOS */
@@ -229,6 +229,17 @@
     min-height: calc(100dvh - var(--tabbar-height) - env(safe-area-inset-bottom));
     max-height: calc(100dvh - var(--tabbar-height) - env(safe-area-inset-bottom));
     @apply overflow-auto;
+  }
+
+  /* Absolute content frame bounded by nav top */
+  .content-frame {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: calc(var(--tabbar-height) + env(safe-area-inset-bottom));
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
   }
 }
 

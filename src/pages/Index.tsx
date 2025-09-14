@@ -69,9 +69,9 @@ const Index = () => {
   };
 
   return (
-    <div className="h-screen flex flex-col">
+    <div className="relative h-screen">
       {/* Main Content - Takes remaining space above nav */}
-      <main className="content-area flex flex-col min-h-0">
+      <main className="content-frame">
         {renderActiveScreen()}
       </main>
 
