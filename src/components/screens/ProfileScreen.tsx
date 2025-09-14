@@ -22,10 +22,10 @@ import { VetClinicsModal } from "@/components/health/VetClinicsModal";
 import type { Dog as DogType } from "@/hooks/useDogs";
 
 const menuItems = [
-  { icon: Package, label: "Order History", action: "orders" },
+  { icon: Settings, label: "Account Settings", action: "settings" },
   { icon: Stethoscope, label: "Veterinary Clinics", action: "vet-clinics" },
   { icon: CreditCard, label: "Billing & Payments", action: "billing" },
-  { icon: Settings, label: "Account Settings", action: "settings" },
+  { icon: Package, label: "Order History", action: "orders" },
   { icon: Share, label: "Invite Family", action: "invite" },
   { icon: Download, label: "Export Data", action: "export" },
   { icon: MessageSquare, label: "Send Feedback", action: "feedback" },
