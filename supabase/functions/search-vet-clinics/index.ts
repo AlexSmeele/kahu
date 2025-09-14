@@ -25,8 +25,32 @@ interface VetClinic {
 const VET_KEYWORDS = [
   'veterinary', 'veterinarian', 'vet', 'animal hospital', 'pet clinic', 
   'animal clinic', 'pet hospital', 'animal care', 'pet care', 'animal health',
-  'veterinary surgery', 'veterinary clinic', 'small animal', 'companion animal'
+  'veterinary surgery', 'veterinary clinic', 'small animal', 'companion animal',
+  'animal emergency', 'pet emergency', 'animal medicine', 'veterinary practice'
 ];
+
+// Helper function to extract services from OSM tags
+function extractServices(tags: any): string[] {
+  const services = [];
+  
+  if (tags.emergency === 'yes' || tags['emergency:veterinary'] === 'yes') {
+    services.push('emergency');
+  }
+  if (tags.surgery === 'yes') {
+    services.push('surgery');
+  }
+  if (tags.dentistry === 'yes') {
+    services.push('dentistry');
+  }
+  if (tags['healthcare:speciality'] && tags['healthcare:speciality'].includes('veterinary')) {
+    services.push('specialist');
+  }
+  if (services.length === 0) {
+    services.push('general-care');
+  }
+  
+  return services;
+}
 
 // Helper function to log analytics
 async function logSearchAnalytics(
@@ -138,19 +162,23 @@ serve(async (req) => {
       console.log('Searching OpenStreetMap Nominatim API');
       
       try {
-        // Build Nominatim query with veterinary-specific search
+      // Build improved Nominatim query
         let nominatimUrl = `https://nominatim.openstreetmap.org/search?` +
-          `q=${encodeURIComponent(query + ' veterinary vet animal hospital')}&` +
           `format=json&` +
-          `limit=15&` +
+          `limit=20&` +
           `addressdetails=1&` +
           `extratags=1&` +
           `namedetails=1`;
 
-        // Add location bias if coordinates provided, but don't bound strictly
+        // Use different query strategies based on location availability
         if (latitude && longitude) {
-          const buffer = 0.5; // Larger search area
-          nominatimUrl += `&viewbox=${longitude - buffer},${latitude + buffer},${longitude + buffer},${latitude - buffer}`;
+          // Location-based search - search around user's location
+          nominatimUrl += `&q=${encodeURIComponent('veterinary')}&` +
+            `lat=${latitude}&lon=${longitude}&radius=25000`; // 25km radius
+        } else {
+          // Text-based search with broader terms
+          const searchTerms = `${query} veterinary animal hospital vet clinic`.trim();
+          nominatimUrl += `&q=${encodeURIComponent(searchTerms)}`;
         }
 
         console.log('Querying Nominatim:', nominatimUrl);
@@ -168,41 +196,53 @@ serve(async (req) => {
         const osmResults = await response.json();
         console.log('OSM Results found:', osmResults.length);
 
-        // Filter and process OSM results with expanded criteria
+        // Filter and process OSM results with improved criteria
         const processedResults = osmResults
           .filter((place: any) => {
             const name = (place.display_name || '').toLowerCase();
             const tags = place.extratags || {};
             const type = (place.type || '').toLowerCase();
             const category = (place.category || '').toLowerCase();
+            const placeClass = (place.class || '').toLowerCase();
 
-            // Check if it's veterinary-related with broader criteria
-            const isVet = VET_KEYWORDS.some(keyword => 
+            // Comprehensive veterinary detection
+            const hasVetKeyword = VET_KEYWORDS.some(keyword => 
               name.includes(keyword) || 
-              type.includes(keyword)
-            ) || 
-            tags.amenity === 'veterinary' ||
-            tags.shop === 'pet' ||
-            tags.healthcare === 'veterinary' ||
-            category === 'amenity' && tags.amenity === 'veterinary';
+              type.includes(keyword) ||
+              (tags.name && tags.name.toLowerCase().includes(keyword))
+            );
 
-            return isVet;
+            const hasVetTags = 
+              tags.amenity === 'veterinary' ||
+              tags.shop === 'pet' ||
+              tags.healthcare === 'veterinary' ||
+              placeClass === 'amenity' ||
+              category === 'amenity' ||
+              type.includes('hospital') ||
+              type.includes('clinic');
+
+            return hasVetKeyword || hasVetTags;
           })
-          .slice(0, 8)
-          .map((place: any) => ({
-            id: `osm_${place.place_id}`,
-            name: place.display_name.split(',')[0].trim(),
-            address: place.display_name,
-            latitude: parseFloat(place.lat),
-            longitude: parseFloat(place.lon),
-            osm_place_id: place.place_id?.toString(),
-            osm_type: place.osm_type,
-            phone: place.extratags?.phone,
-            email: place.extratags?.email,
-            website: place.extratags?.website,
-            services: [],
-            verified: false
-          }));
+          .slice(0, 10)
+          .map((place: any) => {
+            const tags = place.extratags || {};
+            const name = place.display_name.split(',')[0].trim();
+            
+            return {
+              id: `osm_${place.place_id}`,
+              name: tags.name || name,
+              address: place.display_name,
+              latitude: parseFloat(place.lat),
+              longitude: parseFloat(place.lon),
+              osm_place_id: place.place_id?.toString(),
+              osm_type: place.osm_type,
+              phone: tags.phone || tags['contact:phone'],
+              email: tags.email || tags['contact:email'],
+              website: tags.website || tags['contact:website'],
+              services: this.extractServices(tags),
+              verified: false
+            };
+          });
 
         osmResultsCount = processedResults.length;
         console.log('Processed OSM results:', osmResultsCount);

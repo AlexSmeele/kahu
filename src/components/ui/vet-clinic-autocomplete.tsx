@@ -40,6 +40,8 @@ export function VetClinicAutocomplete({
   const [isLoading, setIsLoading] = useState(false);
   const [showResults, setShowResults] = useState(false);
   const [showManualEntry, setShowManualEntry] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [locationUsed, setLocationUsed] = useState(false);
   const [manualClinic, setManualClinic] = useState<Partial<VetClinic>>({
     name: '',
     address: '',
@@ -55,26 +57,35 @@ export function VetClinicAutocomplete({
   const searchClinics = async (searchQuery: string) => {
     if (!searchQuery.trim() || searchQuery.length < 2) {
       setResults([]);
+      setError(null);
       return;
     }
 
     setIsLoading(true);
+    setError(null);
+    setLocationUsed(false);
+    
     try {
       // Get user's location for better results (optional)
       let latitude, longitude;
       if (navigator.geolocation) {
         try {
           const position = await new Promise<GeolocationPosition>((resolve, reject) => {
-            navigator.geolocation.getCurrentPosition(resolve, reject, { timeout: 5000 });
+            navigator.geolocation.getCurrentPosition(resolve, reject, { 
+              timeout: 5000, 
+              enableHighAccuracy: false 
+            });
           });
           latitude = position.coords.latitude;
           longitude = position.coords.longitude;
+          setLocationUsed(true);
         } catch (e) {
           console.log('Geolocation not available, searching without location');
+          setLocationUsed(false);
         }
       }
 
-      const { data, error } = await supabase.functions.invoke('search-vet-clinics', {
+      const { data, error: searchError } = await supabase.functions.invoke('search-vet-clinics', {
         body: { 
           query: searchQuery,
           latitude,
@@ -82,8 +93,9 @@ export function VetClinicAutocomplete({
         }
       });
 
-      if (error) {
-        console.error('Search error:', error);
+      if (searchError) {
+        setError('Search failed. Please try again.');
+        console.error('Search error:', searchError);
         return;
       }
 
@@ -91,6 +103,7 @@ export function VetClinicAutocomplete({
       setShowResults(true);
     } catch (error) {
       console.error('Error searching clinics:', error);
+      setError('Search failed. Please check your connection and try again.');
     } finally {
       setIsLoading(false);
     }
@@ -187,6 +200,12 @@ export function VetClinicAutocomplete({
       {showResults && results.length > 0 && (
         <Card className="absolute z-50 w-full mt-1 max-h-80 overflow-y-auto bg-background border shadow-lg">
           <div className="p-2">
+            {locationUsed && (
+              <div className="px-2 py-1 mb-2 text-xs text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20 rounded">
+                <MapPin className="inline h-3 w-3 mr-1" />
+                Showing results near your location
+              </div>
+            )}
             {results.map((clinic) => (
               <button
                 key={clinic.id}
@@ -226,11 +245,16 @@ export function VetClinicAutocomplete({
       )}
 
       {/* No results message and manual entry option */}
-      {showResults && results.length === 0 && !isLoading && query.length >= 2 && (
+      {showResults && results.length === 0 && !isLoading && !error && query.length >= 2 && (
         <Card className="absolute z-50 w-full mt-1 bg-background border shadow-lg">
           <div className="p-4 text-center">
-            <p className="text-sm text-muted-foreground mb-3">
-              No clinics found for "{query}"
+            <p className="text-sm text-muted-foreground mb-2">
+              No veterinary clinics found for "{query}"
+            </p>
+            <p className="text-xs text-muted-foreground mb-3">
+              {locationUsed 
+                ? "We searched in your area using your location." 
+                : "Enable location permissions for better local results."}
             </p>
             <Button
               variant="outline"
@@ -242,6 +266,24 @@ export function VetClinicAutocomplete({
               }}
             >
               Add clinic manually
+            </Button>
+          </div>
+        </Card>
+      )}
+
+      {/* Error message */}
+      {showResults && error && !isLoading && (
+        <Card className="absolute z-50 w-full mt-1 bg-background border shadow-lg">
+          <div className="p-4 text-center">
+            <p className="text-sm text-destructive mb-3">
+              {error}
+            </p>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => searchClinics(query)}
+            >
+              Try again
             </Button>
           </div>
         </Card>

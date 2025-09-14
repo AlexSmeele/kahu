@@ -182,7 +182,7 @@ export function useVetClinics(dogId?: string) {
     }
   };
 
-  // Search for vet clinics
+  // Search for vet clinics with automatic geolocation
   const searchVetClinics = async (
     query: string,
     latitude?: number,
@@ -193,11 +193,32 @@ export function useVetClinics(dogId?: string) {
     }
 
     try {
+      // If no location provided, try to get user location
+      let searchLatitude = latitude;
+      let searchLongitude = longitude;
+      
+      if (!latitude && !longitude && navigator.geolocation) {
+        try {
+          const position = await new Promise<GeolocationPosition>((resolve, reject) => {
+            navigator.geolocation.getCurrentPosition(resolve, reject, {
+              timeout: 3000,
+              enableHighAccuracy: false
+            });
+          });
+          
+          searchLatitude = position.coords.latitude;
+          searchLongitude = position.coords.longitude;
+        } catch (geoError) {
+          // Continue without location if geolocation fails
+          console.log('Geolocation unavailable for vet search');
+        }
+      }
+
       const { data, error: searchError } = await supabase.functions.invoke('search-vet-clinics', {
         body: { 
           query,
-          latitude,
-          longitude
+          latitude: searchLatitude,
+          longitude: searchLongitude
         }
       });
 
