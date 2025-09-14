@@ -193,9 +193,9 @@
     @apply btn-touch bg-gradient-to-r from-accent to-accent-hover text-accent-foreground hover:shadow-[var(--shadow-soft)] active:scale-95;
   }
 
-  /* Tab bar styles - Anchored to app viewport bottom */
+  /* Tab bar styles - Takes its natural space in layout */
   .tab-bar {
-    @apply bg-card border-t border-border safe-bottom absolute bottom-0 left-0 right-0 z-50;
+    @apply bg-card border-t border-border safe-bottom w-full z-50;
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     height: 4rem;
@@ -222,9 +222,3 @@
   }
 }
 
-@layer utilities {
-  /* Ensures content never sits under the bottom nav */
-  .pb-tabbar-safe {
-    padding-bottom: calc(4rem + env(safe-area-inset-bottom));
-  }
-}

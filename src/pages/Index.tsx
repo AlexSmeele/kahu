@@ -70,12 +70,12 @@ const Index = () => {
 
   return (
     <div className="h-screen flex flex-col">
-      {/* Main Content - Account for bottom nav height + safe area */}
-      <main className="flex-1 min-h-0 pb-tabbar-safe">
+      {/* Main Content - Takes remaining space above nav */}
+      <main className="flex-1 min-h-0 overflow-hidden">
         {renderActiveScreen()}
       </main>
 
-      {/* Bottom Navigation - Fixed at bottom */}
+      {/* Bottom Navigation - Natural flex item */}
       <BottomNavigation
         activeTab={activeTab}
         onTabChange={(tab: TabType) => {
