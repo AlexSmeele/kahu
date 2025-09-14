@@ -69,34 +69,34 @@ const Index = () => {
   };
 
   return (
-    <div className="relative h-screen">
-      {/* Main Content - Takes remaining space above nav */}
-      <main className="content-frame">
-        {renderActiveScreen()}
-      </main>
+      <>
+        {/* Main Content - Takes remaining space above nav */}
+        <main className="content-frame">
+          {renderActiveScreen()}
+        </main>
 
-      {/* Bottom Navigation - Natural flex item */}
-      <BottomNavigation
-        activeTab={activeTab}
-        onTabChange={(tab: TabType) => {
-          logger.userAction('tabChange', { from: activeTab, to: tab });
-          setActiveTab(tab);
-        }}
-        onQuickAction={() => {
-          logger.userAction('quickActionOpen');
-          setIsQuickActionOpen(true);
-        }}
-        hideFab={activeTab === 'trainer' && isUserTyping}
-      />
+        {/* Bottom Navigation - Natural flex item */}
+        <BottomNavigation
+          activeTab={activeTab}
+          onTabChange={(tab: TabType) => {
+            logger.userAction('tabChange', { from: activeTab, to: tab });
+            setActiveTab(tab);
+          }}
+          onQuickAction={() => {
+            logger.userAction('quickActionOpen');
+            setIsQuickActionOpen(true);
+          }}
+          hideFab={activeTab === 'trainer' && isUserTyping}
+        />
 
-      {/* Quick Action Modal */}
-      <QuickActionModal
-        isOpen={isQuickActionOpen}
-        onClose={() => setIsQuickActionOpen(false)}
-        selectedDogId={selectedDogId}
-        selectedDogName={dogs.find(dog => dog.id === selectedDogId)?.name}
-      />
-    </div>
+        {/* Quick Action Modal */}
+        <QuickActionModal
+          isOpen={isQuickActionOpen}
+          onClose={() => setIsQuickActionOpen(false)}
+          selectedDogId={selectedDogId}
+          selectedDogName={dogs.find(dog => dog.id === selectedDogId)?.name}
+        />
+      </>
   );
 };
 
