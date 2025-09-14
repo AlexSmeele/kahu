@@ -1,0 +1,7 @@
+-- Insert sample vet clinics data for testing
+INSERT INTO public.vet_clinics (name, address, phone, email, website, latitude, longitude, verified, services) VALUES
+('Auckland Veterinary Hospital', '123 Queen Street, Auckland, New Zealand', '+64-9-123-4567', 'info@aucklandvet.co.nz', 'https://aucklandvet.co.nz', -36.8485, 174.7633, true, ARRAY['general-care', 'emergency', 'surgery']),
+('Wellington Animal Clinic', '456 Lambton Quay, Wellington, New Zealand', '+64-4-987-6543', 'contact@wellingtonvet.co.nz', 'https://wellingtonvet.co.nz', -41.2865, 174.7762, true, ARRAY['general-care', 'dentistry']),
+('Christchurch Pet Hospital', '789 Colombo Street, Christchurch, New Zealand', '+64-3-555-0123', 'hello@christchurchpet.co.nz', 'https://christchurchpet.co.nz', -43.5321, 172.6362, true, ARRAY['general-care', 'surgery', 'emergency']),
+('Hamilton Vet Services', '321 Victoria Street, Hamilton, New Zealand', '+64-7-888-9999', 'info@hamiltonvet.co.nz', 'https://hamiltonvet.co.nz', -37.7870, 175.2793, true, ARRAY['general-care']),
+('Dunedin Animal Care', '654 George Street, Dunedin, New Zealand', '+64-3-222-1111', 'care@dunedinvet.co.nz', 'https://dunedinvet.co.nz', -45.8788, 170.5028, true, ARRAY['general-care', 'dentistry', 'surgery']);
