@@ -9,6 +9,8 @@ import { useToast } from "@/hooks/use-toast";
 interface QuickActionModalProps {
   isOpen: boolean;
   onClose: () => void;
+  selectedDogId?: string;
+  selectedDogName?: string;
 }
 
 const quickActions = [
@@ -54,7 +56,7 @@ const quickActions = [
   }
 ];
 
-export function QuickActionModal({ isOpen, onClose }: QuickActionModalProps) {
+export function QuickActionModal({ isOpen, onClose, selectedDogId, selectedDogName }: QuickActionModalProps) {
   const { toast } = useToast();
   const [isAddWeightOpen, setIsAddWeightOpen] = useState(false);
   const [isHealthNotesOpen, setIsHealthNotesOpen] = useState(false);
@@ -137,8 +139,8 @@ export function QuickActionModal({ isOpen, onClose }: QuickActionModalProps) {
       <HealthNotesModal
         isOpen={isHealthNotesOpen}
         onClose={() => setIsHealthNotesOpen(false)}
-        dogName="Your dog"
-        dogId="temp-dog-id"
+        dogName={selectedDogName || "Your dog"}
+        dogId={selectedDogId || ""}
       />
     </Dialog>
   );

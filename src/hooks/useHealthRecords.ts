@@ -39,7 +39,7 @@ export function useHealthRecords(dogId?: string) {
   const { toast } = useToast();
 
   const fetchHealthRecords = async () => {
-    if (!user || !dogId) {
+    if (!user || !dogId || dogId.trim() === '') {
       setLoading(false);
       return;
     }

@@ -93,6 +93,8 @@ const Index = () => {
       <QuickActionModal
         isOpen={isQuickActionOpen}
         onClose={() => setIsQuickActionOpen(false)}
+        selectedDogId={selectedDogId}
+        selectedDogName={dogs.find(dog => dog.id === selectedDogId)?.name}
       />
     </div>
   );
