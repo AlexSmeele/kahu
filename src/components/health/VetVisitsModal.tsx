@@ -11,6 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { VetClinicAutocomplete } from "@/components/ui/vet-clinic-autocomplete";
 import { supabase } from "@/integrations/supabase/client";
 import { format } from "date-fns";
+import { useVetVisits } from "@/hooks/useVetVisits";
 
 interface VetVisit {
   id: string;
@@ -44,6 +45,7 @@ interface VetVisitsModalProps {
   isOpen: boolean;
   onClose: () => void;
   dogName: string;
+  dogId: string;
 }
 
 // Mock data
@@ -92,9 +94,9 @@ const mockVetClinics: VetClinic[] = [
   },
 ];
 
-export function VetVisitsModal({ isOpen, onClose, dogName }: VetVisitsModalProps) {
-  const [visits, setVisits] = useState<VetVisit[]>(mockVetVisits);
-  const [clinics, setClinics] = useState<VetClinic[]>(mockVetClinics);
+export function VetVisitsModal({ isOpen, onClose, dogName, dogId }: VetVisitsModalProps) {
+  const { visits, loading, createVetVisit } = useVetVisits(dogId);
+  const [clinics, setClinics] = useState<VetClinic[]>([]);
   const [showAddForm, setShowAddForm] = useState(false);
   const [showClinicForm, setShowClinicForm] = useState(false);
   const [newVisit, setNewVisit] = useState({
@@ -140,7 +142,7 @@ export function VetVisitsModal({ isOpen, onClose, dogName }: VetVisitsModalProps
       return;
     }
 
-    const clinicName = selectedClinic?.name || newVisit.clinic || defaultClinic?.name || '';
+    const clinicName = selectedClinic?.name || newVisit.clinic || '';
     
     // If a clinic was selected through autocomplete, save it to the database
     if (selectedClinic && !selectedClinic.id.startsWith('osm_')) {
@@ -148,7 +150,7 @@ export function VetVisitsModal({ isOpen, onClose, dogName }: VetVisitsModalProps
         await supabase.functions.invoke('upsert-vet-clinic', {
           body: {
             clinicData: selectedClinic,
-            dogId: 'current-dog-id', // This would be passed as a prop in real implementation
+            dogId: dogId,
             isPrimary: false
           }
         });
@@ -157,8 +159,7 @@ export function VetVisitsModal({ isOpen, onClose, dogName }: VetVisitsModalProps
       }
     }
 
-    const visit: VetVisit = {
-      id: Date.now().toString(),
+    const visitData = {
       date: new Date(newVisit.date),
       type: newVisit.type as VetVisit['type'],
       veterinarian: newVisit.veterinarian,
@@ -171,7 +172,8 @@ export function VetVisitsModal({ isOpen, onClose, dogName }: VetVisitsModalProps
       cost: newVisit.cost ? parseFloat(newVisit.cost) : undefined,
     };
 
-    setVisits(prev => [visit, ...prev].sort((a, b) => b.date.getTime() - a.date.getTime()));
+    await createVetVisit(visitData);
+
     setNewVisit({
       date: new Date().toISOString().split('T')[0],
       type: '',

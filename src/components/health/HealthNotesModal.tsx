@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Heart, Plus, Camera, Video, Calendar, AlertTriangle, X, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { format } from "date-fns";
+import { useHealthRecords } from "@/hooks/useHealthRecords";
 
 interface HealthNote {
   id: string;
@@ -29,6 +30,7 @@ interface HealthNotesModalProps {
   isOpen: boolean;
   onClose: () => void;
   dogName: string;
+  dogId: string;
 }
 
 // Mock data
@@ -69,8 +71,9 @@ const mockHealthNotes: HealthNote[] = [
   },
 ];
 
-export function HealthNotesModal({ isOpen, onClose, dogName }: HealthNotesModalProps) {
-  const [notes, setNotes] = useState<HealthNote[]>(mockHealthNotes);
+export function HealthNotesModal({ isOpen, onClose, dogName, dogId }: HealthNotesModalProps) {
+  const { healthRecords, loading, createHealthRecord, updateHealthRecord, uploadAttachment } = useHealthRecords(dogId);
+  const [notes, setNotes] = useState<HealthNote[]>([]);
   const [showAddForm, setShowAddForm] = useState(false);
   const [newNote, setNewNote] = useState({
     title: '',
@@ -126,27 +129,39 @@ export function HealthNotesModal({ isOpen, onClose, dogName }: HealthNotesModalP
     setSelectedFiles(prev => prev.filter((_, i) => i !== index));
   };
 
-  const handleAddNote = () => {
+  const handleAddNote = async () => {
     if (!newNote.title || !newNote.description || !newNote.severity || !newNote.category) {
       return;
     }
 
-    const note: HealthNote = {
-      id: Date.now().toString(),
-      date: new Date(newNote.date),
+    // Upload attachments if any
+    const attachmentUrls = [];
+    for (const file of selectedFiles) {
+      const url = await uploadAttachment(dogId, file);
+      if (url) {
+        attachmentUrls.push({
+          type: file.type.startsWith('image/') ? 'image' as const : 'video' as const,
+          url,
+          name: file.name,
+        });
+      }
+    }
+
+    // Create health record in database
+    await createHealthRecord({
+      dog_id: dogId,
+      record_type: 'note',
       title: newNote.title,
       description: newNote.description,
-      severity: newNote.severity as HealthNote['severity'],
-      category: newNote.category as HealthNote['category'],
-      resolved: false,
-      attachments: selectedFiles.map(file => ({
-        type: file.type.startsWith('image/') ? 'image' as const : 'video' as const,
-        url: URL.createObjectURL(file),
-        name: file.name,
-      })),
-    };
+      date: newNote.date,
+      notes: JSON.stringify({
+        severity: newNote.severity,
+        category: newNote.category,
+        attachments: attachmentUrls,
+        resolved: false,
+      }),
+    });
 
-    setNotes(prev => [note, ...prev].sort((a, b) => b.date.getTime() - a.date.getTime()));
     setNewNote({
       title: '',
       description: '',
@@ -158,11 +173,41 @@ export function HealthNotesModal({ isOpen, onClose, dogName }: HealthNotesModalP
     setShowAddForm(false);
   };
 
-  const toggleResolved = (noteId: string) => {
-    setNotes(prev => prev.map(note =>
-      note.id === noteId ? { ...note, resolved: !note.resolved } : note
-    ));
+  const toggleResolved = async (noteId: string) => {
+    const record = healthRecords.find(r => r.id === noteId);
+    if (!record) return;
+
+    const currentNotes = record.notes ? JSON.parse(record.notes) : {};
+    const newResolved = !currentNotes.resolved;
+
+    await updateHealthRecord(noteId, {
+      notes: JSON.stringify({
+        ...currentNotes,
+        resolved: newResolved,
+      }),
+    });
   };
+
+  // Convert health records to notes format
+  useEffect(() => {
+    const convertedNotes: HealthNote[] = healthRecords
+      .filter(record => record.record_type === 'note')
+      .map(record => {
+        const noteData = record.notes ? JSON.parse(record.notes) : {};
+        return {
+          id: record.id,
+          date: new Date(record.date),
+          title: record.title,
+          description: record.description || '',
+          severity: noteData.severity || 'low',
+          category: noteData.category || 'other',
+          attachments: noteData.attachments || [],
+          resolved: noteData.resolved || false,
+        };
+      });
+    
+    setNotes(convertedNotes);
+  }, [healthRecords]);
 
   const unresolvedNotes = notes.filter(n => !n.resolved);
   const resolvedNotes = notes.filter(n => n.resolved);

@@ -5,25 +5,12 @@ import { Badge } from "@/components/ui/badge";
 import { useDogs, calculateAge } from "@/hooks/useDogs";
 import { DogSwitcher } from "@/components/dogs/DogSwitcher";
 import { useNutrition, MealTime } from "@/hooks/useNutrition";
+import { useMealTracking, TodayMeal } from "@/hooks/useMealTracking";
 import { MealPlanModal } from "@/components/nutrition/MealPlanModal";
 import { WeekPlannerModal } from "@/components/nutrition/WeekPlannerModal";
 
 
-// Mock data for today's feeding progress
-const getTodayProgress = (mealSchedule?: MealTime[], dailyAmount?: number) => {
-  if (!mealSchedule || !dailyAmount) {
-    return { consumed: 0, target: 480, percentage: 0 };
-  }
-  
-  const target = Math.round(dailyAmount * 30); // Rough calorie estimation
-  const consumed = Math.round(target * 0.6); // Simulate 60% completion
-  
-  return {
-    consumed,
-    target,
-    percentage: Math.round((consumed / target) * 100)
-  };
-};
+// This function is now handled by useMealTracking hook
 
 interface NutritionScreenProps {
   selectedDogId: string;
@@ -35,20 +22,32 @@ export function NutritionScreen({ selectedDogId, onDogChange }: NutritionScreenP
   const { dogs } = useDogs();
   const currentDog = dogs.find(dog => dog.id === selectedDogId) || dogs[0];
   const { nutritionPlan, loading } = useNutrition(selectedDogId);
+  
+  const { 
+    mealRecords, 
+    markMealCompleted, 
+    undoMealCompletion,
+    getTodayProgress,
+    generateTodayMeals,
+    loading: mealLoading 
+  } = useMealTracking(selectedDogId, nutritionPlan?.id);
 
-  const todayProgress = getTodayProgress(nutritionPlan?.meal_schedule, nutritionPlan?.daily_amount);
-  
   const mealSchedule = nutritionPlan?.meal_schedule || [];
+  const todayMeals = generateTodayMeals(mealSchedule, mealRecords);
+  const todayProgress = getTodayProgress(mealSchedule, mealRecords, nutritionPlan?.daily_amount);
   
-  // Format meal times for display
-  const todayMeals = mealSchedule.map((meal: MealTime, index: number) => ({
-    id: index,
-    time: new Date(`2000-01-01T${meal.time}`).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }),
-    name: `${nutritionPlan?.food_type?.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase()) || 'Meal'} ${index + 1}`,
-    amount: meal.amount,
-    reminder_enabled: meal.reminder_enabled,
-    completed: Math.random() > 0.5, // Mock completion status
-  }));
+  const handleMarkMealFed = async (meal: TodayMeal) => {
+    if (meal.completed && meal.meal_record) {
+      await undoMealCompletion(meal.meal_record.id);
+    } else {
+      const originalMeal = mealSchedule.find((m: any) => 
+        new Date(`2000-01-01T${m.time}`).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }) === meal.time
+      );
+      if (originalMeal) {
+        await markMealCompleted(originalMeal.time, meal.name, meal.amount);
+      }
+    }
+  };
   return (
     <div className="flex flex-col h-full">
       {/* Header */}
@@ -200,14 +199,18 @@ export function NutritionScreen({ selectedDogId, onDogChange }: NutritionScreenP
                         </div>
                       </div>
                       <div className="flex items-center gap-2">
-                        {meal.reminder_enabled && (
-                          <Bell className="w-4 h-4 text-primary" />
-                        )}
-                        {!meal.completed && (
-                          <Button size="sm" className="btn-primary">
-                            Mark Fed
-                          </Button>
-                        )}
+                      {meal.reminder_enabled && (
+                        <Bell className="w-4 h-4 text-primary" />
+                      )}
+                      <Button 
+                        size="sm" 
+                        variant={meal.completed ? "outline" : "default"}
+                        className={meal.completed ? "" : "btn-primary"}
+                        onClick={() => handleMarkMealFed(meal)}
+                        disabled={mealLoading}
+                      >
+                        {meal.completed ? "Mark Unfed" : "Mark Fed"}
+                      </Button>
                       </div>
                     </div>
                     

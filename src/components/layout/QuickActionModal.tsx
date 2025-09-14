@@ -138,6 +138,7 @@ export function QuickActionModal({ isOpen, onClose }: QuickActionModalProps) {
         isOpen={isHealthNotesOpen}
         onClose={() => setIsHealthNotesOpen(false)}
         dogName="Your dog"
+        dogId="temp-dog-id"
       />
     </Dialog>
   );

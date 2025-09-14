@@ -300,6 +300,7 @@ export function HealthScreen({ selectedDogId, onDogChange }: HealthScreenProps) 
         isOpen={isVetVisitsModalOpen}
         onClose={() => setIsVetVisitsModalOpen(false)}
         dogName={currentDog?.name || 'Your dog'}
+        dogId={currentDog?.id || ''}
       />
       
       <VetClinicsModal
@@ -313,6 +314,7 @@ export function HealthScreen({ selectedDogId, onDogChange }: HealthScreenProps) 
         isOpen={isHealthNotesModalOpen}
         onClose={() => setIsHealthNotesModalOpen(false)}
         dogName={currentDog?.name || 'Your dog'}
+        dogId={currentDog?.id || ''}
       />
     </div>
   );

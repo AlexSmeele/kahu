@@ -433,6 +433,48 @@ export type Database = {
           },
         ]
       }
+      meal_records: {
+        Row: {
+          amount_given: number | null
+          completed_at: string | null
+          created_at: string
+          dog_id: string
+          id: string
+          meal_name: string
+          meal_time: string
+          notes: string | null
+          nutrition_plan_id: string
+          scheduled_date: string
+          updated_at: string
+        }
+        Insert: {
+          amount_given?: number | null
+          completed_at?: string | null
+          created_at?: string
+          dog_id: string
+          id?: string
+          meal_name: string
+          meal_time: string
+          notes?: string | null
+          nutrition_plan_id: string
+          scheduled_date: string
+          updated_at?: string
+        }
+        Update: {
+          amount_given?: number | null
+          completed_at?: string | null
+          created_at?: string
+          dog_id?: string
+          id?: string
+          meal_name?: string
+          meal_time?: string
+          notes?: string | null
+          nutrition_plan_id?: string
+          scheduled_date?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       notifications: {
         Row: {
           action_url: string | null
