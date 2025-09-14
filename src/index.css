@@ -193,12 +193,12 @@
     @apply btn-touch bg-gradient-to-r from-accent to-accent-hover text-accent-foreground hover:shadow-[var(--shadow-soft)] active:scale-95;
   }
 
-  /* Tab bar styles - positioned in document flow */
+  /* Tab bar styles - Fixed to bottom of viewport */
   .tab-bar {
-    @apply bg-card border-t border-border safe-bottom flex-shrink-0;
+    @apply bg-card border-t border-border safe-bottom fixed bottom-0 left-0 right-0 z-50;
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    height: 4rem; /* Fixed height to match calc constraint */
+    height: 4rem;
   }
   
   .tab-item {
@@ -214,10 +214,9 @@
     @apply text-muted-foreground hover:text-foreground;
   }
 
-  /* Floating action button - positioned within app viewport */
+  /* Floating action button - Fixed to bottom right */
   .fab {
-    @apply absolute w-14 h-14 bg-gradient-to-r from-primary to-primary-hover text-primary-foreground rounded-full shadow-[var(--shadow-large)] flex items-center justify-center transition-transform duration-200 hover:scale-105 active:scale-95 z-40;
-    /* Position within app-viewport bounds, above tab bar */
+    @apply fixed w-14 h-14 bg-gradient-to-r from-primary to-primary-hover text-primary-foreground rounded-full shadow-[var(--shadow-large)] flex items-center justify-center transition-transform duration-200 hover:scale-105 active:scale-95 z-40;
     right: 1rem;
     bottom: calc(4rem + env(safe-area-inset-bottom) + 1rem);
   }
