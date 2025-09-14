@@ -23,33 +23,6 @@ export function TrainerScreen({ onTypingChange }: { onTypingChange?: (typing: bo
   const { toast } = useToast();
   const currentDog = dogs[0]; // Use first dog as default
 
-  // Test function for debugging
-  const testOpenAI = async () => {
-    console.log('Testing OpenAI connection...');
-    try {
-      const { data, error } = await supabase.functions.invoke('test-openai');
-      console.log('Test result:', { data, error });
-      if (error) {
-        toast({
-          title: "Test Failed",
-          description: `OpenAI test failed: ${error.message}`,
-          variant: "destructive",
-        });
-      } else {
-        toast({
-          title: "Test Successful",
-          description: data.message || "OpenAI API is working",
-        });
-      }
-    } catch (error) {
-      console.error('Test error:', error);
-      toast({
-        title: "Test Error",
-        description: `Test failed: ${error}`,
-        variant: "destructive",
-      });
-    }
-  };
 
   const sendMessage = async () => {
     if (!inputMessage.trim() || isLoading) return;
@@ -250,9 +223,6 @@ export function TrainerScreen({ onTypingChange }: { onTypingChange?: (typing: bo
         </div>
         
         <div className="flex gap-2 mt-2">
-          <Button onClick={testOpenAI} variant="secondary" size="sm" className="flex-1">
-            Test API
-          </Button>
           <Button variant="outline" size="sm" className="flex-1" disabled>
             <Camera className="w-4 h-4 mr-2" />
             Photo
