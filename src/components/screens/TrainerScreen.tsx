@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { MessageCircle, Camera, Mic, Send, Sparkles } from "lucide-react";
+import { MessageCircle, Camera, Mic, Send, Sparkles, Bookmark, Flag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
@@ -7,6 +7,10 @@ import { useDogs } from "@/hooks/useDogs";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import heroImage from "@/assets/hero-image.jpg";
+import { useSavedMessages } from "@/hooks/useSavedMessages";
+import { useMessageReports } from "@/hooks/useMessageReports";
+import { SaveMessageModal } from "@/components/modals/SaveMessageModal";
+import { ReportMessageModal } from "@/components/modals/ReportMessageModal";
 
 interface Message {
   id: string;
@@ -19,9 +23,63 @@ export function TrainerScreen({ onTypingChange }: { onTypingChange?: (typing: bo
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [saveModalOpen, setSaveModalOpen] = useState(false);
+  const [reportModalOpen, setReportModalOpen] = useState(false);
+  const [selectedMessage, setSelectedMessage] = useState<Message | null>(null);
+  
   const { dogs } = useDogs();
   const { toast } = useToast();
+  const { saveMessage } = useSavedMessages();
+  const { reportMessage } = useMessageReports();
   const currentDog = dogs[0]; // Use first dog as default
+
+  const handleSaveMessage = (message: Message) => {
+    setSelectedMessage(message);
+    setSaveModalOpen(true);
+  };
+
+  const handleReportMessage = (message: Message) => {
+    setSelectedMessage(message);
+    setReportModalOpen(true);
+  };
+
+  const onSaveMessage = async (tags: string[], notes: string) => {
+    if (!selectedMessage) return;
+    
+    try {
+      await saveMessage(
+        selectedMessage.content,
+        currentDog?.id || null,
+        {
+          conversation: messages.slice(0, messages.indexOf(selectedMessage) + 1),
+          timestamp: selectedMessage.timestamp,
+        },
+        tags,
+        notes
+      );
+    } catch (error) {
+      // Error is handled in the hook
+    }
+  };
+
+  const onReportMessage = async (reason: string, details: string) => {
+    if (!selectedMessage) return;
+    
+    try {
+      await reportMessage(
+        selectedMessage.content,
+        reason,
+        details,
+        currentDog?.id || null,
+        {
+          conversation: messages.slice(0, messages.indexOf(selectedMessage) + 1),
+          timestamp: selectedMessage.timestamp,
+        }
+      );
+    } catch (error) {
+      // Error is handled in the hook
+    }
+  };
 
 
   const sendMessage = async () => {
@@ -155,11 +213,38 @@ export function TrainerScreen({ onTypingChange }: { onTypingChange?: (typing: bo
                     : 'bg-card border-border'
                 }`}>
                   {message.role === 'assistant' && (
-                    <div className="flex items-center gap-2 mb-2">
-                      <div className="w-6 h-6 bg-gradient-to-r from-primary to-primary-hover rounded-full flex items-center justify-center">
-                        <Sparkles className="w-4 h-4 text-primary-foreground" />
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-2">
+                        <div className="w-6 h-6 bg-gradient-to-r from-primary to-primary-hover rounded-full flex items-center justify-center">
+                          <Sparkles className="w-4 h-4 text-primary-foreground" />
+                        </div>
+                        <span className="text-sm font-medium text-foreground">Kahu</span>
                       </div>
-                      <span className="text-sm font-medium text-foreground">Kahu</span>
+                      <div className="flex gap-1">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleSaveMessage(message)}
+                          className="h-7 w-7 p-0 hover:bg-secondary"
+                          title="Save message"
+                        >
+                          <Bookmark className="h-3.5 w-3.5" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleReportMessage(message)}
+                          className="h-7 w-7 p-0 hover:bg-secondary"
+                          title="Report message"
+                        >
+                          <Flag className="h-3.5 w-3.5" />
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+                  {message.role === 'user' && (
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="text-sm font-medium">You</span>
                     </div>
                   )}
                   <p className="text-sm leading-relaxed whitespace-pre-wrap">
@@ -233,6 +318,28 @@ export function TrainerScreen({ onTypingChange }: { onTypingChange?: (typing: bo
           </Button>
         </div>
       </div>
+
+      <SaveMessageModal
+        isOpen={saveModalOpen}
+        onClose={() => {
+          setSaveModalOpen(false);
+          setSelectedMessage(null);
+        }}
+        onSave={onSaveMessage}
+        messageContent={selectedMessage?.content || ''}
+        isLoading={false}
+      />
+
+      <ReportMessageModal
+        isOpen={reportModalOpen}
+        onClose={() => {
+          setReportModalOpen(false);
+          setSelectedMessage(null);
+        }}
+        onReport={onReportMessage}
+        messageContent={selectedMessage?.content || ''}
+        isLoading={false}
+      />
     </div>
   );
 }

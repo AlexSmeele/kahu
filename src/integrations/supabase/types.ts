@@ -498,6 +498,62 @@ export type Database = {
           },
         ]
       }
+      message_reports: {
+        Row: {
+          admin_notes: string | null
+          conversation_context: Json | null
+          created_at: string
+          dog_id: string | null
+          id: string
+          message_content: string
+          report_details: string | null
+          report_reason: string
+          reviewed_at: string | null
+          reviewed_by: string | null
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          admin_notes?: string | null
+          conversation_context?: Json | null
+          created_at?: string
+          dog_id?: string | null
+          id?: string
+          message_content: string
+          report_details?: string | null
+          report_reason: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          admin_notes?: string | null
+          conversation_context?: Json | null
+          created_at?: string
+          dog_id?: string | null
+          id?: string
+          message_content?: string
+          report_details?: string | null
+          report_reason?: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "message_reports_dog_id_fkey"
+            columns: ["dog_id"]
+            isOneToOne: false
+            referencedRelation: "dogs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       notifications: {
         Row: {
           action_url: string | null
@@ -633,6 +689,50 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      saved_messages: {
+        Row: {
+          conversation_context: Json | null
+          created_at: string
+          dog_id: string | null
+          id: string
+          message_content: string
+          notes: string | null
+          tags: string[] | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          conversation_context?: Json | null
+          created_at?: string
+          dog_id?: string | null
+          id?: string
+          message_content: string
+          notes?: string | null
+          tags?: string[] | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          conversation_context?: Json | null
+          created_at?: string
+          dog_id?: string | null
+          id?: string
+          message_content?: string
+          notes?: string | null
+          tags?: string[] | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "saved_messages_dog_id_fkey"
+            columns: ["dog_id"]
+            isOneToOne: false
+            referencedRelation: "dogs"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       training_sessions: {
         Row: {
