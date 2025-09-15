@@ -16,7 +16,8 @@ import {
   TrendingUp,
   BookOpen,
   Timer,
-  Trophy
+  Trophy,
+  RotateCcw
 } from "lucide-react";
 import { Trick, DogTrick } from "@/hooks/useTricks";
 import { format } from "date-fns";
@@ -84,6 +85,77 @@ export function TrickDetailModal({
 
   // Parse training steps from instructions
   const trainingSteps = trick.instructions.split('\n').filter(step => step.trim().length > 0);
+
+  // Enhanced training data with common problems and troubleshooting
+  const getEnhancedTrainingData = (trickName: string) => {
+    const commonProblems = {
+      'Sit': [
+        'Dog jumps up instead of sitting',
+        'Dog only sits when treats are visible',
+        'Dog sits but gets up immediately'
+      ],
+      'Stay': [
+        'Dog breaks the stay too early',
+        'Dog only stays for a few seconds',
+        'Dog gets distracted easily'
+      ],
+      'Down': [
+        'Dog won\'t lie down completely',
+        'Dog sits instead of lying down',
+        'Dog gets back up immediately'
+      ],
+      'Come': [
+        'Dog ignores the command',
+        'Dog comes but very slowly',
+        'Dog runs in the opposite direction'
+      ],
+      'default': [
+        'Dog shows no interest in training',
+        'Dog gets distracted easily',
+        'Dog performs inconsistently'
+      ]
+    };
+
+    const troubleshooting = {
+      'Sit': [
+        'Hold treat above dog\'s head and slowly move it back - gravity will help',
+        'Practice in a quiet area first, then gradually add distractions',
+        'Use a release word like "OK" to let them know when they can get up',
+        'Keep training sessions short (5-10 minutes) to maintain focus'
+      ],
+      'Stay': [
+        'Start with very short durations (1-2 seconds) and gradually increase',
+        'Use clear hand signal along with verbal command',
+        'Practice the "wait" at doorways and meal times',
+        'Don\'t call them to break the stay - always return to release them'
+      ],
+      'Down': [
+        'Lure with treat from sitting position to the floor',
+        'Try practicing on a comfortable surface first',
+        'Be patient - some dogs take longer to feel comfortable lying down',
+        'Reward the slightest movement toward the down position initially'
+      ],
+      'Come': [
+        'Never call your dog to come for something they perceive as negative',
+        'Practice in a secure, enclosed area first',
+        'Use an excited, happy voice when calling',
+        'Always reward generously when they come, even if it took a while'
+      ],
+      'default': [
+        'Ensure your dog is not overstimulated or tired',
+        'Use higher value treats (cheese, chicken) for difficult tricks',
+        'Keep sessions short and end on a positive note',
+        'Practice at consistent times when your dog is alert and focused'
+      ]
+    };
+
+    return {
+      problems: commonProblems[trickName as keyof typeof commonProblems] || commonProblems.default,
+      solutions: troubleshooting[trickName as keyof typeof troubleshooting] || troubleshooting.default
+    };
+  };
+
+  const enhancedData = getEnhancedTrainingData(trick.name);
 
   const handleStartTrick = () => {
     onStartTrick(trick.id);
@@ -262,6 +334,7 @@ export function TrickDetailModal({
                 </div>
               </div>
 
+              {/* Training Tips */}
               <div className="bg-blue-50 dark:bg-blue-950/20 p-4 rounded-xl">
                 <h4 className="font-semibold text-blue-900 dark:text-blue-100 mb-2">
                   💡 Training Tips
@@ -272,6 +345,30 @@ export function TrickDetailModal({
                   <li>• Practice in a quiet, distraction-free environment</li>
                   <li>• End on a positive note</li>
                   <li>• Be patient and consistent</li>
+                </ul>
+              </div>
+
+              {/* Common Problems */}
+              <div className="bg-amber-50 dark:bg-amber-950/20 p-4 rounded-xl">
+                <h4 className="font-semibold text-amber-900 dark:text-amber-100 mb-2">
+                  ⚠️ Common Problems
+                </h4>
+                <ul className="text-sm text-amber-800 dark:text-amber-200 space-y-1">
+                  {enhancedData.problems.map((problem, index) => (
+                    <li key={index}>• {problem}</li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Troubleshooting */}
+              <div className="bg-green-50 dark:bg-green-950/20 p-4 rounded-xl">
+                <h4 className="font-semibold text-green-900 dark:text-green-100 mb-2">
+                  🔧 Troubleshooting Solutions
+                </h4>
+                <ul className="text-sm text-green-800 dark:text-green-200 space-y-1">
+                  {enhancedData.solutions.map((solution, index) => (
+                    <li key={index}>• {solution}</li>
+                  ))}
                 </ul>
               </div>
             </div>
@@ -382,12 +479,23 @@ export function TrickDetailModal({
                   <Timer className="w-4 h-4 mr-2" />
                   Practice Session
                 </Button>
-                {dogTrick.total_sessions >= 3 && (
-                  <Button onClick={handleMarkAsCompleted} variant="outline" size="lg">
-                    <CheckCircle2 className="w-4 h-4 mr-2" />
-                    Mark Complete
+                <div className="flex gap-2">
+                  {dogTrick.total_sessions >= 3 && (
+                    <Button onClick={handleMarkAsCompleted} variant="outline" size="lg">
+                      <CheckCircle2 className="w-4 h-4 mr-2" />
+                      Mark Complete
+                    </Button>
+                  )}
+                  <Button 
+                    onClick={() => onUpdateStatus(dogTrick.id, 'learning')} 
+                    variant="ghost" 
+                    size="lg"
+                    className="text-muted-foreground hover:text-foreground"
+                  >
+                    <RotateCcw className="w-4 h-4 mr-2" />
+                    Reset Progress
                   </Button>
-                )}
+                </div>
               </>
             )}
           </div>

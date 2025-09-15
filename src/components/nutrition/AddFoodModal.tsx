@@ -53,7 +53,7 @@ const MEDICATION_TYPES = [
   'Other'
 ];
 
-const UNITS = ['cups', 'grams', 'ounces', 'tablespoons', 'teaspoons', 'pieces', 'ml'];
+const UNITS = ['cups', 'grams', 'ounces', 'tablespoons', 'teaspoons', 'pieces', 'packets', 'ml'];
 
 export function AddFoodModal({ open, onOpenChange, type, onSave }: AddFoodModalProps) {
   const [formData, setFormData] = useState<FoodItem>({

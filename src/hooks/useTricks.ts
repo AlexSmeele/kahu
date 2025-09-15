@@ -223,6 +223,10 @@ export function useTricks(dogId?: string) {
       const updates: any = { status };
       if (status === 'mastered') {
         updates.mastered_at = new Date().toISOString();
+      } else if (status === 'learning') {
+        // Reset mastered_at when going back to learning
+        updates.mastered_at = null;
+        updates.total_sessions = 0; // Reset sessions when undoing progress
       }
 
       const { data, error } = await supabase
@@ -256,6 +260,11 @@ export function useTricks(dogId?: string) {
         toast({
           title: '🎉 Trick mastered!',
           description: `${updatedDogTrick.trick.name} has been mastered!`,
+        });
+      } else if (status === 'learning') {
+        toast({
+          title: 'Progress reset',
+          description: `${updatedDogTrick.trick.name} training has been reset to start fresh.`,
         });
       }
 
