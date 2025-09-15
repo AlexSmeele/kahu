@@ -42,6 +42,50 @@ function calculateDistance(lat1: number, lon1: number, lat2: number, lon2: numbe
   return R * c; // Distance in km
 }
 
+// Helper function to calculate name relevance score
+function calculateRelevanceScore(clinicName: string, searchQuery: string): number {
+  const clinic = clinicName.toLowerCase();
+  const query = searchQuery.toLowerCase();
+  
+  // Exact match gets highest score
+  if (clinic === query) return 100;
+  
+  // Check if query is at start of clinic name
+  if (clinic.startsWith(query)) return 90;
+  
+  // Check if all query words are in clinic name
+  const queryWords = query.split(' ').filter(word => word.length > 0);
+  const clinicWords = clinic.split(' ');
+  
+  let matchingWords = 0;
+  let exactWordMatches = 0;
+  
+  for (const queryWord of queryWords) {
+    // Check for exact word matches
+    if (clinicWords.some(word => word === queryWord)) {
+      exactWordMatches++;
+      matchingWords++;
+    }
+    // Check for partial matches
+    else if (clinicWords.some(word => word.includes(queryWord))) {
+      matchingWords++;
+    }
+  }
+  
+  // Calculate score based on word matches
+  const wordMatchRatio = matchingWords / queryWords.length;
+  const exactMatchRatio = exactWordMatches / queryWords.length;
+  
+  // Bonus for exact word matches
+  const baseScore = wordMatchRatio * 70;
+  const exactBonus = exactMatchRatio * 20;
+  
+  // Check for query as substring
+  const substringBonus = clinic.includes(query) ? 10 : 0;
+  
+  return baseScore + exactBonus + substringBonus;
+}
+
 // Helper function to extract services from OSM tags
 function extractServices(tags: any): string[] {
   const services = [];
@@ -316,14 +360,36 @@ serve(async (req) => {
       }
     }
 
-    // Sort by relevance and distance
+    // Sort by relevance and distance with improved scoring
     results.sort((a, b) => {
       const aIsExisting = !a.id?.startsWith('osm_');
       const bIsExisting = !b.id?.startsWith('osm_');
       
-      // Prioritize existing clinics first
-      if (aIsExisting !== bIsExisting) {
-        return aIsExisting ? -1 : 1;
+      // Calculate relevance scores
+      const aRelevance = calculateRelevanceScore(a.name, query);
+      const bRelevance = calculateRelevanceScore(b.name, query);
+      
+      // High relevance matches (>80) get priority regardless of source
+      if (aRelevance > 80 || bRelevance > 80) {
+        if (aRelevance !== bRelevance) {
+          return bRelevance - aRelevance; // Higher relevance first
+        }
+      }
+      
+      // For medium relevance (50-80), prefer existing clinics
+      if (aRelevance >= 50 && bRelevance >= 50) {
+        if (aIsExisting !== bIsExisting) {
+          return aIsExisting ? -1 : 1;
+        }
+        // Both same source, sort by relevance
+        if (aRelevance !== bRelevance) {
+          return bRelevance - aRelevance;
+        }
+      } else {
+        // Standard priority: existing clinics first for low relevance matches
+        if (aIsExisting !== bIsExisting) {
+          return aIsExisting ? -1 : 1;
+        }
       }
       
       // If location is available, sort by distance
@@ -331,18 +397,29 @@ serve(async (req) => {
         const aDistance = calculateDistance(latitude, longitude, a.latitude, a.longitude);
         const bDistance = calculateDistance(latitude, longitude, b.latitude, b.longitude);
         
-        // Prioritize results within 15km, then by distance
-        const aIsLocal = aDistance <= 15;
-        const bIsLocal = bDistance <= 15;
-        
-        if (aIsLocal !== bIsLocal) {
-          return aIsLocal ? -1 : 1;
+        // For similar relevance scores, prioritize closer results
+        if (Math.abs(aRelevance - bRelevance) < 10) {
+          // Prioritize results within 15km, then by distance
+          const aIsLocal = aDistance <= 15;
+          const bIsLocal = bDistance <= 15;
+          
+          if (aIsLocal !== bIsLocal) {
+            return aIsLocal ? -1 : 1;
+          }
+          
+          return aDistance - bDistance;
         }
         
-        return aDistance - bDistance;
+        // Different relevance scores, use relevance as primary
+        return bRelevance - aRelevance;
       }
       
-      // Fallback to name comparison
+      // Fallback to relevance score
+      if (aRelevance !== bRelevance) {
+        return bRelevance - aRelevance;
+      }
+      
+      // Final fallback to name comparison
       return a.name.localeCompare(b.name);
     });
 
