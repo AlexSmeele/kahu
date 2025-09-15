@@ -44,7 +44,7 @@ export function DogProfileModal({ isOpen, onClose, dog, mode }: DogProfileModalP
       if (mode === 'edit' && dog) {
         setFormData({
           name: dog.name,
-          breed: (dog as any).dog_breeds?.breed || '',
+          breed: dog.dog_breeds?.breed || '',
           breed_id: dog.breed_id || null,
           gender: dog.gender || '',
           birthday: dog.birthday || '',
