@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { Heart, ArrowRight, ArrowLeft, CalendarIcon, Upload, X, Check, Plus } from 'lucide-react';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
@@ -42,23 +43,39 @@ function calculateAge(birthday: string): string {
   
   let years = today.getFullYear() - birthDate.getFullYear();
   let months = today.getMonth() - birthDate.getMonth();
+  let days = today.getDate() - birthDate.getDate();
   
+  // Adjust for negative days
+  if (days < 0) {
+    months--;
+    // Get days in previous month
+    const lastMonth = new Date(today.getFullYear(), today.getMonth(), 0);
+    days += lastMonth.getDate();
+  }
+  
+  // Adjust for negative months
   if (months < 0) {
     years--;
     months += 12;
-  } else if (months === 0 && today.getDate() < birthDate.getDate()) {
-    years--;
-    months = 11;
-  } else if (today.getDate() < birthDate.getDate()) {
-    months--;
+  }
+  
+  // Handle edge case for very young puppies (less than 1 month)
+  if (years === 0 && months === 0) {
+    if (days === 0) {
+      return "Born today";
+    } else if (days === 1) {
+      return "1 day old";
+    } else {
+      return `${days} days old`;
+    }
   }
   
   if (years === 0) {
-    return `${months} ${months === 1 ? 'month' : 'months'}`;
+    return `${months} ${months === 1 ? 'month' : 'months'} old`;
   } else if (months === 0) {
-    return `${years} ${years === 1 ? 'year' : 'years'}`;
+    return `${years} ${years === 1 ? 'year' : 'years'} old`;
   } else {
-    return `${years} ${years === 1 ? 'year' : 'years'}, ${months} ${months === 1 ? 'month' : 'months'}`;
+    return `${years} ${years === 1 ? 'year' : 'years'}, ${months} ${months === 1 ? 'month' : 'months'} old`;
   }
 }
 
@@ -544,9 +561,9 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
   // Step 4: Final Summary
   if (step === 4) {
     return (
-      <div className="h-full bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex items-center justify-center p-4 animate-fade-in">
-        <Card className="w-full max-w-md border-0 shadow-[var(--shadow-large)] animate-scale-in max-h-[calc(100vh-2rem)] overflow-y-auto">
-          <CardHeader className="text-center pb-6">
+      <div className="h-screen bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex items-center justify-center p-4 animate-fade-in">
+        <Card className="w-full max-w-md border-0 shadow-[var(--shadow-large)] animate-scale-in h-[calc(100vh-2rem)] flex flex-col">
+          <CardHeader className="text-center pb-4 flex-shrink-0">
             <div className="mx-auto w-16 h-16 bg-gradient-to-r from-success to-success/80 rounded-full flex items-center justify-center mb-4">
               <Heart className="w-8 h-8 text-success-foreground" />
             </div>
@@ -563,41 +580,45 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
             </div>
           </CardHeader>
 
-          <CardContent className="space-y-4">
-            <div className="bg-secondary/50 rounded-lg p-4 space-y-3">
+          <CardContent className="space-y-4 flex-1 flex flex-col min-h-0">
+            <div className="bg-secondary/50 rounded-lg p-4 space-y-3 flex-1 min-h-0">
               <h3 className="font-medium text-foreground">Profile Summary:</h3>
               
-              {/* User Info */}
-              <div className="border-b border-border pb-2">
-                <h4 className="text-sm font-medium text-foreground mb-1">Your Information:</h4>
-                <div className="text-sm text-muted-foreground space-y-1">
-                  <p><span className="font-medium">Name:</span> {userData.firstName} {userData.lastName}</p>
-                  <p><span className="font-medium">Email:</span> {userData.email}</p>
-                  <p><span className="font-medium">Country:</span> {userData.country}</p>
-                </div>
-              </div>
-
-              {/* Dogs Info */}
-              <div>
-                <h4 className="text-sm font-medium text-foreground mb-1">{dogs.length === 1 ? 'Your Dog' : 'Your Dogs'}:</h4>
-                <div className="text-sm text-muted-foreground space-y-3">
-                  {dogs.map((dog, index) => (
-                    <div key={index} className="border-l-2 border-primary/30 pl-3 space-y-1">
-                      <p><span className="font-medium">Name:</span> {dog.name}</p>
-                      {dog.breed && <p><span className="font-medium">Breed:</span> {dog.breed}</p>}
-                      {dog.gender && <p><span className="font-medium">Gender:</span> {capitalizeFirst(dog.gender)}</p>}
-                      {dog.birthday && (
-                        <p><span className="font-medium">Age:</span> {calculateAge(format(dog.birthday, 'yyyy-MM-dd'))}</p>
-                      )}
-                      {dog.weight && <p><span className="font-medium">Weight:</span> {dog.weight} kg</p>}
-                      {dog.photo && <p><span className="font-medium">Photo:</span> Uploaded</p>}
+              <ScrollArea className="h-full pr-4">
+                <div className="space-y-3">
+                  {/* User Info */}
+                  <div className="border-b border-border pb-2">
+                    <h4 className="text-sm font-medium text-foreground mb-1">Your Information:</h4>
+                    <div className="text-sm text-muted-foreground space-y-1">
+                      <p><span className="font-medium">Name:</span> {userData.firstName} {userData.lastName}</p>
+                      <p><span className="font-medium">Email:</span> {userData.email}</p>
+                      <p><span className="font-medium">Country:</span> {userData.country}</p>
                     </div>
-                  ))}
+                  </div>
+
+                  {/* Dogs Info */}
+                  <div>
+                    <h4 className="text-sm font-medium text-foreground mb-1">{dogs.length === 1 ? 'Your Dog' : 'Your Dogs'}:</h4>
+                    <div className="text-sm text-muted-foreground space-y-3">
+                      {dogs.map((dog, index) => (
+                        <div key={index} className="border-l-2 border-primary/30 pl-3 space-y-1">
+                          <p><span className="font-medium">Name:</span> {dog.name}</p>
+                          {dog.breed && <p><span className="font-medium">Breed:</span> {dog.breed}</p>}
+                          {dog.gender && <p><span className="font-medium">Gender:</span> {capitalizeFirst(dog.gender)}</p>}
+                          {dog.birthday && (
+                            <p><span className="font-medium">Age:</span> {calculateAge(format(dog.birthday, 'yyyy-MM-dd'))}</p>
+                          )}
+                          {dog.weight && <p><span className="font-medium">Weight:</span> {dog.weight} kg</p>}
+                          {dog.photo && <p><span className="font-medium">Photo:</span> Uploaded</p>}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
                 </div>
-              </div>
+              </ScrollArea>
             </div>
 
-            <div className="flex gap-3 pt-4">
+            <div className="flex gap-3 pt-4 flex-shrink-0">
               <Button 
                 variant="outline"
                 size="touch"
