@@ -5,12 +5,14 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { AddWeightModal } from "@/components/health/AddWeightModal";
 import { HealthNotesModal } from "@/components/health/HealthNotesModal";
 import { useToast } from "@/hooks/use-toast";
+import type { TabType } from "@/components/layout/BottomNavigation";
 
 interface QuickActionModalProps {
   isOpen: boolean;
   onClose: () => void;
   selectedDogId?: string;
   selectedDogName?: string;
+  onNavigateToTab?: (tab: TabType) => void;
 }
 
 const quickActions = [
@@ -56,7 +58,7 @@ const quickActions = [
   }
 ];
 
-export function QuickActionModal({ isOpen, onClose, selectedDogId, selectedDogName }: QuickActionModalProps) {
+export function QuickActionModal({ isOpen, onClose, selectedDogId, selectedDogName, onNavigateToTab }: QuickActionModalProps) {
   const { toast } = useToast();
   const [isAddWeightOpen, setIsAddWeightOpen] = useState(false);
   const [isHealthNotesOpen, setIsHealthNotesOpen] = useState(false);
@@ -76,10 +78,7 @@ export function QuickActionModal({ isOpen, onClose, selectedDogId, selectedDogNa
         setIsHealthNotesOpen(true);
         break;
       case 'ai-chat':
-        toast({
-          title: "AI Trainer",
-          description: "Go to Trainer screen to start a conversation with the AI assistant.",
-        });
+        onNavigateToTab?.('trainer');
         break;
       case 'photo':
         toast({

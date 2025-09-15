@@ -93,6 +93,7 @@ const Index = () => {
         <QuickActionModal
           isOpen={isQuickActionOpen}
           onClose={() => setIsQuickActionOpen(false)}
+          onNavigateToTab={(tab) => setActiveTab(tab)}
           selectedDogId={selectedDogId}
           selectedDogName={dogs.find(dog => dog.id === selectedDogId)?.name}
         />

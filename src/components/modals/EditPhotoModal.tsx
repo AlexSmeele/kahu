@@ -7,8 +7,7 @@ import { useToast } from "@/hooks/use-toast";
 
 // Constants to ensure preview and save math match exactly
 const CONTAINER_SIZE = 256; // Preview container size (w-64 h-64)
-const CROP_DIAMETER = 128;  // Crop circle diameter (w-32 h-32)
-const CROP_RADIUS = 64;     // Crop circle radius (used in mask)
+const CROP_SIZE = 128;  // Square crop size (w-32 h-32)
 
 export interface CropData {
   x: number;
@@ -104,9 +103,9 @@ export function EditPhotoModal({
           return;
         }
 
-        // Use same output size as crop diameter for 1:1 mapping
-        canvas.width = CROP_DIAMETER;
-        canvas.height = CROP_DIAMETER;
+        // Use same output size as crop size for 1:1 mapping
+        canvas.width = CROP_SIZE;
+        canvas.height = CROP_SIZE;
 
         const imageAspect = img.width / img.height;
         
@@ -137,30 +136,23 @@ export function EditPhotoModal({
         const cropCenterX = CONTAINER_SIZE / 2;
         const cropCenterY = CONTAINER_SIZE / 2;
         
-        // Calculate source coordinates in the original image
-        // The crop circle is positioned at the center, offset by the crop area position
-        const circleOffsetX = (CONTAINER_SIZE - CROP_DIAMETER) / 2;
-        const circleOffsetY = (CONTAINER_SIZE - CROP_DIAMETER) / 2;
+        // Calculate source coordinates in the original image for a centered square crop
+        const squareOffsetX = (CONTAINER_SIZE - CROP_SIZE) / 2;
+        const squareOffsetY = (CONTAINER_SIZE - CROP_SIZE) / 2;
         
         const scaleX = img.width / displayWidth;
         const scaleY = img.height / displayHeight;
         
-        const sourceX = Math.max(0, (offsetX - cropData.x + circleOffsetX) * scaleX);
-        const sourceY = Math.max(0, (offsetY - cropData.y + circleOffsetY) * scaleY);
-        const sourceWidth = Math.min(img.width - sourceX, CROP_DIAMETER * scaleX);
-        const sourceHeight = Math.min(img.height - sourceY, CROP_DIAMETER * scaleY);
+        const sourceX = Math.max(0, (offsetX - cropData.x + squareOffsetX) * scaleX);
+        const sourceY = Math.max(0, (offsetY - cropData.y + squareOffsetY) * scaleY);
+        const sourceWidth = Math.min(img.width - sourceX, CROP_SIZE * scaleX);
+        const sourceHeight = Math.min(img.height - sourceY, CROP_SIZE * scaleY);
 
-        // Create circular clipping path
-        ctx.beginPath();
-        ctx.arc(CROP_DIAMETER / 2, CROP_DIAMETER / 2, CROP_DIAMETER / 2, 0, Math.PI * 2);
-        ctx.closePath();
-        ctx.clip();
-
-        // Draw the cropped image
+        // Draw the cropped image (square)
         ctx.drawImage(
           img,
           sourceX, sourceY, sourceWidth, sourceHeight,
-          0, 0, CROP_DIAMETER, CROP_DIAMETER
+          0, 0, CROP_SIZE, CROP_SIZE
         );
 
         canvas.toBlob(resolve, 'image/jpeg', 0.9);
@@ -303,18 +295,14 @@ export function EditPhotoModal({
                     draggable={false}
                   />
                   
-                  {/* Crop Circle Overlay - creates the effect */}
+                  {/* Crop Square Overlay - shows square area */}
                   <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    {/* Overlay that dims everything except the circle */}
-                    <div 
-                      className="absolute inset-0 bg-black opacity-50"
-                     style={{
-                        mask: `radial-gradient(circle ${CROP_RADIUS}px at center, transparent ${CROP_RADIUS}px, black ${CROP_RADIUS}px)`,
-                        WebkitMask: `radial-gradient(circle ${CROP_RADIUS}px at center, transparent ${CROP_RADIUS}px, black ${CROP_RADIUS}px)`,
-                      }}
-                    />
-                    {/* Circle border */}
-                    <div className="relative w-32 h-32 rounded-full border-2 border-primary pointer-events-none" />
+                    <div
+                      className="relative w-32 h-32"
+                      style={{ boxShadow: '0 0 0 9999px rgba(0,0,0,0.5)' }}
+                    >
+                      <div className="absolute inset-0 border-2 border-primary" />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -382,7 +370,7 @@ export function EditPhotoModal({
 
           {/* Instructions */}
           <p className="text-xs text-muted-foreground text-center">
-            Drag to reposition • Use slider to zoom • Only the area within the circle will be saved
+            Drag to reposition • Use slider to zoom • Only the area within the square will be saved
           </p>
         </div>
       </DialogContent>
