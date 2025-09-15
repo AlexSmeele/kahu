@@ -1067,7 +1067,50 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      family_invitations_secure: {
+        Row: {
+          accepted_at: string | null
+          created_at: string | null
+          email: string | null
+          expires_at: string | null
+          family_id: string | null
+          id: string | null
+          invited_by: string | null
+          role: string | null
+          token: string | null
+        }
+        Insert: {
+          accepted_at?: string | null
+          created_at?: string | null
+          email?: never
+          expires_at?: string | null
+          family_id?: string | null
+          id?: string | null
+          invited_by?: string | null
+          role?: string | null
+          token?: string | null
+        }
+        Update: {
+          accepted_at?: string | null
+          created_at?: string | null
+          email?: never
+          expires_at?: string | null
+          family_id?: string | null
+          id?: string | null
+          invited_by?: string | null
+          role?: string | null
+          token?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "family_invitations_family_id_fkey"
+            columns: ["family_id"]
+            isOneToOne: false
+            referencedRelation: "families"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Functions: {
       generate_invitation_token: {
@@ -1101,6 +1144,10 @@ export type Database = {
       is_family_member: {
         Args: { p_family_id: string; p_user_id: string }
         Returns: boolean
+      }
+      mask_email: {
+        Args: { email: string }
+        Returns: string
       }
       set_limit: {
         Args: { "": number }
