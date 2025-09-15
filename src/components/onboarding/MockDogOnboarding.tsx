@@ -347,7 +347,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
               <Button 
                 variant="outline"
                 onClick={() => setStep(1)}
-                className="flex-1"
+                className="flex-1 h-10"
               >
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 Back
@@ -355,7 +355,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
               <Button 
                 onClick={() => setStep(3)}
                 disabled={!isStepValid()}
-                className="flex-1 btn-primary hover-scale"
+                className="flex-1 h-10 btn-primary hover-scale"
               >
                 Continue
                 <ArrowRight className="w-4 h-4 ml-2" />
@@ -407,7 +407,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
               <Button 
                 variant="outline"
                 onClick={() => setStep(2)}
-                className="flex-1"
+                className="flex-1 h-10"
                 disabled={loading}
               >
                 <ArrowLeft className="w-4 h-4 mr-2" />
@@ -415,7 +415,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
               </Button>
               <Button 
                 onClick={handleSubmit}
-                className="flex-1 btn-primary hover-scale"
+                className="flex-1 h-10 btn-primary hover-scale"
                 disabled={loading}
               >
                 {loading ? (

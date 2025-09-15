@@ -325,14 +325,14 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
               <Button 
                 variant="outline"
                 onClick={() => setStep(1)}
-                className="flex-1"
+                className="flex-1 h-10"
               >
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 Back
               </Button>
               <Button 
                 onClick={() => setStep(3)}
-                className="flex-1 btn-primary hover-scale"
+                className="flex-1 h-10 btn-primary hover-scale"
               >
                 Continue
                 <ArrowRight className="w-4 h-4 ml-2" />
@@ -379,7 +379,7 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
               <Button 
                 variant="outline"
                 onClick={() => setStep(2)}
-                className="flex-1"
+                className="flex-1 h-10"
                 disabled={loading}
               >
                 <ArrowLeft className="w-4 h-4 mr-2" />
@@ -387,7 +387,7 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
               </Button>
               <Button 
                 onClick={handleSubmit}
-                className="flex-1 btn-primary hover-scale"
+                className="flex-1 h-10 btn-primary hover-scale"
                 disabled={loading}
               >
                 {loading ? 'Creating...' : "Let's Start!"}
