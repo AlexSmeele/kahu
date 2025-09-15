@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { useDogs, calculateAge } from "@/hooks/useDogs";
@@ -72,12 +71,19 @@ export function DogSwitcher({ selectedDogId, onDogChange, showAddButton = false,
                       : "hover:ring-1 hover:ring-primary/50"
                   )}
                 >
-                  <Avatar className="w-full h-full rounded-md">
-                    <AvatarImage src={dog.avatar_url} className="rounded-md" />
-                    <AvatarFallback className="text-lg bg-gradient-to-br from-primary to-primary/80 text-primary-foreground rounded-md">
-                      {dog.name.charAt(0)}
-                    </AvatarFallback>
-                  </Avatar>
+                  {dog.avatar_url ? (
+                    <img 
+                      src={dog.avatar_url} 
+                      alt={dog.name}
+                      className="w-full h-full object-cover rounded-md"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-gradient-to-br from-primary to-primary/80 text-primary-foreground rounded-md flex items-center justify-center">
+                      <span className="text-2xl font-semibold">
+                        {dog.name.charAt(0)}
+                      </span>
+                    </div>
+                  )}
                   
                   {/* Name overlay */}
                   <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-2">
@@ -124,12 +130,19 @@ export function DogSwitcher({ selectedDogId, onDogChange, showAddButton = false,
               className="flex-1 relative p-1 h-full data-[state=active]:ring-2 data-[state=active]:ring-primary data-[state=active]:ring-offset-1 rounded-md overflow-hidden"
             >
               <div className="relative w-full h-full rounded-sm overflow-hidden">
-                <Avatar className="w-full h-full rounded-sm">
-                  <AvatarImage src={dog.avatar_url} className="rounded-sm" />
-                  <AvatarFallback className="text-lg bg-gradient-to-br from-primary to-primary/80 text-primary-foreground rounded-sm">
-                    {dog.name.charAt(0)}
-                  </AvatarFallback>
-                </Avatar>
+                {dog.avatar_url ? (
+                  <img 
+                    src={dog.avatar_url} 
+                    alt={dog.name}
+                    className="w-full h-full object-cover rounded-sm"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-gradient-to-br from-primary to-primary/80 text-primary-foreground rounded-sm flex items-center justify-center">
+                    <span className="text-lg font-semibold">
+                      {dog.name.charAt(0)}
+                    </span>
+                  </div>
+                )}
                 
                 {/* Name overlay */}
                 <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-1">
