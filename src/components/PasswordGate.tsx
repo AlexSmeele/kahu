@@ -5,7 +5,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 
-const ACCESS_PASSWORD = "mydawgs"; // Change this password as needed
+// Access password should be configured through environment variables
+const ACCESS_PASSWORD = import.meta.env.VITE_ACCESS_PASSWORD || "mydawgs";
 const STORAGE_KEY = "password_gate_access";
 
 interface PasswordGateProps {
