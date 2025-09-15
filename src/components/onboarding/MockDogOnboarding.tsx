@@ -99,8 +99,8 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
 
   if (step === 1) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex items-center justify-center p-4">
-        <Card className="w-full max-w-md border-0 shadow-[var(--shadow-large)]">
+      <div className="h-full bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex items-center justify-center p-4 animate-fade-in">
+        <Card className="w-full max-w-md border-0 shadow-[var(--shadow-large)] animate-scale-in">
           <CardHeader className="text-center pb-6">
             <div className="mx-auto w-16 h-16 bg-gradient-to-r from-primary to-primary-hover rounded-full flex items-center justify-center mb-4">
               <Heart className="w-8 h-8 text-primary-foreground" />
@@ -143,7 +143,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
             <Button 
               onClick={() => setStep(2)}
               disabled={!isStepValid()}
-              className="w-full btn-primary"
+              className="w-full btn-primary hover-scale"
             >
               Continue
               <ArrowRight className="w-4 h-4 ml-2" />
@@ -156,8 +156,8 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
 
   if (step === 2) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex items-center justify-center p-4">
-        <Card className="w-full max-w-md border-0 shadow-[var(--shadow-large)]">
+      <div className="h-full bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex items-center justify-center p-4 animate-fade-in">
+        <Card className="w-full max-w-md border-0 shadow-[var(--shadow-large)] animate-scale-in max-h-[calc(100vh-2rem)] overflow-y-auto">
           <CardHeader className="text-center pb-6">
             <CardTitle className="text-xl font-bold text-foreground">
               Tell us about {formData.name} 🎾
@@ -355,7 +355,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
               <Button 
                 onClick={() => setStep(3)}
                 disabled={!isStepValid()}
-                className="flex-1 btn-primary"
+                className="flex-1 btn-primary hover-scale"
               >
                 Continue
                 <ArrowRight className="w-4 h-4 ml-2" />
@@ -369,8 +369,8 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
 
   if (step === 3) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex items-center justify-center p-4">
-        <Card className="w-full max-w-md border-0 shadow-[var(--shadow-large)]">
+      <div className="h-full bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex items-center justify-center p-4 animate-fade-in">
+        <Card className="w-full max-w-md border-0 shadow-[var(--shadow-large)] animate-scale-in">
           <CardHeader className="text-center pb-6">
             <div className="mx-auto w-16 h-16 bg-gradient-to-r from-success to-success/80 rounded-full flex items-center justify-center mb-4">
               <Heart className="w-8 h-8 text-success-foreground" />
@@ -415,7 +415,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
               </Button>
               <Button 
                 onClick={handleSubmit}
-                className="flex-1 btn-primary"
+                className="flex-1 btn-primary hover-scale"
                 disabled={loading}
               >
                 {loading ? (
