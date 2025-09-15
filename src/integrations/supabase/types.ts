@@ -1088,6 +1088,27 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: string
       }
+      get_accessible_vet_clinics: {
+        Args: { include_contact_info?: boolean; search_query?: string }
+        Returns: {
+          address: string
+          created_at: string
+          email: string
+          has_contact_access: boolean
+          hours: Json
+          id: string
+          latitude: number
+          longitude: number
+          name: string
+          osm_place_id: string
+          osm_type: string
+          phone: string
+          services: string[]
+          updated_at: string
+          verified: boolean
+          website: string
+        }[]
+      }
       get_user_invitations: {
         Args: Record<PropertyKey, never>
         Returns: {

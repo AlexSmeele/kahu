@@ -13,6 +13,7 @@ interface VetClinic {
   osm_place_id?: string;
   services?: string[];
   verified: boolean;
+  has_contact_access?: boolean;
 }
 
 interface DogVetClinic {
@@ -182,7 +183,7 @@ export function useVetClinics(dogId?: string) {
     }
   };
 
-  // Search for vet clinics with automatic geolocation
+  // Search for vet clinics with automatic geolocation and secure access control
   const searchVetClinics = async (
     query: string,
     latitude?: number,
@@ -214,7 +215,24 @@ export function useVetClinics(dogId?: string) {
         }
       }
 
-      const { data, error: searchError } = await supabase.functions.invoke('search-vet-clinics', {
+      // First, try to get results from the secure database function
+      // This will show masked contact info for clinics not associated with user's dogs
+      let secureResults: VetClinic[] = [];
+      try {
+        const { data: secureData, error: secureError } = await supabase.rpc('get_accessible_vet_clinics', {
+          search_query: query,
+          include_contact_info: false // Don't show full contact info in search results
+        });
+
+        if (!secureError && secureData) {
+          secureResults = secureData;
+        }
+      } catch (secureErr) {
+        console.log('Secure search not available, falling back to edge function');
+      }
+
+      // Also search via edge function for broader OSM results
+      const { data: edgeData, error: searchError } = await supabase.functions.invoke('search-vet-clinics', {
         body: { 
           query,
           latitude: searchLatitude,
@@ -223,10 +241,33 @@ export function useVetClinics(dogId?: string) {
       });
 
       if (searchError) {
+        // If edge function fails, return secure results only
+        if (secureResults.length > 0) {
+          return secureResults;
+        }
         throw searchError;
       }
 
-      return data?.clinics || [];
+      const edgeFunctionClinics = edgeData?.clinics || [];
+      
+      // Combine results, prioritizing secure results (which may have full contact access)
+      const combinedResults = [...secureResults, ...edgeFunctionClinics];
+      
+      // Remove duplicates based on OSM place ID or name+address combination
+      const uniqueResults = combinedResults.reduce((acc: VetClinic[], clinic) => {
+        const isDuplicate = acc.some(existing => 
+          (clinic.osm_place_id && existing.osm_place_id === clinic.osm_place_id) ||
+          (existing.name === clinic.name && existing.address === clinic.address)
+        );
+        
+        if (!isDuplicate) {
+          acc.push(clinic);
+        }
+        
+        return acc;
+      }, []);
+
+      return uniqueResults.slice(0, 10);
     } catch (err) {
       console.error('Error searching vet clinics:', err);
       setError(err instanceof Error ? err.message : 'Failed to search vet clinics');

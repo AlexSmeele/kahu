@@ -20,6 +20,7 @@ interface VetClinic {
   osm_place_id?: string;
   services?: string[];
   verified: boolean;
+  has_contact_access?: boolean;
 }
 
 interface VetClinicAutocompleteProps {
