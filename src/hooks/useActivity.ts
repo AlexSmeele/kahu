@@ -41,7 +41,10 @@ export const useActivity = (dogId: string) => {
   const calculateDefaultGoal = async (dogId: string): Promise<Partial<ActivityGoal>> => {
     const { data: dog } = await supabase
       .from('dogs')
-      .select('breed, birthday')
+      .select(`
+        birthday,
+        dog_breeds!breed_id(breed)
+      `)
       .eq('id', dogId)
       .single();
 
@@ -63,8 +66,9 @@ export const useActivity = (dogId: string) => {
     } else {
       // Working breeds typically need more exercise
       const highEnergyBreeds = ['border collie', 'australian cattle dog', 'jack russell', 'husky'];
+      const breedName = (dog as any).dog_breeds?.breed?.toLowerCase() || '';
       const isHighEnergy = highEnergyBreeds.some(breed => 
-        dog.breed?.toLowerCase().includes(breed)
+        breedName.includes(breed)
       );
       
       if (isHighEnergy) {

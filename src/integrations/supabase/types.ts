@@ -262,7 +262,7 @@ export type Database = {
         Row: {
           avatar_url: string | null
           birthday: string | null
-          breed: string | null
+          breed_id: string
           created_at: string
           family_id: string | null
           gender: string | null
@@ -276,7 +276,7 @@ export type Database = {
         Insert: {
           avatar_url?: string | null
           birthday?: string | null
-          breed?: string | null
+          breed_id: string
           created_at?: string
           family_id?: string | null
           gender?: string | null
@@ -290,7 +290,7 @@ export type Database = {
         Update: {
           avatar_url?: string | null
           birthday?: string | null
-          breed?: string | null
+          breed_id?: string
           created_at?: string
           family_id?: string | null
           gender?: string | null
@@ -302,6 +302,13 @@ export type Database = {
           weight?: number | null
         }
         Relationships: [
+          {
+            foreignKeyName: "dogs_breed_id_fkey"
+            columns: ["breed_id"]
+            isOneToOne: false
+            referencedRelation: "dog_breeds"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "dogs_family_id_fkey"
             columns: ["family_id"]

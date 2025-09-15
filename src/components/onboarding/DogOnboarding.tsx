@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Calendar } from '@/components/ui/calendar';
@@ -21,6 +22,7 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
   const [formData, setFormData] = useState({
     name: '',
     breed: '',
+    breed_id: null as string | null,
     birthday: null as Date | null,
     weight: '',
     gender: '' as 'male' | 'female' | '',
@@ -48,11 +50,16 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
   };
 
   const handleSubmit = async () => {
+    if (!formData.breed_id) {
+      // Handle case where breed is required but not set
+      return;
+    }
+    
     setLoading(true);
     
     const dogData = {
       name: formData.name,
-      breed: formData.breed || undefined,
+      breed_id: formData.breed_id,
       birthday: formData.birthday ? format(formData.birthday, 'yyyy-MM-dd') : undefined,
       weight: formData.weight ? parseFloat(formData.weight) : undefined,
       gender: formData.gender || undefined,
@@ -70,7 +77,7 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
       case 1:
         return formData.name.trim() !== '';
       case 2:
-        return true; // Optional information
+        return formData.breed_id !== null; // Now breed is required
       case 3:
         return true; // Summary step
       default:
@@ -139,19 +146,19 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
               Tell us about {formData.name} 🎾
             </CardTitle>
             <p className="text-muted-foreground">
-              This helps us personalize the training experience (optional)
+              Breed is required to provide personalized recommendations
             </p>
           </CardHeader>
 
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <label className="block text-sm font-medium text-foreground">
-                Breed
-              </label>
+              <Label htmlFor="breed">Breed *</Label>
               <BreedAutocomplete
                 value={formData.breed}
                 onChange={(breed) => setFormData(prev => ({ ...prev, breed }))}
+                onBreedIdChange={(breedId) => setFormData(prev => ({ ...prev, breed_id: breedId }))}
                 placeholder="e.g., Golden Retriever, Mixed"
+                required
               />
             </div>
 

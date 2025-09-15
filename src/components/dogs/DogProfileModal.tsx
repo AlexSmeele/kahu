@@ -25,6 +25,7 @@ export function DogProfileModal({ isOpen, onClose, dog, mode }: DogProfileModalP
   const [formData, setFormData] = useState({
     name: '',
     breed: '',
+    breed_id: null as string | null,
     gender: '' as 'male' | 'female' | '',
     birthday: '',
     weight: '',
@@ -43,7 +44,8 @@ export function DogProfileModal({ isOpen, onClose, dog, mode }: DogProfileModalP
       if (mode === 'edit' && dog) {
         setFormData({
           name: dog.name,
-          breed: dog.breed || '',
+          breed: (dog as any).dog_breeds?.breed || '',
+          breed_id: dog.breed_id || null,
           gender: dog.gender || '',
           birthday: dog.birthday || '',
           weight: dog.weight ? dog.weight.toString() : '',
@@ -59,6 +61,7 @@ export function DogProfileModal({ isOpen, onClose, dog, mode }: DogProfileModalP
         setFormData({
           name: '',
           breed: '',
+          breed_id: null,
           gender: '',
           birthday: '',
           weight: '',
@@ -120,12 +123,21 @@ export function DogProfileModal({ isOpen, onClose, dog, mode }: DogProfileModalP
       return;
     }
 
+    if (!formData.breed_id) {
+      toast({
+        title: 'Breed required',
+        description: 'Please select your dog\'s breed',
+        variant: 'destructive',
+      });
+      return;
+    }
+
     setLoading(true);
 
     try {
       const dogData = {
         name: formData.name.trim(),
-        breed: formData.breed.trim() || undefined,
+        breed_id: formData.breed_id,
         gender: formData.gender || undefined,
         birthday: formData.birthday || undefined,
         weight: formData.weight ? parseFloat(formData.weight) : undefined,
@@ -207,11 +219,13 @@ export function DogProfileModal({ isOpen, onClose, dog, mode }: DogProfileModalP
 
             {/* Breed */}
             <div className="space-y-2">
-              <Label htmlFor="breed">Breed</Label>
+              <Label htmlFor="breed">Breed *</Label>
               <BreedAutocomplete
                 value={formData.breed}
                 onChange={(breed) => setFormData(prev => ({ ...prev, breed }))}
+                onBreedIdChange={(breedId) => setFormData(prev => ({ ...prev, breed_id: breedId }))}
                 placeholder="e.g., Golden Retriever, Mixed"
+                required
               />
             </div>
 

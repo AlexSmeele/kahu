@@ -126,7 +126,7 @@ export function TrainerScreenVariant3({ onTypingChange }: { onTypingChange?: (ty
                 <div>
                   <h2 className="font-semibold text-foreground">{currentDog?.name || "Your Dog"}</h2>
                   <p className="text-sm text-muted-foreground">
-                    {currentDog?.breed || "Mixed Breed"}
+                    {(currentDog as any)?.dog_breeds?.breed || "Mixed Breed"}
                   </p>
                 </div>
               </div>

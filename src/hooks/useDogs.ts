@@ -8,7 +8,8 @@ import { logger } from '@/lib/logger';
 export interface Dog {
   id: string;
   name: string;
-  breed?: string;
+  breed_id?: string;
+  breed?: { breed: string }; // For joined queries
   birthday?: string;
   weight?: number;
   gender?: 'male' | 'female';
@@ -102,7 +103,10 @@ export function useDogs() {
       logger.apiCall('GET', '/dogs');
       const { data, error } = await supabase
         .from('dogs')
-        .select('*')
+        .select(`
+          *,
+          dog_breeds!breed_id(breed)
+        `)
         .order('sort_order', { ascending: true })
         .order('created_at', { ascending: false });
 
@@ -222,7 +226,7 @@ export function useDogs() {
     }
   };
 
-  const addDog = async (dogData: Omit<Dog, 'id' | 'created_at' | 'updated_at'>, photo?: File) => {
+  const addDog = async (dogData: Omit<Dog, 'id' | 'created_at' | 'updated_at' | 'breed'> & { breed_id: string }, photo?: File) => {
     if (!user) return null;
 
     logger.info('useDogs: Adding new dog', { dogName: dogData.name, userId: user.id });
@@ -245,7 +249,10 @@ export function useDogs() {
           user_id: user.id,
           sort_order: nextSortOrder,
         })
-        .select()
+        .select(`
+          *,
+          dog_breeds!breed_id(breed)
+        `)
         .single();
 
       if (error) throw error;
