@@ -20,6 +20,7 @@ interface UserData {
   firstName: string;
   lastName: string;
   email: string;
+  country: string;
 }
 
 interface DogData {
@@ -73,6 +74,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
     firstName: '',
     lastName: '',
     email: '',
+    country: '',
   });
   
   // Dogs data
@@ -150,7 +152,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
   const isStepValid = () => {
     switch (step) {
       case 1:
-        return userData.firstName.trim() !== '' && userData.lastName.trim() !== '' && userData.email.trim() !== '';
+        return userData.firstName.trim() !== '' && userData.lastName.trim() !== '' && userData.email.trim() !== '' && userData.country.trim() !== '';
       case 2:
         return (currentDog.breed_id !== null || currentDog.breed.trim() !== '') && 
                currentDog.name.trim() !== '' && 
@@ -229,7 +231,33 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
               />
             </div>
 
-            <Button 
+            <div className="space-y-2">
+              <Label htmlFor="country">Country *</Label>
+              <Select 
+                value={userData.country} 
+                onValueChange={(value) => setUserData(prev => ({ ...prev, country: value }))}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select your country" />
+                </SelectTrigger>
+                <SelectContent className="z-[60] bg-popover max-h-60 overflow-y-auto">
+                  <SelectItem value="AU">Australia</SelectItem>
+                  <SelectItem value="CA">Canada</SelectItem>
+                  <SelectItem value="FR">France</SelectItem>
+                  <SelectItem value="DE">Germany</SelectItem>
+                  <SelectItem value="IN">India</SelectItem>
+                  <SelectItem value="IE">Ireland</SelectItem>
+                  <SelectItem value="IT">Italy</SelectItem>
+                  <SelectItem value="JP">Japan</SelectItem>
+                  <SelectItem value="NZ">New Zealand</SelectItem>
+                  <SelectItem value="ES">Spain</SelectItem>
+                  <SelectItem value="GB">United Kingdom</SelectItem>
+                  <SelectItem value="US">United States</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <Button
               size="touch"
               onClick={() => setStep(2)}
               disabled={!isStepValid()}
@@ -480,7 +508,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
 
           <CardContent className="space-y-4">
             <div className="bg-secondary/50 rounded-lg p-4 space-y-2">
-              <h3 className="font-medium text-foreground">Dogs Added ({dogs.length}):</h3>
+              <h3 className="font-medium text-foreground">{dogs.length === 1 ? 'Dog Added' : 'Dogs Added'}:</h3>
               <div className="text-sm text-muted-foreground space-y-1">
                 {dogs.map((dog, index) => (
                   <div key={index} className="flex justify-between items-center">
@@ -491,33 +519,36 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
               </div>
             </div>
 
-            <div className="flex gap-3 pt-4">
-              <Button 
-                variant="outline"
-                size="touch"
-                onClick={() => setStep(2)}
-                className="flex-1"
-              >
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Back
-              </Button>
+            <div className="space-y-3">
               <Button 
                 variant="outline"
                 size="touch"
                 onClick={addAnotherDog}
-                className="flex-1"
+                className="w-full"
               >
                 <Plus className="w-4 h-4 mr-2" />
-                Add Dog
+                Add Another Dog
               </Button>
-              <Button 
-                size="touch"
-                onClick={() => setStep(4)}
-                className="flex-1 btn-primary hover-scale"
-              >
-                Continue
-                <ArrowRight className="w-4 h-4 ml-2" />
-              </Button>
+              
+              <div className="flex gap-3">
+                <Button 
+                  variant="outline"
+                  size="touch"
+                  onClick={() => setStep(2)}
+                  className="flex-1"
+                >
+                  <ArrowLeft className="w-4 h-4 mr-2" />
+                  Back
+                </Button>
+                <Button 
+                  size="touch"
+                  onClick={() => setStep(4)}
+                  className="flex-1 btn-primary hover-scale"
+                >
+                  Continue
+                  <ArrowRight className="w-4 h-4 ml-2" />
+                </Button>
+              </div>
             </div>
           </CardContent>
         </Card>
@@ -557,12 +588,13 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
                 <div className="text-sm text-muted-foreground space-y-1">
                   <p><span className="font-medium">Name:</span> {userData.firstName} {userData.lastName}</p>
                   <p><span className="font-medium">Email:</span> {userData.email}</p>
+                  <p><span className="font-medium">Country:</span> {userData.country}</p>
                 </div>
               </div>
 
               {/* Dogs Info */}
               <div>
-                <h4 className="text-sm font-medium text-foreground mb-1">Your Dogs ({dogs.length}):</h4>
+                <h4 className="text-sm font-medium text-foreground mb-1">{dogs.length === 1 ? 'Your Dog' : 'Your Dogs'}:</h4>
                 <div className="text-sm text-muted-foreground space-y-3">
                   {dogs.map((dog, index) => (
                     <div key={index} className="border-l-2 border-primary/30 pl-3 space-y-1">
