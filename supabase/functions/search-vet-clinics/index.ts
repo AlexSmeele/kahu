@@ -220,12 +220,8 @@ serve(async (req) => {
       
       try {
       // Build improved Nominatim query
-        let nominatimUrl = `https://nominatim.openstreetmap.org/search?` +
-          `format=json&` +
-          `limit=20&` +
-          `addressdetails=1&` +
-          `extratags=1&` +
-          `namedetails=1`;
+        const nominatimBase = `https://nominatim.openstreetmap.org/search?format=json&limit=20&addressdetails=1&extratags=1&namedetails=1`;
+        let nominatimUrl = nominatimBase;
 
         // Use different query strategies based on location availability
         let searchResults = [];
@@ -279,7 +275,7 @@ serve(async (req) => {
 
         console.log('Querying Nominatim:', searchResults.length > 0 ? 'Using search results' : nominatimUrl);
         
-        // If we don't have search results yet (no location provided), fetch them
+        // If we don't have search results yet (no location provided or previous attempts), fetch them
         if (searchResults.length === 0) {
           const response = await fetch(nominatimUrl, {
             headers: {
@@ -292,6 +288,28 @@ serve(async (req) => {
           }
 
           searchResults = await response.json();
+        }
+
+        // Extra fallback: try exact name search without category terms
+        if (searchResults.length === 0) {
+          let nameOnlyUrl = nominatimBase + `&q=${encodeURIComponent(query)}`;
+          if (latitude && longitude) {
+            nameOnlyUrl += `&lat=${latitude}&lon=${longitude}&radius=25000`;
+          }
+          console.log('Trying name-only search fallback:', nameOnlyUrl);
+          try {
+            const nameOnlyResp = await fetch(nameOnlyUrl, {
+              headers: { 'User-Agent': 'PetCare App/1.0 (https://petcare.app)' }
+            });
+            if (nameOnlyResp.ok) {
+              const nameOnlyResults = await nameOnlyResp.json();
+              if (Array.isArray(nameOnlyResults) && nameOnlyResults.length > 0) {
+                searchResults = nameOnlyResults;
+              }
+            }
+          } catch (e) {
+            console.log('Name-only search fallback failed');
+          }
         }
         console.log('OSM Results found:', searchResults.length);
 
