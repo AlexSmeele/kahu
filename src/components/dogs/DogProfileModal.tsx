@@ -8,6 +8,7 @@ import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { EditPhotoModal, CropData } from '@/components/modals/EditPhotoModal';
 import { useDogs } from '@/hooks/useDogs';
 import { useToast } from '@/hooks/use-toast';
+import { BreedAutocomplete } from '@/components/ui/breed-autocomplete';
 import { Camera } from 'lucide-react';
 
 interface DogProfileModalProps {
@@ -207,10 +208,9 @@ export function DogProfileModal({ isOpen, onClose, dog, mode }: DogProfileModalP
             {/* Breed */}
             <div className="space-y-2">
               <Label htmlFor="breed">Breed</Label>
-              <Input
-                id="breed"
+              <BreedAutocomplete
                 value={formData.breed}
-                onChange={(e) => setFormData(prev => ({ ...prev, breed: e.target.value }))}
+                onChange={(breed) => setFormData(prev => ({ ...prev, breed }))}
                 placeholder="e.g., Golden Retriever, Mixed"
               />
             </div>

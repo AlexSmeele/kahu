@@ -9,6 +9,7 @@ import { Heart, ArrowRight, ArrowLeft, CalendarIcon, Upload, X } from 'lucide-re
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { useDogs, Dog, calculateAge } from '@/hooks/useDogs';
+import { BreedAutocomplete } from '@/components/ui/breed-autocomplete';
 import heroImage from '@/assets/hero-image.jpg';
 
 interface DogOnboardingProps {
@@ -147,10 +148,9 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
               <label className="block text-sm font-medium text-foreground">
                 Breed
               </label>
-              <Input
-                type="text"
+              <BreedAutocomplete
                 value={formData.breed}
-                onChange={(e) => setFormData(prev => ({ ...prev, breed: e.target.value }))}
+                onChange={(breed) => setFormData(prev => ({ ...prev, breed }))}
                 placeholder="e.g., Golden Retriever, Mixed"
               />
             </div>
