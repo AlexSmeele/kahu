@@ -35,7 +35,7 @@ const menuItems = [
 export function ProfileScreen() {
   const { signOut, user } = useAuth();
   const { dogs, loading: dogsLoading, deleteDog, reorderDogs } = useDogs();
-  const { profile } = useProfile();
+  const { profile, refetch: refetchProfile } = useProfile();
   const { toast } = useToast();
   const [dogModalOpen, setDogModalOpen] = useState(false);
   const [editingDog, setEditingDog] = useState<DogType | null>(null);
@@ -150,7 +150,10 @@ export function ProfileScreen() {
           <div className="p-4 border-b border-border">
             <div className="flex items-center gap-4 mb-4">
               <Avatar className="w-16 h-16">
-                <AvatarImage src={profile?.avatar_url || undefined} alt="Profile" />
+                <AvatarImage 
+                  src={profile?.avatar_url ? `${profile.avatar_url}?t=${Date.now()}` : undefined} 
+                  alt="Profile" 
+                />
                 <AvatarFallback className="bg-primary text-primary-foreground text-lg font-semibold">
                   {profile?.display_name?.[0]?.toUpperCase() || user?.email?.[0]?.toUpperCase() || 'U'}
                 </AvatarFallback>
@@ -373,7 +376,11 @@ export function ProfileScreen() {
       
       <UserEditModal
         isOpen={isUserEditOpen}
-        onClose={() => setIsUserEditOpen(false)}
+        onClose={() => {
+          setIsUserEditOpen(false);
+          // Refresh profile data when closing the edit modal to ensure consistency
+          refetchProfile();
+        }}
       />
       
       <AccountSettingsModal
