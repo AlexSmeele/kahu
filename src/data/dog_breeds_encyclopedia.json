@@ -1,0 +1,7068 @@
+[
+  {
+    "breed": "Affenpinscher",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Afghan Hound",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Airedale Terrier",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Akita",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Alaskan Malamute",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "American Bulldog",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "American Cocker Spaniel",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "American Eskimo Dog",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "American Foxhound",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "American Hairless Terrier",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "American Leopard Hound",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "American Pit Bull Terrier",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "American Staffordshire Terrier",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "American Water Spaniel",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Anatolian Shepherd Dog",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Appenzeller Sennenhund",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Australian Cattle Dog",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Australian Kelpie",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Australian Shepherd",
+    "origin": "United States",
+    "life_span_years": "12-15",
+    "temperament": [
+      "energetic",
+      "bright",
+      "loyal",
+      "protective"
+    ],
+    "exercise_needs": "Very high (90–120 mins/day)",
+    "trainability": "High",
+    "coat": "Medium double coat",
+    "grooming": "Moderate (shedding)",
+    "common_health_issues": [
+      "hip dysplasia",
+      "CEA",
+      "MDR1 sensitivity",
+      "epilepsy"
+    ],
+    "registries": [
+      "AKC",
+      "FCI",
+      "UKC"
+    ],
+    "weight_kg": {
+      "male": {
+        "adult_min": 25,
+        "adult_max": 32,
+        "m6_min": 14,
+        "m6_max": 20
+      },
+      "female": {
+        "adult_min": 18,
+        "adult_max": 25,
+        "m6_min": 12,
+        "m6_max": 16
+      }
+    }
+  },
+  {
+    "breed": "Australian Terrier",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Azawakh",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Barbet",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Basenji",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Basset Artesien Normand",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Basset Bleu de Gascogne",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Basset Fauve de Bretagne",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Basset Hound",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Bavarian Mountain Scent Hound",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Beagle",
+    "origin": "England",
+    "life_span_years": "12-15",
+    "temperament": [
+      "friendly",
+      "curious",
+      "scent-driven"
+    ],
+    "exercise_needs": "High (60–90 mins/day)",
+    "trainability": "Moderate (scent distractions)",
+    "coat": "Short, dense",
+    "grooming": "Low",
+    "common_health_issues": [
+      "ear infections",
+      "obesity",
+      "hip dysplasia",
+      "IVDD"
+    ],
+    "registries": [
+      "AKC",
+      "FCI",
+      "KC",
+      "UKC"
+    ],
+    "weight_kg": {
+      "male": {
+        "adult_min": 9,
+        "adult_max": 11,
+        "m6_min": 6,
+        "m6_max": 8
+      },
+      "female": {
+        "adult_min": 8,
+        "adult_max": 10,
+        "m6_min": 5,
+        "m6_max": 7
+      }
+    }
+  },
+  {
+    "breed": "Bearded Collie",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Beauceron",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Bedlington Terrier",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Belgian Laekenois",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Belgian Malinois",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Belgian Sheepdog",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Belgian Tervuren",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Bergamasco Sheepdog",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Bernese Mountain Dog",
+    "origin": "Switzerland",
+    "life_span_years": "7-10",
+    "temperament": [
+      "gentle",
+      "affectionate",
+      "good-natured"
+    ],
+    "exercise_needs": "Moderate (45–60 mins/day)",
+    "trainability": "High",
+    "coat": "Long double coat",
+    "grooming": "High (shedding)",
+    "common_health_issues": [
+      "cancer",
+      "hip/elbow dysplasia",
+      "eye issues"
+    ],
+    "registries": [
+      "AKC",
+      "FCI",
+      "KC",
+      "UKC"
+    ],
+    "weight_kg": {
+      "male": {
+        "adult_min": 38,
+        "adult_max": 50,
+        "m6_min": 25,
+        "m6_max": 30
+      },
+      "female": {
+        "adult_min": 32,
+        "adult_max": 45,
+        "m6_min": 20,
+        "m6_max": 27
+      }
+    }
+  },
+  {
+    "breed": "Bichon Frise",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Black Russian Terrier",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Black and Tan Coonhound",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Bloodhound",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Bluetick Coonhound",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Boerboel",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Bolognese",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Border Collie",
+    "origin": "Scotland/England",
+    "life_span_years": "12-15",
+    "temperament": [
+      "intense",
+      "intelligent",
+      "energetic",
+      "work-oriented"
+    ],
+    "exercise_needs": "Very high (120+ mins/day; mental work)",
+    "trainability": "Exceptional",
+    "coat": "Rough or smooth double coat",
+    "grooming": "Moderate",
+    "common_health_issues": [
+      "hip dysplasia",
+      "CEA",
+      "epilepsy"
+    ],
+    "registries": [
+      "AKC",
+      "FCI",
+      "KC",
+      "UKC"
+    ],
+    "weight_kg": {
+      "male": {
+        "adult_min": 14,
+        "adult_max": 20,
+        "m6_min": 9,
+        "m6_max": 13
+      },
+      "female": {
+        "adult_min": 12,
+        "adult_max": 19,
+        "m6_min": 8,
+        "m6_max": 12
+      }
+    }
+  },
+  {
+    "breed": "Border Terrier",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Borzoi",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Boston Terrier",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Bouvier des Flandres",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Boxer",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Boykin Spaniel",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Bracco Italiano",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Braque Francais",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Braque Saint-Germain",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Braque du Bourbonnais",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Briard",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Briquet Griffon Vendéen",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Brittany Spaniel",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Broholmer",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Brussels Griffon",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Bull Terrier",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Bulldog",
+    "origin": "England",
+    "life_span_years": "8-10",
+    "temperament": [
+      "affectionate",
+      "calm",
+      "stubborn"
+    ],
+    "exercise_needs": "Low (20–40 mins/day)",
+    "trainability": "Moderate",
+    "coat": "Short, smooth",
+    "grooming": "Low",
+    "common_health_issues": [
+      "brachycephalic syndrome",
+      "hip dysplasia",
+      "skin fold issues"
+    ],
+    "registries": [
+      "AKC",
+      "FCI",
+      "KC",
+      "UKC"
+    ],
+    "weight_kg": {
+      "male": {
+        "adult_min": 23,
+        "adult_max": 25,
+        "m6_min": 13,
+        "m6_max": 15
+      },
+      "female": {
+        "adult_min": 18,
+        "adult_max": 23,
+        "m6_min": 11,
+        "m6_max": 13
+      }
+    }
+  },
+  {
+    "breed": "Bullmastiff",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Cairn Terrier",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Canaan Dog",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Cane Corso",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Cardigan Welsh Corgi",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Carolina Dog",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Catahoula Leopard Dog",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Caucasian Shepherd Dog",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Cavalier King Charles Spaniel",
+    "origin": "England",
+    "life_span_years": "12-15",
+    "temperament": [
+      "affectionate",
+      "gentle",
+      "companionable"
+    ],
+    "exercise_needs": "Moderate (40–60 mins/day)",
+    "trainability": "High",
+    "coat": "Silky medium",
+    "grooming": "Moderate",
+    "common_health_issues": [
+      "mitral valve disease",
+      "syringomyelia",
+      "ear infections"
+    ],
+    "registries": [
+      "AKC",
+      "FCI",
+      "KC",
+      "UKC"
+    ],
+    "weight_kg": {
+      "male": {
+        "adult_min": 6,
+        "adult_max": 8,
+        "m6_min": 4,
+        "m6_max": 5
+      },
+      "female": {
+        "adult_min": 5.5,
+        "adult_max": 7.5,
+        "m6_min": 3.5,
+        "m6_max": 4.5
+      }
+    }
+  },
+  {
+    "breed": "Central Asian Shepherd Dog",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Cesky Terrier",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Chesapeake Bay Retriever",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Chihuahua",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Chinese Crested Dog",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Chinese Shar-Pei",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Chinook",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Chow Chow",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Cirneco dell’Etna",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Clumber Spaniel",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Cockapoo",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Collie",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Coton de Tulear",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Curly-Coated Retriever",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Cão Fila de São Miguel",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Dachshund",
+    "origin": "Germany",
+    "life_span_years": "12-15",
+    "temperament": [
+      "brave",
+      "curious",
+      "stubborn"
+    ],
+    "exercise_needs": "Moderate (45–60 mins/day)",
+    "trainability": "Moderate",
+    "coat": "Smooth; wire; long",
+    "grooming": "Low to moderate (wire needs more)",
+    "common_health_issues": [
+      "IVDD",
+      "obesity",
+      "dental issues"
+    ],
+    "registries": [
+      "AKC",
+      "FCI",
+      "KC",
+      "UKC"
+    ],
+    "weight_kg": {
+      "male": {
+        "adult_min": 7,
+        "adult_max": 15,
+        "m6_min": 4,
+        "m6_max": 6
+      },
+      "female": {
+        "adult_min": 7,
+        "adult_max": 15,
+        "m6_min": 4,
+        "m6_max": 6
+      }
+    }
+  },
+  {
+    "breed": "Dalmatian",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Dandie Dinmont Terrier",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Danish-Swedish Farmdog",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Doberman Pinscher",
+    "origin": "Germany",
+    "life_span_years": "10-12",
+    "temperament": [
+      "alert",
+      "loyal",
+      "protective"
+    ],
+    "exercise_needs": "High (60–120 mins/day)",
+    "trainability": "Very high",
+    "coat": "Short, sleek",
+    "grooming": "Low",
+    "common_health_issues": [
+      "dilated cardiomyopathy",
+      "vWD",
+      "hip dysplasia"
+    ],
+    "registries": [
+      "AKC",
+      "FCI",
+      "KC",
+      "UKC"
+    ],
+    "weight_kg": {
+      "male": {
+        "adult_min": 34,
+        "adult_max": 45,
+        "m6_min": 20,
+        "m6_max": 28
+      },
+      "female": {
+        "adult_min": 27,
+        "adult_max": 41,
+        "m6_min": 18,
+        "m6_max": 24
+      }
+    }
+  },
+  {
+    "breed": "Dogo Argentino",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Dogo Canario",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Dogue de Bordeaux",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Drentsche Patrijshond",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Dutch Shepherd",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "English Bulldog",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "English Cocker Spaniel",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "English Foxhound",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "English Setter",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "English Springer Spaniel",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "English Toy Spaniel",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Entlebucher Mountain Dog",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Estrela Mountain Dog",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Eurasier",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Field Spaniel",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Finnish Lapphund",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Finnish Spitz",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Flat-Coated Retriever",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Fox Terrier",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "French Bulldog",
+    "origin": "France/England",
+    "life_span_years": "10-12",
+    "temperament": [
+      "affectionate",
+      "easygoing",
+      "playful"
+    ],
+    "exercise_needs": "Low to moderate (20–40 mins/day)",
+    "trainability": "Moderate",
+    "coat": "Short, smooth",
+    "grooming": "Low",
+    "common_health_issues": [
+      "brachycephalic syndrome",
+      "allergies",
+      "IVDD"
+    ],
+    "registries": [
+      "AKC",
+      "FCI",
+      "KC",
+      "UKC"
+    ],
+    "weight_kg": {
+      "male": {
+        "adult_min": 10,
+        "adult_max": 13,
+        "m6_min": 6,
+        "m6_max": 8
+      },
+      "female": {
+        "adult_min": 9,
+        "adult_max": 12,
+        "m6_min": 5,
+        "m6_max": 7
+      }
+    }
+  },
+  {
+    "breed": "German Pinscher",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "German Shepherd Dog",
+    "origin": "Germany",
+    "life_span_years": "9-13",
+    "temperament": [
+      "loyal",
+      "protective",
+      "confident",
+      "intelligent"
+    ],
+    "exercise_needs": "High (90–120 mins/day)",
+    "trainability": "Very high",
+    "coat": "Double coat (short/medium)",
+    "grooming": "Moderate (shedding year-round)",
+    "common_health_issues": [
+      "hip dysplasia",
+      "elbow dysplasia",
+      "degenerative myelopathy"
+    ],
+    "registries": [
+      "AKC",
+      "FCI",
+      "KC",
+      "UKC"
+    ],
+    "weight_kg": {
+      "male": {
+        "adult_min": 30,
+        "adult_max": 40,
+        "m6_min": 20,
+        "m6_max": 25
+      },
+      "female": {
+        "adult_min": 22,
+        "adult_max": 32,
+        "m6_min": 17,
+        "m6_max": 22
+      }
+    }
+  },
+  {
+    "breed": "German Shorthaired Pointer",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "German Wirehaired Pointer",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Giant Schnauzer",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Glen of Imaal Terrier",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Golden Retriever",
+    "origin": "Scotland",
+    "life_span_years": "10-12",
+    "temperament": [
+      "friendly",
+      "gentle",
+      "people-pleasing"
+    ],
+    "exercise_needs": "High (90–120 mins/day)",
+    "trainability": "Very high",
+    "coat": "Medium-long double coat",
+    "grooming": "Moderate (shedding)",
+    "common_health_issues": [
+      "hip dysplasia",
+      "elbow dysplasia",
+      "cancer",
+      "allergies"
+    ],
+    "registries": [
+      "AKC",
+      "FCI",
+      "KC",
+      "UKC"
+    ],
+    "weight_kg": {
+      "male": {
+        "adult_min": 29,
+        "adult_max": 34,
+        "m6_min": 18,
+        "m6_max": 23
+      },
+      "female": {
+        "adult_min": 25,
+        "adult_max": 32,
+        "m6_min": 16,
+        "m6_max": 21
+      }
+    }
+  },
+  {
+    "breed": "Gordon Setter",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Grand Bleu de Gascogne",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Grand Griffon Vendéen",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Great Dane",
+    "origin": "Germany",
+    "life_span_years": "7-10",
+    "temperament": [
+      "gentle",
+      "friendly",
+      "patient"
+    ],
+    "exercise_needs": "Moderate (45–60 mins/day)",
+    "trainability": "Moderate",
+    "coat": "Short, smooth",
+    "grooming": "Low",
+    "common_health_issues": [
+      "bloat",
+      "cardiomyopathy",
+      "hip dysplasia",
+      "bone cancer"
+    ],
+    "registries": [
+      "AKC",
+      "FCI",
+      "KC",
+      "UKC"
+    ],
+    "weight_kg": {
+      "male": {
+        "adult_min": 54,
+        "adult_max": 90,
+        "m6_min": 35,
+        "m6_max": 45
+      },
+      "female": {
+        "adult_min": 45,
+        "adult_max": 59,
+        "m6_min": 30,
+        "m6_max": 40
+      }
+    }
+  },
+  {
+    "breed": "Great Pyrenees",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Greater Swiss Mountain Dog",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Greyhound",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Harrier",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Havanese",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Hokkaido",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Hungarian Puli",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Hungarian Vizsla",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Ibizan Hound",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Icelandic Sheepdog",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Irish Red and White Setter",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Irish Setter",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Irish Terrier",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Irish Water Spaniel",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Irish Wolfhound",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Italian Greyhound",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Japanese Chin",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Japanese Spitz",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Kangal Shepherd Dog",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Karelian Bear Dog",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Keeshond",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Kerry Blue Terrier",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "King Charles Spaniel",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Kishu Ken",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Komondor",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Kooikerhondje",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Kromfohrländer",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Kuvasz",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Labrador Retriever",
+    "origin": "Canada/United Kingdom",
+    "life_span_years": "11-13",
+    "temperament": [
+      "friendly",
+      "outgoing",
+      "gentle",
+      "food-motivated"
+    ],
+    "exercise_needs": "High (90–120 mins/day)",
+    "trainability": "Very high",
+    "coat": "Short dense double coat, water-resistant",
+    "grooming": "Low to moderate (shedding)",
+    "common_health_issues": [
+      "hip dysplasia",
+      "elbow dysplasia",
+      "obesity",
+      "PRA"
+    ],
+    "registries": [
+      "AKC",
+      "FCI",
+      "KC",
+      "UKC"
+    ],
+    "weight_kg": {
+      "male": {
+        "adult_min": 29,
+        "adult_max": 36,
+        "m6_min": 20,
+        "m6_max": 25
+      },
+      "female": {
+        "adult_min": 25,
+        "adult_max": 32,
+        "m6_min": 18,
+        "m6_max": 23
+      }
+    }
+  },
+  {
+    "breed": "Lagotto Romagnolo",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Lakeland Terrier",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Lancashire Heeler",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Leonberger",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Lhasa Apso",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Lowchen",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Maltese",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Manchester Terrier",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Maremma Sheepdog",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Mastiff",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Miniature American Shepherd",
+    "origin": "United States",
+    "life_span_years": "12-15",
+    "temperament": [
+      "intelligent",
+      "loyal",
+      "energetic",
+      "watchful"
+    ],
+    "exercise_needs": "High (60–120 mins/day)",
+    "trainability": "Very high",
+    "coat": "Medium length double coat",
+    "grooming": "Moderate (weekly brushing; seasonal shedding)",
+    "common_health_issues": [
+      "hip dysplasia",
+      "collie eye anomaly",
+      "MDR1 sensitivity"
+    ],
+    "registries": [
+      "AKC",
+      "FCI",
+      "UKC"
+    ],
+    "weight_kg": {
+      "male": {
+        "adult_min": 12,
+        "adult_max": 18,
+        "m6_min": 6,
+        "m6_max": 9
+      },
+      "female": {
+        "adult_min": 9,
+        "adult_max": 14,
+        "m6_min": 5,
+        "m6_max": 8
+      }
+    }
+  },
+  {
+    "breed": "Miniature Bull Terrier",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Miniature Pinscher",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Miniature Schnauzer",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Mudi",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Neapolitan Mastiff",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Newfoundland",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Norfolk Terrier",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Norwegian Buhund",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Norwegian Elkhound",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Norwegian Lundehund",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Norwich Terrier",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Nova Scotia Duck Tolling Retriever",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Old English Sheepdog",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Otterhound",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Papillon",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Parson Russell Terrier",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Pekingese",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Pembroke Welsh Corgi",
+    "origin": "Wales",
+    "life_span_years": "12-13",
+    "temperament": [
+      "affectionate",
+      "alert",
+      "bold"
+    ],
+    "exercise_needs": "Moderate to high (45–75 mins/day)",
+    "trainability": "High",
+    "coat": "Medium double coat",
+    "grooming": "Moderate (shedding)",
+    "common_health_issues": [
+      "IVDD",
+      "hip dysplasia",
+      "obesity"
+    ],
+    "registries": [
+      "AKC",
+      "FCI",
+      "KC",
+      "UKC"
+    ],
+    "weight_kg": {
+      "male": {
+        "adult_min": 10,
+        "adult_max": 14,
+        "m6_min": 7,
+        "m6_max": 9
+      },
+      "female": {
+        "adult_min": 10,
+        "adult_max": 13,
+        "m6_min": 6,
+        "m6_max": 8
+      }
+    }
+  },
+  {
+    "breed": "Perro de Presa Canario",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Peruvian Inca Orchid",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Petit Basset Griffon Vendéen",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Pharaoh Hound",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Plott Hound",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Pointer",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Polish Lowland Sheepdog",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Pomeranian",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Poodle",
+    "origin": "Germany/France",
+    "life_span_years": "12-15",
+    "temperament": [
+      "intelligent",
+      "active",
+      "people-oriented"
+    ],
+    "exercise_needs": "High (60–90 mins/day)",
+    "trainability": "Very high",
+    "coat": "Curly, low-shedding",
+    "grooming": "High (regular clipping)",
+    "common_health_issues": [
+      "hip dysplasia",
+      "addison's disease",
+      "eye disorders"
+    ],
+    "registries": [
+      "AKC",
+      "FCI",
+      "KC",
+      "UKC"
+    ],
+    "weight_kg": {
+      "male": {
+        "adult_min": 20,
+        "adult_max": 32,
+        "m6_min": 12,
+        "m6_max": 16
+      },
+      "female": {
+        "adult_min": 18,
+        "adult_max": 27,
+        "m6_min": 10,
+        "m6_max": 14
+      }
+    }
+  },
+  {
+    "breed": "Portuguese Podengo",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Portuguese Podengo Pequeno",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Portuguese Water Dog",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Presa Canario",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Pug",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Puli",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Pumi",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Pyrenean Mastiff",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Pyrenean Shepherd",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Rat Terrier",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Redbone Coonhound",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Rhodesian Ridgeback",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Rottweiler",
+    "origin": "Germany",
+    "life_span_years": "9-10",
+    "temperament": [
+      "confident",
+      "protective",
+      "calm"
+    ],
+    "exercise_needs": "High (60–120 mins/day)",
+    "trainability": "High",
+    "coat": "Short, dense",
+    "grooming": "Low",
+    "common_health_issues": [
+      "hip dysplasia",
+      "osteosarcoma",
+      "heart issues"
+    ],
+    "registries": [
+      "AKC",
+      "FCI",
+      "KC",
+      "UKC"
+    ],
+    "weight_kg": {
+      "male": {
+        "adult_min": 45,
+        "adult_max": 60,
+        "m6_min": 28,
+        "m6_max": 35
+      },
+      "female": {
+        "adult_min": 35,
+        "adult_max": 48,
+        "m6_min": 24,
+        "m6_max": 30
+      }
+    }
+  },
+  {
+    "breed": "Russian Toy",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Russian Tsvetnaya Bolonka",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Saint Bernard",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Saluki",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Samoyed",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Sarplaninac",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Schipperke",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Scottish Deerhound",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Scottish Terrier",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Sealyham Terrier",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Segugio Italiano",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Shetland Sheepdog",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Shiba Inu",
+    "origin": "Japan",
+    "life_span_years": "12-15",
+    "temperament": [
+      "independent",
+      "alert",
+      "clean"
+    ],
+    "exercise_needs": "Moderate (45–60 mins/day)",
+    "trainability": "Moderate (independent)",
+    "coat": "Double coat",
+    "grooming": "Low to moderate (shedding seasons)",
+    "common_health_issues": [
+      "allergies",
+      "patellar luxation",
+      "hip dysplasia"
+    ],
+    "registries": [
+      "AKC",
+      "FCI",
+      "KC",
+      "UKC"
+    ],
+    "weight_kg": {
+      "male": {
+        "adult_min": 9,
+        "adult_max": 11,
+        "m6_min": 6,
+        "m6_max": 8
+      },
+      "female": {
+        "adult_min": 7,
+        "adult_max": 9,
+        "m6_min": 5,
+        "m6_max": 7
+      }
+    }
+  },
+  {
+    "breed": "Shih Tzu",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Shikoku",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Siberian Husky",
+    "origin": "Siberia",
+    "life_span_years": "12-14",
+    "temperament": [
+      "friendly",
+      "independent",
+      "energetic"
+    ],
+    "exercise_needs": "Very high (120+ mins/day)",
+    "trainability": "Moderate (independent)",
+    "coat": "Double coat",
+    "grooming": "Moderate to high (seasonal blowouts)",
+    "common_health_issues": [
+      "eye issues",
+      "hip dysplasia"
+    ],
+    "registries": [
+      "AKC",
+      "FCI",
+      "KC",
+      "UKC"
+    ],
+    "weight_kg": {
+      "male": {
+        "adult_min": 20,
+        "adult_max": 27,
+        "m6_min": 14,
+        "m6_max": 18
+      },
+      "female": {
+        "adult_min": 16,
+        "adult_max": 23,
+        "m6_min": 12,
+        "m6_max": 16
+      }
+    }
+  },
+  {
+    "breed": "Silky Terrier",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Skye Terrier",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Sloughi",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Slovak Cuvac",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Slovakian Wirehaired Pointer",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Small Münsterländer",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Soft-Coated Wheaten Terrier",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Spanish Mastiff",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Spanish Water Dog",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Spinone Italiano",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Stabyhoun",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Staffordshire Bull Terrier",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Standard Schnauzer",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Sussex Spaniel",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Swedish Lapphund",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Swedish Vallhund",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Taiwan Dog",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Telomian",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Thai Ridgeback",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Tibetan Kyi Apso",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Tibetan Mastiff",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Tibetan Spaniel",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Tibetan Terrier",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Tornjak",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Tosa Inu",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Toy Fox Terrier",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Transylvanian Hound",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Treeing Tennessee Brindle",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Treeing Walker Coonhound",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Vizsla",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Volpino Italiano",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Weimaraner",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Welsh Springer Spaniel",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Welsh Terrier",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "West Highland White Terrier",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Westphalian Dachsbracke",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Whippet",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Wire Fox Terrier",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Wirehaired Pointing Griffon",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Wirehaired Vizsla",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Xoloitzcuintli",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Yakutian Laika",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  },
+  {
+    "breed": "Yorkshire Terrier",
+    "origin": null,
+    "life_span_years": null,
+    "temperament": null,
+    "exercise_needs": null,
+    "trainability": null,
+    "coat": null,
+    "grooming": null,
+    "common_health_issues": null,
+    "registries": null,
+    "weight_kg": {
+      "male": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      },
+      "female": {
+        "adult_min": null,
+        "adult_max": null,
+        "m6_min": null,
+        "m6_max": null
+      }
+    }
+  }
+]
