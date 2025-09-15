@@ -178,6 +178,23 @@ export const useFamilyManagement = () => {
     }
   };
 
+  // Get user's own invitations (with masked emails for security)
+  const getUserInvitations = async () => {
+    try {
+      const { data, error } = await supabase.rpc('get_user_invitations');
+      
+      if (error) throw error;
+      
+      return data?.map(invitation => ({
+        ...invitation,
+        role: invitation.role as 'admin' | 'member' | 'viewer'
+      })) || [];
+    } catch (error) {
+      console.error('Error fetching user invitations:', error);
+      throw error;
+    }
+  };
+
   // Accept invitation (for invitation acceptance page)
   const acceptInvitation = async (token: string) => {
     try {
@@ -358,6 +375,7 @@ export const useFamilyManagement = () => {
     loading,
     userRole,
     sendInvitation,
+    getUserInvitations,
     acceptInvitation,
     updateMemberRole,
     removeMember,
