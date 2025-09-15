@@ -269,7 +269,7 @@ serve(async (req) => {
           }
         } else {
           // Text-based search with broader terms (no location)
-          const searchTerms = `${query} veterinary animal hospital vet clinic`.trim();
+          const searchTerms = `${query} veterinary animal hospital vet clinic animal care`.trim();
           nominatimUrl += `&q=${encodeURIComponent(searchTerms)}`;
         }
 
@@ -313,32 +313,62 @@ serve(async (req) => {
         }
         console.log('OSM Results found:', searchResults.length);
 
-        // Filter and process OSM results with improved criteria
+        // Filter and process OSM results with comprehensive animal care facility detection
         const processedResults = searchResults
           .filter((place: any) => {
             const name = (place.display_name || '').toLowerCase();
             const tags = place.extratags || {};
+            const placeName = (tags.name || place.name || '').toLowerCase();
             const type = (place.type || '').toLowerCase();
             const category = (place.category || '').toLowerCase();
             const placeClass = (place.class || '').toLowerCase();
 
-            // Comprehensive veterinary detection
+            // Check for veterinary keywords in name, display name, or place name
             const hasVetKeyword = VET_KEYWORDS.some(keyword => 
               name.includes(keyword) || 
-              type.includes(keyword) ||
-              (tags.name && tags.name.toLowerCase().includes(keyword))
+              placeName.includes(keyword) ||
+              type.includes(keyword)
             );
 
-            const hasVetTags = 
+            // Comprehensive animal care facility tag detection
+            const hasAnimalCareTags = 
+              // Primary veterinary tags
               tags.amenity === 'veterinary' ||
-              tags.shop === 'pet' ||
               tags.healthcare === 'veterinary' ||
-              placeClass === 'amenity' ||
-              category === 'amenity' ||
+              tags.healthcare === 'animal' ||
+              // Animal care facilities
+              tags.amenity === 'animal_shelter' ||
+              tags.amenity === 'animal_boarding' ||
+              tags.amenity === 'animal_training' ||
+              // Pet services
+              tags.shop === 'pet' ||
+              tags.shop === 'pet_grooming' ||
+              // Healthcare facilities (with animal context)
+              tags.healthcare === 'clinic' ||
+              tags.healthcare === 'centre' ||
+              // Hospitals (need animal keyword in name)
+              (tags.amenity === 'hospital' && hasVetKeyword);
+
+            // Check for general categories that might contain animal facilities
+            const isPotentialAnimalFacility = 
+              (placeClass === 'amenity' && (category === 'amenity' || category === 'shop')) ||
+              (placeClass === 'shop' && category === 'shop') ||
+              (placeClass === 'healthcare' && category === 'healthcare') ||
               type.includes('hospital') ||
               type.includes('clinic');
 
-            return hasVetKeyword || hasVetTags;
+            return hasVetKeyword || hasAnimalCareTags || (isPotentialAnimalFacility && hasVetKeyword);
+          })
+
+            // Check for general categories that might contain animal facilities
+            const isPotentialAnimalFacility = 
+              (placeClass === 'amenity' && (category === 'amenity' || category === 'shop')) ||
+              (placeClass === 'shop' && category === 'shop') ||
+              (placeClass === 'healthcare' && category === 'healthcare') ||
+              type.includes('hospital') ||
+              type.includes('clinic');
+
+            return hasVetKeyword || hasAnimalCareTags || (isPotentialAnimalFacility && hasVetKeyword);
           })
           .slice(0, 10)
           .map((place: any) => {
