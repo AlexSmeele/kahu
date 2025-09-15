@@ -219,7 +219,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
                       )}
                     >
                       <CalendarIcon className="mr-2 h-4 w-4" />
-                      {formData.birthday ? format(formData.birthday, "PPP") : "Pick a date"}
+                      {formData.birthday ? format(formData.birthday, "LLL d, yyyy") : "Pick a date"}
                     </Button>
                   </PopoverTrigger>
                   <PopoverContent className="w-auto p-0" align="start">
@@ -236,10 +236,10 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
                         <SelectTrigger className="w-[120px]">
                           <SelectValue placeholder="Month" />
                         </SelectTrigger>
-                        <SelectContent>
+                        <SelectContent className="z-[60] bg-popover">
                           {Array.from({ length: 12 }, (_, i) => (
                             <SelectItem key={i} value={i.toString()}>
-                              {format(new Date(2000, i, 1), "MMMM")}
+                              {format(new Date(2000, i, 1), "LLL")}
                             </SelectItem>
                           ))}
                         </SelectContent>
@@ -257,7 +257,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
                         <SelectTrigger className="w-[100px]">
                           <SelectValue placeholder="Year" />
                         </SelectTrigger>
-                        <SelectContent>
+                        <SelectContent className="z-[60] bg-popover">
                           {Array.from({ length: 25 }, (_, i) => {
                             const year = new Date().getFullYear() - i;
                             return (
@@ -274,12 +274,6 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
                       selected={formData.birthday || undefined}
                       onSelect={(date) => setFormData(prev => ({ ...prev, birthday: date || null }))}
                       disabled={(date) => date > new Date() || date < new Date("1999-01-01")}
-                      month={formData.birthday || undefined}
-                      onMonthChange={(date) => {
-                        if (!formData.birthday) {
-                          setFormData(prev => ({ ...prev, birthday: date }));
-                        }
-                      }}
                       initialFocus
                       className={cn("p-3 pointer-events-auto")}
                     />
@@ -347,7 +341,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
               <Button 
                 variant="outline"
                 onClick={() => setStep(1)}
-                className="flex-1 min-h-12"
+                className="flex-1 btn-touch"
               >
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 Back
@@ -407,7 +401,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
               <Button 
                 variant="outline"
                 onClick={() => setStep(2)}
-                className="flex-1 min-h-12"
+                className="flex-1 btn-touch"
                 disabled={loading}
               >
                 <ArrowLeft className="w-4 h-4 mr-2" />
