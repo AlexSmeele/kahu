@@ -89,7 +89,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
       case 1:
         return formData.name.trim() !== '';
       case 2:
-        return formData.breed_id !== null && formData.gender !== '' && formData.birthday !== null;
+        return (formData.breed_id !== null || formData.breed.trim() !== '') && formData.gender !== '' && formData.birthday !== null;
       case 3:
         return true; // Summary step
       default:

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Plus } from 'lucide-react';
@@ -6,6 +6,7 @@ import { cn } from '@/lib/utils';
 import { useAllBreeds } from '@/hooks/useBreedInfo';
 import { supabase } from '@/integrations/supabase/client';
 import localBreedsData from '@/data/dog_breeds_encyclopedia.json';
+const LOCAL_BREED_NAMES: string[] = (localBreedsData as any[]).map((b: any) => b.breed).filter(Boolean);
 
 interface BreedAutocompleteProps {
   value: string;
@@ -32,8 +33,7 @@ export function BreedAutocomplete({
   const inputRef = useRef<HTMLInputElement>(null);
 
   const { data: allBreeds = [] } = useAllBreeds();
-  const localBreedNames: string[] = (localBreedsData as any[]).map((b: any) => b.breed).filter(Boolean);
-  const availableBreeds = allBreeds && allBreeds.length > 0 ? allBreeds : localBreedNames;
+  const availableBreeds = useMemo(() => (allBreeds && allBreeds.length > 0 ? allBreeds : LOCAL_BREED_NAMES), [allBreeds]);
 
   // Update input value when prop value changes
   useEffect(() => {
