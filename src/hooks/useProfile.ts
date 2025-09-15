@@ -9,6 +9,12 @@ export interface Profile {
   avatar_url: string | null;
   role: string | null;
   timezone: string | null;
+  phone: string | null;
+  address: string | null;
+  city: string | null;
+  state: string | null;
+  zip_code: string | null;
+  country: string | null;
   created_at: string;
   updated_at: string;
 }

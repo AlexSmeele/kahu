@@ -669,31 +669,49 @@ export type Database = {
       }
       profiles: {
         Row: {
+          address: string | null
           avatar_url: string | null
+          city: string | null
+          country: string | null
           created_at: string
           display_name: string | null
           id: string
+          phone: string | null
           role: string | null
+          state: string | null
           timezone: string | null
           updated_at: string
+          zip_code: string | null
         }
         Insert: {
+          address?: string | null
           avatar_url?: string | null
+          city?: string | null
+          country?: string | null
           created_at?: string
           display_name?: string | null
           id: string
+          phone?: string | null
           role?: string | null
+          state?: string | null
           timezone?: string | null
           updated_at?: string
+          zip_code?: string | null
         }
         Update: {
+          address?: string | null
           avatar_url?: string | null
+          city?: string | null
+          country?: string | null
           created_at?: string
           display_name?: string | null
           id?: string
+          phone?: string | null
           role?: string | null
+          state?: string | null
           timezone?: string | null
           updated_at?: string
+          zip_code?: string | null
         }
         Relationships: []
       }

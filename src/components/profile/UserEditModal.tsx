@@ -50,12 +50,12 @@ export function UserEditModal({ isOpen, onClose }: UserEditModalProps) {
         firstName: nameParts[0] || '',
         lastName: nameParts.slice(1).join(' ') || '',
         email: user.email || '',
-        phone: user.user_metadata?.phone || '',
-        address: user.user_metadata?.address || '',
-        city: user.user_metadata?.city || '',
-        state: user.user_metadata?.state || '',
-        zipCode: user.user_metadata?.zip_code || '',
-        country: user.user_metadata?.country || '',
+        phone: profile.phone || '',
+        address: profile.address || '',
+        city: profile.city || '',
+        state: profile.state || '',
+        zipCode: profile.zip_code || '',
+        country: profile.country || '',
       });
       
       // Load current image data
@@ -160,6 +160,12 @@ export function UserEditModal({ isOpen, onClose }: UserEditModalProps) {
 
     const { error } = await updateProfile({
       display_name: displayName,
+      phone: formData.phone || null,
+      address: formData.address || null,
+      city: formData.city || null,
+      state: formData.state || null,
+      zip_code: formData.zipCode || null,
+      country: formData.country || null,
     });
 
     if (error) {
