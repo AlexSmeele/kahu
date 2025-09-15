@@ -1199,6 +1199,14 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      check_rate_limit: {
+        Args: {
+          max_attempts?: number
+          operation_name: string
+          time_window_minutes?: number
+        }
+        Returns: boolean
+      }
       decrypt_sensitive_data: {
         Args: { encrypted_data: string; key_name?: string }
         Returns: string
@@ -1245,6 +1253,15 @@ export type Database = {
           role: string
         }[]
       }
+      get_user_profile_secure: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          avatar_url: string
+          created_at: string
+          display_name: string
+          id: string
+        }[]
+      }
       gtrgm_compress: {
         Args: { "": unknown }
         Returns: unknown
@@ -1276,6 +1293,26 @@ export type Database = {
       mask_email: {
         Args: { email: string }
         Returns: string
+      }
+      secure_vet_search: {
+        Args: { search_term: string }
+        Returns: {
+          address: string
+          created_at: string
+          email: string | null
+          hours: Json | null
+          id: string
+          latitude: number | null
+          longitude: number | null
+          name: string
+          osm_place_id: string | null
+          osm_type: string | null
+          phone: string | null
+          services: string[] | null
+          updated_at: string
+          verified: boolean | null
+          website: string | null
+        }[]
       }
       set_limit: {
         Args: { "": number }
