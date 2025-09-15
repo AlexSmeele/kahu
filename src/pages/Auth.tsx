@@ -7,7 +7,8 @@ import { Separator } from '@/components/ui/separator';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
-import { Heart, Mail, Lock, User } from 'lucide-react';
+import { Heart, Mail, Lock, User, TestTube } from 'lucide-react';
+import { MockDogOnboarding } from '@/components/onboarding/MockDogOnboarding';
 
 export default function Auth() {
   const [isSignUp, setIsSignUp] = useState(false);
@@ -15,6 +16,7 @@ export default function Auth() {
   const [password, setPassword] = useState('');
   const [displayName, setDisplayName] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showMockFlow, setShowMockFlow] = useState(false);
   
   const { signUp, signIn, user } = useAuth();
   const { toast } = useToast();
@@ -188,6 +190,19 @@ export default function Auth() {
     }
   };
 
+  const handleMockFlowComplete = () => {
+    toast({
+      title: "Mock flow completed! 🎉",
+      description: "You've successfully reviewed the onboarding journey. No data was saved.",
+    });
+    setShowMockFlow(false);
+  };
+
+  // Show mock flow if requested
+  if (showMockFlow) {
+    return <MockDogOnboarding onComplete={handleMockFlowComplete} />;
+  }
+
   return (
     <div className="h-full bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex items-center justify-center p-4">
       <Card className="w-full max-w-md border-0 shadow-[var(--shadow-large)]">
@@ -334,6 +349,28 @@ export default function Auth() {
           </form>
 
           <div className="mt-6 space-y-4">
+            {/* Mock Flow Button */}
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <Separator className="w-full" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-background px-2 text-muted-foreground">
+                  For testing
+                </span>
+              </div>
+            </div>
+
+            <Button
+              type="button"
+              variant="outline"
+              className="w-full border-dashed border-primary/30 text-primary hover:bg-primary/5"
+              onClick={() => setShowMockFlow(true)}
+            >
+              <TestTube className="w-4 h-4 mr-2" />
+              New User Mock Flow
+            </Button>
+
             <div className="text-center">
               <button
                 type="button"
