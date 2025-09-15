@@ -40,6 +40,11 @@ export function DogSwitcher({ selectedDogId, onDogChange, showAddButton = false,
     );
   }
 
+  // Hide switcher if there's only one dog (unless showing add button)
+  if (dogs.length === 1 && !showAddButton) {
+    return null;
+  }
+
   const selectedDog = dogs.find(dog => dog.id === selectedDogId) || dogs[0];
   const totalItems = dogs.length + (showAddButton ? 1 : 0);
 

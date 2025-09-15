@@ -89,20 +89,20 @@ export function DogProfileModal({ isOpen, onClose, dog, mode }: DogProfileModalP
       // Update existing dog photo
       const result = await updateDogPhoto(dog.id, originalFile, croppedBlob, cropData);
       if (result) {
-        // Update current image data for future edits
-        const originalData = await getDogOriginalImageData(result.avatar_url!);
-        if (originalData) {
-          setCurrentImageData({
-            url: originalData.originalUrl,
-            cropData: originalData.cropData
-          });
-        }
+        // Update current image data for immediate preview
+        setCurrentImageData({
+          url: URL.createObjectURL(croppedBlob),
+          cropData: cropData
+        });
+        
+        // Also update the dog object for consistency
+        Object.assign(dog, { avatar_url: result.avatar_url });
       }
     } else {
       // For new dogs, we'll handle photo in the submit function
       // Store the photo data temporarily
       setCurrentImageData({
-        url: URL.createObjectURL(originalFile),
+        url: URL.createObjectURL(croppedBlob),
         cropData: cropData
       });
       
@@ -185,7 +185,7 @@ export function DogProfileModal({ isOpen, onClose, dog, mode }: DogProfileModalP
               <Label className="text-sm font-medium text-foreground">Photo</Label>
               <div className="flex items-center gap-4">
                 <Avatar className="w-16 h-16">
-                  <AvatarImage src={dog?.avatar_url || currentImageData?.url || ''} />
+                  <AvatarImage src={currentImageData?.url || dog?.avatar_url || ''} />
                   <AvatarFallback>
                     {formData.name.charAt(0)?.toUpperCase() || 'D'}
                   </AvatarFallback>
