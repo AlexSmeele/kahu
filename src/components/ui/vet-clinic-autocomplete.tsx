@@ -6,6 +6,8 @@ import { Label } from '@/components/ui/label';
 import { Card } from '@/components/ui/card';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/contexts/AuthContext';
+import { useProfile } from '@/hooks/useProfile';
 import { cn } from '@/lib/utils';
 
 interface VetClinic {
@@ -53,6 +55,10 @@ export function VetClinicAutocomplete({
 
   const searchTimeoutRef = useRef<NodeJS.Timeout>();
   const containerRef = useRef<HTMLDivElement>(null);
+  
+  // Get user profile for country filtering
+  const { user } = useAuth();
+  const { profile } = useProfile();
 
   // Search for clinics
   const searchClinics = async (searchQuery: string) => {
@@ -90,7 +96,8 @@ export function VetClinicAutocomplete({
         body: { 
           query: searchQuery,
           latitude,
-          longitude
+          longitude,
+          country: profile?.country || null
         }
       });
 

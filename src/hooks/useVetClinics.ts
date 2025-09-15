@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/contexts/AuthContext';
+import { useProfile } from '@/hooks/useProfile';
 
 interface VetClinic {
   id: string;
@@ -29,6 +31,10 @@ export function useVetClinics(dogId?: string) {
   const [dogVetClinics, setDogVetClinics] = useState<DogVetClinic[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  
+  // Get user profile for country filtering
+  const { user } = useAuth();
+  const { profile } = useProfile();
 
   // Fetch vet clinics for a specific dog
   const fetchDogVetClinics = async (id: string) => {
@@ -236,7 +242,8 @@ export function useVetClinics(dogId?: string) {
         body: { 
           query,
           latitude: searchLatitude,
-          longitude: searchLongitude
+          longitude: searchLongitude,
+          country: profile?.country || null
         }
       });
 

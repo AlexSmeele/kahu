@@ -146,9 +146,9 @@ serve(async (req) => {
   }
 
   try {
-    const { query, latitude, longitude, radius = 50 } = await req.json();
+    const { query, latitude, longitude, radius = 50, country } = await req.json();
     
-    console.log('Searching vet clinics:', { query, latitude, longitude, radius });
+    console.log('Searching vet clinics:', { query, latitude, longitude, radius, country });
     
     if (!query || query.trim().length < 1) {
       return new Response(
@@ -179,11 +179,17 @@ serve(async (req) => {
 
     // Search existing database with improved similarity search
     console.log('Searching existing clinics in database');
-    const { data: existingClinics, error: dbError } = await supabase
+    let dbQuery = supabase
       .from('vet_clinics')
       .select('*')
-      .or(`name.ilike.%${query}%,address.ilike.%${query}%`)
-      .limit(10);
+      .or(`name.ilike.%${query}%,address.ilike.%${query}%`);
+    
+    // Filter by country if provided
+    if (country) {
+      dbQuery = dbQuery.ilike('address', `%${country}%`);
+    }
+    
+    const { data: existingClinics, error: dbError } = await dbQuery.limit(10);
 
     if (dbError) {
       console.error('Database error:', dbError);
@@ -227,8 +233,12 @@ serve(async (req) => {
         let searchResults = [];
         
         if (latitude && longitude) {
-          // First try: Location-based search with user's query
-          const localSearchTerms = `${query} veterinary`.trim();
+          // First try: Location-based search with user's query and country
+          let localSearchTerms = `${query} veterinary`;
+          if (country) {
+            localSearchTerms += ` ${country}`;
+          }
+          
           const localUrl = nominatimUrl + `&q=${encodeURIComponent(localSearchTerms)}&` +
             `lat=${latitude}&lon=${longitude}&radius=10000`; // 10km radius first
           
@@ -269,7 +279,10 @@ serve(async (req) => {
           }
         } else {
           // Text-based search with broader terms (no location)
-          const searchTerms = `${query} veterinary animal hospital vet clinic animal care`.trim();
+          let searchTerms = `${query} veterinary animal hospital vet clinic animal care`;
+          if (country) {
+            searchTerms += ` ${country}`;
+          }
           nominatimUrl += `&q=${encodeURIComponent(searchTerms)}`;
         }
 
@@ -358,6 +371,14 @@ serve(async (req) => {
               type.includes('clinic');
 
             return hasVetKeyword || hasAnimalCareTags || (isPotentialAnimalFacility && hasVetKeyword);
+          })
+          .filter((place: any) => {
+            // If country is specified, filter results to only include that country
+            if (country) {
+              const address = place.display_name.toLowerCase();
+              return address.includes(country.toLowerCase());
+            }
+            return true;
           })
           .slice(0, 10)
           .map((place: any) => {
