@@ -111,6 +111,57 @@ export type Database = {
           },
         ]
       }
+      dog_breeds: {
+        Row: {
+          breed: string
+          coat: string | null
+          common_health_issues: Json | null
+          created_at: string
+          exercise_needs: string | null
+          grooming: string | null
+          id: string
+          life_span_years: string | null
+          origin: string | null
+          registries: Json | null
+          temperament: Json | null
+          trainability: string | null
+          updated_at: string
+          weight_kg: Json | null
+        }
+        Insert: {
+          breed: string
+          coat?: string | null
+          common_health_issues?: Json | null
+          created_at?: string
+          exercise_needs?: string | null
+          grooming?: string | null
+          id?: string
+          life_span_years?: string | null
+          origin?: string | null
+          registries?: Json | null
+          temperament?: Json | null
+          trainability?: string | null
+          updated_at?: string
+          weight_kg?: Json | null
+        }
+        Update: {
+          breed?: string
+          coat?: string | null
+          common_health_issues?: Json | null
+          created_at?: string
+          exercise_needs?: string | null
+          grooming?: string | null
+          id?: string
+          life_span_years?: string | null
+          origin?: string | null
+          registries?: Json | null
+          temperament?: Json | null
+          trainability?: string | null
+          updated_at?: string
+          weight_kg?: Json | null
+        }
+        Relationships: []
+      }
       dog_tricks: {
         Row: {
           created_at: string
