@@ -359,17 +359,6 @@ serve(async (req) => {
 
             return hasVetKeyword || hasAnimalCareTags || (isPotentialAnimalFacility && hasVetKeyword);
           })
-
-            // Check for general categories that might contain animal facilities
-            const isPotentialAnimalFacility = 
-              (placeClass === 'amenity' && (category === 'amenity' || category === 'shop')) ||
-              (placeClass === 'shop' && category === 'shop') ||
-              (placeClass === 'healthcare' && category === 'healthcare') ||
-              type.includes('hospital') ||
-              type.includes('clinic');
-
-            return hasVetKeyword || hasAnimalCareTags || (isPotentialAnimalFacility && hasVetKeyword);
-          })
           .slice(0, 10)
           .map((place: any) => {
             const tags = place.extratags || {};
