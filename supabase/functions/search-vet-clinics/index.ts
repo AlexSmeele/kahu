@@ -239,7 +239,7 @@ serve(async (req) => {
               phone: tags.phone || tags['contact:phone'],
               email: tags.email || tags['contact:email'],
               website: tags.website || tags['contact:website'],
-              services: this.extractServices(tags),
+              services: extractServices(tags),
               verified: false
             };
           });
