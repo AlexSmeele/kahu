@@ -189,7 +189,15 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
   if (step === 1) {
     return (
       <div className="h-full bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex items-center justify-center p-4 animate-fade-in">
-        <Card className="w-full max-w-md border-0 shadow-[var(--shadow-large)] animate-scale-in">
+        <Card className="w-full max-w-md border-0 shadow-[var(--shadow-large)] animate-scale-in relative">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={onComplete}
+            className="absolute top-4 right-4 z-10 h-8 w-8 p-0 hover:bg-muted"
+          >
+            <X className="w-4 h-4" />
+          </Button>
           <CardHeader className="text-center pb-6">
             <div className="mx-auto w-16 h-16 bg-gradient-to-r from-primary to-primary-hover rounded-full flex items-center justify-center mb-4">
               <Heart className="w-8 h-8 text-primary-foreground" />
@@ -278,7 +286,15 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
   if (step === 2) {
     return (
       <div className="h-full bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex items-center justify-center p-4 animate-fade-in">
-        <Card className="w-full max-w-md border-0 shadow-[var(--shadow-large)] animate-scale-in max-h-[calc(100vh-2rem)] overflow-y-auto">
+        <Card className="w-full max-w-md border-0 shadow-[var(--shadow-large)] animate-scale-in max-h-[calc(100vh-2rem)] overflow-y-auto relative">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={onComplete}
+            className="absolute top-4 right-4 z-10 h-8 w-8 p-0 hover:bg-muted"
+          >
+            <X className="w-4 h-4" />
+          </Button>
           <CardHeader className="text-center pb-6">
             <CardTitle className="text-xl font-bold text-foreground">
               {currentDogIndex === 0 ? "Tell us about your dog 🎾" : `Dog #${currentDogIndex + 1} 🐾`}
@@ -490,7 +506,15 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
   if (step === 3) {
     return (
       <div className="h-full bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex items-center justify-center p-4 animate-fade-in">
-        <Card className="w-full max-w-md border-0 shadow-[var(--shadow-large)] animate-scale-in">
+        <Card className="w-full max-w-md border-0 shadow-[var(--shadow-large)] animate-scale-in relative">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={onComplete}
+            className="absolute top-4 right-4 z-10 h-8 w-8 p-0 hover:bg-muted"
+          >
+            <X className="w-4 h-4" />
+          </Button>
           <CardHeader className="text-center pb-6">
             <div className="mx-auto w-16 h-16 bg-gradient-to-r from-accent to-accent-hover rounded-full flex items-center justify-center mb-4">
               <Plus className="w-8 h-8 text-accent-foreground" />
@@ -562,7 +586,15 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
   if (step === 4) {
     return (
       <div className="h-screen bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex items-center justify-center p-4 animate-fade-in">
-        <Card className="w-full max-w-md border-0 shadow-[var(--shadow-large)] animate-scale-in h-[calc(100vh-2rem)] flex flex-col">
+        <Card className="w-full max-w-md border-0 shadow-[var(--shadow-large)] animate-scale-in h-[calc(100vh-2rem)] flex flex-col relative">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={onComplete}
+            className="absolute top-4 right-4 z-10 h-8 w-8 p-0 hover:bg-muted"
+          >
+            <X className="w-4 h-4" />
+          </Button>
           <CardHeader className="text-center pb-4 flex-shrink-0">
             <div className="mx-auto w-16 h-16 bg-gradient-to-r from-success to-success/80 rounded-full flex items-center justify-center mb-4">
               <Heart className="w-8 h-8 text-success-foreground" />
