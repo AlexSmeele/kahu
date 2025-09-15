@@ -1081,55 +1081,25 @@ export type Database = {
       }
     }
     Views: {
-      family_invitations_secure: {
-        Row: {
-          accepted_at: string | null
-          created_at: string | null
-          email: string | null
-          expires_at: string | null
-          family_id: string | null
-          id: string | null
-          invited_by: string | null
-          role: string | null
-          token: string | null
-        }
-        Insert: {
-          accepted_at?: string | null
-          created_at?: string | null
-          email?: never
-          expires_at?: string | null
-          family_id?: string | null
-          id?: string | null
-          invited_by?: string | null
-          role?: string | null
-          token?: string | null
-        }
-        Update: {
-          accepted_at?: string | null
-          created_at?: string | null
-          email?: never
-          expires_at?: string | null
-          family_id?: string | null
-          id?: string | null
-          invited_by?: string | null
-          role?: string | null
-          token?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "family_invitations_family_id_fkey"
-            columns: ["family_id"]
-            isOneToOne: false
-            referencedRelation: "families"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
+      [_ in never]: never
     }
     Functions: {
       generate_invitation_token: {
         Args: Record<PropertyKey, never>
         Returns: string
+      }
+      get_user_invitations: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          accepted_at: string
+          created_at: string
+          email: string
+          expires_at: string
+          family_id: string
+          id: string
+          invited_by: string
+          role: string
+        }[]
       }
       gtrgm_compress: {
         Args: { "": unknown }
