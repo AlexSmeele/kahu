@@ -229,9 +229,10 @@ export function CountryAutocomplete({
   // Filter countries based on input
   useEffect(() => {
     if (inputValue.trim()) {
-      const filtered = COUNTRIES.filter(country =>
-        country.name.toLowerCase().includes(inputValue.toLowerCase())
-      ).slice(0, 10);
+      const filtered = COUNTRIES.filter(country => {
+        const words = country.name.toLowerCase().split(' ');
+        return words.some(word => word.startsWith(inputValue.toLowerCase()));
+      }).slice(0, 10);
       setFilteredCountries(filtered);
     } else {
       setFilteredCountries([]);
