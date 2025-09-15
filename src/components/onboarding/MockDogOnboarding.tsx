@@ -89,7 +89,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
       case 1:
         return formData.name.trim() !== '';
       case 2:
-        return formData.breed_id !== null; // Breed is required
+        return formData.breed_id !== null && formData.gender !== '' && formData.birthday !== null;
       case 3:
         return true; // Summary step
       default:
@@ -186,7 +186,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
 
             <div className="space-y-2">
               <label className="block text-sm font-medium text-foreground">
-                Gender
+                Gender *
               </label>
               <Select 
                 value={formData.gender} 
@@ -207,7 +207,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <label className="block text-sm font-medium text-foreground">
-                  Birthday
+                  Birthday *
                 </label>
                 <Popover>
                   <PopoverTrigger asChild>
@@ -289,7 +289,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
 
               <div className="space-y-2">
                 <label className="block text-sm font-medium text-foreground">
-                  Weight (kg)
+                  Weight (kg) (optional)
                 </label>
                 <Input
                   type="number"
