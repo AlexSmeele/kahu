@@ -29,6 +29,19 @@ const VET_KEYWORDS = [
   'animal emergency', 'pet emergency', 'animal medicine', 'veterinary practice'
 ];
 
+// Helper function to calculate distance between two points
+function calculateDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
+  const R = 6371; // Radius of the Earth in km
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLon = (lon2 - lon1) * Math.PI / 180;
+  const a = 
+    Math.sin(dLat/2) * Math.sin(dLat/2) +
+    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
+    Math.sin(dLon/2) * Math.sin(dLon/2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  return R * c; // Distance in km
+}
+
 // Helper function to extract services from OSM tags
 function extractServices(tags: any): string[] {
   const services = [];
@@ -171,33 +184,75 @@ serve(async (req) => {
           `namedetails=1`;
 
         // Use different query strategies based on location availability
+        let searchResults = [];
+        
         if (latitude && longitude) {
-          // Location-based search - search around user's location
-          nominatimUrl += `&q=${encodeURIComponent('veterinary')}&` +
-            `lat=${latitude}&lon=${longitude}&radius=25000`; // 25km radius
+          // First try: Location-based search with user's query
+          const localSearchTerms = `${query} veterinary`.trim();
+          const localUrl = nominatimUrl + `&q=${encodeURIComponent(localSearchTerms)}&` +
+            `lat=${latitude}&lon=${longitude}&radius=10000`; // 10km radius first
+          
+          console.log('Trying local search:', localUrl);
+          
+          try {
+            const localResponse = await fetch(localUrl, {
+              headers: { 'User-Agent': 'PetCare App/1.0 (https://petcare.app)' }
+            });
+            
+            if (localResponse.ok) {
+              searchResults = await localResponse.json();
+              console.log('Local search results:', searchResults.length);
+            }
+          } catch (e) {
+            console.log('Local search failed, will try broader search');
+          }
+          
+          // If no local results with specific query, try broader local search
+          if (searchResults.length === 0) {
+            const broadLocalUrl = nominatimUrl + `&q=${encodeURIComponent('veterinary')}&` +
+              `lat=${latitude}&lon=${longitude}&radius=25000`; // 25km radius
+              
+            console.log('Trying broader local search:', broadLocalUrl);
+            
+            try {
+              const broadResponse = await fetch(broadLocalUrl, {
+                headers: { 'User-Agent': 'PetCare App/1.0 (https://petcare.app)' }
+              });
+              
+              if (broadResponse.ok) {
+                searchResults = await broadResponse.json();
+                console.log('Broad local search results:', searchResults.length);
+              }
+            } catch (e) {
+              console.log('Broad local search also failed');
+            }
+          }
         } else {
-          // Text-based search with broader terms
+          // Text-based search with broader terms (no location)
           const searchTerms = `${query} veterinary animal hospital vet clinic`.trim();
           nominatimUrl += `&q=${encodeURIComponent(searchTerms)}`;
         }
 
-        console.log('Querying Nominatim:', nominatimUrl);
+        console.log('Querying Nominatim:', searchResults.length > 0 ? 'Using search results' : nominatimUrl);
         
-        const response = await fetch(nominatimUrl, {
-          headers: {
-            'User-Agent': 'PetCare App/1.0 (https://petcare.app)'
+        // If we don't have search results yet (no location provided), fetch them
+        if (searchResults.length === 0) {
+          const response = await fetch(nominatimUrl, {
+            headers: {
+              'User-Agent': 'PetCare App/1.0 (https://petcare.app)'
+            }
+          });
+
+          if (!response.ok) {
+            throw new Error(`Nominatim API error: ${response.status}`);
           }
-        });
 
-        if (!response.ok) {
-          throw new Error(`Nominatim API error: ${response.status}`);
+          searchResults = await response.json();
         }
-
-        const osmResults = await response.json();
-        console.log('OSM Results found:', osmResults.length);
+        console.log('OSM Results found:', searchResults.length);
 
         // Filter and process OSM results with improved criteria
-        const processedResults = osmResults
+        const processedResults = searchResults
           .filter((place: any) => {
             const name = (place.display_name || '').toLowerCase();
             const tags = place.extratags || {};
@@ -261,15 +316,33 @@ serve(async (req) => {
       }
     }
 
-    // Sort by relevance (existing clinics first, then by name similarity)
+    // Sort by relevance and distance
     results.sort((a, b) => {
       const aIsExisting = !a.id?.startsWith('osm_');
       const bIsExisting = !b.id?.startsWith('osm_');
       
+      // Prioritize existing clinics first
       if (aIsExisting !== bIsExisting) {
         return aIsExisting ? -1 : 1;
       }
       
+      // If location is available, sort by distance
+      if (latitude && longitude && a.latitude && a.longitude && b.latitude && b.longitude) {
+        const aDistance = calculateDistance(latitude, longitude, a.latitude, a.longitude);
+        const bDistance = calculateDistance(latitude, longitude, b.latitude, b.longitude);
+        
+        // Prioritize results within 15km, then by distance
+        const aIsLocal = aDistance <= 15;
+        const bIsLocal = bDistance <= 15;
+        
+        if (aIsLocal !== bIsLocal) {
+          return aIsLocal ? -1 : 1;
+        }
+        
+        return aDistance - bDistance;
+      }
+      
+      // Fallback to name comparison
       return a.name.localeCompare(b.name);
     });
 
