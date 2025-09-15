@@ -1,13 +1,10 @@
 project_id = "bhkqdxhyceflfesxrztm"
 
 [functions.ai-trainer]
-verify_jwt = false
-
-[functions.test-openai]
-verify_jwt = false
+verify_jwt = true
 
 [functions.search-vet-clinics]
-verify_jwt = false
+verify_jwt = true
 
 [functions.upsert-vet-clinic]
 verify_jwt = true
