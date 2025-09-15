@@ -10,6 +10,7 @@ import { Heart, ArrowRight, ArrowLeft, CalendarIcon, Upload, X, Check, Plus } fr
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { BreedAutocomplete } from '@/components/ui/breed-autocomplete';
+import { CountryAutocomplete } from '@/components/ui/country-autocomplete';
 import heroImage from '@/assets/hero-image.jpg';
 
 interface MockDogOnboardingProps {
@@ -233,28 +234,12 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
 
             <div className="space-y-2">
               <Label htmlFor="country">Country *</Label>
-              <Select 
-                value={userData.country} 
-                onValueChange={(value) => setUserData(prev => ({ ...prev, country: value }))}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select your country" />
-                </SelectTrigger>
-                <SelectContent className="z-[60] bg-popover max-h-60 overflow-y-auto">
-                  <SelectItem value="AU">Australia</SelectItem>
-                  <SelectItem value="CA">Canada</SelectItem>
-                  <SelectItem value="FR">France</SelectItem>
-                  <SelectItem value="DE">Germany</SelectItem>
-                  <SelectItem value="IN">India</SelectItem>
-                  <SelectItem value="IE">Ireland</SelectItem>
-                  <SelectItem value="IT">Italy</SelectItem>
-                  <SelectItem value="JP">Japan</SelectItem>
-                  <SelectItem value="NZ">New Zealand</SelectItem>
-                  <SelectItem value="ES">Spain</SelectItem>
-                  <SelectItem value="GB">United Kingdom</SelectItem>
-                  <SelectItem value="US">United States</SelectItem>
-                </SelectContent>
-              </Select>
+              <CountryAutocomplete
+                value={userData.country}
+                onChange={(country) => setUserData(prev => ({ ...prev, country }))}
+                placeholder="Start typing your country..."
+                required
+              />
             </div>
 
             <Button
