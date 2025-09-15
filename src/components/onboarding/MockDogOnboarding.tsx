@@ -141,6 +141,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
             </div>
 
             <Button 
+              size="touch"
               onClick={() => setStep(2)}
               disabled={!isStepValid()}
               className="w-full btn-primary hover-scale"
@@ -340,6 +341,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
             <div className="flex gap-3 pt-4">
               <Button 
                 variant="outline"
+                size="touch"
                 onClick={() => setStep(1)}
                 className="flex-1 btn-touch"
               >
@@ -347,6 +349,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
                 Back
               </Button>
               <Button 
+                size="touch"
                 onClick={() => setStep(3)}
                 disabled={!isStepValid()}
                 className="flex-1 btn-primary hover-scale"
@@ -400,6 +403,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
             <div className="flex gap-3 pt-4">
               <Button 
                 variant="outline"
+                size="touch"
                 onClick={() => setStep(2)}
                 className="flex-1 btn-touch"
                 disabled={loading}
@@ -408,6 +412,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
                 Back
               </Button>
               <Button 
+                size="touch"
                 onClick={handleSubmit}
                 className="flex-1 btn-primary hover-scale"
                 disabled={loading}

@@ -5,6 +5,7 @@ import { Plus } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAllBreeds } from '@/hooks/useBreedInfo';
 import { supabase } from '@/integrations/supabase/client';
+import localBreedsData from '@/data/dog_breeds_encyclopedia.json';
 
 interface BreedAutocompleteProps {
   value: string;
@@ -31,6 +32,8 @@ export function BreedAutocomplete({
   const inputRef = useRef<HTMLInputElement>(null);
 
   const { data: allBreeds = [] } = useAllBreeds();
+  const localBreedNames: string[] = (localBreedsData as any[]).map((b: any) => b.breed).filter(Boolean);
+  const availableBreeds = allBreeds && allBreeds.length > 0 ? allBreeds : localBreedNames;
 
   // Update input value when prop value changes
   useEffect(() => {
@@ -39,15 +42,12 @@ export function BreedAutocomplete({
 
   // Filter breeds based on input
   useEffect(() => {
-    if (inputValue.trim() && allBreeds.length > 0) {
-      const filtered = allBreeds.filter((breed: string) =>
+    if (inputValue.trim() && availableBreeds.length > 0) {
+      const filtered = availableBreeds.filter((breed: string) =>
         breed.toLowerCase().includes(inputValue.toLowerCase())
-      ).slice(0, 10); // Limit to 10 suggestions for performance
-      
+      ).slice(0, 10);
       setFilteredBreeds(filtered);
-      
-      // Show custom option if input doesn't exactly match any breed
-      const exactMatch = allBreeds.some((breed: string) => 
+      const exactMatch = availableBreeds.some((breed: string) => 
         breed.toLowerCase() === inputValue.toLowerCase()
       );
       setShowCustomOption(!exactMatch && inputValue.length > 2);
@@ -55,7 +55,7 @@ export function BreedAutocomplete({
       setFilteredBreeds([]);
       setShowCustomOption(false);
     }
-  }, [inputValue, allBreeds]);
+  }, [inputValue, availableBreeds]);
 
   const handleInputChange = (newValue: string) => {
     setInputValue(newValue);
@@ -70,22 +70,37 @@ export function BreedAutocomplete({
     onChange(breed);
     setOpen(false);
     
-    // Find breed ID for the selected breed
+    // Find breed ID for the selected breed (fallback to null if not available)
     if (onBreedIdChange) {
-      const { data } = await supabase
-        .from('dog_breeds')
-        .select('id')
-        .ilike('breed', breed)
-        .maybeSingle();
-      
-      onBreedIdChange(data?.id || null);
+      try {
+        const { data, error } = await supabase
+          .from('dog_breeds')
+          .select('id')
+          .ilike('breed', breed)
+          .maybeSingle();
+        if (error) throw error;
+        onBreedIdChange(data?.id || null);
+      } catch (e) {
+        onBreedIdChange(null);
+      }
     }
   };
 
   const handleCustomBreed = async () => {
     setLoading(true);
     try {
-      // Insert custom breed into database
+      // If not authenticated, fallback to local selection without saving
+      const { data: sessionData } = await supabase.auth.getSession();
+      const isAuthed = Boolean(sessionData?.session);
+
+      if (!isAuthed) {
+        onChange(inputValue.trim());
+        if (onBreedIdChange) onBreedIdChange(null);
+        setOpen(false);
+        return;
+      }
+
+      // Insert custom breed into database when authenticated
       const { data, error } = await supabase
         .from('dog_breeds')
         .insert({ breed: inputValue.trim() })
@@ -101,6 +116,10 @@ export function BreedAutocomplete({
       setOpen(false);
     } catch (error) {
       console.error('Error saving custom breed:', error);
+      // Graceful fallback
+      onChange(inputValue.trim());
+      if (onBreedIdChange) onBreedIdChange(null);
+      setOpen(false);
     } finally {
       setLoading(false);
     }
