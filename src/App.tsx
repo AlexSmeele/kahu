@@ -13,6 +13,8 @@ import AcceptInvitation from "./pages/AcceptInvitation";
 import NotFound from "./pages/NotFound";
 import { PasswordGate } from "@/components/PasswordGate";
 import { logger } from "@/lib/logger";
+import { useEffect } from "react";
+import { seedDogBreedsIfNeeded } from "@/lib/seedBreeds";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -33,7 +35,13 @@ const queryClient = new QueryClient({
 
 const App = () => {
   logger.info('App: Application initializing');
-  
+
+  useEffect(() => {
+    seedDogBreedsIfNeeded().catch((err) => {
+      logger.error('Dog breeds auto-seed failed', err);
+    });
+  }, []);
+
   return (
   <QueryClientProvider client={queryClient}>
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem>

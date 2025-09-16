@@ -11,3 +11,6 @@ verify_jwt = true
 
 [functions.admin-seed-vet-clinics]
 verify_jwt = true
+
+[functions.seed-breed-encyclopedia]
+verify_jwt = false
