@@ -406,6 +406,13 @@ export type Database = {
             referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "fk_dogs_breed_id"
+            columns: ["breed_id"]
+            isOneToOne: false
+            referencedRelation: "dog_breeds"
+            referencedColumns: ["id"]
+          },
         ]
       }
       families: {
