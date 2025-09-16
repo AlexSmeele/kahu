@@ -150,6 +150,100 @@ export type Database = {
         }
         Relationships: []
       }
+      custom_breeds: {
+        Row: {
+          created_at: string
+          description: string | null
+          exercise_needs_override: string | null
+          grooming_needs_override: string | null
+          health_notes_override: string | null
+          id: string
+          name: string
+          notes: string | null
+          parent_breed_1_id: string | null
+          parent_breed_1_percentage: number | null
+          parent_breed_2_id: string | null
+          parent_breed_2_percentage: number | null
+          parent_breed_3_id: string | null
+          parent_breed_3_percentage: number | null
+          temperament_override: string | null
+          updated_at: string
+          user_id: string
+          weight_female_adult_max_override: number | null
+          weight_female_adult_min_override: number | null
+          weight_male_adult_max_override: number | null
+          weight_male_adult_min_override: number | null
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          exercise_needs_override?: string | null
+          grooming_needs_override?: string | null
+          health_notes_override?: string | null
+          id?: string
+          name: string
+          notes?: string | null
+          parent_breed_1_id?: string | null
+          parent_breed_1_percentage?: number | null
+          parent_breed_2_id?: string | null
+          parent_breed_2_percentage?: number | null
+          parent_breed_3_id?: string | null
+          parent_breed_3_percentage?: number | null
+          temperament_override?: string | null
+          updated_at?: string
+          user_id: string
+          weight_female_adult_max_override?: number | null
+          weight_female_adult_min_override?: number | null
+          weight_male_adult_max_override?: number | null
+          weight_male_adult_min_override?: number | null
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          exercise_needs_override?: string | null
+          grooming_needs_override?: string | null
+          health_notes_override?: string | null
+          id?: string
+          name?: string
+          notes?: string | null
+          parent_breed_1_id?: string | null
+          parent_breed_1_percentage?: number | null
+          parent_breed_2_id?: string | null
+          parent_breed_2_percentage?: number | null
+          parent_breed_3_id?: string | null
+          parent_breed_3_percentage?: number | null
+          temperament_override?: string | null
+          updated_at?: string
+          user_id?: string
+          weight_female_adult_max_override?: number | null
+          weight_female_adult_min_override?: number | null
+          weight_male_adult_max_override?: number | null
+          weight_male_adult_min_override?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "custom_breeds_parent_breed_1_id_fkey"
+            columns: ["parent_breed_1_id"]
+            isOneToOne: false
+            referencedRelation: "dog_breeds"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "custom_breeds_parent_breed_2_id_fkey"
+            columns: ["parent_breed_2_id"]
+            isOneToOne: false
+            referencedRelation: "dog_breeds"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "custom_breeds_parent_breed_3_id_fkey"
+            columns: ["parent_breed_3_id"]
+            isOneToOne: false
+            referencedRelation: "dog_breeds"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       dog_breeds: {
         Row: {
           also_known_as: string | null
@@ -354,6 +448,7 @@ export type Database = {
           birthday: string | null
           breed_id: string
           created_at: string
+          custom_breed_id: string | null
           family_id: string | null
           gender: string | null
           id: string
@@ -368,6 +463,7 @@ export type Database = {
           birthday?: string | null
           breed_id: string
           created_at?: string
+          custom_breed_id?: string | null
           family_id?: string | null
           gender?: string | null
           id?: string
@@ -382,6 +478,7 @@ export type Database = {
           birthday?: string | null
           breed_id?: string
           created_at?: string
+          custom_breed_id?: string | null
           family_id?: string | null
           gender?: string | null
           id?: string
@@ -392,6 +489,13 @@ export type Database = {
           weight?: number | null
         }
         Relationships: [
+          {
+            foreignKeyName: "dogs_custom_breed_id_fkey"
+            columns: ["custom_breed_id"]
+            isOneToOne: false
+            referencedRelation: "custom_breeds"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "dogs_family_id_fkey"
             columns: ["family_id"]

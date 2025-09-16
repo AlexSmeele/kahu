@@ -9,6 +9,7 @@ export interface Dog {
   id: string;
   name: string;
   breed_id?: string;
+  custom_breed_id?: string; // Reference to custom_breeds table
   breed?: { breed: string }; // For joined queries
   birthday?: string;
   weight?: number;
@@ -105,7 +106,8 @@ export function useDogs() {
         .from('dogs')
         .select(`
           *,
-          dog_breeds!breed_id(breed)
+          dog_breeds!breed_id(breed),
+          custom_breeds!custom_breed_id(name)
         `)
         .order('sort_order', { ascending: true })
         .order('created_at', { ascending: false });
@@ -226,8 +228,30 @@ export function useDogs() {
     }
   };
 
-  const addDog = async (dogData: Omit<Dog, 'id' | 'created_at' | 'updated_at' | 'breed'> & { breed_id: string }, photo?: File) => {
+  const addDog = async (dogData: Omit<Dog, 'id' | 'created_at' | 'updated_at' | 'breed'> & { 
+    breed_id?: string;
+    custom_breed_id?: string;
+  }, photo?: File) => {
     if (!user) return null;
+
+    // Ensure only one breed type is specified
+    if (!dogData.breed_id && !dogData.custom_breed_id) {
+      toast({
+        title: 'Error adding dog',
+        description: 'Please select a breed',
+        variant: 'destructive',
+      });
+      return null;
+    }
+
+    if (dogData.breed_id && dogData.custom_breed_id) {
+      toast({
+        title: 'Error adding dog',
+        description: 'Cannot specify both standard and custom breed',
+        variant: 'destructive',
+      });
+      return null;
+    }
 
     logger.info('useDogs: Adding new dog', { dogName: dogData.name, userId: user.id });
     try {
@@ -242,16 +266,31 @@ export function useDogs() {
         ? (existingDogs[0].sort_order || 0) + 1 
         : 1;
 
+      // Prepare the insert data with proper typing
+      const insertData: any = {
+        name: dogData.name,
+        user_id: user.id,
+        sort_order: nextSortOrder,
+        birthday: dogData.birthday,
+        weight: dogData.weight,
+        gender: dogData.gender,
+        avatar_url: dogData.avatar_url,
+      };
+
+      // Add the breed reference
+      if (dogData.breed_id) {
+        insertData.breed_id = dogData.breed_id;
+      } else if (dogData.custom_breed_id) {
+        insertData.custom_breed_id = dogData.custom_breed_id;
+      }
+
       const { data, error } = await supabase
         .from('dogs')
-        .insert({
-          ...dogData,
-          user_id: user.id,
-          sort_order: nextSortOrder,
-        })
+        .insert(insertData)
         .select(`
           *,
-          dog_breeds!breed_id(breed)
+          dog_breeds!breed_id(breed),
+          custom_breeds!custom_breed_id(name)
         `)
         .single();
 

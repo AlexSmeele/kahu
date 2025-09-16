@@ -8,7 +8,7 @@ import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { EditPhotoModal, CropData } from '@/components/modals/EditPhotoModal';
 import { useDogs } from '@/hooks/useDogs';
 import { useToast } from '@/hooks/use-toast';
-import { BreedAutocomplete } from '@/components/ui/breed-autocomplete';
+import { EnhancedBreedSelector } from '@/components/ui/enhanced-breed-selector';
 import { Camera } from 'lucide-react';
 
 interface DogProfileModalProps {
@@ -25,7 +25,9 @@ export function DogProfileModal({ isOpen, onClose, dog, mode }: DogProfileModalP
   const [formData, setFormData] = useState({
     name: '',
     breed: '',
-    breed_id: null as string | null,
+    breedId: '',
+    customBreedId: '',
+    isCustomBreed: false,
     gender: '' as 'male' | 'female' | '',
     birthday: '',
     weight: '',
@@ -44,8 +46,10 @@ export function DogProfileModal({ isOpen, onClose, dog, mode }: DogProfileModalP
       if (mode === 'edit' && dog) {
         setFormData({
           name: dog.name,
-          breed: dog.dog_breeds?.breed || '',
-          breed_id: dog.breed_id || null,
+          breed: dog.dog_breeds?.breed || dog.breed?.breed || '',
+          breedId: dog.breed_id || '',
+          customBreedId: dog.custom_breed_id || '',
+          isCustomBreed: !!dog.custom_breed_id,
           gender: dog.gender || '',
           birthday: dog.birthday || '',
           weight: dog.weight ? dog.weight.toString() : '',
@@ -61,7 +65,9 @@ export function DogProfileModal({ isOpen, onClose, dog, mode }: DogProfileModalP
         setFormData({
           name: '',
           breed: '',
-          breed_id: null,
+          breedId: '',
+          customBreedId: '',
+          isCustomBreed: false,
           gender: '',
           birthday: '',
           weight: '',
@@ -79,34 +85,25 @@ export function DogProfileModal({ isOpen, onClose, dog, mode }: DogProfileModalP
         cropData: originalData.cropData
       });
     } else {
-      // Fallback to current avatar if no original data
       setCurrentImageData({ url: avatarUrl });
     }
   };
 
   const handlePhotoSave = async (originalFile: File, croppedBlob: Blob, cropData: CropData) => {
     if (mode === 'edit' && dog) {
-      // Update existing dog photo
       const result = await updateDogPhoto(dog.id, originalFile, croppedBlob, cropData);
       if (result) {
-        // Update current image data for immediate preview
         setCurrentImageData({
           url: URL.createObjectURL(croppedBlob),
           cropData: cropData
         });
-        
-        // Also update the dog object for consistency
         Object.assign(dog, { avatar_url: result.avatar_url });
       }
     } else {
-      // For new dogs, we'll handle photo in the submit function
-      // Store the photo data temporarily
       setCurrentImageData({
         url: URL.createObjectURL(croppedBlob),
         cropData: cropData
       });
-      
-      // Store for later use in handleSubmit
       (window as any).tempDogPhoto = { originalFile, croppedBlob, cropData };
     }
   };
@@ -123,7 +120,7 @@ export function DogProfileModal({ isOpen, onClose, dog, mode }: DogProfileModalP
       return;
     }
 
-    if (!formData.breed_id) {
+    if (!formData.breedId && !formData.customBreedId) {
       toast({
         title: 'Breed required',
         description: 'Please select your dog\'s breed',
@@ -137,7 +134,8 @@ export function DogProfileModal({ isOpen, onClose, dog, mode }: DogProfileModalP
     try {
       const dogData = {
         name: formData.name.trim(),
-        breed_id: formData.breed_id,
+        breed_id: formData.isCustomBreed ? undefined : formData.breedId,
+        custom_breed_id: formData.isCustomBreed ? formData.customBreedId : undefined,
         gender: formData.gender || undefined,
         birthday: formData.birthday || undefined,
         weight: formData.weight ? parseFloat(formData.weight) : undefined,
@@ -146,7 +144,6 @@ export function DogProfileModal({ isOpen, onClose, dog, mode }: DogProfileModalP
       if (mode === 'add') {
         const newDog = await addDog(dogData);
         
-        // Handle photo upload for new dogs
         if (newDog && (window as any).tempDogPhoto) {
           const { originalFile, croppedBlob, cropData } = (window as any).tempDogPhoto;
           await updateDogPhoto(newDog.id, originalFile, croppedBlob, cropData);
@@ -205,7 +202,6 @@ export function DogProfileModal({ isOpen, onClose, dog, mode }: DogProfileModalP
               </div>
             </div>
 
-            {/* Name */}
             <div className="space-y-2">
               <Label htmlFor="name">Name *</Label>
               <Input
@@ -217,19 +213,24 @@ export function DogProfileModal({ isOpen, onClose, dog, mode }: DogProfileModalP
               />
             </div>
 
-            {/* Breed */}
             <div className="space-y-2">
-              <Label htmlFor="breed">Breed *</Label>
-              <BreedAutocomplete
-                value={formData.breed}
-                onChange={(breed) => setFormData(prev => ({ ...prev, breed }))}
-                onBreedIdChange={(breedId) => setFormData(prev => ({ ...prev, breed_id: breedId }))}
-                placeholder="e.g., Golden Retriever, Mixed"
-                required
+              <Label>Breed *</Label>
+              <EnhancedBreedSelector
+                value={formData.breedId || formData.customBreedId}
+                onBreedSelect={(breedId, isCustom, breedName) => {
+                  setFormData(prev => ({
+                    ...prev,
+                    breed: breedName,
+                    breedId: isCustom ? '' : breedId,
+                    customBreedId: isCustom ? breedId : '',
+                    isCustomBreed: isCustom,
+                  }));
+                }}
+                placeholder="Select or create a breed..."
+                className="w-full"
               />
             </div>
 
-            {/* Gender */}
             <div className="space-y-2">
               <Label>Gender</Label>
               <Select 
@@ -249,7 +250,6 @@ export function DogProfileModal({ isOpen, onClose, dog, mode }: DogProfileModalP
             </div>
 
             <div className="grid grid-cols-2 gap-4">
-              {/* Birthday */}
               <div className="space-y-2">
                 <Label htmlFor="birthday">Birthday</Label>
                 <Input
@@ -261,7 +261,6 @@ export function DogProfileModal({ isOpen, onClose, dog, mode }: DogProfileModalP
                 />
               </div>
 
-              {/* Weight */}
               <div className="space-y-2">
                 <Label htmlFor="weight">Weight (kg)</Label>
                 <Input
@@ -289,7 +288,6 @@ export function DogProfileModal({ isOpen, onClose, dog, mode }: DogProfileModalP
         </DialogContent>
       </Dialog>
 
-      {/* Edit Photo Modal */}
       <EditPhotoModal
         isOpen={showPhotoModal}
         onClose={() => setShowPhotoModal(false)}
