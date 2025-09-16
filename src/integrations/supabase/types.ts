@@ -155,12 +155,16 @@ export type Database = {
           also_known_as: string | null
           breed: string
           coat: string | null
-          common_health_issues: Json | null
+          common_health_issues: string | null
           created_at: string
           enrichment_confidence: string | null
           exercise_level: string | null
           exercise_needs: string | null
           fci_group: number | null
+          female_weight_6m_kg_max: number | null
+          female_weight_6m_kg_min: number | null
+          female_weight_adult_kg_max: number | null
+          female_weight_adult_kg_min: number | null
           grooming: string | null
           grooming_needs: string | null
           health_notes_confidence: string | null
@@ -168,25 +172,32 @@ export type Database = {
           health_watchlist_tags: string | null
           id: string
           life_span_years: string | null
+          male_weight_6m_kg_max: number | null
+          male_weight_6m_kg_min: number | null
+          male_weight_adult_kg_max: number | null
+          male_weight_adult_kg_min: number | null
           origin: string | null
           recognized_by: string | null
           recommended_screenings: string | null
-          temperament: Json | null
+          temperament: string | null
           trainability: string | null
           updated_at: string
-          weight_kg: Json | null
           weights_confidence: string | null
         }
         Insert: {
           also_known_as?: string | null
           breed: string
           coat?: string | null
-          common_health_issues?: Json | null
+          common_health_issues?: string | null
           created_at?: string
           enrichment_confidence?: string | null
           exercise_level?: string | null
           exercise_needs?: string | null
           fci_group?: number | null
+          female_weight_6m_kg_max?: number | null
+          female_weight_6m_kg_min?: number | null
+          female_weight_adult_kg_max?: number | null
+          female_weight_adult_kg_min?: number | null
           grooming?: string | null
           grooming_needs?: string | null
           health_notes_confidence?: string | null
@@ -194,25 +205,32 @@ export type Database = {
           health_watchlist_tags?: string | null
           id?: string
           life_span_years?: string | null
+          male_weight_6m_kg_max?: number | null
+          male_weight_6m_kg_min?: number | null
+          male_weight_adult_kg_max?: number | null
+          male_weight_adult_kg_min?: number | null
           origin?: string | null
           recognized_by?: string | null
           recommended_screenings?: string | null
-          temperament?: Json | null
+          temperament?: string | null
           trainability?: string | null
           updated_at?: string
-          weight_kg?: Json | null
           weights_confidence?: string | null
         }
         Update: {
           also_known_as?: string | null
           breed?: string
           coat?: string | null
-          common_health_issues?: Json | null
+          common_health_issues?: string | null
           created_at?: string
           enrichment_confidence?: string | null
           exercise_level?: string | null
           exercise_needs?: string | null
           fci_group?: number | null
+          female_weight_6m_kg_max?: number | null
+          female_weight_6m_kg_min?: number | null
+          female_weight_adult_kg_max?: number | null
+          female_weight_adult_kg_min?: number | null
           grooming?: string | null
           grooming_needs?: string | null
           health_notes_confidence?: string | null
@@ -220,13 +238,16 @@ export type Database = {
           health_watchlist_tags?: string | null
           id?: string
           life_span_years?: string | null
+          male_weight_6m_kg_max?: number | null
+          male_weight_6m_kg_min?: number | null
+          male_weight_adult_kg_max?: number | null
+          male_weight_adult_kg_min?: number | null
           origin?: string | null
           recognized_by?: string | null
           recommended_screenings?: string | null
-          temperament?: Json | null
+          temperament?: string | null
           trainability?: string | null
           updated_at?: string
-          weight_kg?: Json | null
           weights_confidence?: string | null
         }
         Relationships: []
