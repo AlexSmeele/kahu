@@ -5,8 +5,14 @@ import { Plus } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAllBreeds } from '@/hooks/useBreedInfo';
 import { supabase } from '@/integrations/supabase/client';
-import localBreedsData from '@/data/dog_breeds_encyclopedia.json';
-const LOCAL_BREED_NAMES: string[] = (localBreedsData as any[]).map((b: any) => b.breed).filter(Boolean);
+
+// Fallback breed names for when API data is not available
+const LOCAL_BREED_NAMES: string[] = [
+  'Golden Retriever', 'Labrador Retriever', 'German Shepherd', 'Bulldog', 'Poodle',
+  'Beagle', 'Rottweiler', 'Yorkshire Terrier', 'Dachshund', 'Siberian Husky',
+  'Mixed Breed', 'Chihuahua', 'Shih Tzu', 'Boston Terrier', 'Pomeranian',
+  'Australian Shepherd', 'Border Collie', 'Cocker Spaniel', 'Boxer', 'French Bulldog'
+];
 
 interface BreedAutocompleteProps {
   value: string;

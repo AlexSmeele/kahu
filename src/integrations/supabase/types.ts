@@ -152,52 +152,82 @@ export type Database = {
       }
       dog_breeds: {
         Row: {
+          also_known_as: string | null
           breed: string
           coat: string | null
           common_health_issues: Json | null
           created_at: string
+          enrichment_confidence: string | null
+          exercise_level: string | null
           exercise_needs: string | null
+          fci_group: number | null
           grooming: string | null
+          grooming_needs: string | null
+          health_notes_confidence: string | null
+          health_prevalence_notes: string | null
+          health_watchlist_tags: string | null
           id: string
           life_span_years: string | null
           origin: string | null
-          registries: Json | null
+          recognized_by: string | null
+          recommended_screenings: string | null
           temperament: Json | null
           trainability: string | null
           updated_at: string
           weight_kg: Json | null
+          weights_confidence: string | null
         }
         Insert: {
+          also_known_as?: string | null
           breed: string
           coat?: string | null
           common_health_issues?: Json | null
           created_at?: string
+          enrichment_confidence?: string | null
+          exercise_level?: string | null
           exercise_needs?: string | null
+          fci_group?: number | null
           grooming?: string | null
+          grooming_needs?: string | null
+          health_notes_confidence?: string | null
+          health_prevalence_notes?: string | null
+          health_watchlist_tags?: string | null
           id?: string
           life_span_years?: string | null
           origin?: string | null
-          registries?: Json | null
+          recognized_by?: string | null
+          recommended_screenings?: string | null
           temperament?: Json | null
           trainability?: string | null
           updated_at?: string
           weight_kg?: Json | null
+          weights_confidence?: string | null
         }
         Update: {
+          also_known_as?: string | null
           breed?: string
           coat?: string | null
           common_health_issues?: Json | null
           created_at?: string
+          enrichment_confidence?: string | null
+          exercise_level?: string | null
           exercise_needs?: string | null
+          fci_group?: number | null
           grooming?: string | null
+          grooming_needs?: string | null
+          health_notes_confidence?: string | null
+          health_prevalence_notes?: string | null
+          health_watchlist_tags?: string | null
           id?: string
           life_span_years?: string | null
           origin?: string | null
-          registries?: Json | null
+          recognized_by?: string | null
+          recommended_screenings?: string | null
           temperament?: Json | null
           trainability?: string | null
           updated_at?: string
           weight_kg?: Json | null
+          weights_confidence?: string | null
         }
         Relationships: []
       }
@@ -341,13 +371,6 @@ export type Database = {
           weight?: number | null
         }
         Relationships: [
-          {
-            foreignKeyName: "dogs_breed_id_fkey"
-            columns: ["breed_id"]
-            isOneToOne: false
-            referencedRelation: "dog_breeds"
-            referencedColumns: ["id"]
-          },
           {
             foreignKeyName: "dogs_family_id_fkey"
             columns: ["family_id"]

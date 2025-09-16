@@ -6,13 +6,6 @@ export interface BreedInfo {
   breed: string;
   origin: string | null;
   life_span_years: string | null;
-  temperament: string[] | null;
-  exercise_needs: string | null;
-  trainability: string | null;
-  coat: string | null;
-  grooming: string | null;
-  common_health_issues: string[] | null;
-  registries: string[] | null;
   weight_kg: {
     male: {
       adult_min: number | null;
@@ -27,6 +20,23 @@ export interface BreedInfo {
       m6_max: number | null;
     };
   } | null;
+  temperament: string[] | null;
+  exercise_needs: string | null;
+  trainability: string | null;
+  coat: string | null;
+  grooming: string | null;
+  common_health_issues: string[] | null;
+  recognized_by: string | null;
+  also_known_as: string | null;
+  fci_group: number | null;
+  exercise_level: string | null;
+  grooming_needs: string | null;
+  enrichment_confidence: string | null;
+  weights_confidence: string | null;
+  health_notes_confidence: string | null;
+  recommended_screenings: string | null;
+  health_watchlist_tags: string | null;
+  health_prevalence_notes: string | null;
   created_at: string;
   updated_at: string;
 }
