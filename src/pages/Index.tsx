@@ -11,6 +11,7 @@ import { DogOnboarding } from "@/components/onboarding/DogOnboarding";
 import { useDogs } from "@/hooks/useDogs";
 import { useAuth } from "@/contexts/AuthContext";
 import { logger } from "@/lib/logger";
+import { SeedBreedsButton } from "@/components/admin/SeedBreedsButton";
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState<TabType>('trainer');
@@ -72,6 +73,9 @@ const Index = () => {
       <>
         {/* Main Content - Takes remaining space above nav */}
         <main className="content-frame">
+          <div className="p-4">
+            <SeedBreedsButton />
+          </div>
           {renderActiveScreen()}
         </main>
 
