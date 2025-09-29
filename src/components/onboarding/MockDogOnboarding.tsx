@@ -203,14 +203,14 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
               <Heart className="w-8 h-8 text-primary-foreground" />
             </div>
             <CardTitle className="text-2xl font-bold text-foreground">
-              Welcome to Kahu! 🐕
+              Welcome to Kahu!
             </CardTitle>
             <p className="text-muted-foreground">
               Let's start with your information
             </p>
             <div className="mt-4 px-3 py-2 bg-amber-100 dark:bg-amber-900/30 rounded-lg">
               <p className="text-sm text-amber-800 dark:text-amber-200 font-medium">
-                🔍 MOCK MODE - No data will be saved
+                MOCK MODE - No data will be saved
               </p>
             </div>
           </CardHeader>
@@ -297,14 +297,14 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
           </Button>
           <CardHeader className="text-center pb-6">
             <CardTitle className="text-xl font-bold text-foreground">
-              {currentDogIndex === 0 ? "Tell us about your dog 🎾" : `Dog #${currentDogIndex + 1} 🐾`}
+              {currentDogIndex === 0 ? "Tell us about your dog" : `Dog #${currentDogIndex + 1}`}
             </CardTitle>
             <p className="text-muted-foreground">
               All fields are required for personalized recommendations
             </p>
             <div className="mt-2 px-3 py-2 bg-amber-100 dark:bg-amber-900/30 rounded-lg">
               <p className="text-sm text-amber-800 dark:text-amber-200 font-medium">
-                🔍 MOCK MODE - No data will be saved
+                MOCK MODE - No data will be saved
               </p>
             </div>
           </CardHeader>
@@ -520,14 +520,14 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
               <Plus className="w-8 h-8 text-accent-foreground" />
             </div>
             <CardTitle className="text-2xl font-bold text-foreground">
-              Any more furry friends? 🐕‍🦺
+              Any more furry friends?
             </CardTitle>
             <p className="text-muted-foreground">
               You can add multiple dogs to your profile
             </p>
             <div className="mt-4 px-3 py-2 bg-amber-100 dark:bg-amber-900/30 rounded-lg">
               <p className="text-sm text-amber-800 dark:text-amber-200 font-medium">
-                🔍 MOCK MODE - No data will be saved
+                MOCK MODE - No data will be saved
               </p>
             </div>
           </CardHeader>
@@ -600,14 +600,14 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
               <Heart className="w-8 h-8 text-success-foreground" />
             </div>
             <CardTitle className="text-2xl font-bold text-foreground">
-              Welcome, {userData.firstName}! 🎉
+              Welcome, {userData.firstName}!
             </CardTitle>
             <p className="text-muted-foreground">
               Ready to start your training journey together?
             </p>
             <div className="mt-4 px-3 py-2 bg-amber-100 dark:bg-amber-900/30 rounded-lg">
               <p className="text-sm text-amber-800 dark:text-amber-200 font-medium">
-                🔍 MOCK MODE - No data will be saved
+                MOCK MODE - No data will be saved
               </p>
             </div>
           </CardHeader>

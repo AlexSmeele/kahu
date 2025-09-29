@@ -112,7 +112,7 @@ function TrickCard({ trick, dogTrick, onStart, onPractice, onTrickClick, isLocke
           <div className="flex justify-between text-xs mb-1">
             <span className="text-muted-foreground">Progress</span>
             <span className={isCompleted ? 'text-green-600 font-bold' : 'text-blue-600'}>
-              {isCompleted ? 'Mastered! 🎉' : `${Math.round(progress)}%`}
+              {isCompleted ? "Mastered!" : `${Math.round(progress)}%`}
             </span>
           </div>
           <Progress value={progress} className="h-2" />
@@ -134,7 +134,7 @@ function TrickCard({ trick, dogTrick, onStart, onPractice, onTrickClick, isLocke
             }}
             className="w-full bg-gradient-to-r from-primary to-primary-hover hover:from-primary-hover hover:to-primary text-white font-bold py-3 rounded-xl"
           >
-            Start Learning ✨
+            Start Learning
           </Button>
         )}
         
@@ -257,7 +257,7 @@ export function TricksScreen({ selectedDogId, onDogChange }: TricksScreenProps) 
               Trick Academy
             </h1>
             <p className="text-sm text-muted-foreground">
-              Master skills step by step 🎯
+              Master skills step by step
             </p>
           </div>
           <div className="text-right">

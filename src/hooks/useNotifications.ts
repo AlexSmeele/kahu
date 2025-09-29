@@ -183,12 +183,12 @@ export function useNotifications() {
 
   const getTypeIcon = (type: string) => {
     switch (type) {
-      case 'feeding_reminder': return '🍽️';
-      case 'vaccination_due': return '💉';
-      case 'vet_appointment': return '🏥';
-      case 'weight_check': return '⚖️';
-      case 'general': return '📱';
-      default: return '📱';
+      case 'feeding_reminder': return 'Feeding';
+      case 'vaccination_due': return 'Vaccination';
+      case 'vet_appointment': return 'Vet';
+      case 'weight_check': return 'Weight';
+      case 'general': return 'General';
+      default: return 'General';
     }
   };
 

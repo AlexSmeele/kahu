@@ -86,11 +86,11 @@ export function ActivityMonitor({ dogId }: ActivityMonitorProps) {
 
   const getActivityIcon = (type: string) => {
     switch (type) {
-      case 'walk': return '🚶';
-      case 'run': return '🏃';
-      case 'play': return '🎾';
-      case 'training': return '🎓';
-      default: return '💤';
+      case 'walk': return 'Walk';
+      case 'run': return 'Run';
+      case 'play': return 'Play';
+      case 'training': return 'Training';
+      default: return 'Rest';
     }
   };
 
@@ -150,11 +150,11 @@ export function ActivityMonitor({ dogId }: ActivityMonitorProps) {
                     <SelectValue placeholder="Select activity" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="walk">🚶 Walk</SelectItem>
-                    <SelectItem value="run">🏃 Run</SelectItem>
-                    <SelectItem value="play">🎾 Play</SelectItem>
-                    <SelectItem value="training">🎓 Training</SelectItem>
-                    <SelectItem value="rest">💤 Rest</SelectItem>
+                    <SelectItem value="walk">Walk</SelectItem>
+                    <SelectItem value="run">Run</SelectItem>
+                    <SelectItem value="play">Play</SelectItem>
+                    <SelectItem value="training">Training</SelectItem>
+                    <SelectItem value="rest">Rest</SelectItem>
                   </SelectContent>
                 </Select>
               </div>

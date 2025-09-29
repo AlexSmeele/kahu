@@ -298,7 +298,7 @@ export function TrickDetailModal({
                     <div className="flex items-center justify-between mb-3">
                       <span className="text-sm text-muted-foreground">Progress</span>
                       <span className={`font-bold ${isCompleted ? 'text-green-600' : 'text-blue-600'}`}>
-                        {isCompleted ? 'Mastered! 🎉' : `${Math.round(progress)}%`}
+                        {isCompleted ? "Mastered!" : `${Math.round(progress)}%`}
                       </span>
                     </div>
                     <Progress value={progress} className="h-3 mb-3" />
@@ -337,7 +337,7 @@ export function TrickDetailModal({
               {/* Training Tips */}
               <div className="bg-blue-50 dark:bg-blue-950/20 p-4 rounded-xl">
                 <h4 className="font-semibold text-blue-900 dark:text-blue-100 mb-2">
-                  💡 Training Tips
+                  Training Tips
                 </h4>
                 <ul className="text-sm text-blue-800 dark:text-blue-200 space-y-1">
                   <li>• Keep training sessions short (5-10 minutes)</li>
@@ -351,7 +351,7 @@ export function TrickDetailModal({
               {/* Common Problems */}
               <div className="bg-amber-50 dark:bg-amber-950/20 p-4 rounded-xl">
                 <h4 className="font-semibold text-amber-900 dark:text-amber-100 mb-2">
-                  ⚠️ Common Problems
+                  Common Problems
                 </h4>
                 <ul className="text-sm text-amber-800 dark:text-amber-200 space-y-1">
                   {enhancedData.problems.map((problem, index) => (
@@ -388,7 +388,7 @@ export function TrickDetailModal({
                       <div className="flex justify-between items-center">
                         <span className="text-sm text-muted-foreground">Completion</span>
                         <span className={`font-bold ${isCompleted ? 'text-green-600' : 'text-blue-600'}`}>
-                          {isCompleted ? 'Mastered! 🎉' : `${Math.round(progress)}%`}
+                          {isCompleted ? "Mastered!" : `${Math.round(progress)}%`}
                         </span>
                       </div>
                       <Progress value={progress} className="h-3" />

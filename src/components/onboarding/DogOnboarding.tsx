@@ -94,7 +94,7 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
               <Heart className="w-8 h-8 text-primary-foreground" />
             </div>
             <CardTitle className="text-2xl font-bold text-foreground">
-              Welcome to Kahu! 🐕
+              Welcome to Kahu!
             </CardTitle>
             <p className="text-muted-foreground">
               Let's start by getting to know your furry friend
@@ -144,7 +144,7 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
         <Card className="w-full max-w-md border-0 shadow-[var(--shadow-large)] animate-scale-in max-h-[calc(100vh-2rem)] overflow-y-auto">
           <CardHeader className="text-center pb-6">
             <CardTitle className="text-xl font-bold text-foreground">
-              Tell us about {formData.name} 🎾
+              Tell us about {formData.name}
             </CardTitle>
             <p className="text-muted-foreground">
               Breed is required to provide personalized recommendations
@@ -350,7 +350,7 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
               <Heart className="w-8 h-8 text-success-foreground" />
             </div>
             <CardTitle className="text-2xl font-bold text-foreground">
-              Welcome, {formData.name}! 🎉
+              Welcome, {formData.name}!
             </CardTitle>
             <p className="text-muted-foreground">
               Ready to start your training journey together?

@@ -127,7 +127,7 @@ export function MealPlanVariantSelector({ dogId, nutritionPlan, onSave, trigger 
                               </ul>
                             </div>
                             <div>
-                              <h4 className="text-sm font-medium text-amber-600 mb-1">⚠ Considerations</h4>
+                              <h4 className="text-sm font-medium text-amber-600 mb-1">Considerations</h4>
                               <ul className="text-xs text-muted-foreground space-y-1">
                                 {variant.cons.map((con, index) => (
                                   <li key={index}>• {con}</li>

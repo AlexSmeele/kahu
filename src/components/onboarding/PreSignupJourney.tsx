@@ -187,7 +187,7 @@ export function PreSignupJourney({ onComplete }: PreSignupJourneyProps) {
               <Heart className="w-8 h-8 text-primary-foreground" />
             </div>
             <CardTitle className="text-2xl font-bold text-foreground">
-              Welcome to Kahu! 🐕
+              Welcome to Kahu!
             </CardTitle>
             <p className="text-muted-foreground">
               Your journey to better dog care starts here
@@ -258,7 +258,7 @@ export function PreSignupJourney({ onComplete }: PreSignupJourneyProps) {
           
           <CardHeader className="text-center pb-6">
             <CardTitle className="text-xl font-bold text-foreground">
-              What would you like to do? 🎯
+              What would you like to do?
             </CardTitle>
             <p className="text-muted-foreground">
               Choose your learning path
@@ -465,7 +465,7 @@ export function PreSignupJourney({ onComplete }: PreSignupJourneyProps) {
           
           <CardHeader className="text-center pb-6">
             <CardTitle className="text-xl font-bold text-foreground">
-              Your Breed Matches! 🎉
+              Your Breed Matches!
             </CardTitle>
             <p className="text-muted-foreground">
               Based on your answers, these breeds might be perfect for you
@@ -486,7 +486,7 @@ export function PreSignupJourney({ onComplete }: PreSignupJourneyProps) {
 
             <div className="p-4 bg-blue-50 dark:bg-blue-950/30 rounded-lg">
               <p className="text-sm text-blue-800 dark:text-blue-200">
-                💡 Remember: Every dog is unique! These are just starting points. 
+                Remember: Every dog is unique! These are just starting points. 
                 Meet dogs in person and consider adopting from local shelters.
               </p>
             </div>

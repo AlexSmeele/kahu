@@ -192,7 +192,7 @@ export default function Auth() {
 
   const handleMockFlowComplete = () => {
     toast({
-      title: "Mock flow completed! 🎉",
+      title: "Mock flow completed!",
       description: "You've successfully reviewed the onboarding journey. No data was saved.",
     });
     setShowMockFlow(false);

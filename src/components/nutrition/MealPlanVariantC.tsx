@@ -318,7 +318,7 @@ export function MealPlanVariantC({ dogId, nutritionPlan, onSave, trigger }: Meal
                               </div>
                               
                               {meal.reminder_enabled && (
-                                <div className="text-xs text-muted-foreground mt-1">🔔</div>
+                                <div className="text-xs text-muted-foreground mt-1">Reminder</div>
                               )}
                             </div>
                           ) : (

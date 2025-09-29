@@ -202,7 +202,7 @@ export function useTricks(dogId?: string) {
         });
 
       toast({
-        title: 'Great work! 🎯',
+        title: "Great work!",
         description: `Practice session ${newTotalSessions} completed for ${trickData.name}`,
       });
 
@@ -258,7 +258,7 @@ export function useTricks(dogId?: string) {
 
       if (status === 'mastered') {
         toast({
-          title: '🎉 Trick mastered!',
+          title: "Trick mastered!",
           description: `${updatedDogTrick.trick.name} has been mastered!`,
         });
       } else if (status === 'learning') {

@@ -132,7 +132,7 @@ export function TrainerScreenVariant1({ onTypingChange }: { onTypingChange?: (ty
                 />
               </div>
               <h2 className="text-xl font-semibold text-foreground mb-2">
-                Hello! I'm here to help with {currentDog?.name || 'your dog'} 🐕
+                Hello! I'm here to help with {currentDog?.name || "your dog"}
               </h2>
               <p className="text-muted-foreground text-sm">
                 What would you like to work on today?
