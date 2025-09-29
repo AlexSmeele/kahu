@@ -8,7 +8,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { Heart, Mail, Lock, User, TestTube } from 'lucide-react';
-import { MockDogOnboarding } from '@/components/onboarding/MockDogOnboarding';
+import { PreSignupJourney } from '@/components/onboarding/PreSignupJourney';
 
 export default function Auth() {
   const [isSignUp, setIsSignUp] = useState(false);
@@ -200,7 +200,7 @@ export default function Auth() {
 
   // Show mock flow if requested
   if (showMockFlow) {
-    return <MockDogOnboarding onComplete={handleMockFlowComplete} />;
+    return <PreSignupJourney onComplete={handleMockFlowComplete} />;
   }
 
   return (
