@@ -643,6 +643,99 @@ export type Database = {
           },
         ]
       }
+      grooming_schedules: {
+        Row: {
+          created_at: string
+          dog_id: string
+          frequency_days: number
+          grooming_type: string
+          id: string
+          last_completed_at: string | null
+          next_due_date: string | null
+          notes: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          dog_id: string
+          frequency_days?: number
+          grooming_type: string
+          id?: string
+          last_completed_at?: string | null
+          next_due_date?: string | null
+          notes?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          dog_id?: string
+          frequency_days?: number
+          grooming_type?: string
+          id?: string
+          last_completed_at?: string | null
+          next_due_date?: string | null
+          notes?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      health_checkups: {
+        Row: {
+          behavior_changes: string | null
+          body_condition_score: number | null
+          checkup_date: string
+          created_at: string
+          dog_id: string
+          ear_condition: string | null
+          ear_notes: string | null
+          eye_condition: string | null
+          eye_notes: string | null
+          id: string
+          lump_notes: string | null
+          lumps_found: boolean | null
+          overall_notes: string | null
+          skin_condition: string | null
+          skin_notes: string | null
+          updated_at: string
+        }
+        Insert: {
+          behavior_changes?: string | null
+          body_condition_score?: number | null
+          checkup_date?: string
+          created_at?: string
+          dog_id: string
+          ear_condition?: string | null
+          ear_notes?: string | null
+          eye_condition?: string | null
+          eye_notes?: string | null
+          id?: string
+          lump_notes?: string | null
+          lumps_found?: boolean | null
+          overall_notes?: string | null
+          skin_condition?: string | null
+          skin_notes?: string | null
+          updated_at?: string
+        }
+        Update: {
+          behavior_changes?: string | null
+          body_condition_score?: number | null
+          checkup_date?: string
+          created_at?: string
+          dog_id?: string
+          ear_condition?: string | null
+          ear_notes?: string | null
+          eye_condition?: string | null
+          eye_notes?: string | null
+          id?: string
+          lump_notes?: string | null
+          lumps_found?: boolean | null
+          overall_notes?: string | null
+          skin_condition?: string | null
+          skin_notes?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       health_records: {
         Row: {
           created_at: string

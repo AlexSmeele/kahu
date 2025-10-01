@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Heart, TrendingUp, Calendar, AlertCircle, Plus, Award, Scale, Syringe } from "lucide-react";
+import { Heart, TrendingUp, Calendar, AlertCircle, Plus, Award, Scale, Syringe, Scissors, Stethoscope } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useDogs } from "@/hooks/useDogs";
@@ -10,6 +10,10 @@ import { VaccineScheduleModal } from "@/components/health/VaccineScheduleModal";
 import { VetVisitsModal } from "@/components/health/VetVisitsModal";
 import { HealthNotesModal } from "@/components/health/HealthNotesModal";
 import { ActivityMonitor } from "@/components/health/ActivityMonitor";
+import { GroomingScheduleModal } from "@/components/health/GroomingScheduleModal";
+import { HealthCheckupModal } from "@/components/health/HealthCheckupModal";
+import { PreventiveCareCard } from "@/components/health/PreventiveCareCard";
+import { HealthQuickActions } from "@/components/health/HealthQuickActions";
 
 
 
@@ -40,9 +44,11 @@ export function HealthScreen({ selectedDogId, onDogChange }: HealthScreenProps) 
   const [isVaccineModalOpen, setIsVaccineModalOpen] = useState(false);
   const [isVetVisitsModalOpen, setIsVetVisitsModalOpen] = useState(false);
   const [isHealthNotesModalOpen, setIsHealthNotesModalOpen] = useState(false);
+  const [isGroomingModalOpen, setIsGroomingModalOpen] = useState(false);
+  const [isCheckupModalOpen, setIsCheckupModalOpen] = useState(false);
   const { dogs } = useDogs();
   const currentDog = dogs.find(dog => dog.id === selectedDogId) || dogs[0];
-  const { weightData, recentRecords, healthRecordsCount, vaccinationData, vetVisitData, loading, refetch } = useHealthData(selectedDogId);
+  const { weightData, recentRecords, healthRecordsCount, vaccinationData, vetVisitData, groomingData, checkupData, loading, refetch } = useHealthData(selectedDogId);
 
   const handleRecordClick = (record: any) => {
     switch (record.type) {
@@ -92,104 +98,60 @@ export function HealthScreen({ selectedDogId, onDogChange }: HealthScreenProps) 
         />
       </header>
 
-      {/* Health Summary Cards */}
-      <div className="p-4 space-y-4">
-        {/* Weight and Vaccination Cards - Side by Side */}
-        <div className="grid grid-cols-2 gap-4">
-          {/* Weight Card */}
-          <div 
-            className="card-soft p-4 bg-gradient-to-r from-success/5 to-success/10 cursor-pointer hover:shadow-md transition-shadow" 
-            onClick={() => setIsWeightTrackerOpen(true)}
-          >
-            <div className="flex items-center justify-between mb-2">
-              <h3 className="font-medium text-foreground flex items-center gap-2">
-                <TrendingUp className="w-4 h-4 text-success" />
-                Weight
-              </h3>
-              {weightData && weightData.change !== 0 && (
-                <Badge 
-                  variant="outline" 
-                  className={`text-xs border-opacity-30 ${
-                    weightData.change > 0 
-                      ? 'text-success border-success' 
-                      : 'text-destructive border-destructive'
-                  }`}
-                >
-                  {weightData.trend}
-                </Badge>
-              )}
-            </div>
-            <div className="flex items-end gap-1 mb-1">
-              <span className="text-xl font-bold text-foreground">
-                {weightData?.current ? `${weightData.current}` : 'No data'}
-              </span>
-              {weightData?.current && <span className="text-xs text-muted-foreground mb-0.5">kg</span>}
-            </div>
-            <p className="text-xs text-muted-foreground">
-              {weightData?.lastUpdated || 'No weight records yet'}
-            </p>
-          </div>
-
-          {/* Vaccinations Card */}
-          <div 
-            className="card-soft p-4 bg-gradient-to-r from-warning/5 to-warning/10 cursor-pointer hover:shadow-md transition-shadow"
-            onClick={() => setIsVaccineModalOpen(true)}
-          >
-            <div className="flex items-center justify-between mb-2">
-              <h3 className="font-medium text-foreground flex items-center gap-2">
-                <Calendar className="w-4 h-4 text-warning" />
-                Vaccines
-              </h3>
-              {vaccinationData && vaccinationData.dueCount > 0 && (
-                <Badge variant="outline" className="text-warning border-warning/30 text-xs">
-                  {vaccinationData.dueCount} due
-                </Badge>
-              )}
-            </div>
-            <p className="text-xs text-muted-foreground mb-2">
-              {vaccinationData?.upcoming || 'No vaccination records'}
-            </p>
-            <Button 
-              variant="outline" 
-              size="sm" 
-              className="text-xs h-7"
-              onClick={(e) => {
-                e.stopPropagation();
-                setIsVaccineModalOpen(true);
-              }}
-            >
-              View Schedule
-            </Button>
-          </div>
-        </div>
-
-        {/* Quick Stats */}
-        <div className="grid grid-cols-2 gap-4">
-          <div 
-            className="card-soft p-3 text-center cursor-pointer hover:shadow-md transition-shadow"
-            onClick={() => setIsVetVisitsModalOpen(true)}
-          >
-            <div className="text-lg font-bold text-primary">{vetVisitData?.lastVisit || 'No visits'}</div>
-            <div className="text-xs text-muted-foreground">Last Vet Visit</div>
-          </div>
-          <div 
-            className="card-soft p-3 text-center cursor-pointer hover:shadow-md transition-shadow"
-            onClick={() => setIsHealthNotesModalOpen(true)}
-          >
-            <div className="text-lg font-bold text-accent">{healthRecordsCount}</div>
-            <div className="text-xs text-muted-foreground">Health Notes</div>
-          </div>
-        </div>
-
-      </div>
-
-      {/* Scrollable Content - Activity Monitor and Recent Records */}
+      {/* Scrollable Content */}
       <div className="flex-1 overflow-y-auto">
-        <div className="p-4">
-          {/* Activity Monitor */}
+        <div className="p-4 space-y-6">
+          {/* Activity Monitor - Prime Placement */}
           <div className="mb-6">
-            <h3 className="text-lg font-semibold mb-4">Daily Activity</h3>
+            <h3 className="text-lg font-semibold mb-3">Daily Activity</h3>
             <ActivityMonitor dogId={selectedDogId} />
+          </div>
+
+          {/* Quick Actions */}
+          <HealthQuickActions
+            onGroomingClick={() => setIsGroomingModalOpen(true)}
+            onCheckupClick={() => setIsCheckupModalOpen(true)}
+            onWeightClick={() => setIsWeightTrackerOpen(true)}
+            onAddRecordClick={() => setIsHealthNotesModalOpen(true)}
+          />
+
+          {/* Preventive Care Dashboard */}
+          <div>
+            <h3 className="text-lg font-semibold mb-3">Preventive Care</h3>
+            <div className="grid grid-cols-2 gap-3">
+              <PreventiveCareCard
+                icon={TrendingUp}
+                title="Weight"
+                status={weightData?.current ? `${weightData.current} kg` : "No data"}
+                statusColor={weightData?.change && weightData.change !== 0 ? (weightData.change > 0 ? "warning" : "success") : "default"}
+                description={weightData?.lastUpdated || "Track your dog's weight"}
+                onClick={() => setIsWeightTrackerOpen(true)}
+              />
+              <PreventiveCareCard
+                icon={Syringe}
+                title="Vaccinations"
+                status={vaccinationData?.dueCount ? `${vaccinationData.dueCount} due` : "Up to date"}
+                statusColor={vaccinationData?.dueCount ? "error" : "success"}
+                description={vaccinationData?.upcoming || "View schedule"}
+                onClick={() => setIsVaccineModalOpen(true)}
+              />
+              <PreventiveCareCard
+                icon={Scissors}
+                title="Grooming"
+                status={groomingData?.overdue ? `${groomingData.overdue} overdue` : (groomingData?.nextDue || "No schedule")}
+                statusColor={groomingData?.overdue ? "error" : "success"}
+                description={groomingData?.overdue ? "Tasks need attention" : "On track"}
+                onClick={() => setIsGroomingModalOpen(true)}
+              />
+              <PreventiveCareCard
+                icon={Stethoscope}
+                title="Weekly Checkup"
+                status={checkupData?.weeksSinceCheckup === 0 ? "Done this week" : checkupData?.weeksSinceCheckup === 1 ? "1 week ago" : checkupData?.weeksSinceCheckup && checkupData.weeksSinceCheckup < 999 ? `${checkupData.weeksSinceCheckup} weeks ago` : "Never done"}
+                statusColor={checkupData?.weeksSinceCheckup === 0 ? "success" : checkupData?.weeksSinceCheckup && checkupData.weeksSinceCheckup <= 1 ? "success" : checkupData?.weeksSinceCheckup && checkupData.weeksSinceCheckup <= 2 ? "warning" : "error"}
+                description={checkupData?.lastCheckup || "Perform full body check"}
+                onClick={() => setIsCheckupModalOpen(true)}
+              />
+            </div>
           </div>
 
           <h3 className="font-semibold text-foreground mb-3">Recent Records</h3>
@@ -276,8 +238,29 @@ export function HealthScreen({ selectedDogId, onDogChange }: HealthScreenProps) 
       
       <HealthNotesModal
         isOpen={isHealthNotesModalOpen}
-        onClose={() => setIsHealthNotesModalOpen(false)}
+        onClose={() => {
+          setIsHealthNotesModalOpen(false);
+          refetch();
+        }}
         dogName={currentDog?.name || 'Your dog'}
+        dogId={currentDog?.id || ''}
+      />
+
+      <GroomingScheduleModal
+        isOpen={isGroomingModalOpen}
+        onClose={() => {
+          setIsGroomingModalOpen(false);
+          refetch();
+        }}
+        dogId={currentDog?.id || ''}
+      />
+
+      <HealthCheckupModal
+        isOpen={isCheckupModalOpen}
+        onClose={() => {
+          setIsCheckupModalOpen(false);
+          refetch();
+        }}
         dogId={currentDog?.id || ''}
       />
     </div>

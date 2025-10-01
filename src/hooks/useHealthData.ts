@@ -59,12 +59,26 @@ export interface VetVisitData {
   total: number;
 }
 
+export interface GroomingData {
+  overdue: number;
+  nextDue?: string;
+  total: number;
+}
+
+export interface CheckupData {
+  lastCheckup?: string;
+  weeksSinceCheckup: number;
+  total: number;
+}
+
 export function useHealthData(dogId: string) {
   const [weightData, setWeightData] = useState<WeightData | null>(null);
   const [recentRecords, setRecentRecords] = useState<RecentRecord[]>([]);
   const [healthRecordsCount, setHealthRecordsCount] = useState(0);
   const [vaccinationData, setVaccinationData] = useState<VaccinationData | null>(null);
   const [vetVisitData, setVetVisitData] = useState<VetVisitData | null>(null);
+  const [groomingData, setGroomingData] = useState<GroomingData | null>(null);
+  const [checkupData, setCheckupData] = useState<CheckupData | null>(null);
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
 
@@ -310,6 +324,84 @@ export function useHealthData(dogId: string) {
     }
   };
 
+  const fetchGroomingData = async () => {
+    if (!dogId) return;
+
+    try {
+      const { data: schedules, error } = await supabase
+        .from('grooming_schedules')
+        .select('*')
+        .eq('dog_id', dogId);
+
+      if (error) throw error;
+
+      if (schedules && schedules.length > 0) {
+        const now = new Date();
+        let overdueCount = 0;
+        let nextDue: Date | null = null;
+
+        schedules.forEach(schedule => {
+          if (schedule.next_due_date) {
+            const dueDate = new Date(schedule.next_due_date);
+            if (dueDate < now) {
+              overdueCount++;
+            } else if (!nextDue || dueDate < nextDue) {
+              nextDue = dueDate;
+            }
+          }
+        });
+
+        setGroomingData({
+          overdue: overdueCount,
+          nextDue: nextDue ? formatDistanceToNow(nextDue, { addSuffix: true }) : undefined,
+          total: schedules.length
+        });
+      } else {
+        setGroomingData({
+          overdue: 0,
+          total: 0
+        });
+      }
+    } catch (error) {
+      console.error('Error fetching grooming data:', error);
+    }
+  };
+
+  const fetchCheckupData = async () => {
+    if (!dogId) return;
+
+    try {
+      const { data: checkups, error } = await supabase
+        .from('health_checkups')
+        .select('*')
+        .eq('dog_id', dogId)
+        .order('checkup_date', { ascending: false })
+        .limit(1);
+
+      if (error) throw error;
+
+      if (checkups && checkups.length > 0) {
+        const lastCheckup = checkups[0];
+        const lastDate = new Date(lastCheckup.checkup_date);
+        const now = new Date();
+        const weeksSince = Math.floor((now.getTime() - lastDate.getTime()) / (7 * 24 * 60 * 60 * 1000));
+
+        setCheckupData({
+          lastCheckup: formatDistanceToNow(lastDate, { addSuffix: true }),
+          weeksSinceCheckup: weeksSince,
+          total: checkups.length
+        });
+      } else {
+        setCheckupData({
+          weeksSinceCheckup: 999, // Large number to indicate never done
+          total: 0
+        });
+      }
+    } catch (error) {
+      console.error('Error fetching checkup data:', error);
+    }
+  };
+
   const fetchAllData = async () => {
     logger.info('useHealthData: Fetching all health data', { dogId });
     setLoading(true);
@@ -320,6 +412,8 @@ export function useHealthData(dogId: string) {
         fetchHealthRecordsCount(),
         fetchVaccinationData(),
         fetchVetVisitData(),
+        fetchGroomingData(),
+        fetchCheckupData(),
       ]);
       logger.info('useHealthData: Successfully fetched all health data', { dogId });
     } catch (error) {
@@ -339,6 +433,8 @@ export function useHealthData(dogId: string) {
     healthRecordsCount,
     vaccinationData,
     vetVisitData,
+    groomingData,
+    checkupData,
     loading,
     refetch: fetchAllData,
   };
