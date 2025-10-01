@@ -10,6 +10,7 @@ interface AuthContextType {
   signUp: (email: string, password: string, displayName?: string) => Promise<{ error: any }>;
   signIn: (email: string, password: string) => Promise<{ error: any }>;
   signOut: () => Promise<void>;
+  devBypass: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -90,6 +91,30 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     logger.info('AuthProvider: User signed out successfully');
   };
 
+  const devBypass = () => {
+    logger.info('AuthProvider: Development bypass activated');
+    const mockUser = {
+      id: 'dev-user-mock-id',
+      email: 'dev@example.com',
+      user_metadata: { display_name: 'Dev User' },
+      app_metadata: {},
+      aud: 'authenticated',
+      created_at: new Date().toISOString(),
+    } as User;
+    
+    const mockSession = {
+      access_token: 'mock-access-token',
+      refresh_token: 'mock-refresh-token',
+      expires_in: 3600,
+      token_type: 'bearer',
+      user: mockUser,
+    } as Session;
+    
+    setUser(mockUser);
+    setSession(mockSession);
+    setLoading(false);
+  };
+
   const value = {
     user,
     session,
@@ -97,6 +122,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     signUp,
     signIn,
     signOut,
+    devBypass,
   };
 
   return (

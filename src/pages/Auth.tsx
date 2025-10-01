@@ -18,7 +18,7 @@ export default function Auth() {
   const [loading, setLoading] = useState(false);
   const [showMockFlow, setShowMockFlow] = useState(false);
   
-  const { signUp, signIn, user } = useAuth();
+  const { signUp, signIn, user, devBypass } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
 
@@ -363,8 +363,24 @@ export default function Auth() {
 
             <Button
               type="button"
+              variant="default"
+              className="w-full bg-gradient-to-r from-primary to-primary-hover"
+              onClick={() => {
+                devBypass();
+                toast({
+                  title: "Development Mode",
+                  description: "Bypassed authentication for development testing.",
+                });
+              }}
+            >
+              <TestTube className="w-4 h-4 mr-2" />
+              Skip Auth (Dev Mode)
+            </Button>
+
+            <Button
+              type="button"
               variant="outline"
-              className="w-full border-dashed border-primary/30 text-primary hover:bg-primary/5"
+              className="w-full border-dashed border-muted-foreground/30"
               onClick={() => setShowMockFlow(true)}
             >
               <TestTube className="w-4 h-4 mr-2" />
