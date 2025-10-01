@@ -18,7 +18,7 @@ const Index = () => {
   const [isQuickActionOpen, setIsQuickActionOpen] = useState(false);
   const [isUserTyping, setIsUserTyping] = useState(false);
   const [selectedDogId, setSelectedDogId] = useState<string>('');
-  const { user } = useAuth();
+  const { user, session } = useAuth();
   const { dogs, loading } = useDogs();
 
   logger.info('Index: Component rendered', { 
@@ -37,8 +37,9 @@ const Index = () => {
     }
   }, [dogs, selectedDogId]);
 
-  // Show onboarding if user has no dogs
-  if (!loading && dogs.length === 0) {
+  // Show onboarding if user has no dogs (disabled in Dev Mode bypass)
+  const isDevSession = session?.access_token === 'mock-access-token' || user?.id === 'dev-user-mock-id' || user?.email === 'dev@example.com';
+  if (!loading && dogs.length === 0 && !isDevSession) {
     logger.info('Index: Showing dog onboarding - no dogs found');
     return <DogOnboarding onComplete={() => {
       logger.info('Index: Dog onboarding completed');
