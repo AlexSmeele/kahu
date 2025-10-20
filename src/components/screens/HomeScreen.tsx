@@ -5,9 +5,11 @@ import { TrainingScheduleCard } from "@/components/home/TrainingScheduleCard";
 import { HealthAlertsCard } from "@/components/home/HealthAlertsCard";
 import { UpcomingEventsCard } from "@/components/home/UpcomingEventsCard";
 import { QuickStatsCard } from "@/components/home/QuickStatsCard";
+import { GetAdviceCard } from "@/components/home/GetAdviceCard";
 import { useHomeData } from "@/hooks/useHomeData";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ActivityMonitor } from "@/components/health/ActivityMonitor";
+import { TrainerScreenVariantSelector } from "@/components/screens/TrainerScreenVariantSelector";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import type { TabType } from "@/components/layout/BottomNavigation";
 
@@ -19,6 +21,7 @@ interface HomeScreenProps {
 
 export function HomeScreen({ selectedDogId, onDogChange, onTabChange }: HomeScreenProps) {
   const [showActivityMonitor, setShowActivityMonitor] = useState(false);
+  const [showTrainer, setShowTrainer] = useState(false);
   
   const {
     loading,
@@ -107,6 +110,9 @@ export function HomeScreen({ selectedDogId, onDogChange, onTabChange }: HomeScre
             onClick={() => onTabChange('health')}
           />
 
+          {/* Get Advice */}
+          <GetAdviceCard onClick={() => setShowTrainer(true)} />
+
           {/* Quick Stats */}
           <QuickStatsCard
             currentWeight={quickStats.currentWeight}
@@ -120,6 +126,12 @@ export function HomeScreen({ selectedDogId, onDogChange, onTabChange }: HomeScre
       <Dialog open={showActivityMonitor} onOpenChange={setShowActivityMonitor}>
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
           <ActivityMonitor dogId={selectedDogId} />
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={showTrainer} onOpenChange={setShowTrainer}>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto p-0">
+          <TrainerScreenVariantSelector />
         </DialogContent>
       </Dialog>
     </>
