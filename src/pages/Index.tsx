@@ -1,10 +1,9 @@
 import { useState, useEffect } from "react";
-import { TrainerScreenVariantSelector } from "@/components/screens/TrainerScreenVariantSelector";
+import { HomeScreen } from "@/components/screens/HomeScreen";
 import { TricksScreen } from "@/components/screens/TricksScreen";
 import { HealthScreen } from "@/components/screens/HealthScreen";
 import { NutritionScreen } from "@/components/screens/NutritionScreen";
 import { ProfileScreen } from "@/components/screens/ProfileScreen";
-import { MarketplaceScreen } from "@/components/screens/MarketplaceScreen";
 import { BottomNavigation, TabType } from "@/components/layout/BottomNavigation";
 import { QuickActionModal } from "@/components/layout/QuickActionModal";
 import { DogOnboarding } from "@/components/onboarding/DogOnboarding";
@@ -14,7 +13,7 @@ import { logger } from "@/lib/logger";
 
 
 const Index = () => {
-  const [activeTab, setActiveTab] = useState<TabType>('trainer');
+  const [activeTab, setActiveTab] = useState<TabType>('home');
   const [isQuickActionOpen, setIsQuickActionOpen] = useState(false);
   const [isUserTyping, setIsUserTyping] = useState(false);
   const [selectedDogId, setSelectedDogId] = useState<string>('');
@@ -52,21 +51,19 @@ const Index = () => {
     logger.debug('Index: Rendering screen', { activeTab, selectedDogId });
     
     switch (activeTab) {
-      case 'trainer':
-        return <TrainerScreenVariantSelector onTypingChange={setIsUserTyping} />;
+      case 'home':
+        return <HomeScreen selectedDogId={selectedDogId} onDogChange={setSelectedDogId} onTabChange={setActiveTab} />;
       case 'tricks':
         return <TricksScreen selectedDogId={selectedDogId} onDogChange={setSelectedDogId} />;
       case 'health':
         return <HealthScreen selectedDogId={selectedDogId} onDogChange={setSelectedDogId} />;
       case 'nutrition':
         return <NutritionScreen selectedDogId={selectedDogId} onDogChange={setSelectedDogId} />;
-      case 'marketplace':
-        return <MarketplaceScreen />;
       case 'profile':
         return <ProfileScreen />;
       default:
-        logger.warn('Index: Unknown active tab, defaulting to trainer', { activeTab });
-        return <TrainerScreenVariantSelector onTypingChange={setIsUserTyping} />;
+        logger.warn('Index: Unknown active tab, defaulting to home', { activeTab });
+        return <HomeScreen selectedDogId={selectedDogId} onDogChange={setSelectedDogId} onTabChange={setActiveTab} />;
     }
   };
 
@@ -88,7 +85,7 @@ const Index = () => {
             logger.userAction('quickActionOpen');
             setIsQuickActionOpen(true);
           }}
-          hideFab={activeTab === 'trainer' && isUserTyping}
+          hideFab={false}
         />
 
         {/* Quick Action Modal */}

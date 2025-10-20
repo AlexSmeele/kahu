@@ -78,7 +78,10 @@ export function QuickActionModal({ isOpen, onClose, selectedDogId, selectedDogNa
         setIsHealthNotesOpen(true);
         break;
       case 'ai-chat':
-        onNavigateToTab?.('trainer');
+        toast({
+          title: "AI Trainer",
+          description: "Chat with AI trainer feature coming soon!",
+        });
         break;
       case 'photo':
         toast({

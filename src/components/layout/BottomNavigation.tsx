@@ -1,7 +1,7 @@
-import { MessageCircle, Award, Heart, Apple, User, Plus, ShoppingBag } from "lucide-react";
+import { Award, Heart, Apple, User, Plus, Home } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-export type TabType = 'trainer' | 'tricks' | 'health' | 'nutrition' | 'marketplace' | 'profile';
+export type TabType = 'home' | 'tricks' | 'health' | 'nutrition' | 'profile';
 
 interface BottomNavigationProps {
   activeTab: TabType;
@@ -11,11 +11,10 @@ interface BottomNavigationProps {
 }
 
 const tabs = [
-  { id: 'trainer' as TabType, label: 'Ask', icon: MessageCircle },
-  { id: 'tricks' as TabType, label: 'Tricks', icon: Award },
   { id: 'health' as TabType, label: 'Health', icon: Heart },
+  { id: 'tricks' as TabType, label: 'Tricks', icon: Award },
+  { id: 'home' as TabType, label: 'Home', icon: Home },
   { id: 'nutrition' as TabType, label: 'Nutrition', icon: Apple },
-  { id: 'marketplace' as TabType, label: 'Shop', icon: ShoppingBag },
   { id: 'profile' as TabType, label: 'Profile', icon: User },
 ];
 
