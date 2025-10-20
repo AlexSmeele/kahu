@@ -97,6 +97,42 @@ export function useDogs() {
       return;
     }
     
+    // Dev mode bypass - return mock dogs
+    if (user.id === 'dev-user-mock-id') {
+      logger.info('useDogs: Dev mode detected, using mock dogs');
+      const mockDogs: Dog[] = [
+        {
+          id: 'mock-dog-1',
+          name: 'Suki',
+          breed_id: '4106b76f-4caa-49a7-b058-bddf343e3c91',
+          breed: { breed: 'Affenpinscher' },
+          birthday: '2015-02-22',
+          weight: 12,
+          gender: 'female',
+          avatar_url: 'https://bhkqdxhyceflfesxrztm.supabase.co/storage/v1/object/public/dog-photos/b197063d-9f5b-42c3-888e-3e85e8829141/b450a8fe-855c-4176-b9bc-8da19de0ec30_1757920194150.jpg',
+          sort_order: 1,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        },
+        {
+          id: 'mock-dog-2',
+          name: 'Jett',
+          breed_id: '4106b76f-4caa-49a7-b058-bddf343e3c91',
+          breed: { breed: 'Affenpinscher' },
+          birthday: '2023-12-18',
+          weight: 19.5,
+          gender: 'male',
+          avatar_url: 'https://bhkqdxhyceflfesxrztm.supabase.co/storage/v1/object/public/dog-photos/b197063d-9f5b-42c3-888e-3e85e8829141/00cec743-bb6f-4895-8f10-5c2adabf8d72_1757920215636.jpg',
+          sort_order: 2,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        },
+      ];
+      setGlobalDogsState(mockDogs);
+      setGlobalLoadingState(false);
+      return;
+    }
+    
     logger.info('useDogs: Fetching dogs for user', { userId: user.id });
     setGlobalLoadingState(true);
     
