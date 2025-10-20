@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { MOCK_WEIGHT_RECORDS, isMockDogId } from "@/lib/mockData";
 
 export interface WeightRecord {
   id: string;
@@ -19,6 +20,13 @@ export function useWeightRecords(dogId: string) {
 
   const fetchWeightRecords = async () => {
     if (!dogId) return;
+    
+    // Return mock data for dev mode
+    if (isMockDogId(dogId)) {
+      setWeightRecords(MOCK_WEIGHT_RECORDS.filter(r => r.dog_id === dogId));
+      setLoading(false);
+      return;
+    }
     
     setLoading(true);
     try {

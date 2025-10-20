@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
+import { MOCK_NUTRITION_PLANS, isMockDogId } from '@/lib/mockData';
 
 export interface NutritionPlan {
   id: string;
@@ -32,6 +33,14 @@ export function useNutrition(dogId?: string) {
 
   const fetchNutritionPlan = async () => {
     if (!user || !dogId) {
+      setLoading(false);
+      return;
+    }
+    
+    // Return mock data for dev mode
+    if (isMockDogId(dogId)) {
+      const mockPlan = MOCK_NUTRITION_PLANS.find(p => p.dog_id === dogId);
+      setNutritionPlan(mockPlan || null);
       setLoading(false);
       return;
     }

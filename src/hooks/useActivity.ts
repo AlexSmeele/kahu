@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { logger } from "@/lib/logger";
+import { MOCK_ACTIVITY_GOALS, MOCK_ACTIVITY_RECORDS, isMockDogId } from "@/lib/mockData";
 
 export interface ActivityGoal {
   id: string;
@@ -81,6 +82,15 @@ export const useActivity = (dogId: string) => {
   };
 
   const fetchGoal = async () => {
+    // Return mock data for dev mode
+    if (isMockDogId(dogId)) {
+      const mockGoal = MOCK_ACTIVITY_GOALS.find(g => g.dog_id === dogId);
+      if (mockGoal) {
+        setGoal(mockGoal);
+      }
+      return;
+    }
+    
     logger.info('useActivity: Fetching activity goal', { dogId });
     const { data, error } = await supabase
       .from('activity_goals')
@@ -120,6 +130,13 @@ export const useActivity = (dogId: string) => {
   };
 
   const fetchTodayRecords = async () => {
+    // Return mock data for dev mode
+    if (isMockDogId(dogId)) {
+      setRecords(MOCK_ACTIVITY_RECORDS.filter(r => r.dog_id === dogId));
+      setTodayProgress({ minutes: 0, distance: 0 });
+      return;
+    }
+    
     const today = new Date().toISOString().split('T')[0];
     
     const { data, error } = await supabase

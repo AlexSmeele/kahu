@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
+import { MOCK_DOG_TRICKS, isMockDogId } from '@/lib/mockData';
 
 export interface Trick {
   id: string;
@@ -54,6 +55,13 @@ export function useTricks(dogId?: string) {
 
   const fetchDogTricks = async () => {
     if (!dogId || !user) return;
+
+    // Return mock data for dev mode
+    if (isMockDogId(dogId)) {
+      const mockData = MOCK_DOG_TRICKS.filter(dt => dt.dog_id === dogId);
+      setDogTricks(mockData);
+      return;
+    }
 
     try {
       // First, get dog tricks without the join to avoid relation issues
