@@ -1,160 +1,119 @@
-import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Calendar } from '@/components/ui/calendar';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Heart, ArrowRight, ArrowLeft, CalendarIcon, Upload, X, Check, Plus } from 'lucide-react';
-import { format } from 'date-fns';
-import { cn } from '@/lib/utils';
-import { BreedAutocomplete } from '@/components/ui/breed-autocomplete';
-import { CountryAutocomplete } from '@/components/ui/country-autocomplete';
-import heroImage from '@/assets/hero-image.jpg';
+import { useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { EnhancedBreedSelector } from "@/components/ui/enhanced-breed-selector";
+import { Camera, X, ArrowLeft, Check } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
+import { Checkbox } from "@/components/ui/checkbox";
+import logoImage from "@/assets/logo.png";
+import heroImage from "@/assets/hero-image.jpg";
 
 interface MockDogOnboardingProps {
   onComplete: () => void;
 }
 
-interface UserData {
-  firstName: string;
-  lastName: string;
-  email: string;
-  country: string;
-}
-
 interface DogData {
   name: string;
+  gender: string;
+  age_range: string;
   breed: string;
   breed_id: string | null;
-  birthday: Date | null;
-  weight: string;
-  gender: 'male' | 'female' | '';
-  photo?: File | null;
-  photoPreview?: string | null;
+  photo: File | null;
+  photoPreview?: string;
+  known_commands: string[];
+  behavioral_goals: string[];
+  training_time_commitment: string;
 }
 
-// Mock function to calculate age (replicating the real one)
-function calculateAge(birthday: string): string {
-  const birthDate = new Date(birthday);
-  const today = new Date();
-  
-  let years = today.getFullYear() - birthDate.getFullYear();
-  let months = today.getMonth() - birthDate.getMonth();
-  let days = today.getDate() - birthDate.getDate();
-  
-  // Adjust for negative days
-  if (days < 0) {
-    months--;
-    // Get days in previous month
-    const lastMonth = new Date(today.getFullYear(), today.getMonth(), 0);
-    days += lastMonth.getDate();
-  }
-  
-  // Adjust for negative months
-  if (months < 0) {
-    years--;
-    months += 12;
-  }
-  
-  // Handle edge case for very young puppies (less than 1 month)
-  if (years === 0 && months === 0) {
-    if (days === 0) {
-      return "Born today";
-    } else if (days === 1) {
-      return "1 day old";
-    } else {
-      return `${days} days old`;
-    }
-  }
-  
-  if (years === 0) {
-    return `${months} ${months === 1 ? 'month' : 'months'} old`;
-  } else if (months === 0) {
-    return `${years} ${years === 1 ? 'year' : 'years'} old`;
-  } else {
-    return `${years} ${years === 1 ? 'year' : 'years'}, ${months} ${months === 1 ? 'month' : 'months'} old`;
-  }
-}
+const TOTAL_STEPS = 9;
 
-function capitalizeFirst(str: string): string {
-  return str.charAt(0).toUpperCase() + str.slice(1);
-}
+const AGE_RANGES = [
+  { value: "puppy", label: "Puppy (0-1 year)", emoji: "🐶" },
+  { value: "young", label: "Young (1-3 years)", emoji: "🦴" },
+  { value: "adult", label: "Adult (3-7 years)", emoji: "🐕" },
+  { value: "senior", label: "Senior (7-10 years)", emoji: "🦮" },
+  { value: "elderly", label: "Elderly (10+ years)", emoji: "🐕‍🦺" },
+];
+
+const COMMANDS = [
+  "Sit", "Stay", "Come", "Down", "Heel", "Leave it", "Drop it", "Wait"
+];
+
+const BEHAVIORAL_ISSUES = [
+  "Excessive barking",
+  "Pulling on leash",
+  "Jumping on people",
+  "Separation anxiety",
+  "Aggression towards other dogs",
+  "Aggression towards people",
+  "Fear or anxiety",
+  "House training issues",
+  "Destructive chewing",
+  "Food guarding"
+];
+
+const TIME_COMMITMENTS = [
+  { value: "5-10", label: "5-10 minutes per day" },
+  { value: "10-20", label: "10-20 minutes per day" },
+  { value: "20-30", label: "20-30 minutes per day" },
+  { value: "30+", label: "30+ minutes per day" },
+];
 
 export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   
-  // User data
-  const [userData, setUserData] = useState<UserData>({
-    firstName: '',
-    lastName: '',
-    email: '',
-    country: '',
-  });
-  
-  // Dogs data
-  const [dogs, setDogs] = useState<DogData[]>([{
+  const [dogData, setDogData] = useState<DogData>({
     name: '',
+    gender: '',
+    age_range: '',
     breed: '',
     breed_id: null,
-    birthday: null,
-    weight: '',
-    gender: '',
     photo: null,
-    photoPreview: null,
-  }]);
-  
-  const [currentDogIndex, setCurrentDogIndex] = useState(0);
-  const currentDog = dogs[currentDogIndex];
+    photoPreview: '',
+    known_commands: [],
+    behavioral_goals: [],
+    training_time_commitment: '',
+  });
 
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       const reader = new FileReader();
       reader.onload = (e) => {
-        const photoPreview = e.target?.result as string;
-        setDogs(prev => prev.map((dog, index) => 
-          index === currentDogIndex 
-            ? { ...dog, photo: file, photoPreview }
-            : dog
-        ));
+        setDogData(prev => ({
+          ...prev,
+          photo: file,
+          photoPreview: e.target?.result as string
+        }));
       };
       reader.readAsDataURL(file);
     }
   };
 
   const removePhoto = () => {
-    setDogs(prev => prev.map((dog, index) => 
-      index === currentDogIndex 
-        ? { ...dog, photo: null, photoPreview: null }
-        : dog
-    ));
+    setDogData(prev => ({ ...prev, photo: null, photoPreview: '' }));
   };
 
-  const updateCurrentDog = (updates: Partial<DogData>) => {
-    setDogs(prev => prev.map((dog, index) => 
-      index === currentDogIndex 
-        ? { ...dog, ...updates }
-        : dog
-    ));
+  const toggleCommand = (command: string) => {
+    setDogData(prev => ({
+      ...prev,
+      known_commands: prev.known_commands.includes(command)
+        ? prev.known_commands.filter(c => c !== command)
+        : [...prev.known_commands, command]
+    }));
   };
 
-  const addAnotherDog = () => {
-    setDogs(prev => [...prev, {
-      name: '',
-      breed: '',
-      breed_id: null,
-      birthday: null,
-      weight: '',
-      gender: '',
-      photo: null,
-      photoPreview: null,
-    }]);
-    setCurrentDogIndex(dogs.length);
-    setStep(2); // Go back to dog info step for new dog
+  const toggleBehavioralGoal = (goal: string) => {
+    setDogData(prev => ({
+      ...prev,
+      behavioral_goals: prev.behavioral_goals.includes(goal)
+        ? prev.behavioral_goals.filter(g => g !== goal)
+        : [...prev.behavioral_goals, goal]
+    }));
   };
 
   const handleSubmit = async () => {
@@ -172,10 +131,14 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
     return true;
   };
 
-  // Step 1: User Information
+  const getProgressPercentage = () => {
+    return (step / TOTAL_STEPS) * 100;
+  };
+
+  // Step 1: Welcome & Name
   if (step === 1) {
     return (
-      <div className="h-full bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex items-center justify-center p-4 animate-fade-in">
+      <div className="min-h-screen bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex items-center justify-center p-4 animate-fade-in">
         <Card className="w-full max-w-md border-0 shadow-[var(--shadow-large)] animate-scale-in relative">
           <Button
             variant="ghost"
@@ -185,95 +148,63 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
           >
             <X className="w-4 h-4" />
           </Button>
-          <CardHeader className="text-center pb-6">
-            <div className="mx-auto w-16 h-16 bg-gradient-to-r from-primary to-primary-hover rounded-full flex items-center justify-center mb-4">
-              <Heart className="w-8 h-8 text-primary-foreground" />
-            </div>
-            <CardTitle className="text-2xl font-bold text-foreground">
-              Welcome to Kahu!
-            </CardTitle>
-            <p className="text-muted-foreground">
-              Let's start with your information
-            </p>
-            <div className="mt-4 px-3 py-2 bg-amber-100 dark:bg-amber-900/30 rounded-lg">
-              <p className="text-sm text-amber-800 dark:text-amber-200 font-medium">
-                MOCK MODE - No data will be saved
-              </p>
-            </div>
+          
+          <div className="px-6 pt-6 pb-4">
+            <Badge variant="secondary" className="mb-4 bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-200">
+              MOCK MODE - No data will be saved
+            </Badge>
+            <Progress value={getProgressPercentage()} className="h-2 mb-2" />
+            <p className="text-xs text-muted-foreground text-center">Step {step} of {TOTAL_STEPS}</p>
+          </div>
+
+          <CardHeader className="text-center pb-4 pt-0">
+            <img src={logoImage} alt="Kahu Logo" className="w-16 h-16 mx-auto mb-4" />
+            <CardTitle className="text-2xl font-bold">Welcome to Kahu!</CardTitle>
+            <CardDescription>Let's start training your best friend</CardDescription>
           </CardHeader>
 
-          <CardContent className="space-y-4">
-            <div className="w-full mb-6">
+          <CardContent className="space-y-6">
+            <div className="w-full">
               <img 
                 src={heroImage} 
                 alt="Happy dog"
-                className="w-full h-32 object-cover rounded-lg"
+                className="w-full h-40 object-cover rounded-lg"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="firstName">First Name *</Label>
+              <Label htmlFor="dogName">What's your dog's name?</Label>
               <Input
-                id="firstName"
+                id="dogName"
                 type="text"
-                value={userData.firstName}
-                onChange={(e) => setUserData(prev => ({ ...prev, firstName: e.target.value }))}
-                placeholder="Your first name"
+                value={dogData.name}
+                onChange={(e) => setDogData(prev => ({ ...prev, name: e.target.value }))}
+                placeholder="e.g., Max, Luna, Charlie"
+                className="text-lg"
               />
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="lastName">Last Name *</Label>
-              <Input
-                id="lastName"
-                type="text"
-                value={userData.lastName}
-                onChange={(e) => setUserData(prev => ({ ...prev, lastName: e.target.value }))}
-                placeholder="Your last name"
-              />
+            <div className="flex gap-3">
+              <Button
+                size="lg"
+                onClick={() => setStep(2)}
+                disabled={!isStepValid()}
+                className="w-full"
+              >
+                Continue
+              </Button>
             </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="email">Email *</Label>
-              <Input
-                id="email"
-                type="email"
-                value={userData.email}
-                onChange={(e) => setUserData(prev => ({ ...prev, email: e.target.value }))}
-                placeholder="your.email@example.com"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="country">Country *</Label>
-              <CountryAutocomplete
-                value={userData.country}
-                onChange={(country) => setUserData(prev => ({ ...prev, country }))}
-                placeholder="Start typing your country..."
-                required
-              />
-            </div>
-
-            <Button
-              size="touch"
-              onClick={() => setStep(2)}
-              disabled={!isStepValid()}
-              className="w-full btn-primary hover-scale"
-            >
-              Continue
-              <ArrowRight className="w-4 h-4 ml-2" />
-            </Button>
           </CardContent>
         </Card>
       </div>
     );
   }
 
-  // Step 2: Dog Information
+  // Step 2: Gender
   if (step === 2) {
     return (
-      <div className="h-full bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex items-center justify-center p-4 animate-fade-in">
-        <Card className="w-full max-w-md border-0 shadow-[var(--shadow-large)] animate-scale-in max-h-[calc(100vh-2rem)] overflow-y-auto relative">
+      <div className="min-h-screen bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex items-center justify-center p-4 animate-fade-in">
+        <Card className="w-full max-w-md border-0 shadow-[var(--shadow-large)] animate-scale-in relative">
           <Button
             variant="ghost"
             size="sm"
@@ -282,157 +213,235 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
           >
             <X className="w-4 h-4" />
           </Button>
-          <CardHeader className="text-center pb-6">
-            <CardTitle className="text-xl font-bold text-foreground">
-              {currentDogIndex === 0 ? "Tell us about your dog" : `Dog #${currentDogIndex + 1}`}
-            </CardTitle>
-            <p className="text-muted-foreground">
-              All fields are required for personalized recommendations
-            </p>
-            <div className="mt-2 px-3 py-2 bg-amber-100 dark:bg-amber-900/30 rounded-lg">
-              <p className="text-sm text-amber-800 dark:text-amber-200 font-medium">
-                MOCK MODE - No data will be saved
-              </p>
-            </div>
+          
+          <div className="px-6 pt-6 pb-4">
+            <Badge variant="secondary" className="mb-4 bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-200">
+              MOCK MODE
+            </Badge>
+            <Progress value={getProgressPercentage()} className="h-2 mb-2" />
+            <p className="text-xs text-muted-foreground text-center">Step {step} of {TOTAL_STEPS}</p>
+          </div>
+
+          <CardHeader className="text-center pb-4 pt-0">
+            <CardTitle className="text-2xl font-bold">Is {dogData.name || 'your dog'} a boy or girl?</CardTitle>
           </CardHeader>
 
-          <CardContent className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="dogName">Dog's Name *</Label>
-              <Input
-                id="dogName"
-                type="text"
-                value={currentDog.name}
-                onChange={(e) => updateCurrentDog({ name: e.target.value })}
-                placeholder="Your dog's name"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="breed">Breed *</Label>
-              <BreedAutocomplete
-                value={currentDog.breed}
-                onChange={(breed) => updateCurrentDog({ breed })}
-                onBreedIdChange={(breedId) => updateCurrentDog({ breed_id: breedId })}
-                placeholder="e.g., Golden Retriever, Mixed"
-                required
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="gender">Gender *</Label>
-              <Select 
-                value={currentDog.gender} 
-                onValueChange={(value: 'male' | 'female') => updateCurrentDog({ gender: value })}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select gender" />
-                </SelectTrigger>
-                <SelectContent className="z-[60] bg-popover">
-                  <SelectItem value="male">Male</SelectItem>
-                  <SelectItem value="female">Female</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
+          <CardContent className="space-y-6">
             <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="birthday">Birthday *</Label>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button
-                      variant="outline"
-                      className={cn(
-                        "w-full justify-start text-left font-normal",
-                        !currentDog.birthday && "text-muted-foreground"
-                      )}
-                    >
-                      <CalendarIcon className="mr-2 h-4 w-4" />
-                      {currentDog.birthday ? format(currentDog.birthday, "LLL d, yyyy") : "Pick a date"}
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" align="start">
-                    <div className="flex items-center justify-between p-2 border-b">
-                      <Select
-                        value={currentDog.birthday ? currentDog.birthday.getMonth().toString() : ""}
-                        onValueChange={(value) => {
-                          const currentDate = currentDog.birthday || new Date();
-                          const newDate = new Date(currentDate);
-                          newDate.setMonth(parseInt(value));
-                          updateCurrentDog({ birthday: newDate });
-                        }}
-                      >
-                        <SelectTrigger className="w-[120px]">
-                          <SelectValue placeholder="Month" />
-                        </SelectTrigger>
-                        <SelectContent className="z-[60] bg-popover">
-                          {Array.from({ length: 12 }, (_, i) => (
-                            <SelectItem key={i} value={i.toString()}>
-                              {format(new Date(2000, i, 1), "LLL")}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      
-                      <Select
-                        value={currentDog.birthday ? currentDog.birthday.getFullYear().toString() : ""}
-                        onValueChange={(value) => {
-                          const currentDate = currentDog.birthday || new Date();
-                          const newDate = new Date(currentDate);
-                          newDate.setFullYear(parseInt(value));
-                          updateCurrentDog({ birthday: newDate });
-                        }}
-                      >
-                        <SelectTrigger className="w-[100px]">
-                          <SelectValue placeholder="Year" />
-                        </SelectTrigger>
-                        <SelectContent className="z-[60] bg-popover">
-                          {Array.from({ length: 25 }, (_, i) => {
-                            const year = new Date().getFullYear() - i;
-                            return (
-                              <SelectItem key={year} value={year.toString()}>
-                                {year}
-                              </SelectItem>
-                            );
-                          })}
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <Calendar
-                      mode="single"
-                      selected={currentDog.birthday || undefined}
-                      onSelect={(date) => updateCurrentDog({ birthday: date || null })}
-                      disabled={(date) => date > new Date() || date < new Date("1999-01-01")}
-                      initialFocus
-                      className={cn("p-3 pointer-events-auto")}
-                    />
-                  </PopoverContent>
-                </Popover>
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="weight">Weight (kg) (optional)</Label>
-                <Input
-                  id="weight"
-                  type="number"
-                  value={currentDog.weight}
-                  onChange={(e) => updateCurrentDog({ weight: e.target.value })}
-                  placeholder="25"
-                  min="0"
-                  max="200"
-                  step="0.1"
-                />
-              </div>
+              <Button
+                variant={dogData.gender === 'male' ? 'default' : 'outline'}
+                size="lg"
+                onClick={() => setDogData(prev => ({ ...prev, gender: 'male' }))}
+                className="h-32 flex flex-col gap-2"
+              >
+                <span className="text-4xl">🐕</span>
+                <span className="text-lg">Male</span>
+              </Button>
+              <Button
+                variant={dogData.gender === 'female' ? 'default' : 'outline'}
+                size="lg"
+                onClick={() => setDogData(prev => ({ ...prev, gender: 'female' }))}
+                className="h-32 flex flex-col gap-2"
+              >
+                <span className="text-4xl">🐕</span>
+                <span className="text-lg">Female</span>
+              </Button>
             </div>
 
+            <div className="flex gap-3">
+              <Button
+                variant="outline"
+                size="lg"
+                onClick={() => setStep(1)}
+                className="flex-1"
+              >
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Back
+              </Button>
+              <Button
+                size="lg"
+                onClick={() => setStep(3)}
+                disabled={!isStepValid()}
+                className="flex-1"
+              >
+                Continue
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  // Step 3: Age Range
+  if (step === 3) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex items-center justify-center p-4 animate-fade-in">
+        <Card className="w-full max-w-md border-0 shadow-[var(--shadow-large)] animate-scale-in relative">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={onComplete}
+            className="absolute top-4 right-4 z-10 h-8 w-8 p-0 hover:bg-muted"
+          >
+            <X className="w-4 h-4" />
+          </Button>
+          
+          <div className="px-6 pt-6 pb-4">
+            <Badge variant="secondary" className="mb-4 bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-200">
+              MOCK MODE
+            </Badge>
+            <Progress value={getProgressPercentage()} className="h-2 mb-2" />
+            <p className="text-xs text-muted-foreground text-center">Step {step} of {TOTAL_STEPS}</p>
+          </div>
+
+          <CardHeader className="text-center pb-4 pt-0">
+            <CardTitle className="text-2xl font-bold">How old is {dogData.name || 'your dog'}?</CardTitle>
+          </CardHeader>
+
+          <CardContent className="space-y-6">
+            <div className="space-y-3">
+              {AGE_RANGES.map((range) => (
+                <Button
+                  key={range.value}
+                  variant={dogData.age_range === range.value ? 'default' : 'outline'}
+                  size="lg"
+                  onClick={() => setDogData(prev => ({ ...prev, age_range: range.value }))}
+                  className="w-full justify-start h-16 text-left"
+                >
+                  <span className="text-2xl mr-3">{range.emoji}</span>
+                  <span className="text-base">{range.label}</span>
+                </Button>
+              ))}
+            </div>
+
+            <div className="flex gap-3">
+              <Button
+                variant="outline"
+                size="lg"
+                onClick={() => setStep(2)}
+                className="flex-1"
+              >
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Back
+              </Button>
+              <Button
+                size="lg"
+                onClick={() => setStep(4)}
+                disabled={!isStepValid()}
+                className="flex-1"
+              >
+                Continue
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  // Step 4: Breed
+  if (step === 4) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex items-center justify-center p-4 animate-fade-in">
+        <Card className="w-full max-w-md border-0 shadow-[var(--shadow-large)] animate-scale-in relative">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={onComplete}
+            className="absolute top-4 right-4 z-10 h-8 w-8 p-0 hover:bg-muted"
+          >
+            <X className="w-4 h-4" />
+          </Button>
+          
+          <div className="px-6 pt-6 pb-4">
+            <Badge variant="secondary" className="mb-4 bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-200">
+              MOCK MODE
+            </Badge>
+            <Progress value={getProgressPercentage()} className="h-2 mb-2" />
+            <p className="text-xs text-muted-foreground text-center">Step {step} of {TOTAL_STEPS}</p>
+          </div>
+
+          <CardHeader className="text-center pb-4 pt-0">
+            <CardTitle className="text-2xl font-bold">What breed is {dogData.name || 'your dog'}?</CardTitle>
+            <CardDescription>This helps us personalize training recommendations</CardDescription>
+          </CardHeader>
+
+          <CardContent className="space-y-6">
             <div className="space-y-2">
-              <Label htmlFor="photo">Photo (optional)</Label>
-              {currentDog.photoPreview ? (
+              <Label htmlFor="breed">Breed</Label>
+              <EnhancedBreedSelector
+                value={dogData.breed}
+                onBreedSelect={(breedId, isCustom, breedName) => {
+                  setDogData(prev => ({ ...prev, breed: breedName, breed_id: breedId }));
+                }}
+                placeholder="Start typing breed name..."
+              />
+              <p className="text-xs text-muted-foreground mt-2">
+                💡 Tip: If you're not sure about the breed, try "Mixed" or "Unknown"
+              </p>
+            </div>
+
+            <div className="flex gap-3">
+              <Button
+                variant="outline"
+                size="lg"
+                onClick={() => setStep(3)}
+                className="flex-1"
+              >
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Back
+              </Button>
+              <Button
+                size="lg"
+                onClick={() => setStep(5)}
+                disabled={!isStepValid()}
+                className="flex-1"
+              >
+                Continue
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  // Step 5: Photo Upload
+  if (step === 5) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex items-center justify-center p-4 animate-fade-in">
+        <Card className="w-full max-w-md border-0 shadow-[var(--shadow-large)] animate-scale-in relative">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={onComplete}
+            className="absolute top-4 right-4 z-10 h-8 w-8 p-0 hover:bg-muted"
+          >
+            <X className="w-4 h-4" />
+          </Button>
+          
+          <div className="px-6 pt-6 pb-4">
+            <Badge variant="secondary" className="mb-4 bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-200">
+              MOCK MODE
+            </Badge>
+            <Progress value={getProgressPercentage()} className="h-2 mb-2" />
+            <p className="text-xs text-muted-foreground text-center">Step {step} of {TOTAL_STEPS}</p>
+          </div>
+
+          <CardHeader className="text-center pb-4 pt-0">
+            <CardTitle className="text-2xl font-bold">Add a photo of {dogData.name || 'your dog'}</CardTitle>
+            <CardDescription>Optional, but helps personalize your experience</CardDescription>
+          </CardHeader>
+
+          <CardContent className="space-y-6">
+            <div className="space-y-4">
+              {dogData.photoPreview ? (
                 <div className="relative">
                   <img
-                    src={currentDog.photoPreview}
+                    src={dogData.photoPreview}
                     alt="Dog preview"
-                    className="w-full h-32 object-cover rounded-lg"
+                    className="w-full h-64 object-cover rounded-lg"
                   />
                   <Button
                     type="button"
@@ -445,12 +454,14 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
                   </Button>
                 </div>
               ) : (
-                <div className="border-2 border-dashed border-border rounded-lg p-6 text-center">
-                  <Upload className="w-8 h-8 mx-auto mb-2 text-muted-foreground" />
-                  <p className="text-sm text-muted-foreground mb-2">Upload a photo of {currentDog.name || 'your dog'}</p>
+                <div className="border-2 border-dashed border-border rounded-lg p-12 text-center">
+                  <Camera className="w-16 h-16 mx-auto mb-4 text-muted-foreground" />
+                  <p className="text-sm text-muted-foreground mb-4">
+                    Upload a clear photo of {dogData.name || 'your dog'}
+                  </p>
                   <Button type="button" variant="outline" asChild>
                     <label className="cursor-pointer">
-                      Choose File
+                      Choose Photo
                       <input
                         type="file"
                         accept="image/*"
@@ -463,24 +474,22 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
               )}
             </div>
 
-            <div className="flex gap-3 pt-4">
-              <Button 
+            <div className="flex gap-3">
+              <Button
                 variant="outline"
-                size="touch"
-                onClick={() => setStep(1)}
+                size="lg"
+                onClick={() => setStep(4)}
                 className="flex-1"
               >
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 Back
               </Button>
-              <Button 
-                size="touch"
-                onClick={() => setStep(3)}
-                disabled={!isStepValid()}
-                className="flex-1 btn-primary hover-scale"
+              <Button
+                size="lg"
+                onClick={() => setStep(6)}
+                className="flex-1"
               >
-                Continue
-                <ArrowRight className="w-4 h-4 ml-2" />
+                {dogData.photoPreview ? 'Continue' : 'Skip for now'}
               </Button>
             </div>
           </CardContent>
@@ -489,10 +498,10 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
     );
   }
 
-  // Step 3: Add More Dogs
-  if (step === 3) {
+  // Step 6: Known Commands
+  if (step === 6) {
     return (
-      <div className="h-full bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex items-center justify-center p-4 animate-fade-in">
+      <div className="min-h-screen bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex items-center justify-center p-4 animate-fade-in">
         <Card className="w-full max-w-md border-0 shadow-[var(--shadow-large)] animate-scale-in relative">
           <Button
             variant="ghost"
@@ -502,66 +511,57 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
           >
             <X className="w-4 h-4" />
           </Button>
-          <CardHeader className="text-center pb-6">
-            <div className="mx-auto w-16 h-16 bg-gradient-to-r from-accent to-accent-hover rounded-full flex items-center justify-center mb-4">
-              <Plus className="w-8 h-8 text-accent-foreground" />
-            </div>
-            <CardTitle className="text-2xl font-bold text-foreground">
-              Any more furry friends?
-            </CardTitle>
-            <p className="text-muted-foreground">
-              You can add multiple dogs to your profile
-            </p>
-            <div className="mt-4 px-3 py-2 bg-amber-100 dark:bg-amber-900/30 rounded-lg">
-              <p className="text-sm text-amber-800 dark:text-amber-200 font-medium">
-                MOCK MODE - No data will be saved
-              </p>
-            </div>
+          
+          <div className="px-6 pt-6 pb-4">
+            <Badge variant="secondary" className="mb-4 bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-200">
+              MOCK MODE
+            </Badge>
+            <Progress value={getProgressPercentage()} className="h-2 mb-2" />
+            <p className="text-xs text-muted-foreground text-center">Step {step} of {TOTAL_STEPS}</p>
+          </div>
+
+          <CardHeader className="text-center pb-4 pt-0">
+            <CardTitle className="text-2xl font-bold">What commands does {dogData.name || 'your dog'} know?</CardTitle>
+            <CardDescription>Select all that apply</CardDescription>
           </CardHeader>
 
-          <CardContent className="space-y-4">
-            <div className="bg-secondary/50 rounded-lg p-4 space-y-2">
-              <h3 className="font-medium text-foreground">{dogs.length === 1 ? 'Dog Added' : 'Dogs Added'}:</h3>
-              <div className="text-sm text-muted-foreground space-y-1">
-                {dogs.map((dog, index) => (
-                  <div key={index} className="flex justify-between items-center">
-                    <span>• {dog.name || `Dog #${index + 1}`}</span>
-                    {dog.breed && <span className="text-xs opacity-70">{dog.breed}</span>}
-                  </div>
-                ))}
-              </div>
+          <CardContent className="space-y-6">
+            <div className="grid grid-cols-2 gap-3">
+              {COMMANDS.map((command) => (
+                <div
+                  key={command}
+                  className="flex items-center space-x-2 p-3 rounded-lg border cursor-pointer hover:bg-accent"
+                  onClick={() => toggleCommand(command)}
+                >
+                  <Checkbox
+                    id={command}
+                    checked={dogData.known_commands.includes(command)}
+                    onCheckedChange={() => toggleCommand(command)}
+                  />
+                  <Label htmlFor={command} className="cursor-pointer flex-1">
+                    {command}
+                  </Label>
+                </div>
+              ))}
             </div>
 
-            <div className="space-y-3">
-              <Button 
+            <div className="flex gap-3">
+              <Button
                 variant="outline"
-                size="touch"
-                onClick={addAnotherDog}
-                className="w-full"
+                size="lg"
+                onClick={() => setStep(5)}
+                className="flex-1"
               >
-                <Plus className="w-4 h-4 mr-2" />
-                Add Another Dog
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Back
               </Button>
-              
-              <div className="flex gap-3">
-                <Button 
-                  variant="outline"
-                  size="touch"
-                  onClick={() => setStep(2)}
-                  className="flex-1"
-                >
-                  <ArrowLeft className="w-4 h-4 mr-2" />
-                  Back
-                </Button>
-                <Button 
-                  size="touch"
-                  onClick={() => setStep(4)}
-                  className="flex-1 btn-primary hover-scale"
-                >
-                  Continue
-                  <ArrowRight className="w-4 h-4 ml-2" />
-                </Button>
-              </div>
+              <Button
+                size="lg"
+                onClick={() => setStep(7)}
+                className="flex-1"
+              >
+                Continue
+              </Button>
             </div>
           </CardContent>
         </Card>
@@ -569,11 +569,11 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
     );
   }
 
-  // Step 4: Final Summary
-  if (step === 4) {
+  // Step 7: Behavioral Goals
+  if (step === 7) {
     return (
-      <div className="h-screen bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex items-center justify-center p-4 animate-fade-in">
-        <Card className="w-full max-w-md border-0 shadow-[var(--shadow-large)] animate-scale-in h-[calc(100vh-2rem)] flex flex-col relative">
+      <div className="min-h-screen bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex items-center justify-center p-4 animate-fade-in">
+        <Card className="w-full max-w-md border-0 shadow-[var(--shadow-large)] animate-scale-in relative max-h-[90vh] overflow-hidden">
           <Button
             variant="ghost"
             size="sm"
@@ -582,89 +582,230 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
           >
             <X className="w-4 h-4" />
           </Button>
-          <CardHeader className="text-center pb-4 flex-shrink-0">
-            <div className="mx-auto w-16 h-16 bg-gradient-to-r from-success to-success/80 rounded-full flex items-center justify-center mb-4">
-              <Heart className="w-8 h-8 text-success-foreground" />
-            </div>
-            <CardTitle className="text-2xl font-bold text-foreground">
-              Welcome, {userData.firstName}!
-            </CardTitle>
-            <p className="text-muted-foreground">
-              Ready to start your training journey together?
-            </p>
-            <div className="mt-4 px-3 py-2 bg-amber-100 dark:bg-amber-900/30 rounded-lg">
-              <p className="text-sm text-amber-800 dark:text-amber-200 font-medium">
-                MOCK MODE - No data will be saved
-              </p>
-            </div>
+          
+          <div className="px-6 pt-6 pb-4">
+            <Badge variant="secondary" className="mb-4 bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-200">
+              MOCK MODE
+            </Badge>
+            <Progress value={getProgressPercentage()} className="h-2 mb-2" />
+            <p className="text-xs text-muted-foreground text-center">Step {step} of {TOTAL_STEPS}</p>
+          </div>
+
+          <CardHeader className="text-center pb-4 pt-0">
+            <CardTitle className="text-2xl font-bold">Any behavioral issues to work on?</CardTitle>
+            <CardDescription>Select all that apply, or skip if none</CardDescription>
           </CardHeader>
 
-          <CardContent className="space-y-4 flex-1 flex flex-col min-h-0">
-            <div className="bg-secondary/50 rounded-lg p-4 space-y-3 flex-1 min-h-0">
-              <h3 className="font-medium text-foreground">Profile Summary:</h3>
-              
-              <ScrollArea className="h-full pr-4">
-                <div className="space-y-3">
-                  {/* User Info */}
-                  <div className="border-b border-border pb-2">
-                    <h4 className="text-sm font-medium text-foreground mb-1">Your Information:</h4>
-                    <div className="text-sm text-muted-foreground space-y-1">
-                      <p><span className="font-medium">Name:</span> {userData.firstName} {userData.lastName}</p>
-                      <p><span className="font-medium">Email:</span> {userData.email}</p>
-                      <p><span className="font-medium">Country:</span> {userData.country}</p>
-                    </div>
-                  </div>
-
-                  {/* Dogs Info */}
-                  <div>
-                    <h4 className="text-sm font-medium text-foreground mb-1">{dogs.length === 1 ? 'Your Dog' : 'Your Dogs'}:</h4>
-                    <div className="text-sm text-muted-foreground space-y-3">
-                      {dogs.map((dog, index) => (
-                        <div key={index} className="border-l-2 border-primary/30 pl-3 space-y-1">
-                          <p><span className="font-medium">Name:</span> {dog.name}</p>
-                          {dog.breed && <p><span className="font-medium">Breed:</span> {dog.breed}</p>}
-                          {dog.gender && <p><span className="font-medium">Gender:</span> {capitalizeFirst(dog.gender)}</p>}
-                          {dog.birthday && (
-                            <p><span className="font-medium">Age:</span> {calculateAge(format(dog.birthday, 'yyyy-MM-dd'))}</p>
-                          )}
-                          {dog.weight && <p><span className="font-medium">Weight:</span> {dog.weight} kg</p>}
-                          {dog.photo && <p><span className="font-medium">Photo:</span> Uploaded</p>}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
+          <CardContent className="space-y-6 overflow-y-auto max-h-[calc(90vh-300px)]">
+            <div className="space-y-3">
+              {BEHAVIORAL_ISSUES.map((issue) => (
+                <div
+                  key={issue}
+                  className="flex items-center space-x-2 p-3 rounded-lg border cursor-pointer hover:bg-accent"
+                  onClick={() => toggleBehavioralGoal(issue)}
+                >
+                  <Checkbox
+                    id={issue}
+                    checked={dogData.behavioral_goals.includes(issue)}
+                    onCheckedChange={() => toggleBehavioralGoal(issue)}
+                  />
+                  <Label htmlFor={issue} className="cursor-pointer flex-1">
+                    {issue}
+                  </Label>
                 </div>
-              </ScrollArea>
+              ))}
             </div>
 
-            <div className="flex gap-3 pt-4 flex-shrink-0">
-              <Button 
+            <div className="flex gap-3 pt-4 sticky bottom-0 bg-card">
+              <Button
                 variant="outline"
-                size="touch"
-                onClick={() => setStep(3)}
+                size="lg"
+                onClick={() => setStep(6)}
                 className="flex-1"
-                disabled={loading}
               >
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 Back
               </Button>
-              <Button 
-                size="touch"
-                onClick={handleSubmit}
-                className="flex-1 btn-primary hover-scale"
-                disabled={loading}
+              <Button
+                size="lg"
+                onClick={() => setStep(8)}
+                className="flex-1"
               >
-                {loading ? (
-                  <>
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary-foreground mr-2"></div>
-                    Simulating...
-                  </>
-                ) : (
-                  <>
-                    Complete Demo
-                    <Check className="w-4 h-4 ml-2" />
-                  </>
-                )}
+                Continue
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  // Step 8: Time Commitment
+  if (step === 8) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex items-center justify-center p-4 animate-fade-in">
+        <Card className="w-full max-w-md border-0 shadow-[var(--shadow-large)] animate-scale-in relative">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={onComplete}
+            className="absolute top-4 right-4 z-10 h-8 w-8 p-0 hover:bg-muted"
+          >
+            <X className="w-4 h-4" />
+          </Button>
+          
+          <div className="px-6 pt-6 pb-4">
+            <Badge variant="secondary" className="mb-4 bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-200">
+              MOCK MODE
+            </Badge>
+            <Progress value={getProgressPercentage()} className="h-2 mb-2" />
+            <p className="text-xs text-muted-foreground text-center">Step {step} of {TOTAL_STEPS}</p>
+          </div>
+
+          <CardHeader className="text-center pb-4 pt-0">
+            <CardTitle className="text-2xl font-bold">How much time can you commit to training?</CardTitle>
+            <CardDescription>Be realistic - consistency is more important than duration</CardDescription>
+          </CardHeader>
+
+          <CardContent className="space-y-6">
+            <div className="space-y-3">
+              {TIME_COMMITMENTS.map((commitment) => (
+                <Button
+                  key={commitment.value}
+                  variant={dogData.training_time_commitment === commitment.value ? 'default' : 'outline'}
+                  size="lg"
+                  onClick={() => setDogData(prev => ({ ...prev, training_time_commitment: commitment.value }))}
+                  className="w-full justify-start h-14"
+                >
+                  <span className="text-base">{commitment.label}</span>
+                </Button>
+              ))}
+            </div>
+
+            <div className="flex gap-3">
+              <Button
+                variant="outline"
+                size="lg"
+                onClick={() => setStep(7)}
+                className="flex-1"
+              >
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Back
+              </Button>
+              <Button
+                size="lg"
+                onClick={() => setStep(9)}
+                disabled={!isStepValid()}
+                className="flex-1"
+              >
+                Continue
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  // Step 9: Summary & Complete
+  if (step === 9) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex items-center justify-center p-4 animate-fade-in">
+        <Card className="w-full max-w-md border-0 shadow-[var(--shadow-large)] animate-scale-in relative max-h-[90vh] overflow-hidden">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={onComplete}
+            className="absolute top-4 right-4 z-10 h-8 w-8 p-0 hover:bg-muted"
+          >
+            <X className="w-4 h-4" />
+          </Button>
+          
+          <div className="px-6 pt-6 pb-4">
+            <Badge variant="secondary" className="mb-4 bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-200">
+              MOCK MODE - No data will be saved
+            </Badge>
+            <Progress value={getProgressPercentage()} className="h-2 mb-2" />
+            <p className="text-xs text-muted-foreground text-center">Step {step} of {TOTAL_STEPS}</p>
+          </div>
+
+          <CardHeader className="text-center pb-4 pt-0">
+            <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-4">
+              <Check className="w-8 h-8 text-primary-foreground" />
+            </div>
+            <CardTitle className="text-2xl font-bold">Great! Let's review</CardTitle>
+            <CardDescription>Here's what we know about {dogData.name || 'your dog'}</CardDescription>
+          </CardHeader>
+
+          <CardContent className="space-y-6 overflow-y-auto max-h-[calc(90vh-320px)]">
+            {dogData.photoPreview && (
+              <div className="w-full">
+                <img
+                  src={dogData.photoPreview}
+                  alt={dogData.name}
+                  className="w-full h-48 object-cover rounded-lg"
+                />
+              </div>
+            )}
+
+            <div className="space-y-4">
+              <div className="p-4 rounded-lg bg-secondary/50">
+                <h4 className="font-semibold mb-2">Basic Information</h4>
+                <div className="space-y-1 text-sm">
+                  <p><span className="text-muted-foreground">Name:</span> {dogData.name || 'Not provided'}</p>
+                  <p><span className="text-muted-foreground">Gender:</span> {dogData.gender ? dogData.gender.charAt(0).toUpperCase() + dogData.gender.slice(1) : 'Not provided'}</p>
+                  <p><span className="text-muted-foreground">Age:</span> {AGE_RANGES.find(r => r.value === dogData.age_range)?.label || 'Not provided'}</p>
+                  <p><span className="text-muted-foreground">Breed:</span> {dogData.breed || 'Not provided'}</p>
+                </div>
+              </div>
+
+              {dogData.known_commands.length > 0 && (
+                <div className="p-4 rounded-lg bg-secondary/50">
+                  <h4 className="font-semibold mb-2">Known Commands</h4>
+                  <div className="flex flex-wrap gap-2">
+                    {dogData.known_commands.map(cmd => (
+                      <Badge key={cmd} variant="secondary">{cmd}</Badge>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {dogData.behavioral_goals.length > 0 && (
+                <div className="p-4 rounded-lg bg-secondary/50">
+                  <h4 className="font-semibold mb-2">Training Goals</h4>
+                  <div className="flex flex-wrap gap-2">
+                    {dogData.behavioral_goals.map(goal => (
+                      <Badge key={goal} variant="secondary">{goal}</Badge>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {dogData.training_time_commitment && (
+                <div className="p-4 rounded-lg bg-secondary/50">
+                  <h4 className="font-semibold mb-2">Training Commitment</h4>
+                  <p className="text-sm">{TIME_COMMITMENTS.find(t => t.value === dogData.training_time_commitment)?.label || 'Not provided'}</p>
+                </div>
+              )}
+            </div>
+
+            <div className="flex gap-3 pt-4 sticky bottom-0 bg-card">
+              <Button
+                variant="outline"
+                size="lg"
+                onClick={() => setStep(8)}
+                className="flex-1"
+              >
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Back
+              </Button>
+              <Button
+                size="lg"
+                onClick={handleSubmit}
+                disabled={loading}
+                className="flex-1"
+              >
+                {loading ? 'Processing...' : 'Complete Demo'}
               </Button>
             </div>
           </CardContent>
