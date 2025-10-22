@@ -158,7 +158,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
 
         <div className="flex-1 flex flex-col px-6 pb-6">
         <div className="text-center mb-6">
-<img src={logoImage} alt="Kahu Logo" className="w-20 h-20 mx-auto mb-4 object-contain block" />
+<img src={logoImage} alt="Kahu Logo" className="w-26 h-26 mx-auto mb-4 object-contain block" />
             <h1 className="text-3xl font-bold mb-2">Welcome to Kahu!</h1>
             <p className="text-muted-foreground">Let's start training your best friend</p>
           </div>

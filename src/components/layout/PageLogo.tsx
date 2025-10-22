@@ -10,7 +10,7 @@ export function PageLogo({ className = "" }: PageLogoProps) {
       <img 
         src={logoTransparent} 
         alt="Kahu" 
-        className="h-10 w-10 object-contain"
+        className="h-[52px] w-[52px] object-contain"
       />
     </div>
   );

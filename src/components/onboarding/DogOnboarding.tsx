@@ -150,7 +150,7 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
           </div>
           
           <CardHeader className="text-center pb-6">
-<img src={logoIcon} alt="Kahu Logo" className="mx-auto w-20 h-20 mb-4 object-contain block" />
+<img src={logoIcon} alt="Kahu Logo" className="mx-auto w-26 h-26 mb-4 object-contain block" />
             <CardTitle className="text-2xl font-bold text-foreground">
               Welcome to Kahu!
             </CardTitle>
