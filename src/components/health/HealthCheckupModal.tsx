@@ -1,17 +1,12 @@
-import { useState } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { useMemo, useState } from "react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Checkbox } from "@/components/ui/checkbox";
+import { Progress } from "@/components/ui/progress";
 import { useHealthCheckups } from "@/hooks/useHealthCheckups";
-import { Slider } from "@/components/ui/slider";
+import { BodyAndLumpsStep, type CheckupData } from "./checkup/steps/BodyAndLumpsStep";
+import { EarsEyesStep } from "./checkup/steps/EarsEyesStep";
+import { SkinBehaviorStep } from "./checkup/steps/SkinBehaviorStep";
+import { NotesReviewStep } from "./checkup/steps/NotesReviewStep";
 
 interface HealthCheckupModalProps {
   isOpen: boolean;
@@ -19,13 +14,9 @@ interface HealthCheckupModalProps {
   dogId: string;
 }
 
-export const HealthCheckupModal = ({
-  isOpen,
-  onClose,
-  dogId,
-}: HealthCheckupModalProps) => {
+export const HealthCheckupModal = ({ isOpen, onClose, dogId }: HealthCheckupModalProps) => {
   const { addCheckup } = useHealthCheckups(dogId);
-  const [checkupData, setCheckupData] = useState({
+  const [checkupData, setCheckupData] = useState<CheckupData>({
     body_condition_score: 5,
     lumps_found: false,
     lump_notes: "",
@@ -38,13 +29,27 @@ export const HealthCheckupModal = ({
     behavior_changes: "",
     overall_notes: "",
   });
+  const [step, setStep] = useState(0);
+
+  const steps = useMemo(
+    () => [
+      { key: "body", title: "Body & Lumps", Component: BodyAndLumpsStep },
+      { key: "earsEyes", title: "Ears & Eyes", Component: EarsEyesStep },
+      { key: "skinBehavior", title: "Skin & Behavior", Component: SkinBehaviorStep },
+      { key: "notes", title: "Notes", Component: NotesReviewStep },
+    ],
+    []
+  );
+
+  const totalSteps = steps.length;
+  const progress = ((step + 1) / totalSteps) * 100;
+
+  const setData = (updates: Partial<CheckupData>) =>
+    setCheckupData((prev) => ({ ...prev, ...updates }));
 
   const handleSubmit = async () => {
-    await addCheckup({
-      checkup_date: new Date().toISOString(),
-      ...checkupData,
-    });
-    onClose();
+    await addCheckup({ checkup_date: new Date().toISOString(), ...checkupData });
+    // Reset
     setCheckupData({
       body_condition_score: 5,
       lumps_found: false,
@@ -58,224 +63,45 @@ export const HealthCheckupModal = ({
       behavior_changes: "",
       overall_notes: "",
     });
+    setStep(0);
+    onClose();
   };
+
+  const Current = steps[step].Component;
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-[min(95vw,600px)] max-h-[80vh] overflow-hidden flex flex-col">
-        <DialogHeader>
+      <DialogContent className="w-[min(95vw,600px)] max-w-[95vw] h-[85vh] max-h-[85vh] p-0 overflow-hidden flex flex-col">
+        <DialogHeader className="p-4 pb-2">
           <DialogTitle>Weekly Health Checkup</DialogTitle>
+          <div className="mt-2">
+            <Progress value={progress} />
+            <div className="mt-2 text-xs text-muted-foreground">
+              Step {step + 1} of {totalSteps}: {steps[step].title}
+            </div>
+          </div>
         </DialogHeader>
 
-        <div className="space-y-6 overflow-y-auto flex-1 pr-2">
-          {/* Body Condition Score */}
-          <div className="space-y-3">
-            <Label>Body Condition Score (1-9)</Label>
-            <div className="flex items-center gap-4">
-              <Slider
-                value={[checkupData.body_condition_score]}
-                onValueChange={(value) =>
-                  setCheckupData({
-                    ...checkupData,
-                    body_condition_score: value[0],
-                  })
-                }
-                min={1}
-                max={9}
-                step={1}
-                className="flex-1"
-              />
-              <span className="text-xl font-semibold w-8 text-center">
-                {checkupData.body_condition_score}
-              </span>
-            </div>
-            <p className="text-xs text-muted-foreground">
-              1: Very thin, 5: Ideal, 9: Obese
-            </p>
-          </div>
-
-          {/* Lumps Check */}
-          <div className="space-y-3">
-            <div className="flex items-center space-x-2">
-              <Checkbox
-                id="lumps"
-                checked={checkupData.lumps_found}
-                onCheckedChange={(checked) =>
-                  setCheckupData({
-                    ...checkupData,
-                    lumps_found: checked as boolean,
-                  })
-                }
-              />
-              <Label htmlFor="lumps">Lumps or bumps found</Label>
-            </div>
-            {checkupData.lumps_found && (
-              <Textarea
-                placeholder="Describe location and characteristics..."
-                value={checkupData.lump_notes}
-                onChange={(e) =>
-                  setCheckupData({
-                    ...checkupData,
-                    lump_notes: e.target.value,
-                  })
-                }
-              />
-            )}
-          </div>
-
-          {/* Ear Condition */}
-          <div className="space-y-3">
-            <Label>Ear Condition</Label>
-            <RadioGroup
-              value={checkupData.ear_condition}
-              onValueChange={(value) =>
-                setCheckupData({ ...checkupData, ear_condition: value })
-              }
-            >
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="normal" id="ear-normal" />
-                <Label htmlFor="ear-normal">Normal</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="red" id="ear-red" />
-                <Label htmlFor="ear-red">Redness</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="discharge" id="ear-discharge" />
-                <Label htmlFor="ear-discharge">Discharge</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="odor" id="ear-odor" />
-                <Label htmlFor="ear-odor">Bad odor</Label>
-              </div>
-            </RadioGroup>
-            {checkupData.ear_condition !== "normal" && (
-              <Textarea
-                placeholder="Additional notes..."
-                value={checkupData.ear_notes}
-                onChange={(e) =>
-                  setCheckupData({ ...checkupData, ear_notes: e.target.value })
-                }
-              />
-            )}
-          </div>
-
-          {/* Eye Condition */}
-          <div className="space-y-3">
-            <Label>Eye Condition</Label>
-            <RadioGroup
-              value={checkupData.eye_condition}
-              onValueChange={(value) =>
-                setCheckupData({ ...checkupData, eye_condition: value })
-              }
-            >
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="normal" id="eye-normal" />
-                <Label htmlFor="eye-normal">Normal</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="discharge" id="eye-discharge" />
-                <Label htmlFor="eye-discharge">Discharge</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="redness" id="eye-redness" />
-                <Label htmlFor="eye-redness">Redness</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="cloudiness" id="eye-cloudiness" />
-                <Label htmlFor="eye-cloudiness">Cloudiness</Label>
-              </div>
-            </RadioGroup>
-            {checkupData.eye_condition !== "normal" && (
-              <Textarea
-                placeholder="Additional notes..."
-                value={checkupData.eye_notes}
-                onChange={(e) =>
-                  setCheckupData({ ...checkupData, eye_notes: e.target.value })
-                }
-              />
-            )}
-          </div>
-
-          {/* Skin Condition */}
-          <div className="space-y-3">
-            <Label>Skin Condition</Label>
-            <RadioGroup
-              value={checkupData.skin_condition}
-              onValueChange={(value) =>
-                setCheckupData({ ...checkupData, skin_condition: value })
-              }
-            >
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="normal" id="skin-normal" />
-                <Label htmlFor="skin-normal">Normal</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="dry" id="skin-dry" />
-                <Label htmlFor="skin-dry">Dry/Flaky</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="irritated" id="skin-irritated" />
-                <Label htmlFor="skin-irritated">Irritated</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="rash" id="skin-rash" />
-                <Label htmlFor="skin-rash">Rash</Label>
-              </div>
-            </RadioGroup>
-            {checkupData.skin_condition !== "normal" && (
-              <Textarea
-                placeholder="Additional notes..."
-                value={checkupData.skin_notes}
-                onChange={(e) =>
-                  setCheckupData({
-                    ...checkupData,
-                    skin_notes: e.target.value,
-                  })
-                }
-              />
-            )}
-          </div>
-
-          {/* Behavior Changes */}
-          <div className="space-y-3">
-            <Label>Behavior Changes</Label>
-            <Textarea
-              placeholder="Any changes in behavior, energy, appetite, etc..."
-              value={checkupData.behavior_changes}
-              onChange={(e) =>
-                setCheckupData({
-                  ...checkupData,
-                  behavior_changes: e.target.value,
-                })
-              }
-            />
-          </div>
-
-          {/* Overall Notes */}
-          <div className="space-y-3">
-            <Label>Overall Notes</Label>
-            <Textarea
-              placeholder="Any other observations..."
-              value={checkupData.overall_notes}
-              onChange={(e) =>
-                setCheckupData({
-                  ...checkupData,
-                  overall_notes: e.target.value,
-                })
-              }
-            />
-          </div>
-
+        <div className="flex-1 overflow-y-auto px-4 pb-4">
+          <Current data={checkupData} setData={setData} />
         </div>
 
-        <div className="flex gap-2 pt-4 border-t">
-          <Button onClick={handleSubmit} className="flex-1">
-            Save Checkup
+        <div className="flex items-center gap-2 p-4 border-t">
+          <Button
+            variant="outline"
+            onClick={() => (step > 0 ? setStep((s) => s - 1) : onClose())}
+          >
+            {step === 0 ? "Cancel" : "Back"}
           </Button>
-          <Button variant="outline" onClick={onClose}>
-            Cancel
-          </Button>
+          {step < totalSteps - 1 ? (
+            <Button className="ml-auto" onClick={() => setStep((s) => s + 1)}>
+              Next
+            </Button>
+          ) : (
+            <Button className="ml-auto" onClick={handleSubmit}>
+              Save Checkup
+            </Button>
+          )}
         </div>
       </DialogContent>
     </Dialog>
