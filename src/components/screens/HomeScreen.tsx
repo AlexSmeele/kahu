@@ -82,7 +82,7 @@ export function HomeScreen({ selectedDogId, onDogChange, onTabChange }: HomeScre
       <QuickNoteModal dogId={selectedDogId} isOpen={showNoteModal} onClose={() => setShowNoteModal(false)} />
 
       <Dialog open={showTrainer} onOpenChange={setShowTrainer}>
-        <DialogContent className="max-w-[min(95vw,900px)] h-[85vh] max-h-[85vh] p-0 flex flex-col overflow-hidden">
+        <DialogContent className="w-[95vw] sm:max-w-[900px] h-[calc(100vh-4rem)] max-h-[calc(100vh-4rem)] p-0 flex flex-col overflow-hidden">
           <TrainerScreenVariantSelector />
         </DialogContent>
       </Dialog>
