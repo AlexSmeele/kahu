@@ -8,7 +8,7 @@ import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { Mail, Lock, User, TestTube } from 'lucide-react';
 import { PreSignupJourney } from '@/components/onboarding/PreSignupJourney';
-import logoIcon from '@/assets/logo.png';
+import logoIcon from '@/assets/logo-transparent.png';
 
 export default function Auth() {
   const [isSignUp, setIsSignUp] = useState(false);
@@ -207,7 +207,9 @@ export default function Auth() {
     <div className="h-full bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col overflow-hidden">
       <div className="flex-1 flex flex-col p-4">
         <div className="text-center mb-6 pt-4">
-          <img src={logoIcon} alt="Kahu Logo" className="mx-auto w-16 h-16 mb-3 rounded-full object-cover" style={{ backgroundColor: 'transparent' }} />
+          <div className="mx-auto w-16 h-16 mb-3 rounded-full overflow-hidden">
+            <img src={logoIcon} alt="Kahu Logo" className="w-full h-full object-cover block" />
+          </div>
           <h1 className="text-2xl font-bold text-foreground mb-1">
             Welcome to Kahu
           </h1>

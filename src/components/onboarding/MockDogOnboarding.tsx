@@ -8,7 +8,7 @@ import { Camera, X, ArrowLeft, Check } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Checkbox } from "@/components/ui/checkbox";
-import logoImage from "@/assets/logo.png";
+import logoImage from "@/assets/logo-transparent.png";
 import heroImage from "@/assets/hero-image.jpg";
 
 interface MockDogOnboardingProps {
@@ -157,8 +157,10 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
         </div>
 
         <div className="flex-1 flex flex-col px-6 pb-6">
-          <div className="text-center mb-6">
-            <img src={logoImage} alt="Kahu Logo" className="w-20 h-20 mx-auto mb-4" />
+        <div className="text-center mb-6">
+          <div className="w-20 h-20 mx-auto mb-4 rounded-full overflow-hidden">
+            <img src={logoImage} alt="Kahu Logo" className="w-full h-full object-cover block" />
+          </div>
             <h1 className="text-3xl font-bold mb-2">Welcome to Kahu!</h1>
             <p className="text-muted-foreground">Let's start training your best friend</p>
           </div>
