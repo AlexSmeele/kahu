@@ -1,11 +1,13 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Award, Star, Clock, CheckCircle2, Lock, Trophy, Target, Zap, Play, BookOpen } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { useDogs } from "@/hooks/useDogs";
 import { useTricks, Trick } from "@/hooks/useTricks";
-import { DogSwitcher } from "@/components/dogs/DogSwitcher";
+import { DogDropdown } from "@/components/dogs/DogDropdown";
+import { ClickerButton } from "@/components/training/ClickerButton";
+import { ClickerModal } from "@/components/training/ClickerModal";
 import { TrickDetailModal } from "@/components/tricks/TrickDetailModal";
 
 const categoryColors = {
@@ -249,32 +251,12 @@ export function TricksScreen({ selectedDogId, onDogChange }: TricksScreenProps) 
   };
 
   return (
-    <div className="flex flex-col h-full bg-gradient-to-br from-primary/5 via-accent/5 to-secondary/10 overflow-hidden">
-      {/* Header with Stats */}
-      <div className="bg-white/80 dark:bg-card/80 backdrop-blur-sm border-b p-4 flex-shrink-0 z-10">
-        <div className="flex items-center justify-between mb-4">
-          <div>
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-primary-hover bg-clip-text text-transparent">
-              Trick Academy
-            </h1>
-            <p className="text-sm text-muted-foreground">
-              Master skills step by step
-            </p>
-          </div>
-          <div className="text-right">
-            <div className="text-2xl font-bold text-primary">{completedCount}</div>
-            <div className="text-xs text-muted-foreground">Mastered</div>
-          </div>
-        </div>
-
-        {/* Dog Switcher */}
-        <div className="mb-4">
-          <DogSwitcher
-            selectedDogId={selectedDogId}
-            onDogChange={onDogChange}
-          />
-        </div>
-
+    <div className="flex flex-col h-full bg-gradient-to-br from-primary/5 via-accent/5 to-secondary/10 overflow-hidden pt-16">
+      <DogDropdown selectedDogId={selectedDogId} onDogChange={onDogChange} />
+      <ClickerButton onClick={() => setIsClickerOpen(true)} />
+      
+      {/* Stats Header */}
+      <div className="bg-white/80 dark:bg-card/80 backdrop-blur-sm border-b p-4 flex-shrink-0">
         {/* Overall Progress */}
         <div className="space-y-2">
           <div className="flex justify-between text-sm">
@@ -349,6 +331,8 @@ export function TricksScreen({ selectedDogId, onDogChange }: TricksScreenProps) 
       </div>
 
       {/* Trick Detail Modal */}
+      <ClickerModal isOpen={isClickerOpen} onClose={() => setIsClickerOpen(false)} />
+      
       <ClickerModal isOpen={isClickerOpen} onClose={() => setIsClickerOpen(false)} />
       
       <TrickDetailModal

@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useDogs } from "@/hooks/useDogs";
 import { useHealthData } from "@/hooks/useHealthData";
-import { DogSwitcher } from "@/components/dogs/DogSwitcher";
 import { WeightTracker } from "@/components/health/WeightTracker";
 import { VaccineScheduleModal } from "@/components/health/VaccineScheduleModal";
 import { VetVisitsModal } from "@/components/health/VetVisitsModal";
@@ -67,37 +66,8 @@ export function HealthScreen({ selectedDogId, onDogChange }: HealthScreenProps) 
     }
   };
   return (
-    <div className="flex flex-col h-full">
-      {/* Header */}
-      <header className="safe-top p-4 bg-card border-b border-border">
-        <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-r from-destructive to-destructive/80 rounded-full flex items-center justify-center">
-              <Heart className="w-6 h-6 text-destructive-foreground" />
-            </div>
-            <div>
-              <h1 className="text-xl font-semibold text-foreground">Health Dashboard</h1>
-              <p className="text-sm text-muted-foreground">Wellness overview & records</p>
-            </div>
-          </div>
-          <div className="flex items-center gap-2">
-            <Button
-              variant="outline" 
-              size="sm"
-              onClick={() => setIsHealthNotesModalOpen(true)}
-            >
-              <Plus className="w-4 h-4 mr-1" />
-              Add Record
-            </Button>
-          </div>
-        </div>
-        
-        {/* Dog Switcher */}
-        <DogSwitcher
-          selectedDogId={selectedDogId}
-          onDogChange={onDogChange}
-        />
-      </header>
+    <div className="flex flex-col h-full pt-16">
+      <DogDropdown selectedDogId={selectedDogId} onDogChange={onDogChange} />
 
       {/* Scrollable Content */}
       <div className="flex-1 overflow-y-auto">
