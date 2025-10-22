@@ -1,7 +1,7 @@
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { TrainerScreenVariantSelector } from "@/components/screens/TrainerScreenVariantSelector";
+import { TrainerScreenVariant2 } from "@/components/screens/TrainerScreenVariant2";
 
 export default function AIChat() {
   const navigate = useNavigate();
@@ -17,13 +17,16 @@ export default function AIChat() {
         >
           <ArrowLeft className="h-5 w-5" />
         </Button>
-        <h1 className="text-lg font-semibold">AI Trainer</h1>
+        <div className="text-center flex-1">
+          <h1 className="text-lg font-semibold">Adviser</h1>
+          <p className="text-xs text-muted-foreground">Your AI dog care adviser</p>
+        </div>
         <div className="w-10" /> {/* Spacer for center alignment */}
       </div>
 
       {/* Chat Content */}
       <div className="flex-1 overflow-hidden">
-        <TrainerScreenVariantSelector />
+        <TrainerScreenVariant2 />
       </div>
     </div>
   );

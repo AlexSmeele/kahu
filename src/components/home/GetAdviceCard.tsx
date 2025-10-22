@@ -16,7 +16,7 @@ export const GetAdviceCard = () => {
       </div>
       
       <p className="text-sm text-muted-foreground">
-        Ask our AI trainer anything
+        Ask our AI care adviser anything
       </p>
       
       <div className="mt-4 flex items-center gap-2 text-xs text-muted-foreground">

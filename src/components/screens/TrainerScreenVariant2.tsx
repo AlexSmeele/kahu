@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { MessageCircle, Send, Sparkles, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -19,9 +19,17 @@ export function TrainerScreenVariant2({ onTypingChange }: { onTypingChange?: (ty
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
   const { dogs } = useDogs();
   const { toast } = useToast();
   const currentDog = dogs[0];
+
+  // Auto-focus input when component mounts
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, []);
 
   const sendMessage = async () => {
     if (!inputMessage.trim() || isLoading) return;
@@ -91,12 +99,6 @@ export function TrainerScreenVariant2({ onTypingChange }: { onTypingChange?: (ty
 
   return (
     <div className="flex flex-col h-full">
-      {/* Minimal Header */}
-      <header className="safe-top p-6 text-center">
-        <h1 className="text-3xl font-light text-foreground mb-1">Kahu</h1>
-        <p className="text-muted-foreground text-sm">Your compassionate AI dog trainer</p>
-      </header>
-
       {/* Content */}
       <div className="flex-1 overflow-y-auto safe-bottom">
         {messages.length === 0 ? (
@@ -111,7 +113,7 @@ export function TrainerScreenVariant2({ onTypingChange }: { onTypingChange?: (ty
             </h2>
             <p className="text-muted-foreground mb-8 max-w-sm">
               Ask me anything about training {currentDog?.name || 'your dog'}. 
-              I'm here to provide personalized, compassionate guidance.
+              I'm your AI dog care adviser.
             </p>
 
             {/* Search-style input */}
@@ -119,12 +121,14 @@ export function TrainerScreenVariant2({ onTypingChange }: { onTypingChange?: (ty
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                 <Input
+                  ref={inputRef}
                   value={inputMessage}
                   onChange={handleInputChange}
                   onKeyPress={handleKeyPress}
                   placeholder="Ask about training, behavior, or care..."
                   className="pl-10 h-12 text-center"
                   disabled={isLoading}
+                  autoFocus
                 />
               </div>
               <Button
@@ -160,7 +164,7 @@ export function TrainerScreenVariant2({ onTypingChange }: { onTypingChange?: (ty
                 {message.role === 'assistant' && (
                   <div className="flex items-center gap-2 text-sm text-muted-foreground">
                     <Sparkles className="w-4 h-4" />
-                    <span>Kahu</span>
+                    <span>Adviser</span>
                   </div>
                 )}
                 <div className={`${
@@ -185,7 +189,7 @@ export function TrainerScreenVariant2({ onTypingChange }: { onTypingChange?: (ty
               <div className="mr-8">
                 <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
                   <Sparkles className="w-4 h-4" />
-                  <span>Kahu</span>
+                  <span>Adviser</span>
                 </div>
                 <div className="inline-block p-4 rounded-2xl bg-muted">
                   <div className="flex items-center gap-1">
@@ -206,11 +210,13 @@ export function TrainerScreenVariant2({ onTypingChange }: { onTypingChange?: (ty
           <div className="max-w-2xl mx-auto flex gap-2 items-end">
             <div className="flex-1">
               <Input
+                ref={inputRef}
                 value={inputMessage}
                 onChange={handleInputChange}
                 onKeyPress={handleKeyPress}
                 placeholder="Continue the conversation..."
                 disabled={isLoading}
+                autoFocus
               />
             </div>
             <Button
