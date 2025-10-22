@@ -10,7 +10,7 @@ export function TrainingTile({ trickName, totalSessions, onClick }: TrainingTile
   return (
     <button
       onClick={onClick}
-      className="rounded-2xl border bg-card p-4 hover:bg-accent/50 transition-all hover:scale-[1.02] text-left w-full h-full"
+      className="rounded-2xl border bg-card p-4 hover:bg-accent transition-all hover:scale-[1.02] text-left w-full h-full"
     >
       <div className="flex items-center gap-2 mb-3">
         <div className="w-8 h-8 rounded-full bg-blue-500/10 flex items-center justify-center">

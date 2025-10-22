@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { DogDropdown } from "@/components/dogs/DogDropdown";
+import { PageLogo } from "@/components/layout/PageLogo";
 import { TodaysGoalsBanner } from "@/components/home/TodaysGoalsBanner";
 import { UrgentAlertsBanner } from "@/components/home/UrgentAlertsBanner";
 import { ActivityCircleCard } from "@/components/home/ActivityCircleCard";
@@ -49,6 +50,7 @@ export function HomeScreen({ selectedDogId, onDogChange, onTabChange }: HomeScre
       <div className="min-h-screen bg-background pb-20 pt-4 safe-top relative">
         <div className="pt-16">
           <DogDropdown selectedDogId={selectedDogId} onDogChange={onDogChange} />
+          <PageLogo />
         </div>
 
           <div className="container py-4 space-y-4">

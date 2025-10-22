@@ -6,6 +6,7 @@ import { Progress } from "@/components/ui/progress";
 import { useDogs } from "@/hooks/useDogs";
 import { useTricks, Trick } from "@/hooks/useTricks";
 import { DogDropdown } from "@/components/dogs/DogDropdown";
+import { PageLogo } from "@/components/layout/PageLogo";
 import { ClickerButton } from "@/components/training/ClickerButton";
 import { ClickerModal } from "@/components/training/ClickerModal";
 import { TrickDetailModal } from "@/components/tricks/TrickDetailModal";
@@ -254,6 +255,7 @@ export function TricksScreen({ selectedDogId, onDogChange }: TricksScreenProps) 
     <div className="flex flex-col h-full bg-gradient-to-br from-primary/5 via-accent/5 to-secondary/10 overflow-hidden safe-top relative">
       <div className="pt-16">
         <DogDropdown selectedDogId={selectedDogId} onDogChange={onDogChange} />
+        <PageLogo />
         <ClickerButton onClick={() => setIsClickerOpen(true)} />
       </div>
       

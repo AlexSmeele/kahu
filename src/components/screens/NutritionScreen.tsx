@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useDogs, calculateAge } from "@/hooks/useDogs";
 import { DogDropdown } from "@/components/dogs/DogDropdown";
+import { PageLogo } from "@/components/layout/PageLogo";
 import { useNutrition, MealTime } from "@/hooks/useNutrition";
 import { useMealTracking, TodayMeal } from "@/hooks/useMealTracking";
 import { MealPlanModal } from "@/components/nutrition/MealPlanModal";
@@ -53,6 +54,7 @@ export function NutritionScreen({ selectedDogId, onDogChange }: NutritionScreenP
     <div className="flex flex-col h-full safe-top relative">
       <div className="pt-16">
         <DogDropdown selectedDogId={selectedDogId} onDogChange={onDogChange} />
+        <PageLogo />
       </div>
 
       {/* Current Diet Plan - Today's Progress */}

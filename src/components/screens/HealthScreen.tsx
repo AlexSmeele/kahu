@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { DogDropdown } from "@/components/dogs/DogDropdown";
+import { PageLogo } from "@/components/layout/PageLogo";
 import { Heart, TrendingUp, Calendar, AlertCircle, Plus, Award, Scale, Syringe, Scissors, Stethoscope } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -69,24 +70,24 @@ export function HealthScreen({ selectedDogId, onDogChange }: HealthScreenProps) 
     <div className="flex flex-col h-full safe-top relative">
       <div className="pt-16">
         <DogDropdown selectedDogId={selectedDogId} onDogChange={onDogChange} />
+        <PageLogo />
       </div>
 
       {/* Scrollable Content */}
       <div className="flex-1 overflow-y-auto">
         <div className="p-4 space-y-6">
-          {/* Activity Monitor - Prime Placement */}
-          <div className="mb-6">
-            <h3 className="text-lg font-semibold mb-3">Daily Activity</h3>
-            <ActivityMonitor dogId={selectedDogId} />
-          </div>
-
-          {/* Quick Actions */}
+          {/* Quick Actions at the top */}
           <HealthQuickActions
             onGroomingClick={() => setIsGroomingModalOpen(true)}
             onCheckupClick={() => setIsCheckupModalOpen(true)}
             onWeightClick={() => setIsWeightTrackerOpen(true)}
             onAddRecordClick={() => setIsHealthNotesModalOpen(true)}
           />
+
+          {/* Activity Monitor - removed title */}
+          <div className="mb-6">
+            <ActivityMonitor dogId={selectedDogId} />
+          </div>
 
           {/* Preventive Care Dashboard */}
           <div>

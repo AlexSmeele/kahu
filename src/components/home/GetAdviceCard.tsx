@@ -1,4 +1,3 @@
-import { Card } from "@/components/ui/card";
 import { MessageCircle } from "lucide-react";
 
 interface GetAdviceCardProps {
@@ -7,21 +6,25 @@ interface GetAdviceCardProps {
 
 export const GetAdviceCard = ({ onClick }: GetAdviceCardProps) => {
   return (
-    <Card 
-      className="p-4 cursor-pointer hover:shadow-lg transition-all duration-200 hover:scale-105"
+    <button
       onClick={onClick}
+      className="rounded-2xl border bg-card p-4 hover:bg-accent transition-all hover:scale-[1.02] text-left w-full h-full"
     >
-      <div className="flex items-start gap-3">
-        <div className="p-2 bg-primary/10 rounded-lg">
-          <MessageCircle className="h-5 w-5 text-primary" />
+      <div className="flex items-center gap-2 mb-3">
+        <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+          <MessageCircle className="w-4 h-4 text-primary" />
         </div>
-        <div className="flex-1 min-w-0">
-          <h3 className="font-semibold text-base mb-1">Get Advice</h3>
-          <p className="text-sm text-muted-foreground">
-            Ask our AI trainer anything about your dog's training, behavior, or health
-          </p>
-        </div>
+        <h3 className="font-semibold text-foreground">Get Advice</h3>
       </div>
-    </Card>
+      
+      <p className="text-sm text-muted-foreground">
+        Ask our AI trainer anything
+      </p>
+      
+      <div className="mt-4 flex items-center gap-2 text-xs text-muted-foreground">
+        <div className="w-1.5 h-1.5 rounded-full bg-current"></div>
+        <span>Tap to chat</span>
+      </div>
+    </button>
   );
 };
