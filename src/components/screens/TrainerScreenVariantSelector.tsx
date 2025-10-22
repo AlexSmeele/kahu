@@ -44,7 +44,7 @@ export function TrainerScreenVariantSelector({ onTypingChange }: { onTypingChang
   };
 
   return (
-    <div className="relative h-full">
+    <div className="relative h-full w-full flex flex-col overflow-hidden">
       {/* Compact Dropdown Selector */}
       <div className="absolute top-4 right-4 z-50">
         <DropdownMenu>
@@ -78,8 +78,8 @@ export function TrainerScreenVariantSelector({ onTypingChange }: { onTypingChang
         </DropdownMenu>
       </div>
 
-      {/* Selected Variant - Full Height */}
-      <div className="h-full">
+      {/* Selected Variant - Full Height with overflow control */}
+      <div className="flex-1 overflow-hidden">
         {renderSelectedVariant()}
       </div>
     </div>

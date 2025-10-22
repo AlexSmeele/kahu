@@ -111,7 +111,7 @@ export function TrainerScreenVariant4({ onTypingChange }: { onTypingChange?: (ty
       </header>
 
       {/* Content */}
-      <div className="flex-1 overflow-y-auto pb-24 safe-bottom">
+      <div className="flex-1 overflow-y-auto safe-bottom">
         {messages.length === 0 ? (
           /* Magazine-style Welcome */
           <div className="space-y-0">
@@ -261,7 +261,7 @@ export function TrainerScreenVariant4({ onTypingChange }: { onTypingChange?: (ty
 
       {/* Fixed Input (in conversation mode) */}
       {messages.length > 0 && (
-        <div className="p-4 bg-card/80 backdrop-blur-sm border-t border-border">
+        <div className="flex-shrink-0 p-4 bg-card/80 backdrop-blur-sm border-t border-border safe-bottom">
           <div className="max-w-2xl mx-auto flex gap-2">
             <Input
               value={inputMessage}

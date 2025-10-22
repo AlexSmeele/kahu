@@ -107,7 +107,7 @@ export function TrainerScreenVariant3({ onTypingChange }: { onTypingChange?: (ty
       </header>
 
       {/* Content */}
-      <div className="flex-1 overflow-y-auto pb-24 safe-bottom">
+      <div className="flex-1 overflow-y-auto safe-bottom">
         {messages.length === 0 ? (
           /* Dashboard Welcome */
           <div className="p-4 space-y-4">
@@ -256,7 +256,7 @@ export function TrainerScreenVariant3({ onTypingChange }: { onTypingChange?: (ty
 
       {/* Input Area */}
       {messages.length > 0 && (
-        <div className="p-4 bg-card border-t border-border">
+        <div className="flex-shrink-0 p-4 bg-card border-t border-border safe-bottom">
           <div className="flex gap-2 items-end">
             <div className="flex-1">
               <Input

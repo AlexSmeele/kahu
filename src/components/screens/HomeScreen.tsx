@@ -130,7 +130,7 @@ export function HomeScreen({ selectedDogId, onDogChange, onTabChange }: HomeScre
       </Dialog>
 
       <Dialog open={showTrainer} onOpenChange={setShowTrainer}>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto p-0">
+        <DialogContent className="max-w-4xl h-[95vh] max-h-[95vh] p-0 flex flex-col overflow-hidden">
           <TrainerScreenVariantSelector />
         </DialogContent>
       </Dialog>
