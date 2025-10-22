@@ -73,7 +73,7 @@ export function MealPlanVariantSelector({ dogId, nutritionPlan, onSave, trigger 
             </Button>
           )}
         </DialogTrigger>
-        <DialogContent className="max-w-[min(95vw,1000px)] h-[min(90vh,700px)] max-h-[min(90vh,700px)] overflow-hidden flex flex-col">
+        <DialogContent className="max-w-[min(95vw,1000px)] max-h-[80vh] overflow-hidden flex flex-col">
           <DialogHeader>
             <DialogTitle>Choose Your Meal Planning Style</DialogTitle>
             <p className="text-muted-foreground">
@@ -167,7 +167,7 @@ export function MealPlanVariantSelector({ dogId, nutritionPlan, onSave, trigger 
         const VariantComponent = variant.component;
         return (
           <Dialog open={true} onOpenChange={() => setSelectedVariant(null)}>
-            <DialogContent className="max-w-[min(95vw,1200px)] h-[min(90vh,800px)] max-h-[min(90vh,800px)] overflow-hidden flex flex-col">
+            <DialogContent className="max-w-[min(95vw,1000px)] max-h-[80vh] overflow-hidden flex flex-col">
               <VariantComponent
                 key={selectedVariant}
                 dogId={dogId}

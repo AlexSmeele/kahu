@@ -69,7 +69,7 @@ export const GroomingScheduleModal = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-[min(95vw,600px)] max-h-[80vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Grooming Schedule</DialogTitle>
         </DialogHeader>

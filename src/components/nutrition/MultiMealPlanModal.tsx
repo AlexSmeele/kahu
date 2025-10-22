@@ -191,7 +191,7 @@ export function MultiMealPlanModal({ dogId, nutritionPlan, onSave, trigger }: Mu
             </Button>
           )}
         </DialogTrigger>
-        <DialogContent className="max-w-[min(95vw,700px)] h-[min(90vh,800px)] max-h-[min(90vh,800px)] overflow-hidden flex flex-col">
+        <DialogContent className="max-w-[min(95vw,700px)] max-h-[80vh] overflow-hidden flex flex-col">
           <DialogHeader>
             <DialogTitle>
               Daily Meal Plan ({meals.length} meal{meals.length !== 1 ? 's' : ''})

@@ -181,7 +181,7 @@ export function MealPlanVariantC({ dogId, nutritionPlan, onSave, trigger }: Meal
           </Button>
         )}
       </DialogTrigger>
-      <DialogContent className="max-w-[min(95vw,1200px)] h-[min(90vh,700px)] max-h-[min(90vh,700px)] overflow-hidden flex flex-col">
+      <DialogContent className="max-w-[min(95vw,1000px)] max-h-[80vh] overflow-hidden flex flex-col">
         <DialogHeader>
           <DialogTitle>Weekly Meal Grid Planner</DialogTitle>
           <p className="text-sm text-muted-foreground">

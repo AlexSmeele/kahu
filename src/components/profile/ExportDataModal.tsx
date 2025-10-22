@@ -161,7 +161,7 @@ export function ExportDataModal({ isOpen, onClose }: ExportDataModalProps) {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-[min(95vw,800px)] h-[min(90vh,600px)] max-h-[min(90vh,600px)] flex flex-col">
+      <DialogContent className="max-w-[min(95vw,800px)] max-h-[80vh] flex flex-col overflow-hidden">
         <DialogHeader className="pb-4">
           <DialogTitle className="flex items-center gap-2">
             <Download className="w-5 h-5 text-primary" />

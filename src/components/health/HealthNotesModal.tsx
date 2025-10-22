@@ -226,7 +226,7 @@ export function HealthNotesModal({ isOpen, onClose, dogName, dogId }: HealthNote
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-[min(95vw,500px)] h-[min(90vh,500px)] max-h-[min(90vh,500px)] flex flex-col">
+      <DialogContent className="max-w-[min(95vw,500px)] max-h-[80vh] flex flex-col overflow-hidden">
         <DialogHeader className="pb-4">
           <DialogTitle className="flex items-center gap-2">
             <Heart className="w-5 h-5 text-primary" />

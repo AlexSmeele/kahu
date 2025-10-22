@@ -136,7 +136,7 @@ export function WeightTracker({ isOpen, onClose, currentWeight, dogName, dogBirt
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="w-[min(95vw,380px)] max-w-[min(95vw,380px)] h-[min(90vh,560px)] max-h-[min(90vh,560px)] overflow-hidden flex flex-col p-3">
+      <DialogContent className="w-[min(95vw,380px)] max-w-[min(95vw,380px)] max-h-[80vh] overflow-hidden flex flex-col p-3">
         <DialogHeader className="flex-shrink-0 pb-2">
           <DialogTitle className="text-sm font-bold flex items-center gap-2">
             <Scale className="w-4 h-4 text-primary" />

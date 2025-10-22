@@ -62,12 +62,12 @@ export const HealthCheckupModal = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-[min(95vw,600px)] max-h-[80vh] overflow-hidden flex flex-col">
         <DialogHeader>
           <DialogTitle>Weekly Health Checkup</DialogTitle>
         </DialogHeader>
 
-        <div className="space-y-6">
+        <div className="space-y-6 overflow-y-auto flex-1 pr-2">
           {/* Body Condition Score */}
           <div className="space-y-3">
             <Label>Body Condition Score (1-9)</Label>
@@ -267,14 +267,15 @@ export const HealthCheckupModal = ({
             />
           </div>
 
-          <div className="flex gap-2">
-            <Button onClick={handleSubmit} className="flex-1">
-              Save Checkup
-            </Button>
-            <Button variant="outline" onClick={onClose}>
-              Cancel
-            </Button>
-          </div>
+        </div>
+
+        <div className="flex gap-2 pt-4 border-t">
+          <Button onClick={handleSubmit} className="flex-1">
+            Save Checkup
+          </Button>
+          <Button variant="outline" onClick={onClose}>
+            Cancel
+          </Button>
         </div>
       </DialogContent>
     </Dialog>

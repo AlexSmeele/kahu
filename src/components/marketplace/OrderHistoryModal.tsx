@@ -111,7 +111,7 @@ export function OrderHistoryModal({ isOpen, onClose, onReorder }: OrderHistoryMo
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-[min(95vw,900px)] h-[min(90vh,600px)] max-h-[min(90vh,600px)] flex flex-col">
+      <DialogContent className="max-w-[min(95vw,900px)] max-h-[80vh] flex flex-col overflow-hidden">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Package className="w-5 h-5" />

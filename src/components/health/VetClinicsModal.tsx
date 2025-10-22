@@ -118,7 +118,7 @@ export function VetClinicsModal({ isOpen, onClose, dogId, dogName }: VetClinicsM
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-[min(95vw,500px)] max-h-[80vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Veterinary Clinics</DialogTitle>
           <DialogDescription>

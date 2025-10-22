@@ -190,7 +190,7 @@ const InviteFamilyModal: React.FC<InviteFamilyModalProps> = ({ isOpen, onClose }
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl max-h-[90vh] flex flex-col">
+      <DialogContent className="max-w-[min(95vw,900px)] max-h-[85vh] flex flex-col overflow-hidden">
         <DialogHeader className="pb-4">
           <DialogTitle className="flex items-center gap-2">
             <Users className="w-5 h-5 text-primary" />

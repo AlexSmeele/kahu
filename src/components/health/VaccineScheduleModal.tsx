@@ -104,7 +104,7 @@ export function VaccineScheduleModal({
   return (
     <>
       <Dialog open={isOpen} onOpenChange={onClose}>
-        <DialogContent className="max-w-[min(95vw,800px)] h-[min(90vh,700px)] flex flex-col">
+        <DialogContent className="max-w-[min(95vw,800px)] max-h-[80vh] flex flex-col overflow-hidden">
           <DialogHeader className="flex-shrink-0">
             <DialogTitle className="flex items-center gap-2">
               <Shield className="w-5 h-5 text-primary" />

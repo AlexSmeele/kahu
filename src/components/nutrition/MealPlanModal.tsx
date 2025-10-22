@@ -130,7 +130,7 @@ export function MealPlanModal({ dogId, nutritionPlan, onSave, trigger }: MealPla
             </Button>
           )}
         </DialogTrigger>
-        <DialogContent className="max-w-[min(95vw,480px)] h-[min(90vh,600px)] max-h-[min(90vh,600px)] overflow-hidden flex flex-col">
+        <DialogContent className="max-w-[min(95vw,480px)] max-h-[80vh] overflow-hidden flex flex-col">
           <DialogHeader>
             <DialogTitle>
               Meal 1

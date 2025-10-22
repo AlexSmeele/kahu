@@ -124,7 +124,7 @@ export function AddFoodModal({ open, onOpenChange, type, onSave }: AddFoodModalP
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="max-w-[min(95vw,450px)] h-[min(90vh,500px)] max-h-[min(90vh,500px)] overflow-hidden flex flex-col">
+      <DialogContent className="max-w-[min(95vw,450px)] max-h-[80vh] overflow-hidden flex flex-col">
         <DialogHeader>
           <DialogTitle>{getTitle()}</DialogTitle>
         </DialogHeader>
