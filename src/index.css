@@ -187,7 +187,7 @@
     min-width: var(--app-min-width);
     height: min(100dvh, var(--app-max-height));
     min-height: var(--app-min-height);
-    @apply relative overflow-hidden;
+    @apply relative overflow-hidden border border-border/50;
   }
 
   /* Card variants */
