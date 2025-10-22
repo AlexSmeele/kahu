@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { DogDropdown } from "@/components/dogs/DogDropdown";
 import { Heart, TrendingUp, Calendar, AlertCircle, Plus, Award, Scale, Syringe, Scissors, Stethoscope } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";

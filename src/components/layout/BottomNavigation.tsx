@@ -11,8 +11,8 @@ interface BottomNavigationProps {
 }
 
 const tabs = [
-  { id: 'health' as TabType, label: 'Health', icon: Heart },
-  { id: 'tricks' as TabType, label: 'Tricks', icon: Award },
+  { id: 'health' as TabType, label: 'Wellness', icon: Heart },
+  { id: 'tricks' as TabType, label: 'Training', icon: Award },
   { id: 'home' as TabType, label: 'Home', icon: Home },
   { id: 'nutrition' as TabType, label: 'Nutrition', icon: Apple },
   { id: 'profile' as TabType, label: 'Profile', icon: User },

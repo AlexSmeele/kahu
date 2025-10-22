@@ -1,14 +1,15 @@
 import { useState } from 'react';
-import { DogSwitcher } from "@/components/dogs/DogSwitcher";
-import { ActivityProgressCard } from "@/components/home/ActivityProgressCard";
-import { TrainingScheduleCard } from "@/components/home/TrainingScheduleCard";
-import { HealthAlertsCard } from "@/components/home/HealthAlertsCard";
-import { UpcomingEventsCard } from "@/components/home/UpcomingEventsCard";
-import { QuickStatsCard } from "@/components/home/QuickStatsCard";
+import { DogDropdown } from "@/components/dogs/DogDropdown";
+import { TodaysGoalsBanner } from "@/components/home/TodaysGoalsBanner";
+import { UrgentAlertsBanner } from "@/components/home/UrgentAlertsBanner";
+import { ActivityCircleCard } from "@/components/home/ActivityCircleCard";
+import { TrainingTile } from "@/components/home/TrainingTile";
+import { QuickNoteTile } from "@/components/home/QuickNoteTile";
 import { GetAdviceCard } from "@/components/home/GetAdviceCard";
+import { ActivityRecordModal } from "@/components/home/ActivityRecordModal";
+import { QuickNoteModal } from "@/components/home/QuickNoteModal";
 import { useHomeData } from "@/hooks/useHomeData";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ActivityMonitor } from "@/components/health/ActivityMonitor";
 import { TrainerScreenVariantSelector } from "@/components/screens/TrainerScreenVariantSelector";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import type { TabType } from "@/components/layout/BottomNavigation";
@@ -20,7 +21,8 @@ interface HomeScreenProps {
 }
 
 export function HomeScreen({ selectedDogId, onDogChange, onTabChange }: HomeScreenProps) {
-  const [showActivityMonitor, setShowActivityMonitor] = useState(false);
+  const [showActivityModal, setShowActivityModal] = useState(false);
+  const [showNoteModal, setShowNoteModal] = useState(false);
   const [showTrainer, setShowTrainer] = useState(false);
   
   const {
@@ -40,94 +42,42 @@ export function HomeScreen({ selectedDogId, onDogChange, onTabChange }: HomeScre
     return 'Good evening';
   };
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-background pb-20">
-        <div className="sticky top-0 z-10 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b">
-          <div className="container py-3">
-            <DogSwitcher selectedDogId={selectedDogId} onDogChange={onDogChange} />
-          </div>
-        </div>
-        
-        <div className="container py-6 space-y-4">
-          <Skeleton className="h-8 w-64" />
-          <Skeleton className="h-32 w-full" />
-          <Skeleton className="h-32 w-full" />
-          <Skeleton className="h-32 w-full" />
-        </div>
-      </div>
-    );
-  }
+  const urgentAlerts = healthAlerts.filter(a => a.priority === 'high').slice(0, 1);
 
   return (
     <>
-      <div className="min-h-screen bg-background pb-20">
-        <div className="sticky top-0 z-10 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b">
-          <div className="container py-3">
-            <DogSwitcher selectedDogId={selectedDogId} onDogChange={onDogChange} />
-          </div>
-        </div>
+      <div className="min-h-screen bg-background pb-20 pt-16">
+        <DogDropdown selectedDogId={selectedDogId} onDogChange={onDogChange} />
 
-        <div className="container py-6 space-y-4">
-          <div>
-            <h1 className="text-2xl font-bold">
-              {getGreeting()}!
-            </h1>
-            <p className="text-sm text-muted-foreground">Here's your daily overview</p>
-          </div>
+        <div className="container py-4 space-y-4">
+          <TodaysGoalsBanner
+            nextTrick={nextTrick ? { name: nextTrick.trick?.name || 'Unknown', total_sessions: nextTrick.total_sessions } : undefined}
+            onActionClick={() => nextTrick ? onTabChange('tricks') : setShowTrainer(true)}
+          />
 
-          {/* Activity Progress */}
-          {activityGoal && (
-            <ActivityProgressCard
-              targetMinutes={activityGoal.target_minutes}
-              completedMinutes={activityProgress.minutes}
-              targetDistance={activityGoal.target_distance_km}
-              completedDistance={activityProgress.distance}
-              onLogActivity={() => setShowActivityMonitor(true)}
-            />
+          {urgentAlerts.length > 0 && (
+            <UrgentAlertsBanner alerts={urgentAlerts} onClick={() => onTabChange('health')} />
           )}
 
-          {/* Next Training Session */}
-          {nextTrick && (
-            <TrainingScheduleCard
-              trickName={nextTrick.trick?.name || 'Unknown'}
-              totalSessions={nextTrick.total_sessions}
-              difficulty={nextTrick.trick?.difficulty_level || 1}
-              onPracticeNow={() => onTabChange('tricks')}
+          <div className="grid grid-cols-2 gap-4">
+            <ActivityCircleCard
+              completedMinutes={activityProgress.minutes}
+              targetMinutes={activityGoal?.target_minutes || 60}
+              onClick={() => setShowActivityModal(true)}
+            />
+            <TrainingTile
+              trickName={nextTrick?.trick?.name}
+              totalSessions={nextTrick?.total_sessions}
               onClick={() => onTabChange('tricks')}
             />
-          )}
-
-          {/* Health Alerts */}
-          <HealthAlertsCard
-            alerts={healthAlerts}
-            onClick={() => onTabChange('health')}
-          />
-
-          {/* Upcoming Events */}
-          <UpcomingEventsCard
-            events={upcomingEvents}
-            onClick={() => onTabChange('health')}
-          />
-
-          {/* Get Advice */}
-          <GetAdviceCard onClick={() => setShowTrainer(true)} />
-
-          {/* Quick Stats */}
-          <QuickStatsCard
-            currentWeight={quickStats.currentWeight}
-            weightTrend={quickStats.weightTrend as 'up' | 'down' | 'stable' | undefined}
-            masteredTricks={quickStats.masteredTricks}
-            onClick={() => onTabChange('health')}
-          />
+            <QuickNoteTile onClick={() => setShowNoteModal(true)} />
+            <GetAdviceCard onClick={() => setShowTrainer(true)} />
+          </div>
         </div>
       </div>
 
-      <Dialog open={showActivityMonitor} onOpenChange={setShowActivityMonitor}>
-        <DialogContent className="max-w-[min(95vw,900px)] max-h-[85vh] overflow-y-auto">
-          <ActivityMonitor dogId={selectedDogId} />
-        </DialogContent>
-      </Dialog>
+      <ActivityRecordModal dogId={selectedDogId} isOpen={showActivityModal} onClose={() => setShowActivityModal(false)} />
+      <QuickNoteModal dogId={selectedDogId} isOpen={showNoteModal} onClose={() => setShowNoteModal(false)} />
 
       <Dialog open={showTrainer} onOpenChange={setShowTrainer}>
         <DialogContent className="max-w-[min(95vw,900px)] h-[85vh] max-h-[85vh] p-0 flex flex-col overflow-hidden">

@@ -3,7 +3,7 @@ import { Apple, Calendar, TrendingUp, Clock, Edit2, Plus, Bell } from "lucide-re
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useDogs, calculateAge } from "@/hooks/useDogs";
-import { DogSwitcher } from "@/components/dogs/DogSwitcher";
+import { DogDropdown } from "@/components/dogs/DogDropdown";
 import { useNutrition, MealTime } from "@/hooks/useNutrition";
 import { useMealTracking, TodayMeal } from "@/hooks/useMealTracking";
 import { MealPlanModal } from "@/components/nutrition/MealPlanModal";
@@ -50,37 +50,8 @@ export function NutritionScreen({ selectedDogId, onDogChange }: NutritionScreenP
     }
   };
   return (
-    <div className="flex flex-col h-full">
-      {/* Header */}
-      <header className="safe-top p-4 bg-card border-b border-border">
-        <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-r from-warning to-warning/80 rounded-full flex items-center justify-center">
-              <Apple className="w-6 h-6 text-warning-foreground" />
-            </div>
-            <div>
-              <h1 className="text-xl font-semibold text-foreground">Nutrition</h1>
-              <p className="text-sm text-muted-foreground">Meal planning & tracking</p>
-            </div>
-          </div>
-          <div className="flex items-center gap-2">
-            <Button
-              variant="outline" 
-              size="sm"
-              onClick={() => setIsWeekPlannerOpen(true)}
-            >
-              <Calendar className="w-4 h-4 mr-1" />
-              Plan Week
-            </Button>
-          </div>
-        </div>
-        
-        {/* Dog Switcher */}
-        <DogSwitcher
-          selectedDogId={selectedDogId}
-          onDogChange={onDogChange}
-        />
-      </header>
+    <div className="flex flex-col h-full pt-16">
+      <DogDropdown selectedDogId={selectedDogId} onDogChange={onDogChange} />
 
       {/* Current Diet Plan - Today's Progress */}
       {!nutritionPlan ? (

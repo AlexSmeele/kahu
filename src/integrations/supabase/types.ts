@@ -346,6 +346,50 @@ export type Database = {
         }
         Relationships: []
       }
+      dog_notes: {
+        Row: {
+          content: string
+          created_at: string
+          dog_id: string
+          id: string
+          media_type: string | null
+          media_url: string | null
+          note_date: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          dog_id: string
+          id?: string
+          media_type?: string | null
+          media_url?: string | null
+          note_date?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          dog_id?: string
+          id?: string
+          media_type?: string | null
+          media_url?: string | null
+          note_date?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "dog_notes_dog_id_fkey"
+            columns: ["dog_id"]
+            isOneToOne: false
+            referencedRelation: "dogs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       dog_tricks: {
         Row: {
           created_at: string

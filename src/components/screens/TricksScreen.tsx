@@ -179,6 +179,7 @@ export function TricksScreen({ selectedDogId, onDogChange }: TricksScreenProps) 
   const [selectedDifficulty, setSelectedDifficulty] = useState<string>('all');
   const [selectedTrick, setSelectedTrick] = useState<Trick | null>(null);
   const [isTrickModalOpen, setIsTrickModalOpen] = useState(false);
+  const [isClickerOpen, setIsClickerOpen] = useState(false);
 
   if (loading) {
     return (
@@ -348,6 +349,8 @@ export function TricksScreen({ selectedDogId, onDogChange }: TricksScreenProps) 
       </div>
 
       {/* Trick Detail Modal */}
+      <ClickerModal isOpen={isClickerOpen} onClose={() => setIsClickerOpen(false)} />
+      
       <TrickDetailModal
         isOpen={isTrickModalOpen}
         onClose={() => setIsTrickModalOpen(false)}

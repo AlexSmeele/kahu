@@ -125,25 +125,11 @@ export function ProfileScreen() {
     }
   };
   return (
-    <div className="flex flex-col h-full">
-      {/* Header */}
-      <header className="safe-top p-4 bg-card border-b border-border">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-r from-primary to-primary-hover rounded-full flex items-center justify-center">
-              <User className="w-6 h-6 text-primary-foreground" />
-            </div>
-            <div>
-              <h1 className="text-xl font-semibold text-foreground">Profile</h1>
-              <p className="text-sm text-muted-foreground">Account & settings</p>
-            </div>
-          </div>
-          <div className="flex items-center gap-2">
-            <NotificationsDrawer />
-            <ThemeToggle />
-          </div>
-        </div>
-      </header>
+    <div className="flex flex-col h-full pt-4">
+      <div className="fixed top-3 right-3 z-50 flex items-center gap-2">
+        <NotificationsDrawer />
+        <ThemeToggle />
+      </div>
 
       <div className="flex-1 overflow-y-auto">
           {/* User Profile Section */}

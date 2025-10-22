@@ -18,47 +18,24 @@ export const HealthQuickActions = ({
   return (
     <div className="mb-6">
       <h3 className="text-sm font-semibold mb-3">Quick Actions</h3>
-      <ScrollArea className="w-full">
-        <div className="flex gap-2 pb-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={onGroomingClick}
-            className="flex-shrink-0"
-          >
-            <Scissors className="h-4 w-4 mr-2" />
-            Log Grooming
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={onCheckupClick}
-            className="flex-shrink-0"
-          >
-            <Stethoscope className="h-4 w-4 mr-2" />
-            Weekly Checkup
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={onWeightClick}
-            className="flex-shrink-0"
-          >
-            <Weight className="h-4 w-4 mr-2" />
-            Add Weight
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={onAddRecordClick}
-            className="flex-shrink-0"
-          >
-            <Plus className="h-4 w-4 mr-2" />
-            Add Record
-          </Button>
-        </div>
-        <ScrollBar orientation="horizontal" />
-      </ScrollArea>
+      <div className="grid grid-cols-2 gap-3">
+        <Button variant="outline" onClick={onGroomingClick} className="h-20 flex-col gap-2">
+          <Scissors className="h-5 w-5" />
+          <span className="text-sm">Log Grooming</span>
+        </Button>
+        <Button variant="outline" onClick={onCheckupClick} className="h-20 flex-col gap-2">
+          <Stethoscope className="h-5 w-5" />
+          <span className="text-sm">Weekly Checkup</span>
+        </Button>
+        <Button variant="outline" onClick={onWeightClick} className="h-20 flex-col gap-2">
+          <Weight className="h-5 w-5" />
+          <span className="text-sm">Add Weight</span>
+        </Button>
+        <Button variant="outline" onClick={onAddRecordClick} className="h-20 flex-col gap-2">
+          <Plus className="h-5 w-5" />
+          <span className="text-sm">Add Record</span>
+        </Button>
+      </div>
     </div>
   );
 };
