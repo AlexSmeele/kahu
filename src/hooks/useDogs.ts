@@ -98,11 +98,11 @@ export function useDogs() {
     }
     
     // Dev mode bypass - return mock dogs
-    if (user.id === 'dev-user-mock-id') {
+    if (user.id === '00000000-0000-0000-0000-000000000001') {
       logger.info('useDogs: Dev mode detected, using mock dogs');
       const mockDogs: Dog[] = [
         {
-          id: 'mock-dog-1',
+          id: '00000000-0000-0000-0000-000000000011',
           name: 'Suki',
           breed_id: '4106b76f-4caa-49a7-b058-bddf343e3c91',
           breed: { breed: 'Affenpinscher' },
@@ -115,7 +115,7 @@ export function useDogs() {
           updated_at: new Date().toISOString(),
         },
         {
-          id: 'mock-dog-2',
+          id: '00000000-0000-0000-0000-000000000012',
           name: 'Jett',
           breed_id: '4106b76f-4caa-49a7-b058-bddf343e3c91',
           breed: { breed: 'Affenpinscher' },

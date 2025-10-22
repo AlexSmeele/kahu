@@ -58,6 +58,27 @@ export function useProfile() {
   const fetchProfile = async () => {
     if (!user) return;
 
+    // Dev mode bypass - return mock profile
+    if (user.id === '00000000-0000-0000-0000-000000000001') {
+      setProfile({
+        id: user.id,
+        display_name: 'Dev User',
+        avatar_url: null,
+        role: null,
+        timezone: 'America/New_York',
+        phone: null,
+        address: null,
+        city: null,
+        state: null,
+        zip_code: null,
+        country: 'US',
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      });
+      setLoading(false);
+      return;
+    }
+
     setLoading(true);
     try {
       const { data, error } = await supabase

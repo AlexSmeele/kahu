@@ -44,6 +44,13 @@ export function useHealthRecords(dogId?: string) {
       return;
     }
 
+    // Dev mode bypass - return empty mock data for now
+    if (dogId === '00000000-0000-0000-0000-000000000011' || dogId === '00000000-0000-0000-0000-000000000012') {
+      setHealthRecords([]);
+      setLoading(false);
+      return;
+    }
+
     try {
       const { data, error } = await supabase
         .from('health_records')

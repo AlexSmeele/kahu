@@ -94,7 +94,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const devBypass = () => {
     logger.info('AuthProvider: Development bypass activated');
     const mockUser = {
-      id: 'dev-user-mock-id',
+      id: '00000000-0000-0000-0000-000000000001',
       email: 'dev@example.com',
       user_metadata: { display_name: 'Dev User' },
       app_metadata: {},

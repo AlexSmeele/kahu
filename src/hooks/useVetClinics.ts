@@ -40,6 +40,13 @@ export function useVetClinics(dogId?: string) {
   const fetchDogVetClinics = async (id: string) => {
     if (!id) return;
     
+    // Dev mode bypass - return empty mock data for now
+    if (id === '00000000-0000-0000-0000-000000000011' || id === '00000000-0000-0000-0000-000000000012') {
+      setDogVetClinics([]);
+      setIsLoading(false);
+      return;
+    }
+
     setIsLoading(true);
     setError(null);
     

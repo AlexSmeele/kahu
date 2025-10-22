@@ -22,6 +22,14 @@ export const useGroomingSchedule = (dogId: string) => {
   const fetchSchedules = async () => {
     try {
       setLoading(true);
+
+      // Dev mode bypass - return empty mock data for now
+      if (dogId === '00000000-0000-0000-0000-000000000011' || dogId === '00000000-0000-0000-0000-000000000012') {
+        setSchedules([]);
+        setLoading(false);
+        return;
+      }
+
       const { data, error } = await supabase
         .from("grooming_schedules")
         .select("*")

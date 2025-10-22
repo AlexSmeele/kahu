@@ -1,9 +1,11 @@
 // Mock data for dev mode bypass
 // Based on data from alexsmeele@gmail.com account
 
+export const MOCK_USER_ID = '00000000-0000-0000-0000-000000000001';
+
 export const MOCK_DOG_IDS = {
-  SUKI: 'mock-dog-1',
-  JETT: 'mock-dog-2',
+  SUKI: '00000000-0000-0000-0000-000000000011',
+  JETT: '00000000-0000-0000-0000-000000000012',
 };
 
 export const REAL_DOG_IDS = {
@@ -14,7 +16,7 @@ export const REAL_DOG_IDS = {
 export const MOCK_WEIGHT_RECORDS = [
   // Suki's weight records
   {
-    id: 'mock-weight-1',
+    id: '00000000-0000-0000-0000-000000000021',
     dog_id: MOCK_DOG_IDS.SUKI,
     weight: 12,
     date: '2025-09-05T13:36:00Z',
@@ -23,7 +25,7 @@ export const MOCK_WEIGHT_RECORDS = [
     updated_at: '2025-09-05T13:36:00Z',
   },
   {
-    id: 'mock-weight-2',
+    id: '00000000-0000-0000-0000-000000000022',
     dog_id: MOCK_DOG_IDS.SUKI,
     weight: 12.5,
     date: '2025-05-05T13:46:00Z',
@@ -32,7 +34,7 @@ export const MOCK_WEIGHT_RECORDS = [
     updated_at: '2025-05-05T13:46:00Z',
   },
   {
-    id: 'mock-weight-3',
+    id: '00000000-0000-0000-0000-000000000023',
     dog_id: MOCK_DOG_IDS.SUKI,
     weight: 11.5,
     date: '2024-09-05T13:46:00Z',
@@ -42,7 +44,7 @@ export const MOCK_WEIGHT_RECORDS = [
   },
   // Jett's weight records
   {
-    id: 'mock-weight-4',
+    id: '00000000-0000-0000-0000-000000000024',
     dog_id: MOCK_DOG_IDS.JETT,
     weight: 19,
     date: '2025-09-05T14:25:00Z',
@@ -51,7 +53,7 @@ export const MOCK_WEIGHT_RECORDS = [
     updated_at: '2025-09-05T14:25:00Z',
   },
   {
-    id: 'mock-weight-5',
+    id: '00000000-0000-0000-0000-000000000025',
     dog_id: MOCK_DOG_IDS.JETT,
     weight: 11.5,
     date: '2024-02-05T13:35:00Z',
@@ -64,7 +66,7 @@ export const MOCK_WEIGHT_RECORDS = [
 export const MOCK_DOG_TRICKS = [
   // Suki learning Sit
   {
-    id: 'mock-trick-1',
+    id: '00000000-0000-0000-0000-000000000031',
     dog_id: MOCK_DOG_IDS.SUKI,
     trick_id: 'bbc0357d-2d9e-4ae1-8ac8-e9af77a82852',
     status: 'learning' as const,
@@ -87,7 +89,7 @@ export const MOCK_DOG_TRICKS = [
   },
   // Jett learning Sit
   {
-    id: 'mock-trick-2',
+    id: '00000000-0000-0000-0000-000000000032',
     dog_id: MOCK_DOG_IDS.JETT,
     trick_id: 'bbc0357d-2d9e-4ae1-8ac8-e9af77a82852',
     status: 'learning' as const,
@@ -113,7 +115,7 @@ export const MOCK_DOG_TRICKS = [
 export const MOCK_ACTIVITY_GOALS = [
   // Suki's activity goal
   {
-    id: 'mock-goal-1',
+    id: '00000000-0000-0000-0000-000000000041',
     dog_id: MOCK_DOG_IDS.SUKI,
     target_minutes: 45,
     target_distance_km: 0,
@@ -124,7 +126,7 @@ export const MOCK_ACTIVITY_GOALS = [
   },
   // Jett's activity goal
   {
-    id: 'mock-goal-2',
+    id: '00000000-0000-0000-0000-000000000042',
     dog_id: MOCK_DOG_IDS.JETT,
     target_minutes: 60,
     target_distance_km: 0,
@@ -138,7 +140,7 @@ export const MOCK_ACTIVITY_GOALS = [
 export const MOCK_NUTRITION_PLANS = [
   // Suki's nutrition plan
   {
-    id: 'mock-nutrition-1',
+    id: '00000000-0000-0000-0000-000000000051',
     dog_id: MOCK_DOG_IDS.SUKI,
     food_type: 'mixed',
     brand: 'Raw Essentials',
@@ -171,5 +173,5 @@ export function isMockDogId(dogId: string): boolean {
 }
 
 export function isDevMode(userId?: string): boolean {
-  return userId === 'dev-user-mock-id';
+  return userId === MOCK_USER_ID;
 }

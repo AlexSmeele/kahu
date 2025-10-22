@@ -29,6 +29,14 @@ export const useHealthCheckups = (dogId: string) => {
   const fetchCheckups = async () => {
     try {
       setLoading(true);
+
+      // Dev mode bypass - return empty mock data for now
+      if (dogId === '00000000-0000-0000-0000-000000000011' || dogId === '00000000-0000-0000-0000-000000000012') {
+        setCheckups([]);
+        setLoading(false);
+        return;
+      }
+
       const { data, error } = await supabase
         .from("health_checkups")
         .select("*")

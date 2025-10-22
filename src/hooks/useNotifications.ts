@@ -29,6 +29,14 @@ export function useNotifications() {
   const fetchNotifications = async () => {
     if (!user) return;
 
+    // Dev mode bypass - return empty mock data for now
+    if (user.id === '00000000-0000-0000-0000-000000000001') {
+      setNotifications([]);
+      setUnreadCount(0);
+      setLoading(false);
+      return;
+    }
+
     setLoading(true);
     try {
       const { data, error } = await supabase

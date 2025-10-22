@@ -56,6 +56,12 @@ export function useVaccines(dogId: string) {
   const fetchVaccinationRecords = async () => {
     if (!dogId) return;
 
+    // Dev mode bypass - return empty mock data for now
+    if (dogId === '00000000-0000-0000-0000-000000000011' || dogId === '00000000-0000-0000-0000-000000000012') {
+      setVaccinationRecords([]);
+      return;
+    }
+
     try {
       const { data, error } = await supabase
         .from('vaccination_records')
