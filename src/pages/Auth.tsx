@@ -208,9 +208,7 @@ export default function Auth() {
     <div className="h-full bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex items-center justify-center p-4">
       <Card className="w-full max-w-md border-0 shadow-[var(--shadow-large)]">
         <CardHeader className="text-center pb-6">
-          <div className="mx-auto w-16 h-16 bg-primary rounded-full flex items-center justify-center mb-4 p-3">
-            <img src={logoIcon} alt="Kahu Logo" className="w-full h-full object-contain" />
-          </div>
+          <img src={logoIcon} alt="Kahu Logo" className="mx-auto w-20 h-20 mb-4" />
           <CardTitle className="text-2xl font-bold text-foreground">
             Welcome to Kahu
           </CardTitle>
