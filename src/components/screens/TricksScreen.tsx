@@ -251,9 +251,11 @@ export function TricksScreen({ selectedDogId, onDogChange }: TricksScreenProps) 
   };
 
   return (
-    <div className="flex flex-col h-full bg-gradient-to-br from-primary/5 via-accent/5 to-secondary/10 overflow-hidden pt-16">
-      <DogDropdown selectedDogId={selectedDogId} onDogChange={onDogChange} />
-      <ClickerButton onClick={() => setIsClickerOpen(true)} />
+    <div className="flex flex-col h-full bg-gradient-to-br from-primary/5 via-accent/5 to-secondary/10 overflow-hidden safe-top relative">
+      <div className="pt-16">
+        <DogDropdown selectedDogId={selectedDogId} onDogChange={onDogChange} />
+        <ClickerButton onClick={() => setIsClickerOpen(true)} />
+      </div>
       
       {/* Stats Header */}
       <div className="bg-white/80 dark:bg-card/80 backdrop-blur-sm border-b p-4 flex-shrink-0">

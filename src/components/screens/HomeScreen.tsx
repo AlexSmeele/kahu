@@ -46,10 +46,12 @@ export function HomeScreen({ selectedDogId, onDogChange, onTabChange }: HomeScre
 
   return (
     <>
-      <div className="min-h-screen bg-background pb-20 pt-16">
-        <DogDropdown selectedDogId={selectedDogId} onDogChange={onDogChange} />
+      <div className="min-h-screen bg-background pb-20 pt-4 safe-top relative">
+        <div className="pt-16">
+          <DogDropdown selectedDogId={selectedDogId} onDogChange={onDogChange} />
+        </div>
 
-        <div className="container py-4 space-y-4">
+          <div className="container py-4 space-y-4">
           <TodaysGoalsBanner
             nextTrick={nextTrick ? { name: nextTrick.trick?.name || 'Unknown', total_sessions: nextTrick.total_sessions } : undefined}
             onActionClick={() => nextTrick ? onTabChange('tricks') : setShowTrainer(true)}

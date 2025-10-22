@@ -26,7 +26,7 @@ export function DogDropdown({ selectedDogId, onDogChange }: DogDropdownProps) {
       <DropdownMenuTrigger asChild>
         <Button 
           variant="outline" 
-          className="fixed top-3 left-3 z-[100] flex items-center gap-2 h-auto py-1.5 px-3 bg-background border-2 shadow-lg hover:bg-accent"
+          className="absolute top-3 left-3 z-[100] flex items-center gap-2 h-auto py-1.5 px-3 bg-background border-2 shadow-lg hover:bg-accent"
         >
           <Avatar className="w-10 h-10 border-2 border-border shadow-sm">
             <AvatarImage src={selectedDog.avatar_url} alt={selectedDog.name} />

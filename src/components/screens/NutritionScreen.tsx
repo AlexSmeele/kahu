@@ -50,8 +50,10 @@ export function NutritionScreen({ selectedDogId, onDogChange }: NutritionScreenP
     }
   };
   return (
-    <div className="flex flex-col h-full pt-16">
-      <DogDropdown selectedDogId={selectedDogId} onDogChange={onDogChange} />
+    <div className="flex flex-col h-full safe-top relative">
+      <div className="pt-16">
+        <DogDropdown selectedDogId={selectedDogId} onDogChange={onDogChange} />
+      </div>
 
       {/* Current Diet Plan - Today's Progress */}
       {!nutritionPlan ? (

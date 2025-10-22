@@ -66,8 +66,10 @@ export function HealthScreen({ selectedDogId, onDogChange }: HealthScreenProps) 
     }
   };
   return (
-    <div className="flex flex-col h-full pt-16">
-      <DogDropdown selectedDogId={selectedDogId} onDogChange={onDogChange} />
+    <div className="flex flex-col h-full safe-top relative">
+      <div className="pt-16">
+        <DogDropdown selectedDogId={selectedDogId} onDogChange={onDogChange} />
+      </div>
 
       {/* Scrollable Content */}
       <div className="flex-1 overflow-y-auto">
