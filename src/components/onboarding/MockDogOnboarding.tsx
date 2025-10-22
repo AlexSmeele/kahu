@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { EnhancedBreedSelector } from "@/components/ui/enhanced-breed-selector";
-import { Camera, X, ArrowLeft, Check } from "lucide-react";
+import { Camera, X, ArrowLeft, Check, ArrowRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -191,6 +191,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
               className="w-full"
             >
               Continue
+              <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
           </div>
         </div>
@@ -263,6 +264,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
                 className="flex-1"
               >
                 Continue
+                <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             </div>
           </CardContent>
@@ -330,6 +332,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
                 className="flex-1"
               >
                 Continue
+                <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             </div>
           </CardContent>
@@ -397,6 +400,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
                 className="flex-1"
               >
                 Continue
+                <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             </div>
           </CardContent>
@@ -487,7 +491,17 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
                 onClick={() => setStep(6)}
                 className="flex-1"
               >
-                {dogData.photoPreview ? 'Continue' : 'Skip for now'}
+                {dogData.photoPreview ? (
+                  <>
+                    Continue
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                  </>
+                ) : (
+                  <>
+                    Skip for now
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                  </>
+                )}
               </Button>
             </div>
           </CardContent>
@@ -559,6 +573,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
                 className="flex-1"
               >
                 Continue
+                <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             </div>
           </CardContent>
@@ -630,6 +645,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
                 className="flex-1"
               >
                 Continue
+                <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             </div>
           </CardContent>
@@ -697,6 +713,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
                 className="flex-1"
               >
                 Continue
+                <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             </div>
           </CardContent>
@@ -803,7 +820,12 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
                 disabled={loading}
                 className="flex-1"
               >
-                {loading ? 'Processing...' : 'Complete Demo'}
+                {loading ? 'Processing...' : (
+                  <>
+                    Complete Demo
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                  </>
+                )}
               </Button>
             </div>
           </CardContent>
