@@ -207,7 +207,7 @@ export default function Auth() {
     <div className="h-full bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col overflow-hidden">
       <div className="flex-1 flex flex-col p-4">
         <div className="text-center mb-6 pt-4">
-          <img src={logoIcon} alt="Kahu Logo" className="mx-auto w-16 h-16 mb-3 bg-transparent" />
+          <img src={logoIcon} alt="Kahu Logo" className="mx-auto w-16 h-16 mb-3 rounded-full object-cover" style={{ backgroundColor: 'transparent' }} />
           <h1 className="text-2xl font-bold text-foreground mb-1">
             Welcome to Kahu
           </h1>
