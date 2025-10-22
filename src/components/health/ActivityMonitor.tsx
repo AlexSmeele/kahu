@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -22,6 +23,7 @@ export function ActivityMonitor({ dogId }: ActivityMonitorProps) {
   const [isAddingActivity, setIsAddingActivity] = useState(false);
   const [isEditingGoal, setIsEditingGoal] = useState(false);
   const [editingActivity, setEditingActivity] = useState<ActivityRecord | null>(null);
+  const [deletingActivityId, setDeletingActivityId] = useState<string | null>(null);
   const [isTracking, setIsTracking] = useState(false);
   const [trackingStart, setTrackingStart] = useState<Date | null>(null);
 
@@ -301,7 +303,7 @@ export function ActivityMonitor({ dogId }: ActivityMonitorProps) {
                       <Button 
                         variant="ghost" 
                         size="sm"
-                        onClick={() => deleteActivity(record.id)}
+                        onClick={() => setDeletingActivityId(record.id)}
                       >
                         <Trash2 className="h-3 w-3" />
                       </Button>
@@ -317,62 +319,34 @@ export function ActivityMonitor({ dogId }: ActivityMonitorProps) {
       {/* Edit Activity Modal */}
       {editingActivity && (
         <Dialog open={true} onOpenChange={() => setEditingActivity(null)}>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Edit Activity</DialogTitle>
-            </DialogHeader>
-            <form onSubmit={async (e) => {
-              e.preventDefault();
-              const formData = new FormData(e.currentTarget);
-              const duration = parseInt(formData.get('duration_minutes') as string || '0');
-              const distance = parseFloat(formData.get('distance_km') as string || '0');
-              const notes = formData.get('notes') as string;
-
-              await updateActivity(editingActivity.id, {
-                duration_minutes: duration || undefined,
-                distance_km: distance || undefined,
-                notes: notes || undefined
-              });
-              setEditingActivity(null);
-            }} className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="duration_minutes">Duration (minutes)</Label>
-                  <Input 
-                    type="number" 
-                    name="duration_minutes" 
-                    defaultValue={editingActivity.duration_minutes || ''}
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="distance_km">Distance (km)</Label>
-                  <Input 
-                    type="number" 
-                    step="0.1" 
-                    name="distance_km" 
-                    defaultValue={editingActivity.distance_km || ''}
-                  />
-                </div>
-              </div>
-
-              <div>
-                <Label htmlFor="notes">Notes</Label>
-                <Textarea 
-                  name="notes" 
-                  defaultValue={editingActivity.notes || ''}
-                />
-              </div>
-
-              <div className="flex gap-2">
-                <Button type="submit" className="flex-1">Update</Button>
-                <Button type="button" variant="outline" onClick={() => setEditingActivity(null)}>
-                  Cancel
-                </Button>
-              </div>
-            </form>
-          </DialogContent>
+...
         </Dialog>
       )}
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={deletingActivityId !== null} onOpenChange={() => setDeletingActivityId(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This will permanently delete this activity record. This action cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={async () => {
+                if (deletingActivityId) {
+                  await deleteActivity(deletingActivityId);
+                  setDeletingActivityId(null);
+                }
+              }}
+            >
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
