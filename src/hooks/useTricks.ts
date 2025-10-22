@@ -54,12 +54,13 @@ export function useTricks(dogId?: string) {
   };
 
   const fetchDogTricks = async () => {
-    if (!dogId || !user) return;
+    if (!dogId || !user) { setLoading(false); return; }
 
     // Return mock data for dev mode
     if (isMockDogId(dogId)) {
       const mockData = MOCK_DOG_TRICKS.filter(dt => dt.dog_id === dogId);
       setDogTricks(mockData);
+      setLoading(false);
       return;
     }
 
