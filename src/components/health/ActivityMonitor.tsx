@@ -284,13 +284,10 @@ export function ActivityMonitor({ dogId }: ActivityMonitorProps) {
                   <div key={record.id} className="flex items-center justify-between p-3 rounded-lg border">
                     <div className="flex items-center gap-3">
                       <span className="text-xl">{getActivityIcon(record.activity_type)}</span>
-                      <div>
-                        <div className="font-medium capitalize">{record.activity_type}</div>
-                        <div className="text-sm text-muted-foreground">
-                          {format(new Date(record.start_time), 'HH:mm')}
-                          {record.duration_minutes && ` • ${record.duration_minutes}min`}
-                          {record.distance_km && ` • ${record.distance_km}km`}
-                        </div>
+                      <div className="text-sm text-muted-foreground">
+                        {format(new Date(record.start_time), 'HH:mm')}
+                        {record.duration_minutes && ` • ${record.duration_minutes}min`}
+                        {record.distance_km && ` • ${record.distance_km}km`}
                       </div>
                     </div>
                     <div className="flex gap-1">
