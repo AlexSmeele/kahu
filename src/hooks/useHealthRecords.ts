@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
+import { MOCK_HEALTH_RECORDS, isMockDogId } from '@/lib/mockData';
 
 export interface HealthRecord {
   id: string;
@@ -44,9 +45,10 @@ export function useHealthRecords(dogId?: string) {
       return;
     }
 
-    // Dev mode bypass - return empty mock data for now
-    if (dogId === '00000000-0000-0000-0000-000000000011' || dogId === '00000000-0000-0000-0000-000000000012') {
-      setHealthRecords([]);
+    // Dev mode bypass - return mock data
+    if (isMockDogId(dogId)) {
+      const mockRecords = MOCK_HEALTH_RECORDS.filter(r => r.dog_id === dogId);
+      setHealthRecords(mockRecords);
       setLoading(false);
       return;
     }

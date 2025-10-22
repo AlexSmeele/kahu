@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { MOCK_GROOMING_SCHEDULES, isMockDogId } from "@/lib/mockData";
 
 export interface GroomingSchedule {
   id: string;
@@ -23,9 +24,10 @@ export const useGroomingSchedule = (dogId: string) => {
     try {
       setLoading(true);
 
-      // Dev mode bypass - return empty mock data for now
-      if (dogId === '00000000-0000-0000-0000-000000000011' || dogId === '00000000-0000-0000-0000-000000000012') {
-        setSchedules([]);
+      // Dev mode bypass - return mock data
+      if (isMockDogId(dogId)) {
+        const mockSchedules = MOCK_GROOMING_SCHEDULES.filter(s => s.dog_id === dogId);
+        setSchedules(mockSchedules);
         setLoading(false);
         return;
       }

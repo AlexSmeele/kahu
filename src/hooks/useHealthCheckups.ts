@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { MOCK_HEALTH_CHECKUPS, isMockDogId } from "@/lib/mockData";
 
 export interface HealthCheckup {
   id: string;
@@ -30,9 +31,10 @@ export const useHealthCheckups = (dogId: string) => {
     try {
       setLoading(true);
 
-      // Dev mode bypass - return empty mock data for now
-      if (dogId === '00000000-0000-0000-0000-000000000011' || dogId === '00000000-0000-0000-0000-000000000012') {
-        setCheckups([]);
+      // Dev mode bypass - return mock data
+      if (isMockDogId(dogId)) {
+        const mockCheckups = MOCK_HEALTH_CHECKUPS.filter(c => c.dog_id === dogId);
+        setCheckups(mockCheckups);
         setLoading(false);
         return;
       }

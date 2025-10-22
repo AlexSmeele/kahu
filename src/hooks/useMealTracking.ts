@@ -3,6 +3,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 import { format, startOfDay, endOfDay } from 'date-fns';
+import { MOCK_MEAL_RECORDS, isMockDogId } from '@/lib/mockData';
 
 export interface MealRecord {
   id: string;
@@ -43,6 +44,18 @@ export function useMealTracking(dogId?: string, nutritionPlanId?: string) {
 
     const targetDate = date || new Date();
     const dateString = format(targetDate, 'yyyy-MM-dd');
+
+    // Return mock data for dev mode
+    if (isMockDogId(dogId)) {
+      const mockRecords = MOCK_MEAL_RECORDS.filter(r => 
+        r.dog_id === dogId && 
+        r.nutrition_plan_id === nutritionPlanId &&
+        r.scheduled_date === dateString
+      );
+      setMealRecords(mockRecords);
+      setLoading(false);
+      return;
+    }
 
     try {
       const { data, error } = await supabase

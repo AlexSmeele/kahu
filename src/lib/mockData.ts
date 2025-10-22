@@ -152,6 +152,7 @@ export const MOCK_NUTRITION_PLANS = [
         amount: 3,
         food_type: 'Raw Food',
         reminder_enabled: true,
+        name: 'Breakfast'
       },
     ],
     special_instructions: 'Raw Food: Large meat cube or puck; Raw Food: Small tripe cubes',
@@ -159,10 +160,39 @@ export const MOCK_NUTRITION_PLANS = [
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),
   },
+  // Jett's nutrition plan
+  {
+    id: '00000000-0000-0000-0000-000000000052',
+    dog_id: MOCK_DOG_IDS.JETT,
+    food_type: 'dry',
+    brand: 'Puppy Growth Formula',
+    daily_amount: 2.5,
+    feeding_times: 2,
+    meal_schedule: [
+      {
+        time: '07:30',
+        amount: 1.25,
+        food_type: 'Dry Kibble',
+        reminder_enabled: true,
+        name: 'Breakfast'
+      },
+      {
+        time: '17:30',
+        amount: 1.25,
+        food_type: 'Dry Kibble',
+        reminder_enabled: true,
+        name: 'Dinner'
+      },
+    ],
+    special_instructions: 'High-protein puppy formula for growth. Add warm water to soften.',
+    is_active: true,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  },
 ];
 
 export const MOCK_ACTIVITY_RECORDS: any[] = [
-  // Suki today walks
+  // Suki today
   {
     id: '00000000-0000-0000-0000-000000000061',
     dog_id: MOCK_DOG_IDS.SUKI,
@@ -173,6 +203,7 @@ export const MOCK_ACTIVITY_RECORDS: any[] = [
     start_time: '2025-10-22T08:30:00Z',
     end_time: '2025-10-22T08:55:00Z',
     tracking_method: 'manual',
+    notes: 'Morning walk around the park',
     created_at: '2025-10-22T08:55:00Z',
     updated_at: '2025-10-22T08:55:00Z',
   },
@@ -186,22 +217,66 @@ export const MOCK_ACTIVITY_RECORDS: any[] = [
     start_time: '2025-10-22T12:00:00Z',
     end_time: '2025-10-22T12:15:00Z',
     tracking_method: 'manual',
+    notes: 'Fetch in the backyard',
     created_at: '2025-10-22T12:15:00Z',
     updated_at: '2025-10-22T12:15:00Z',
+  },
+  // Suki yesterday
+  {
+    id: '00000000-0000-0000-0000-000000000064',
+    dog_id: MOCK_DOG_IDS.SUKI,
+    activity_type: 'walk',
+    duration_minutes: 30,
+    distance_km: 2.1,
+    calories_burned: 145,
+    start_time: '2025-10-21T09:00:00Z',
+    end_time: '2025-10-21T09:30:00Z',
+    tracking_method: 'manual',
+    created_at: '2025-10-21T09:30:00Z',
+    updated_at: '2025-10-21T09:30:00Z',
   },
   // Jett today
   {
     id: '00000000-0000-0000-0000-000000000063',
     dog_id: MOCK_DOG_IDS.JETT,
     activity_type: 'run',
-    duration_minutes: 30,
+    duration_minutes: 35,
     distance_km: 3.2,
-    calories_burned: 250,
+    calories_burned: 280,
     start_time: '2025-10-22T07:10:00Z',
-    end_time: '2025-10-22T07:40:00Z',
+    end_time: '2025-10-22T07:45:00Z',
     tracking_method: 'manual',
-    created_at: '2025-10-22T07:40:00Z',
-    updated_at: '2025-10-22T07:40:00Z',
+    notes: 'Energetic morning run',
+    created_at: '2025-10-22T07:45:00Z',
+    updated_at: '2025-10-22T07:45:00Z',
+  },
+  {
+    id: '00000000-0000-0000-0000-000000000065',
+    dog_id: MOCK_DOG_IDS.JETT,
+    activity_type: 'play',
+    duration_minutes: 20,
+    distance_km: 0.5,
+    calories_burned: 120,
+    start_time: '2025-10-22T16:30:00Z',
+    end_time: '2025-10-22T16:50:00Z',
+    tracking_method: 'manual',
+    notes: 'Afternoon playtime',
+    created_at: '2025-10-22T16:50:00Z',
+    updated_at: '2025-10-22T16:50:00Z',
+  },
+  // Jett yesterday
+  {
+    id: '00000000-0000-0000-0000-000000000066',
+    dog_id: MOCK_DOG_IDS.JETT,
+    activity_type: 'walk',
+    duration_minutes: 40,
+    distance_km: 2.8,
+    calories_burned: 220,
+    start_time: '2025-10-21T08:00:00Z',
+    end_time: '2025-10-21T08:40:00Z',
+    tracking_method: 'manual',
+    created_at: '2025-10-21T08:40:00Z',
+    updated_at: '2025-10-21T08:40:00Z',
   }
 ];
 export const MOCK_HEALTH_RECORDS: any[] = [
@@ -212,20 +287,44 @@ export const MOCK_HEALTH_RECORDS: any[] = [
     title: 'Annual Wellness Exam',
     description: 'General check-up, dental check, vaccines reviewed',
     date: '2025-09-18',
-    veterinarian: 'Dr. Smith',
-    notes: 'Healthy, advised regular dental chews',
+    veterinarian: 'Dr. Sarah Smith',
+    notes: 'Healthy, advised regular dental chews. Weight stable.',
     created_at: '2025-09-18T10:00:00Z',
     updated_at: '2025-09-18T10:00:00Z',
   },
   {
     id: '00000000-0000-0000-0000-000000000072',
+    dog_id: MOCK_DOG_IDS.SUKI,
+    record_type: 'note',
+    title: 'Ear Cleaning',
+    description: 'Routine ear maintenance',
+    date: '2025-10-01',
+    veterinarian: null,
+    notes: 'Clean and healthy, no issues found',
+    created_at: '2025-10-01T15:00:00Z',
+    updated_at: '2025-10-01T15:00:00Z',
+  },
+  {
+    id: '00000000-0000-0000-0000-000000000073',
+    dog_id: MOCK_DOG_IDS.JETT,
+    record_type: 'vet_visit',
+    title: '6-Month Puppy Checkup',
+    description: 'Developmental assessment and vaccine boosters',
+    date: '2025-08-20',
+    veterinarian: 'Dr. Michael Lee',
+    notes: 'Growing well, very healthy puppy',
+    created_at: '2025-08-20T11:00:00Z',
+    updated_at: '2025-08-20T11:00:00Z',
+  },
+  {
+    id: '00000000-0000-0000-0000-000000000074',
     dog_id: MOCK_DOG_IDS.JETT,
     record_type: 'note',
     title: 'Diet Adjustment',
-    description: 'Adjusted meal size due to increased activity',
+    description: 'Increased meal portions for growth phase',
     date: '2025-10-10',
     veterinarian: null,
-    notes: 'Monitor weight trend over 2 weeks',
+    notes: 'Monitor weight trend over next 2 weeks',
     created_at: '2025-10-10T09:00:00Z',
     updated_at: '2025-10-10T09:00:00Z',
   }
@@ -237,8 +336,9 @@ export const MOCK_VACCINATION_RECORDS: any[] = [
     vaccine_id: '00000000-0000-0000-0000-000000000091',
     administered_date: '2025-06-15',
     due_date: '2026-06-15',
-    veterinarian: 'Dr. Smith',
-    notes: 'Booster in 12 months',
+    veterinarian: 'Dr. Sarah Smith',
+    batch_number: 'DHPP-2025-061',
+    notes: 'Annual booster, tolerated well',
     created_at: '2025-06-15T10:00:00Z',
     updated_at: '2025-06-15T10:00:00Z'
   },
@@ -248,8 +348,9 @@ export const MOCK_VACCINATION_RECORDS: any[] = [
     vaccine_id: '00000000-0000-0000-0000-000000000092',
     administered_date: '2024-07-01',
     due_date: '2027-07-01',
-    veterinarian: 'Dr. Smith',
-    notes: null,
+    veterinarian: 'Dr. Sarah Smith',
+    batch_number: 'RAB-2024-071',
+    notes: '3-year rabies vaccine',
     created_at: '2024-07-01T09:00:00Z',
     updated_at: '2024-07-01T09:00:00Z'
   },
@@ -259,10 +360,23 @@ export const MOCK_VACCINATION_RECORDS: any[] = [
     vaccine_id: '00000000-0000-0000-0000-000000000091',
     administered_date: '2025-03-15',
     due_date: '2026-03-15',
-    veterinarian: 'Dr. Lee',
-    notes: 'Puppy series complete',
+    veterinarian: 'Dr. Michael Lee',
+    batch_number: 'DHPP-2025-031',
+    notes: 'Puppy series complete, first annual booster',
     created_at: '2025-03-15T11:30:00Z',
     updated_at: '2025-03-15T11:30:00Z'
+  },
+  {
+    id: '00000000-0000-0000-0000-000000000084',
+    dog_id: MOCK_DOG_IDS.JETT,
+    vaccine_id: '00000000-0000-0000-0000-000000000092',
+    administered_date: '2024-12-28',
+    due_date: '2025-12-28',
+    veterinarian: 'Dr. Michael Lee',
+    batch_number: 'RAB-2024-128',
+    notes: 'First rabies vaccine - puppy',
+    created_at: '2024-12-28T14:00:00Z',
+    updated_at: '2024-12-28T14:00:00Z'
   }
 ];
 export const MOCK_GROOMING_SCHEDULES: any[] = [
@@ -273,7 +387,7 @@ export const MOCK_GROOMING_SCHEDULES: any[] = [
     frequency_days: 14,
     last_completed_at: '2025-10-10T10:00:00Z',
     next_due_date: '2025-10-24',
-    notes: 'Use sensitive-skin shampoo',
+    notes: 'Use sensitive-skin oatmeal shampoo',
     created_at: '2025-09-01T10:00:00Z',
     updated_at: '2025-10-10T10:00:00Z'
   },
@@ -281,31 +395,118 @@ export const MOCK_GROOMING_SCHEDULES: any[] = [
     id: '00000000-0000-0000-0000-000000000102',
     dog_id: MOCK_DOG_IDS.SUKI,
     grooming_type: 'Nail Trim',
-    frequency_days: 30,
-    last_completed_at: '2025-09-20T09:00:00Z',
-    next_due_date: '2025-10-20',
-    notes: null,
+    frequency_days: 21,
+    last_completed_at: '2025-10-05T09:00:00Z',
+    next_due_date: '2025-10-26',
+    notes: 'Use Dremel tool, she tolerates it better',
     created_at: '2025-09-01T09:00:00Z',
-    updated_at: '2025-09-20T09:00:00Z'
+    updated_at: '2025-10-05T09:00:00Z'
   },
   {
     id: '00000000-0000-0000-0000-000000000103',
+    dog_id: MOCK_DOG_IDS.SUKI,
+    grooming_type: 'Ear Cleaning',
+    frequency_days: 30,
+    last_completed_at: '2025-10-01T14:00:00Z',
+    next_due_date: '2025-10-31',
+    notes: 'Use ear cleaning solution',
+    created_at: '2025-09-01T14:00:00Z',
+    updated_at: '2025-10-01T14:00:00Z'
+  },
+  {
+    id: '00000000-0000-0000-0000-000000000104',
     dog_id: MOCK_DOG_IDS.JETT,
     grooming_type: 'Brush',
-    frequency_days: 7,
-    last_completed_at: '2025-10-18T08:00:00Z',
-    next_due_date: '2025-10-25',
-    notes: 'Use soft bristle brush',
+    frequency_days: 3,
+    last_completed_at: '2025-10-20T08:00:00Z',
+    next_due_date: '2025-10-23',
+    notes: 'Soft bristle brush, he loves it!',
     created_at: '2025-10-01T08:00:00Z',
-    updated_at: '2025-10-18T08:00:00Z'
+    updated_at: '2025-10-20T08:00:00Z'
+  },
+  {
+    id: '00000000-0000-0000-0000-000000000105',
+    dog_id: MOCK_DOG_IDS.JETT,
+    grooming_type: 'Bath',
+    frequency_days: 10,
+    last_completed_at: '2025-10-15T13:00:00Z',
+    next_due_date: '2025-10-25',
+    notes: 'Puppy shampoo, warm water',
+    created_at: '2025-10-01T13:00:00Z',
+    updated_at: '2025-10-15T13:00:00Z'
+  },
+  {
+    id: '00000000-0000-0000-0000-000000000106',
+    dog_id: MOCK_DOG_IDS.JETT,
+    grooming_type: 'Nail Trim',
+    frequency_days: 14,
+    last_completed_at: '2025-10-12T10:00:00Z',
+    next_due_date: '2025-10-26',
+    notes: 'Getting better with patience',
+    created_at: '2025-10-01T10:00:00Z',
+    updated_at: '2025-10-12T10:00:00Z'
   }
 ];
 export const MOCK_HEALTH_CHECKUPS: any[] = [
   {
     id: '00000000-0000-0000-0000-000000000111',
     dog_id: MOCK_DOG_IDS.SUKI,
-    checkup_date: '2025-09-28T14:00:00Z',
+    checkup_date: '2025-10-15T14:00:00Z',
     body_condition_score: 4,
+    lumps_found: false,
+    lump_notes: null,
+    ear_condition: 'clean',
+    ear_notes: 'No discharge, healthy pink color',
+    eye_condition: 'clear',
+    eye_notes: 'Bright and alert',
+    skin_condition: 'healthy',
+    skin_notes: 'No dryness or irritation',
+    behavior_changes: 'More playful than usual',
+    overall_notes: 'Excellent overall condition, very healthy',
+    created_at: '2025-10-15T14:00:00Z',
+    updated_at: '2025-10-15T14:00:00Z'
+  },
+  {
+    id: '00000000-0000-0000-0000-000000000112',
+    dog_id: MOCK_DOG_IDS.SUKI,
+    checkup_date: '2025-10-08T10:00:00Z',
+    body_condition_score: 4,
+    lumps_found: false,
+    lump_notes: null,
+    ear_condition: 'normal',
+    ear_notes: null,
+    eye_condition: 'clear',
+    eye_notes: null,
+    skin_condition: 'normal',
+    skin_notes: null,
+    behavior_changes: 'None noted',
+    overall_notes: 'Weekly check complete',
+    created_at: '2025-10-08T10:00:00Z',
+    updated_at: '2025-10-08T10:00:00Z'
+  },
+  {
+    id: '00000000-0000-0000-0000-000000000113',
+    dog_id: MOCK_DOG_IDS.JETT,
+    checkup_date: '2025-10-18T10:30:00Z',
+    body_condition_score: 5,
+    lumps_found: false,
+    lump_notes: null,
+    ear_condition: 'normal',
+    ear_notes: 'Clean, no odor',
+    eye_condition: 'clear',
+    eye_notes: 'Bright and curious',
+    skin_condition: 'slightly dry',
+    skin_notes: 'Apply conditioner weekly during bath',
+    behavior_changes: 'Very energetic, typical puppy behavior',
+    overall_notes: 'Healthy, active puppy developing well',
+    created_at: '2025-10-18T10:30:00Z',
+    updated_at: '2025-10-18T10:30:00Z'
+  },
+  {
+    id: '00000000-0000-0000-0000-000000000114',
+    dog_id: MOCK_DOG_IDS.JETT,
+    checkup_date: '2025-10-11T11:00:00Z',
+    body_condition_score: 5,
     lumps_found: false,
     lump_notes: null,
     ear_condition: 'clean',
@@ -315,27 +516,9 @@ export const MOCK_HEALTH_CHECKUPS: any[] = [
     skin_condition: 'healthy',
     skin_notes: null,
     behavior_changes: 'None',
-    overall_notes: 'Excellent condition',
-    created_at: '2025-09-28T14:00:00Z',
-    updated_at: '2025-09-28T14:00:00Z'
-  },
-  {
-    id: '00000000-0000-0000-0000-000000000112',
-    dog_id: MOCK_DOG_IDS.JETT,
-    checkup_date: '2025-10-05T10:30:00Z',
-    body_condition_score: 5,
-    lumps_found: false,
-    lump_notes: null,
-    ear_condition: 'normal',
-    ear_notes: null,
-    eye_condition: 'clear',
-    eye_notes: null,
-    skin_condition: 'slightly dry',
-    skin_notes: 'Apply conditioner weekly',
-    behavior_changes: 'More energetic',
-    overall_notes: 'Healthy puppy',
-    created_at: '2025-10-05T10:30:00Z',
-    updated_at: '2025-10-05T10:30:00Z'
+    overall_notes: 'Weekly check, all good',
+    created_at: '2025-10-11T11:00:00Z',
+    updated_at: '2025-10-11T11:00:00Z'
   }
 ];
 export const MOCK_MEAL_RECORDS: any[] = [
@@ -348,9 +531,111 @@ export const MOCK_MEAL_RECORDS: any[] = [
     scheduled_date: '2025-10-22',
     completed_at: '2025-10-22T08:35:00Z',
     amount_given: 3,
-    notes: null,
+    notes: 'Large meat cube + small tripe cubes',
     created_at: '2025-10-22T08:35:00Z',
     updated_at: '2025-10-22T08:35:00Z'
+  },
+  {
+    id: '00000000-0000-0000-0000-000000000122',
+    dog_id: MOCK_DOG_IDS.SUKI,
+    nutrition_plan_id: '00000000-0000-0000-0000-000000000051',
+    meal_time: '08:30',
+    meal_name: 'Breakfast',
+    scheduled_date: '2025-10-21',
+    completed_at: '2025-10-21T08:28:00Z',
+    amount_given: 3,
+    notes: null,
+    created_at: '2025-10-21T08:28:00Z',
+    updated_at: '2025-10-21T08:28:00Z'
+  },
+  {
+    id: '00000000-0000-0000-0000-000000000123',
+    dog_id: MOCK_DOG_IDS.SUKI,
+    nutrition_plan_id: '00000000-0000-0000-0000-000000000051',
+    meal_time: '08:30',
+    meal_name: 'Breakfast',
+    scheduled_date: '2025-10-20',
+    completed_at: '2025-10-20T08:32:00Z',
+    amount_given: 3,
+    notes: null,
+    created_at: '2025-10-20T08:32:00Z',
+    updated_at: '2025-10-20T08:32:00Z'
+  },
+  // Jett's meals
+  {
+    id: '00000000-0000-0000-0000-000000000124',
+    dog_id: MOCK_DOG_IDS.JETT,
+    nutrition_plan_id: '00000000-0000-0000-0000-000000000052',
+    meal_time: '07:30',
+    meal_name: 'Breakfast',
+    scheduled_date: '2025-10-22',
+    completed_at: '2025-10-22T07:33:00Z',
+    amount_given: 1.25,
+    notes: 'Added warm water',
+    created_at: '2025-10-22T07:33:00Z',
+    updated_at: '2025-10-22T07:33:00Z'
+  },
+  {
+    id: '00000000-0000-0000-0000-000000000125',
+    dog_id: MOCK_DOG_IDS.JETT,
+    nutrition_plan_id: '00000000-0000-0000-0000-000000000052',
+    meal_time: '17:30',
+    meal_name: 'Dinner',
+    scheduled_date: '2025-10-21',
+    completed_at: '2025-10-21T17:28:00Z',
+    amount_given: 1.25,
+    notes: null,
+    created_at: '2025-10-21T17:28:00Z',
+    updated_at: '2025-10-21T17:28:00Z'
+  },
+  {
+    id: '00000000-0000-0000-0000-000000000126',
+    dog_id: MOCK_DOG_IDS.JETT,
+    nutrition_plan_id: '00000000-0000-0000-0000-000000000052',
+    meal_time: '07:30',
+    meal_name: 'Breakfast',
+    scheduled_date: '2025-10-21',
+    completed_at: '2025-10-21T07:35:00Z',
+    amount_given: 1.25,
+    notes: null,
+    created_at: '2025-10-21T07:35:00Z',
+    updated_at: '2025-10-21T07:35:00Z'
+  }
+];
+
+export const MOCK_TRAINING_SESSIONS: any[] = [
+  {
+    id: '00000000-0000-0000-0000-000000000131',
+    dog_id: MOCK_DOG_IDS.SUKI,
+    trick_id: 'bbc0357d-2d9e-4ae1-8ac8-e9af77a82852',
+    session_date: '2025-10-20T15:00:00Z',
+    duration_minutes: 10,
+    success_rating: 4,
+    progress_status: 'learning',
+    notes: 'Great focus today',
+    created_at: '2025-10-20T15:00:00Z'
+  },
+  {
+    id: '00000000-0000-0000-0000-000000000132',
+    dog_id: MOCK_DOG_IDS.JETT,
+    trick_id: 'bbc0357d-2d9e-4ae1-8ac8-e9af77a82852',
+    session_date: '2025-10-19T14:30:00Z',
+    duration_minutes: 12,
+    success_rating: 5,
+    progress_status: 'learning',
+    notes: 'Quick learner! Very enthusiastic.',
+    created_at: '2025-10-19T14:30:00Z'
+  },
+  {
+    id: '00000000-0000-0000-0000-000000000133',
+    dog_id: MOCK_DOG_IDS.JETT,
+    trick_id: 'bbc0357d-2d9e-4ae1-8ac8-e9af77a82852',
+    session_date: '2025-10-21T16:00:00Z',
+    duration_minutes: 8,
+    success_rating: 4,
+    progress_status: 'learning',
+    notes: 'Consistent performance',
+    created_at: '2025-10-21T16:00:00Z'
   }
 ];
 

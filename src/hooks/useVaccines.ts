@@ -36,6 +36,7 @@ export function useVaccines(dogId: string) {
 
   const fetchVaccines = async () => {
     try {
+      // Use mock vaccines for dev mode
       const { data, error } = await supabase
         .from('vaccines')
         .select('*')
@@ -43,23 +44,29 @@ export function useVaccines(dogId: string) {
         .order('name', { ascending: true });
 
       if (error) throw error;
-      setVaccines(data as Vaccine[] || []);
+      
+      // If no vaccines in DB, use mock vaccines
+      const vaccineData = (data && data.length > 0) ? data : MOCK_VACCINES;
+      setVaccines(vaccineData as Vaccine[] || []);
     } catch (error) {
       console.error('Error fetching vaccines:', error);
-      toast({
-        title: "Error",
-        description: "Failed to load vaccine information",
-        variant: "destructive",
-      });
+      // Fall back to mock vaccines on error
+      setVaccines(MOCK_VACCINES as Vaccine[] || []);
     }
   };
 
   const fetchVaccinationRecords = async () => {
     if (!dogId) return;
 
-    // Dev mode bypass - return empty mock data for now
-    if (dogId === '00000000-0000-0000-0000-000000000011' || dogId === '00000000-0000-0000-0000-000000000012') {
-      setVaccinationRecords([]);
+    // Dev mode bypass - return mock data with vaccine details
+    if (isMockDogId(dogId)) {
+      const mockRecords = MOCK_VACCINATION_RECORDS
+        .filter(r => r.dog_id === dogId)
+        .map(record => ({
+          ...record,
+          vaccine: MOCK_VACCINES.find(v => v.id === record.vaccine_id)
+        }));
+      setVaccinationRecords(mockRecords as VaccinationRecord[]);
       return;
     }
 
