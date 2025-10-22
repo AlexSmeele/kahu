@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
-import { ArrowRight, ArrowLeft, X, Heart, BookOpen, Search, Check, ChevronRight } from 'lucide-react';
+import { ArrowRight, ArrowLeft, X, BookOpen, Search, Check, ChevronRight } from 'lucide-react';
 import { MockDogOnboarding } from './MockDogOnboarding';
+import logoIcon from '@/assets/logo-transparent.png';
 
 interface PreSignupJourneyProps {
   onComplete: () => void;
@@ -181,8 +182,8 @@ export function PreSignupJourney({ onComplete }: PreSignupJourneyProps) {
         
         <div className="flex-1 flex flex-col p-6 pt-20">
           <div className="text-center mb-12">
-            <div className="mx-auto w-20 h-20 bg-gradient-to-r from-primary to-primary-hover rounded-full flex items-center justify-center mb-6">
-              <Heart className="w-10 h-10 text-primary-foreground" />
+            <div className="mx-auto w-20 h-20 rounded-full overflow-hidden mb-6 bg-primary">
+              <img src={logoIcon} alt="Kahu Logo" className="w-full h-full object-cover block" />
             </div>
             <h1 className="text-3xl font-bold text-foreground mb-3">
               Welcome to Kahu!
