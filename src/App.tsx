@@ -10,6 +10,7 @@ import { ErrorBoundary } from "@/components/ErrorBoundary";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import AcceptInvitation from "./pages/AcceptInvitation";
+import AIChat from "./pages/AIChat";
 import NotFound from "./pages/NotFound";
 import { PasswordGate } from "@/components/PasswordGate";
 import { logger } from "@/lib/logger";
@@ -55,6 +56,11 @@ const App = () => {
                     <Route path="/" element={
                       <ProtectedRoute>
                         <Index />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="/ai-chat" element={
+                      <ProtectedRoute>
+                        <AIChat />
                       </ProtectedRoute>
                     } />
                     {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

@@ -11,8 +11,6 @@ import { ActivityRecordModal } from "@/components/home/ActivityRecordModal";
 import { QuickNoteModal } from "@/components/home/QuickNoteModal";
 import { useHomeData } from "@/hooks/useHomeData";
 import { Skeleton } from "@/components/ui/skeleton";
-import { TrainerScreenVariantSelector } from "@/components/screens/TrainerScreenVariantSelector";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
 import type { TabType } from "@/components/layout/BottomNavigation";
 
 interface HomeScreenProps {
@@ -24,7 +22,6 @@ interface HomeScreenProps {
 export function HomeScreen({ selectedDogId, onDogChange, onTabChange }: HomeScreenProps) {
   const [showActivityModal, setShowActivityModal] = useState(false);
   const [showNoteModal, setShowNoteModal] = useState(false);
-  const [showTrainer, setShowTrainer] = useState(false);
   
   const {
     loading,
@@ -56,7 +53,7 @@ export function HomeScreen({ selectedDogId, onDogChange, onTabChange }: HomeScre
           <div className="container py-4 space-y-4">
           <TodaysGoalsBanner
             nextTrick={nextTrick ? { name: nextTrick.trick?.name || 'Unknown', total_sessions: nextTrick.total_sessions } : undefined}
-            onActionClick={() => nextTrick ? onTabChange('tricks') : setShowTrainer(true)}
+            onActionClick={() => nextTrick ? onTabChange('tricks') : onTabChange('tricks')}
           />
 
           {urgentAlerts.length > 0 && (
@@ -75,19 +72,13 @@ export function HomeScreen({ selectedDogId, onDogChange, onTabChange }: HomeScre
               onClick={() => onTabChange('tricks')}
             />
             <QuickNoteTile onClick={() => setShowNoteModal(true)} />
-            <GetAdviceCard onClick={() => setShowTrainer(true)} />
+            <GetAdviceCard />
           </div>
         </div>
       </div>
 
       <ActivityRecordModal dogId={selectedDogId} isOpen={showActivityModal} onClose={() => setShowActivityModal(false)} />
       <QuickNoteModal dogId={selectedDogId} isOpen={showNoteModal} onClose={() => setShowNoteModal(false)} />
-
-      <Dialog open={showTrainer} onOpenChange={setShowTrainer}>
-        <DialogContent className="w-[95vw] sm:max-w-[900px] h-[calc(100vh-4rem)] max-h-[calc(100vh-4rem)] p-0 flex flex-col overflow-hidden">
-          <TrainerScreenVariantSelector />
-        </DialogContent>
-      </Dialog>
     </>
   );
 }

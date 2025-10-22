@@ -1,13 +1,11 @@
 import { MessageCircle } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
-interface GetAdviceCardProps {
-  onClick: () => void;
-}
-
-export const GetAdviceCard = ({ onClick }: GetAdviceCardProps) => {
+export const GetAdviceCard = () => {
+  const navigate = useNavigate();
   return (
     <button
-      onClick={onClick}
+      onClick={() => navigate('/ai-chat')}
       className="rounded-2xl border bg-card p-4 hover:bg-accent transition-all hover:scale-[1.02] text-left w-full h-full"
     >
       <div className="flex items-center gap-2 mb-3">
