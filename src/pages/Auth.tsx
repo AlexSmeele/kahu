@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
@@ -205,22 +204,22 @@ export default function Auth() {
   }
 
   return (
-    <div className="h-full bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex items-center justify-center p-4">
-      <Card className="w-full max-w-md border-0 shadow-[var(--shadow-large)]">
-        <CardHeader className="text-center pb-6">
-          <img src={logoIcon} alt="Kahu Logo" className="mx-auto w-20 h-20 mb-4" />
-          <CardTitle className="text-2xl font-bold text-foreground">
+    <div className="h-full bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col overflow-y-auto">
+      <div className="flex-1 flex flex-col p-6">
+        <div className="text-center mb-8 pt-8">
+          <img src={logoIcon} alt="Kahu Logo" className="mx-auto w-24 h-24 mb-6" />
+          <h1 className="text-3xl font-bold text-foreground mb-2">
             Welcome to Kahu
-          </CardTitle>
-          <CardDescription className="text-muted-foreground">
+          </h1>
+          <p className="text-muted-foreground">
             {isSignUp 
               ? "Create your account to start your dog's journey" 
               : "Sign in to continue your dog's journey"
             }
-          </CardDescription>
-        </CardHeader>
+          </p>
+        </div>
 
-        <CardContent>
+        <div className="space-y-6 max-w-md mx-auto w-full">
           {/* Social Sign-In Options */}
           <div className="space-y-3 mb-6">
             <Button
@@ -399,8 +398,8 @@ export default function Auth() {
               </button>
             </div>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </div>
   );
 }

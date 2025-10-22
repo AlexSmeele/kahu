@@ -1,9 +1,7 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { ArrowRight, ArrowLeft, X, Heart, BookOpen, Search, Check, ChevronRight } from 'lucide-react';
-import { cn } from '@/lib/utils';
 import { MockDogOnboarding } from './MockDogOnboarding';
 
 interface PreSignupJourneyProps {
@@ -171,31 +169,31 @@ export function PreSignupJourney({ onComplete }: PreSignupJourneyProps) {
   // Initial step - owner vs prospective
   if (step === 'initial') {
     return (
-      <div className="h-full bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex items-center justify-center p-4">
-        <Card className="w-full max-w-md border-0 shadow-[var(--shadow-large)] relative">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={onComplete}
-            className="absolute top-4 right-4 z-10 h-8 w-8 p-0 hover:bg-muted"
-          >
-            <X className="w-4 h-4" />
-          </Button>
-          
-          <CardHeader className="text-center pb-6">
-            <div className="mx-auto w-16 h-16 bg-gradient-to-r from-primary to-primary-hover rounded-full flex items-center justify-center mb-4">
-              <Heart className="w-8 h-8 text-primary-foreground" />
+      <div className="h-full bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col">
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={onComplete}
+          className="absolute top-4 right-4 z-10 h-8 w-8 p-0 hover:bg-muted"
+        >
+          <X className="w-4 h-4" />
+        </Button>
+        
+        <div className="flex-1 flex flex-col p-6 pt-20">
+          <div className="text-center mb-12">
+            <div className="mx-auto w-20 h-20 bg-gradient-to-r from-primary to-primary-hover rounded-full flex items-center justify-center mb-6">
+              <Heart className="w-10 h-10 text-primary-foreground" />
             </div>
-            <CardTitle className="text-2xl font-bold text-foreground">
+            <h1 className="text-3xl font-bold text-foreground mb-3">
               Welcome to Kahu!
-            </CardTitle>
+            </h1>
             <p className="text-muted-foreground">
               Your journey to better dog care starts here
             </p>
-          </CardHeader>
+          </div>
 
-          <CardContent className="space-y-4">
-            <p className="text-center text-sm text-muted-foreground mb-6">
+          <div className="space-y-4 mb-8">
+            <p className="text-center text-sm text-muted-foreground mb-4">
               Which best describes you?
             </p>
 
@@ -228,8 +226,8 @@ export function PreSignupJourney({ onComplete }: PreSignupJourneyProps) {
                 <ChevronRight className="w-5 h-5 text-muted-foreground" />
               </div>
             </Button>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </div>
     );
   }
@@ -237,35 +235,35 @@ export function PreSignupJourney({ onComplete }: PreSignupJourneyProps) {
   // Journey selection for prospective owners
   if (step === 'journey-select') {
     return (
-      <div className="h-full bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex items-center justify-center p-4">
-        <Card className="w-full max-w-md border-0 shadow-[var(--shadow-large)] relative">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => setStep('initial')}
-            className="absolute top-4 left-4 z-10 h-8 w-8 p-0 hover:bg-muted"
-          >
-            <ArrowLeft className="w-4 h-4" />
-          </Button>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={onComplete}
-            className="absolute top-4 right-4 z-10 h-8 w-8 p-0 hover:bg-muted"
-          >
-            <X className="w-4 h-4" />
-          </Button>
-          
-          <CardHeader className="text-center pb-6">
-            <CardTitle className="text-xl font-bold text-foreground">
+      <div className="h-full bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col">
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => setStep('initial')}
+          className="absolute top-4 left-4 z-10 h-8 w-8 p-0 hover:bg-muted"
+        >
+          <ArrowLeft className="w-4 h-4" />
+        </Button>
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={onComplete}
+          className="absolute top-4 right-4 z-10 h-8 w-8 p-0 hover:bg-muted"
+        >
+          <X className="w-4 h-4" />
+        </Button>
+        
+        <div className="flex-1 flex flex-col p-6 pt-20">
+          <div className="text-center mb-12">
+            <h2 className="text-2xl font-bold text-foreground mb-2">
               What would you like to do?
-            </CardTitle>
+            </h2>
             <p className="text-muted-foreground">
               Choose your learning path
             </p>
-          </CardHeader>
+          </div>
 
-          <CardContent className="space-y-4">
+          <div className="space-y-4 mb-8">
             <Button
               size="lg"
               variant="outline"
@@ -301,8 +299,8 @@ export function PreSignupJourney({ onComplete }: PreSignupJourneyProps) {
                 <ChevronRight className="w-5 h-5 text-muted-foreground" />
               </div>
             </Button>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </div>
     );
   }
@@ -313,26 +311,26 @@ export function PreSignupJourney({ onComplete }: PreSignupJourneyProps) {
     const progress = ((currentLesson + 1) / dogOwnershipLessons.length) * 100;
 
     return (
-      <div className="h-full bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex items-center justify-center p-4">
-        <Card className="w-full max-w-lg border-0 shadow-[var(--shadow-large)] relative">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => setStep('journey-select')}
-            className="absolute top-4 left-4 z-10 h-8 w-8 p-0 hover:bg-muted"
-          >
-            <ArrowLeft className="w-4 h-4" />
-          </Button>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={onComplete}
-            className="absolute top-4 right-4 z-10 h-8 w-8 p-0 hover:bg-muted"
-          >
-            <X className="w-4 h-4" />
-          </Button>
-          
-          <CardHeader className="text-center pb-6">
+      <div className="h-full bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col overflow-y-auto">
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => setStep('journey-select')}
+          className="absolute top-4 left-4 z-10 h-8 w-8 p-0 hover:bg-muted"
+        >
+          <ArrowLeft className="w-4 h-4" />
+        </Button>
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={onComplete}
+          className="absolute top-4 right-4 z-10 h-8 w-8 p-0 hover:bg-muted"
+        >
+          <X className="w-4 h-4" />
+        </Button>
+        
+        <div className="flex-1 flex flex-col p-6 pt-20">
+          <div className="text-center mb-8">
             <div className="mb-4">
               <div className="flex justify-between text-sm text-muted-foreground mb-2">
                 <span>Lesson {currentLesson + 1} of {dogOwnershipLessons.length}</span>
@@ -340,12 +338,12 @@ export function PreSignupJourney({ onComplete }: PreSignupJourneyProps) {
               </div>
               <Progress value={progress} className="w-full" />
             </div>
-            <CardTitle className="text-xl font-bold text-foreground">
+            <h2 className="text-2xl font-bold text-foreground">
               {lesson.title}
-            </CardTitle>
-          </CardHeader>
+            </h2>
+          </div>
 
-          <CardContent className="space-y-6">
+          <div className="space-y-6 mb-8">
             <p className="text-muted-foreground leading-relaxed">
               {lesson.content}
             </p>
@@ -364,7 +362,7 @@ export function PreSignupJourney({ onComplete }: PreSignupJourneyProps) {
 
             <Button
               onClick={completeLesson}
-              className="w-full"
+              className="w-full mt-auto"
               size="lg"
             >
               {currentLesson < dogOwnershipLessons.length - 1 ? (
@@ -376,8 +374,8 @@ export function PreSignupJourney({ onComplete }: PreSignupJourneyProps) {
                 'Complete Learning Journey'
               )}
             </Button>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </div>
     );
   }
@@ -388,26 +386,26 @@ export function PreSignupJourney({ onComplete }: PreSignupJourneyProps) {
     const progress = ((currentQuestion + 1) / breedQuizQuestions.length) * 100;
 
     return (
-      <div className="h-full bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex items-center justify-center p-4">
-        <Card className="w-full max-w-lg border-0 shadow-[var(--shadow-large)] relative">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => setStep('journey-select')}
-            className="absolute top-4 left-4 z-10 h-8 w-8 p-0 hover:bg-muted"
-          >
-            <ArrowLeft className="w-4 h-4" />
-          </Button>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={onComplete}
-            className="absolute top-4 right-4 z-10 h-8 w-8 p-0 hover:bg-muted"
-          >
-            <X className="w-4 h-4" />
-          </Button>
-          
-          <CardHeader className="text-center pb-6">
+      <div className="h-full bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col">
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => setStep('journey-select')}
+          className="absolute top-4 left-4 z-10 h-8 w-8 p-0 hover:bg-muted"
+        >
+          <ArrowLeft className="w-4 h-4" />
+        </Button>
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={onComplete}
+          className="absolute top-4 right-4 z-10 h-8 w-8 p-0 hover:bg-muted"
+        >
+          <X className="w-4 h-4" />
+        </Button>
+        
+        <div className="flex-1 flex flex-col p-6 pt-20">
+          <div className="text-center mb-8">
             <div className="mb-4">
               <div className="flex justify-between text-sm text-muted-foreground mb-2">
                 <span>Question {currentQuestion + 1} of {breedQuizQuestions.length}</span>
@@ -415,12 +413,12 @@ export function PreSignupJourney({ onComplete }: PreSignupJourneyProps) {
               </div>
               <Progress value={progress} className="w-full" />
             </div>
-            <CardTitle className="text-xl font-bold text-foreground">
+            <h2 className="text-2xl font-bold text-foreground">
               Breed Matching Quiz
-            </CardTitle>
-          </CardHeader>
+            </h2>
+          </div>
 
-          <CardContent className="space-y-6">
+          <div className="space-y-6 mb-8">
             <h3 className="text-lg font-semibold text-foreground">
               {question.question}
             </h3>
@@ -441,8 +439,8 @@ export function PreSignupJourney({ onComplete }: PreSignupJourneyProps) {
             <p className="text-sm text-muted-foreground">
               {question.explanation}
             </p>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </div>
     );
   }
@@ -452,27 +450,27 @@ export function PreSignupJourney({ onComplete }: PreSignupJourneyProps) {
     const recommendations = getBreedRecommendations();
 
     return (
-      <div className="h-full bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex items-center justify-center p-4">
-        <Card className="w-full max-w-lg border-0 shadow-[var(--shadow-large)] relative">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={onComplete}
-            className="absolute top-4 right-4 z-10 h-8 w-8 p-0 hover:bg-muted"
-          >
-            <X className="w-4 h-4" />
-          </Button>
-          
-          <CardHeader className="text-center pb-6">
-            <CardTitle className="text-xl font-bold text-foreground">
+      <div className="h-full bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col overflow-y-auto">
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={onComplete}
+          className="absolute top-4 right-4 z-10 h-8 w-8 p-0 hover:bg-muted"
+        >
+          <X className="w-4 h-4" />
+        </Button>
+        
+        <div className="flex-1 flex flex-col p-6 pt-20">
+          <div className="text-center mb-8">
+            <h2 className="text-2xl font-bold text-foreground mb-2">
               Your Breed Matches!
-            </CardTitle>
+            </h2>
             <p className="text-muted-foreground">
               Based on your answers, these breeds might be perfect for you
             </p>
-          </CardHeader>
+          </div>
 
-          <CardContent className="space-y-6">
+          <div className="space-y-6 mb-8">
             <div className="space-y-3">
               {recommendations.map((breed, index) => (
                 <div key={index} className="p-4 border rounded-lg bg-accent/20">
@@ -493,14 +491,14 @@ export function PreSignupJourney({ onComplete }: PreSignupJourneyProps) {
 
             <Button
               onClick={() => setStep('mockflow')}
-              className="w-full"
+              className="w-full mt-auto"
               size="lg"
             >
               Continue to Kahu Demo
               <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </div>
     );
   }
