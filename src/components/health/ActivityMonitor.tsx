@@ -129,7 +129,7 @@ export function ActivityMonitor({ dogId }: ActivityMonitorProps) {
       <div className="grid grid-cols-2 gap-4">
         <Dialog open={isAddingActivity} onOpenChange={setIsAddingActivity}>
           <DialogTrigger asChild>
-            <Button variant="outline" className="h-12">
+            <Button variant="secondary" className="h-12 bg-card hover:bg-accent border">
               <Plus className="h-4 w-4 mr-2" />
               Add Activity
             </Button>
