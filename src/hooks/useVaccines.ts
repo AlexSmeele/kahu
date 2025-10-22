@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { MOCK_VACCINES, MOCK_VACCINATION_RECORDS, isMockDogId } from "@/lib/mockData";
 
 export interface Vaccine {
   id: string;
