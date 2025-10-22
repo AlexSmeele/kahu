@@ -41,7 +41,7 @@ export function useVetVisits(dogId?: string) {
 
       // Convert health records to vet visits format
       const convertedVisits: VetVisit[] = (data || []).map(record => {
-        const visitData = record.notes ? JSON.parse(record.notes) : {};
+        const visitData = (() => { try { return record.notes ? JSON.parse(record.notes) : {}; } catch { return {}; } })();
         return {
           id: record.id,
           date: new Date(record.date),

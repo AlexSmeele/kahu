@@ -114,7 +114,19 @@ export function HealthNotesModal({ isOpen, onClose, dogName, dogId }: HealthNote
     }
   };
 
-  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+  // Safely parse notes JSON stored as string; tolerate plain text
+  const safeParseNotes = (value?: string) => {
+    try {
+      if (!value || typeof value !== 'string') return {};
+      const t = value.trim();
+      if (!t.startsWith('{') && !t.startsWith('[')) return {};
+      return JSON.parse(t);
+    } catch {
+      return {};
+    }
+  };
+
+   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
     const validFiles = files.filter(file => {
       const isImage = file.type.startsWith('image/');
@@ -177,7 +189,7 @@ export function HealthNotesModal({ isOpen, onClose, dogName, dogId }: HealthNote
     const record = healthRecords.find(r => r.id === noteId);
     if (!record) return;
 
-    const currentNotes = record.notes ? JSON.parse(record.notes) : {};
+    const currentNotes = safeParseNotes(record.notes) as any;
     const newResolved = !currentNotes.resolved;
 
     await updateHealthRecord(noteId, {
@@ -193,7 +205,7 @@ export function HealthNotesModal({ isOpen, onClose, dogName, dogId }: HealthNote
     const convertedNotes: HealthNote[] = healthRecords
       .filter(record => record.record_type === 'note')
       .map(record => {
-        const noteData = record.notes ? JSON.parse(record.notes) : {};
+        const noteData = safeParseNotes(record.notes);
         return {
           id: record.id,
           date: new Date(record.date),
