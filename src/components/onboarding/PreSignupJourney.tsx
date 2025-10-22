@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { ArrowRight, ArrowLeft, X, BookOpen, Search, Check, ChevronRight } from 'lucide-react';
 import { MockDogOnboarding } from './MockDogOnboarding';
-import logoIcon from '@/assets/logo-transparent.png';
+import logoIcon from '@/assets/logo-new.png';
 
 interface PreSignupJourneyProps {
   onComplete: () => void;

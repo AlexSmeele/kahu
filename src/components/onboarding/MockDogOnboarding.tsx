@@ -8,7 +8,7 @@ import { Camera, X, ArrowLeft, Check } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Checkbox } from "@/components/ui/checkbox";
-import logoImage from "@/assets/logo-transparent.png";
+import logoImage from "@/assets/logo-new.png";
 import heroImage from "@/assets/hero-image.jpg";
 
 interface MockDogOnboardingProps {

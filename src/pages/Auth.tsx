@@ -8,7 +8,7 @@ import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { Mail, Lock, User, TestTube } from 'lucide-react';
 import { PreSignupJourney } from '@/components/onboarding/PreSignupJourney';
-import logoIcon from '@/assets/logo-transparent.png';
+import logoIcon from '@/assets/logo-new.png';
 
 export default function Auth() {
   const [isSignUp, setIsSignUp] = useState(false);

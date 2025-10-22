@@ -1,4 +1,4 @@
-import logoTransparent from "@/assets/logo-transparent.png";
+import logoTransparent from "@/assets/logo-new.png";
 
 interface PageLogoProps {
   className?: string;

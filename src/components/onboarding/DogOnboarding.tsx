@@ -11,7 +11,7 @@ import { BreedAutocomplete } from '@/components/ui/breed-autocomplete';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import heroImage from '@/assets/hero-image.jpg';
-import logoIcon from '@/assets/logo-transparent.png';
+import logoIcon from '@/assets/logo-new.png';
 
 interface DogOnboardingProps {
   onComplete: (dog: Dog) => void;
