@@ -204,14 +204,14 @@ export default function Auth() {
   }
 
   return (
-    <div className="h-full bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col overflow-y-auto">
-      <div className="flex-1 flex flex-col p-6">
-        <div className="text-center mb-8 pt-8">
-          <img src={logoIcon} alt="Kahu Logo" className="mx-auto w-24 h-24 mb-6" />
-          <h1 className="text-3xl font-bold text-foreground mb-2">
+    <div className="h-full bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col overflow-hidden">
+      <div className="flex-1 flex flex-col p-4">
+        <div className="text-center mb-6 pt-4">
+          <img src={logoIcon} alt="Kahu Logo" className="mx-auto w-16 h-16 mb-3 bg-transparent" />
+          <h1 className="text-2xl font-bold text-foreground mb-1">
             Welcome to Kahu
           </h1>
-          <p className="text-muted-foreground">
+          <p className="text-sm text-muted-foreground">
             {isSignUp 
               ? "Create your account to start your dog's journey" 
               : "Sign in to continue your dog's journey"
@@ -219,9 +219,9 @@ export default function Auth() {
           </p>
         </div>
 
-        <div className="space-y-6 max-w-md mx-auto w-full">
+        <div className="space-y-4 max-w-md mx-auto w-full">
           {/* Social Sign-In Options */}
-          <div className="space-y-3 mb-6">
+          <div className="space-y-2">
             <Button
               type="button"
               variant="outline"
@@ -283,54 +283,54 @@ export default function Auth() {
             </div>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-3">
             {isSignUp && (
-              <div className="space-y-2">
-                <label className="block text-sm font-medium text-foreground">
+              <div className="space-y-1">
+                <label className="block text-xs font-medium text-foreground">
                   Display Name
                 </label>
                 <div className="relative">
-                  <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                  <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                   <Input
                     type="text"
                     value={displayName}
                     onChange={(e) => setDisplayName(e.target.value)}
                     placeholder="Enter your name"
-                    className="pl-10"
+                    className="pl-9 h-10"
                   />
                 </div>
               </div>
             )}
 
-            <div className="space-y-2">
-              <label className="block text-sm font-medium text-foreground">
+            <div className="space-y-1">
+              <label className="block text-xs font-medium text-foreground">
                 Email
               </label>
               <div className="relative">
-                <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                 <Input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your email"
-                  className="pl-10"
+                  className="pl-9 h-10"
                   required
                 />
               </div>
             </div>
 
-            <div className="space-y-2">
-              <label className="block text-sm font-medium text-foreground">
+            <div className="space-y-1">
+              <label className="block text-xs font-medium text-foreground">
                 Password
               </label>
               <div className="relative">
-                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                 <Input
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter your password"
-                  className="pl-10"
+                  className="pl-9 h-10"
                   required
                   minLength={6}
                 />
@@ -339,14 +339,14 @@ export default function Auth() {
 
             <Button 
               type="submit" 
-              className="w-full btn-primary"
+              className="w-full btn-primary h-10"
               disabled={loading}
             >
               {loading ? 'Please wait...' : (isSignUp ? 'Create Account' : 'Sign In')}
             </Button>
           </form>
 
-          <div className="mt-6 space-y-4">
+          <div className="mt-4 space-y-3">
             {/* Mock Flow Button */}
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
@@ -362,7 +362,7 @@ export default function Auth() {
             <Button
               type="button"
               variant="default"
-              className="w-full bg-gradient-to-r from-primary to-primary-hover"
+              className="w-full bg-gradient-to-r from-primary to-primary-hover h-9 text-sm"
               onClick={() => {
                 devBypass();
                 toast({
@@ -371,25 +371,25 @@ export default function Auth() {
                 });
               }}
             >
-              <TestTube className="w-4 h-4 mr-2" />
+              <TestTube className="w-3 h-3 mr-2" />
               Skip Auth (Dev Mode)
             </Button>
 
             <Button
               type="button"
               variant="outline"
-              className="w-full border-dashed border-muted-foreground/30"
+              className="w-full border-dashed border-muted-foreground/30 h-9 text-sm"
               onClick={() => setShowMockFlow(true)}
             >
-              <TestTube className="w-4 h-4 mr-2" />
+              <TestTube className="w-3 h-3 mr-2" />
               New User Mock Flow
             </Button>
 
-            <div className="text-center">
+            <div className="text-center pt-1">
               <button
                 type="button"
                 onClick={() => setIsSignUp(!isSignUp)}
-                className="text-sm text-primary hover:text-primary-hover transition-colors"
+                className="text-xs text-primary hover:text-primary-hover transition-colors"
               >
                 {isSignUp 
                   ? "Already have an account? Sign in" 
