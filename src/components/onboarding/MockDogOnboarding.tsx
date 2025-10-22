@@ -138,64 +138,62 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
   // Step 1: Welcome & Name
   if (step === 1) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex items-center justify-center p-4 animate-fade-in">
-        <Card className="w-full max-w-md border-0 shadow-[var(--shadow-large)] animate-scale-in relative">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={onComplete}
-            className="absolute top-4 right-4 z-10 h-8 w-8 p-0 hover:bg-muted"
-          >
-            <X className="w-4 h-4" />
-          </Button>
-          
-          <div className="px-6 pt-6 pb-4">
-            <Badge variant="secondary" className="mb-4 bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-200">
-              MOCK MODE - No data will be saved
-            </Badge>
-            <Progress value={getProgressPercentage()} className="h-2 mb-2" />
-            <p className="text-xs text-muted-foreground text-center">Step {step} of {TOTAL_STEPS}</p>
+      <div className="min-h-screen bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in">
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={onComplete}
+          className="absolute top-4 right-4 z-10 h-8 w-8 p-0 hover:bg-muted"
+        >
+          <X className="w-4 h-4" />
+        </Button>
+        
+        <div className="px-6 pt-6 pb-4">
+          <Badge variant="secondary" className="mb-4 bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-200">
+            MOCK MODE - No data will be saved
+          </Badge>
+          <Progress value={getProgressPercentage()} className="h-2 mb-2" />
+          <p className="text-xs text-muted-foreground text-center">Step {step} of {TOTAL_STEPS}</p>
+        </div>
+
+        <div className="flex-1 flex flex-col px-6 pb-6">
+          <div className="text-center mb-6">
+            <img src={logoImage} alt="Kahu Logo" className="w-20 h-20 mx-auto mb-4" />
+            <h1 className="text-3xl font-bold mb-2">Welcome to Kahu!</h1>
+            <p className="text-muted-foreground">Let's start training your best friend</p>
           </div>
 
-          <CardHeader className="text-center pb-4 pt-0">
-            <img src={logoImage} alt="Kahu Logo" className="w-16 h-16 mx-auto mb-4" />
-            <CardTitle className="text-2xl font-bold">Welcome to Kahu!</CardTitle>
-            <CardDescription>Let's start training your best friend</CardDescription>
-          </CardHeader>
+          <div className="w-full mb-6">
+            <img 
+              src={heroImage} 
+              alt="Happy dog"
+              className="w-full h-48 object-cover rounded-lg"
+            />
+          </div>
 
-          <CardContent className="space-y-6">
-            <div className="w-full">
-              <img 
-                src={heroImage} 
-                alt="Happy dog"
-                className="w-full h-40 object-cover rounded-lg"
-              />
-            </div>
+          <div className="space-y-2 mb-6">
+            <Label htmlFor="dogName">What's your dog's name?</Label>
+            <Input
+              id="dogName"
+              type="text"
+              value={dogData.name}
+              onChange={(e) => setDogData(prev => ({ ...prev, name: e.target.value }))}
+              placeholder="e.g., Max, Luna, Charlie"
+              className="text-lg"
+            />
+          </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="dogName">What's your dog's name?</Label>
-              <Input
-                id="dogName"
-                type="text"
-                value={dogData.name}
-                onChange={(e) => setDogData(prev => ({ ...prev, name: e.target.value }))}
-                placeholder="e.g., Max, Luna, Charlie"
-                className="text-lg"
-              />
-            </div>
-
-            <div className="flex gap-3">
-              <Button
-                size="lg"
-                onClick={() => setStep(2)}
-                disabled={!isStepValid()}
-                className="w-full"
-              >
-                Continue
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
+          <div className="mt-auto">
+            <Button
+              size="lg"
+              onClick={() => setStep(2)}
+              disabled={!isStepValid()}
+              className="w-full"
+            >
+              Continue
+            </Button>
+          </div>
+        </div>
       </div>
     );
   }

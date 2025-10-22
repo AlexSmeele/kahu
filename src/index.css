@@ -135,8 +135,12 @@
     @apply border-border;
   }
 
+  html, body {
+    background: hsl(220, 10%, 50%);
+  }
+
   body {
-    @apply bg-background text-foreground overflow-hidden;
+    @apply text-foreground overflow-hidden;
     min-height: 100vh;
     min-height: 100dvh; /* Dynamic viewport height for mobile browsers */
     /* Enable smooth scrolling on iOS */
