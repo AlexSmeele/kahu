@@ -35,6 +35,13 @@ export function useTricks(dogId?: string) {
   const { toast } = useToast();
 
   const fetchTricks = async () => {
+    // Return mock data for dev mode
+    if (dogId && isMockDogId(dogId)) {
+      const { MOCK_TRICKS } = await import('@/lib/mockData');
+      setTricks(MOCK_TRICKS as Trick[]);
+      return;
+    }
+
     try {
       const { data, error } = await supabase
         .from('tricks')
@@ -291,7 +298,7 @@ export function useTricks(dogId?: string) {
 
   useEffect(() => {
     fetchTricks();
-  }, []);
+  }, [dogId]);
 
   useEffect(() => {
     if (dogId) {
