@@ -16,6 +16,11 @@ export interface Dog {
   gender?: 'male' | 'female';
   avatar_url?: string;
   sort_order?: number;
+  age_range?: string; // Age ranges: under_6m, 6_12m, 1_2y, 2_7y, over_7y
+  known_commands?: string[]; // Commands the dog knows
+  behavioral_goals?: string[]; // Behavioral issues to work on
+  training_time_commitment?: string; // Daily training time: under_5min, 5_10min, 10_20min, over_20min
+  is_shelter_dog?: boolean; // Whether adopted from shelter
   created_at: string;
   updated_at: string;
 }
@@ -105,11 +110,16 @@ export function useDogs() {
           id: '00000000-0000-0000-0000-000000000011',
           name: 'Suki',
           breed_id: '4106b76f-4caa-49a7-b058-bddf343e3c91',
-          breed: { breed: 'Affenpinscher' },
-          birthday: '2015-02-22',
+          breed: { breed: 'Mixed' },
+          birthday: '2020-03-15',
           weight: 12,
           gender: 'female',
           avatar_url: 'https://bhkqdxhyceflfesxrztm.supabase.co/storage/v1/object/public/dog-photos/b197063d-9f5b-42c3-888e-3e85e8829141/b450a8fe-855c-4176-b9bc-8da19de0ec30_1757920194150.jpg',
+          age_range: '2_7y',
+          known_commands: ['Name', 'Sit', 'Stay', 'Come'],
+          behavioral_goals: ['Barking', 'Jumping'],
+          training_time_commitment: '10_20min',
+          is_shelter_dog: true,
           sort_order: 1,
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString(),
@@ -118,11 +128,16 @@ export function useDogs() {
           id: '00000000-0000-0000-0000-000000000012',
           name: 'Jett',
           breed_id: '4106b76f-4caa-49a7-b058-bddf343e3c91',
-          breed: { breed: 'Affenpinscher' },
-          birthday: '2023-12-18',
+          breed: { breed: 'Border Collie' },
+          birthday: '2022-08-20',
           weight: 19.5,
           gender: 'male',
           avatar_url: 'https://bhkqdxhyceflfesxrztm.supabase.co/storage/v1/object/public/dog-photos/b197063d-9f5b-42c3-888e-3e85e8829141/00cec743-bb6f-4895-8f10-5c2adabf8d72_1757920215636.jpg',
+          age_range: '1_2y',
+          known_commands: ['Name', 'Sit', 'Down', 'Stay', 'Come', 'Leave it'],
+          behavioral_goals: ['Pulling on leash'],
+          training_time_commitment: '5_10min',
+          is_shelter_dog: false,
           sort_order: 2,
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString(),
@@ -311,6 +326,11 @@ export function useDogs() {
         weight: dogData.weight,
         gender: dogData.gender,
         avatar_url: dogData.avatar_url,
+        age_range: dogData.age_range,
+        known_commands: dogData.known_commands || [],
+        behavioral_goals: dogData.behavioral_goals || [],
+        training_time_commitment: dogData.training_time_commitment,
+        is_shelter_dog: dogData.is_shelter_dog || false,
       };
 
       // Add the breed reference

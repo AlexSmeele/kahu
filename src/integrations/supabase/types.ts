@@ -116,7 +116,7 @@ export type Database = {
           action: string
           created_at: string
           id: string
-          ip_address: unknown | null
+          ip_address: unknown
           new_values: Json | null
           old_values: Json | null
           record_id: string | null
@@ -128,7 +128,7 @@ export type Database = {
           action: string
           created_at?: string
           id?: string
-          ip_address?: unknown | null
+          ip_address?: unknown
           new_values?: Json | null
           old_values?: Json | null
           record_id?: string | null
@@ -140,7 +140,7 @@ export type Database = {
           action?: string
           created_at?: string
           id?: string
-          ip_address?: unknown | null
+          ip_address?: unknown
           new_values?: Json | null
           old_values?: Json | null
           record_id?: string | null
@@ -444,7 +444,9 @@ export type Database = {
       }
       dogs: {
         Row: {
+          age_range: string | null
           avatar_url: string | null
+          behavioral_goals: Json | null
           birthday: string | null
           breed_id: string
           created_at: string
@@ -452,14 +454,19 @@ export type Database = {
           family_id: string | null
           gender: string | null
           id: string
+          is_shelter_dog: boolean | null
+          known_commands: Json | null
           name: string
           sort_order: number | null
+          training_time_commitment: string | null
           updated_at: string
           user_id: string
           weight: number | null
         }
         Insert: {
+          age_range?: string | null
           avatar_url?: string | null
+          behavioral_goals?: Json | null
           birthday?: string | null
           breed_id: string
           created_at?: string
@@ -467,14 +474,19 @@ export type Database = {
           family_id?: string | null
           gender?: string | null
           id?: string
+          is_shelter_dog?: boolean | null
+          known_commands?: Json | null
           name: string
           sort_order?: number | null
+          training_time_commitment?: string | null
           updated_at?: string
           user_id: string
           weight?: number | null
         }
         Update: {
+          age_range?: string | null
           avatar_url?: string | null
+          behavioral_goals?: Json | null
           birthday?: string | null
           breed_id?: string
           created_at?: string
@@ -482,8 +494,11 @@ export type Database = {
           family_id?: string | null
           gender?: string | null
           id?: string
+          is_shelter_dog?: boolean | null
+          known_commands?: Json | null
           name?: string
           sort_order?: number | null
+          training_time_commitment?: string | null
           updated_at?: string
           user_id?: string
           weight?: number | null
@@ -1463,10 +1478,7 @@ export type Database = {
         Args: { data: string; key_name?: string }
         Returns: string
       }
-      generate_invitation_token: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
+      generate_invitation_token: { Args: never; Returns: string }
       get_accessible_vet_clinics: {
         Args: { include_contact_info?: boolean; search_query?: string }
         Returns: {
@@ -1489,7 +1501,7 @@ export type Database = {
         }[]
       }
       get_user_invitations: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           accepted_at: string
           created_at: string
@@ -1502,33 +1514,13 @@ export type Database = {
         }[]
       }
       get_user_profile_secure: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           avatar_url: string
           created_at: string
           display_name: string
           id: string
         }[]
-      }
-      gtrgm_compress: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      gtrgm_decompress: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      gtrgm_in: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      gtrgm_options: {
-        Args: { "": unknown }
-        Returns: undefined
-      }
-      gtrgm_out: {
-        Args: { "": unknown }
-        Returns: unknown
       }
       is_family_admin: {
         Args: { p_family_id: string; p_user_id: string }
@@ -1538,10 +1530,7 @@ export type Database = {
         Args: { p_family_id: string; p_user_id: string }
         Returns: boolean
       }
-      mask_email: {
-        Args: { email: string }
-        Returns: string
-      }
+      mask_email: { Args: { email: string }; Returns: string }
       secure_vet_search: {
         Args: { search_term: string }
         Returns: {
@@ -1561,19 +1550,15 @@ export type Database = {
           verified: boolean | null
           website: string | null
         }[]
+        SetofOptions: {
+          from: "*"
+          to: "vet_clinics"
+          isOneToOne: false
+          isSetofReturn: true
+        }
       }
-      set_limit: {
-        Args: { "": number }
-        Returns: number
-      }
-      show_limit: {
-        Args: Record<PropertyKey, never>
-        Returns: number
-      }
-      show_trgm: {
-        Args: { "": string }
-        Returns: string[]
-      }
+      show_limit: { Args: never; Returns: number }
+      show_trgm: { Args: { "": string }; Returns: string[] }
       validate_invitation_token: {
         Args: { _token: string }
         Returns: {
