@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Heart, ArrowRight, ArrowLeft, Upload, X, Check } from 'lucide-react';
+import { ArrowRight, ArrowLeft, Upload, X, Check } from 'lucide-react';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { useDogs, Dog, calculateAge } from '@/hooks/useDogs';
@@ -11,6 +11,7 @@ import { BreedAutocomplete } from '@/components/ui/breed-autocomplete';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import heroImage from '@/assets/hero-image.jpg';
+import logoIcon from '@/assets/logo.png';
 
 interface DogOnboardingProps {
   onComplete: (dog: Dog) => void;
@@ -149,8 +150,8 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
           </div>
           
           <CardHeader className="text-center pb-6">
-            <div className="mx-auto w-16 h-16 bg-gradient-to-r from-primary to-primary-hover rounded-full flex items-center justify-center mb-4">
-              <Heart className="w-8 h-8 text-primary-foreground" />
+            <div className="mx-auto w-16 h-16 bg-primary rounded-full flex items-center justify-center mb-4 p-3">
+              <img src={logoIcon} alt="Kahu Logo" className="w-full h-full object-contain" />
             </div>
             <CardTitle className="text-2xl font-bold text-foreground">
               Welcome to Kahu!
@@ -669,8 +670,8 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
           </div>
           
           <CardHeader className="text-center pb-6">
-            <div className="mx-auto w-16 h-16 bg-gradient-to-r from-success to-success/80 rounded-full flex items-center justify-center mb-4">
-              <Heart className="w-8 h-8 text-success-foreground" />
+            <div className="mx-auto w-16 h-16 bg-success rounded-full flex items-center justify-center mb-4 p-3">
+              <img src={logoIcon} alt="Kahu Logo" className="w-full h-full object-contain brightness-0 invert" />
             </div>
             <CardTitle className="text-2xl font-bold text-foreground">
               Welcome, {formData.name}!
