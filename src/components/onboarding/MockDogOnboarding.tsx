@@ -9,7 +9,6 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Checkbox } from "@/components/ui/checkbox";
 import logoImage from "@/assets/logo-new.png";
-import heroImage from "@/assets/hero-image.jpg";
 
 interface MockDogOnboardingProps {
   onComplete: () => void;
@@ -158,17 +157,9 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
 
         <div className="flex-1 flex flex-col px-6 pb-6">
         <div className="text-center mb-6">
-<img src={logoImage} alt="Kahu Logo" className="w-26 h-26 mx-auto mb-4 object-contain block" />
+<img src={logoImage} alt="Kahu Logo" className="w-[83px] h-[83px] mx-auto mb-4 object-contain block" />
             <h1 className="text-3xl font-bold mb-2">Welcome to Kahu!</h1>
             <p className="text-muted-foreground">Let's start training your best friend</p>
-          </div>
-
-          <div className="w-full mb-6">
-            <img 
-              src={heroImage} 
-              alt="Happy dog"
-              className="w-full h-48 object-cover rounded-lg"
-            />
           </div>
 
           <div className="space-y-2 mb-6">

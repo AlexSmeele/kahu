@@ -10,7 +10,6 @@ import { useDogs, Dog, calculateAge } from '@/hooks/useDogs';
 import { BreedAutocomplete } from '@/components/ui/breed-autocomplete';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
-import heroImage from '@/assets/hero-image.jpg';
 import logoIcon from '@/assets/logo-new.png';
 
 interface DogOnboardingProps {
@@ -150,7 +149,7 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
           </div>
           
           <CardHeader className="text-center pb-6">
-<img src={logoIcon} alt="Kahu Logo" className="mx-auto w-26 h-26 mb-4 object-contain block" />
+<img src={logoIcon} alt="Kahu Logo" className="mx-auto w-[83px] h-[83px] mb-4 object-contain block" />
             <CardTitle className="text-2xl font-bold text-foreground">
               Welcome to Kahu!
             </CardTitle>
@@ -160,14 +159,6 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
           </CardHeader>
 
           <CardContent className="space-y-4">
-            <div className="w-full mb-6">
-              <img 
-                src={heroImage} 
-                alt="Happy dog"
-                className="w-full h-32 object-cover rounded-lg"
-              />
-            </div>
-
             <div className="space-y-2">
               <label className="block text-sm font-medium text-foreground">
                 What's your dog's name? *

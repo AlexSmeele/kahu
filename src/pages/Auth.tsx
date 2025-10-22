@@ -347,6 +347,19 @@ export default function Auth() {
           </form>
 
           <div className="mt-4 space-y-3">
+            <div className="text-center">
+              <button
+                type="button"
+                onClick={() => setIsSignUp(!isSignUp)}
+                className="text-xs text-primary hover:text-primary-hover transition-colors"
+              >
+                {isSignUp 
+                  ? "Already have an account? Sign in" 
+                  : "Don't have an account? Sign up"
+                }
+              </button>
+            </div>
+
             {/* Mock Flow Button */}
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
@@ -384,19 +397,6 @@ export default function Auth() {
               <TestTube className="w-3 h-3 mr-2" />
               New User Mock Flow
             </Button>
-
-            <div className="text-center pt-1">
-              <button
-                type="button"
-                onClick={() => setIsSignUp(!isSignUp)}
-                className="text-xs text-primary hover:text-primary-hover transition-colors"
-              >
-                {isSignUp 
-                  ? "Already have an account? Sign in" 
-                  : "Don't have an account? Sign up"
-                }
-              </button>
-            </div>
           </div>
         </div>
       </div>
