@@ -71,7 +71,7 @@ export const HealthCheckupModal = ({ isOpen, onClose, dogId }: HealthCheckupModa
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="w-[min(95vw,600px)] max-w-[95vw] h-[85vh] max-h-[85vh] p-0 overflow-hidden flex flex-col">
+      <DialogContent className="p-0 overflow-hidden flex flex-col">
         <DialogHeader className="p-4 pb-2">
           <DialogTitle>Weekly Health Checkup</DialogTitle>
           <div className="mt-2">
@@ -82,7 +82,7 @@ export const HealthCheckupModal = ({ isOpen, onClose, dogId }: HealthCheckupModa
           </div>
         </DialogHeader>
 
-        <div className="flex-1 overflow-y-auto px-4 pb-4">
+        <div className="flex-1 min-h-0 overflow-y-auto px-4 pb-4">
           <Current data={checkupData} setData={setData} />
         </div>
 
