@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Kahu Design System - Calming colors for dog wellness */
+/* Kahu Design System - Kauri Leaf Green with native NZ-inspired neutrals */
 
 @layer base {
   :root {
@@ -12,57 +12,57 @@
     --app-min-height: 600px;
     --app-max-height: 844px;
 
-    /* Core brand colors - Deep Forest Green with natural neutrals */
-    --background: 40 30% 96%;
-    --foreground: 151 30% 20%;
+    /* Core brand colors - Kauri Leaf Green with native NZ-inspired neutrals */
+    --background: 43 41% 89%;
+    --foreground: 80 4% 16%;
 
     --card: 0 0% 100%;
-    --card-foreground: 151 30% 20%;
+    --card-foreground: 80 4% 16%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 151 30% 20%;
+    --popover-foreground: 80 4% 16%;
 
-    --primary: 151 25% 25%;
-    --primary-foreground: 40 30% 96%;
-    --primary-hover: 151 25% 20%;
+    --primary: 110 27% 37%;
+    --primary-foreground: 43 41% 89%;
+    --primary-hover: 110 27% 32%;
 
-    --secondary: 40 25% 85%;
-    --secondary-foreground: 151 30% 20%;
-    --secondary-hover: 40 25% 80%;
+    --secondary: 40 52% 59%;
+    --secondary-foreground: 80 4% 16%;
+    --secondary-hover: 40 52% 54%;
 
-    --muted: 42 20% 90%;
-    --muted-foreground: 151 15% 45%;
+    --muted: 43 41% 85%;
+    --muted-foreground: 80 4% 40%;
 
-    --accent: 45 40% 88%;
-    --accent-foreground: 151 30% 20%;
-    --accent-hover: 45 40% 82%;
+    --accent: 16 47% 42%;
+    --accent-foreground: 43 41% 89%;
+    --accent-hover: 16 47% 37%;
 
     --success: 142 76% 36%;
     --success-foreground: 0 0% 100%;
 
-    --warning: 45 93% 47%;
-    --warning-foreground: 0 0% 100%;
+    --warning: 40 52% 59%;
+    --warning-foreground: 80 4% 16%;
 
-    --destructive: 0 84% 60%;
+    --destructive: 16 60% 50%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 40 20% 88%;
-    --input: 40 25% 92%;
-    --ring: 151 25% 25%;
+    --border: 43 30% 80%;
+    --input: 43 35% 92%;
+    --ring: 110 27% 37%;
 
     --radius: 1rem;
 
     --tabbar-height: 4rem;
 
     /* Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(151 25% 30%));
-    --gradient-secondary: linear-gradient(135deg, hsl(var(--secondary)), hsl(40 25% 90%));
-    --gradient-accent: linear-gradient(135deg, hsl(var(--accent)), hsl(45 40% 92%));
+    --gradient-primary: linear-gradient(135deg, hsl(110 27% 37%), hsl(110 27% 32%));
+    --gradient-secondary: linear-gradient(135deg, hsl(40 52% 59%), hsl(40 52% 54%));
+    --gradient-accent: linear-gradient(135deg, hsl(16 47% 42%), hsl(16 47% 37%));
 
     /* Shadows */
-    --shadow-soft: 0 4px 20px -4px hsl(var(--primary) / 0.1);
-    --shadow-medium: 0 8px 32px -8px hsl(var(--primary) / 0.15);
-    --shadow-large: 0 16px 48px -12px hsl(var(--primary) / 0.2);
+    --shadow-soft: 0 4px 20px -4px hsl(110 27% 37% / 0.1);
+    --shadow-medium: 0 8px 32px -8px hsl(110 27% 37% / 0.15);
+    --shadow-large: 0 16px 48px -12px hsl(110 27% 37% / 0.2);
 
     --sidebar-background: 0 0% 98%;
 
@@ -82,43 +82,43 @@
   }
 
   .dark {
-    /* Dark mode with Deep Forest Green and natural neutrals */
-    --background: 151 20% 10%;
-    --foreground: 40 30% 92%;
+    /* Dark mode with Kauri Leaf Green and native NZ-inspired neutrals - inverted */
+    --background: 80 4% 16%;
+    --foreground: 43 41% 89%;
 
-    --card: 151 20% 14%;
-    --card-foreground: 40 30% 92%;
+    --card: 80 4% 20%;
+    --card-foreground: 43 41% 89%;
 
-    --popover: 151 20% 14%;
-    --popover-foreground: 40 30% 92%;
+    --popover: 80 4% 20%;
+    --popover-foreground: 43 41% 89%;
 
-    --primary: 151 25% 35%;
-    --primary-foreground: 40 30% 96%;
-    --primary-hover: 151 25% 40%;
+    --primary: 110 27% 45%;
+    --primary-foreground: 80 4% 16%;
+    --primary-hover: 110 27% 50%;
 
-    --secondary: 151 15% 20%;
-    --secondary-foreground: 40 30% 92%;
-    --secondary-hover: 151 15% 24%;
+    --secondary: 40 52% 65%;
+    --secondary-foreground: 80 4% 16%;
+    --secondary-hover: 40 52% 70%;
 
-    --muted: 151 15% 18%;
-    --muted-foreground: 40 20% 65%;
+    --muted: 80 4% 25%;
+    --muted-foreground: 43 30% 65%;
 
-    --accent: 45 35% 30%;
-    --accent-foreground: 40 30% 92%;
-    --accent-hover: 45 35% 35%;
+    --accent: 16 47% 55%;
+    --accent-foreground: 80 4% 16%;
+    --accent-hover: 16 47% 60%;
 
     --success: 142 70% 45%;
-    --success-foreground: 40 30% 96%;
+    --success-foreground: 80 4% 16%;
 
-    --warning: 45 85% 55%;
-    --warning-foreground: 151 20% 10%;
+    --warning: 40 52% 65%;
+    --warning-foreground: 80 4% 16%;
 
-    --destructive: 0 75% 55%;
-    --destructive-foreground: 40 30% 96%;
+    --destructive: 16 60% 55%;
+    --destructive-foreground: 43 41% 89%;
 
-    --border: 151 15% 22%;
-    --input: 151 15% 18%;
-    --ring: 151 25% 35%;
+    --border: 80 4% 30%;
+    --input: 80 4% 22%;
+    --ring: 110 27% 45%;
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
