@@ -168,21 +168,8 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
   };
 
   const isStepValid = () => {
-    switch (step) {
-      case 1:
-        return userData.firstName.trim() !== '' && userData.lastName.trim() !== '' && userData.email.trim() !== '' && userData.country.trim() !== '';
-      case 2:
-        return (currentDog.breed_id !== null || currentDog.breed.trim() !== '') && 
-               currentDog.name.trim() !== '' && 
-               currentDog.gender !== '' && 
-               currentDog.birthday !== null;
-      case 3:
-        return true; // Add more dogs step
-      case 4:
-        return true; // Summary step
-      default:
-        return false;
-    }
+    // Mock mode - allow skipping through without validation
+    return true;
   };
 
   // Step 1: User Information
