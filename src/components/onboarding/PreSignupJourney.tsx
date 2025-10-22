@@ -182,8 +182,8 @@ export function PreSignupJourney({ onComplete }: PreSignupJourneyProps) {
         
         <div className="flex-1 flex flex-col p-6 pt-20">
           <div className="text-center mb-12">
-            <div className="mx-auto w-20 h-20 rounded-full overflow-hidden mb-6">
-              <img src={logoIcon} alt="Kahu Logo" className="w-full h-full object-contain block" />
+            <div className="mx-auto w-20 h-20 rounded-full overflow-hidden mb-6 bg-primary">
+              <img src={logoIcon} alt="Kahu Logo" className="w-full h-full object-cover block" />
             </div>
             <h1 className="text-3xl font-bold text-foreground mb-3">
               Welcome to Kahu!
