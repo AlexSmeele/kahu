@@ -170,9 +170,12 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
                 placeholder="Enter your dog's name"
                 className="text-center text-lg font-medium"
               />
+              <p className="text-xs text-muted-foreground">
+                If you have more than one dog, you can add them next
+              </p>
             </div>
 
-            <div className="sticky bottom-0 left-0 right-0 bg-background/80 backdrop-blur-sm pt-4">
+            <div className="sticky bottom-0 left-0 right-0 pt-4">
               <Button 
                 size="touch"
                 onClick={() => setStep(2)}

@@ -172,9 +172,12 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
               placeholder="e.g., Max, Luna, Charlie"
               className="text-lg"
             />
+            <p className="text-xs text-muted-foreground">
+              If you have more than one dog, you can add them next
+            </p>
           </div>
 
-          <div className="sticky bottom-0 left-0 right-0 bg-background/80 backdrop-blur-sm pt-4">
+          <div className="sticky bottom-0 left-0 right-0 pt-4">
             <Button
               size="lg"
               onClick={() => setStep(2)}
