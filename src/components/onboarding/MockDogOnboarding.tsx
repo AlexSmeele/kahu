@@ -18,17 +18,19 @@ interface MockDogOnboardingProps {
 interface DogData {
   name: string;
   gender: string;
-  age_range: string;
   breed: string;
   breed_id: string | null;
   photo: File | null;
   photoPreview?: string;
+  birthdayYear: string;
+  birthdayMonth: string;
+  birthdayDay: string;
   known_commands: string[];
   behavioral_goals: string[];
   training_time_commitment: string;
 }
 
-const TOTAL_STEPS = 8;
+const TOTAL_STEPS = 7;
 
 const AGE_RANGES = [
   { value: "puppy", label: "Puppy (0-1 year)", emoji: "🐶" },
@@ -69,11 +71,13 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
   const [dogData, setDogData] = useState<DogData>({
     name: '',
     gender: '',
-    age_range: '',
     breed: '',
     breed_id: null,
     photo: null,
     photoPreview: '',
+    birthdayYear: '',
+    birthdayMonth: '',
+    birthdayDay: '',
     known_commands: [],
     behavioral_goals: [],
     training_time_commitment: '',
@@ -313,9 +317,10 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
     );
   }
 
-  // Step 3: Age Range
+  // Step 3: Age/Birthday & Breed Combined
   if (step === 3) {
     const displayName = dogData.name.trim() || '[dog name]';
+    const pronoun = dogData.gender === 'male' ? 'he' : dogData.gender === 'female' ? 'she' : 'they';
     
     return (
        <div className="relative h-dvh max-h-dvh bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in overflow-hidden">
@@ -336,26 +341,75 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
           <p className="text-xs text-muted-foreground text-center">Step {step} of {TOTAL_STEPS}</p>
         </div>
 
-        <div className="flex-1 flex flex-col px-6 pb-24 overflow-y-auto">
+        <div className="flex-1 flex flex-col px-6 pb-28 overflow-y-auto">
           <div className="text-center mb-6">
-            <h1 className="text-3xl font-bold mb-2">How old is {displayName}?</h1>
+            <h1 className="text-3xl font-bold mb-2">Tell us more about {displayName}</h1>
+            <p className="text-muted-foreground">How old is {pronoun}?</p>
           </div>
 
-          <div className="space-y-3 mb-8">
-            {AGE_RANGES.map((range) => (
+          <div className="space-y-6 mb-8">
+            <div>
+              <div className="grid grid-cols-3 gap-3">
+                <div>
+                  <Label htmlFor="year">Year *</Label>
+                  <Input
+                    id="year"
+                    type="number"
+                    inputMode="numeric"
+                    placeholder="YYYY"
+                    value={dogData.birthdayYear}
+                    onChange={(e) => setDogData(prev => ({ ...prev, birthdayYear: e.target.value }))}
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="month">Month</Label>
+                  <Input
+                    id="month"
+                    type="number"
+                    inputMode="numeric"
+                    placeholder="MM"
+                    value={dogData.birthdayMonth}
+                    onChange={(e) => setDogData(prev => ({ ...prev, birthdayMonth: e.target.value }))}
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="day">Day</Label>
+                  <Input
+                    id="day"
+                    type="number"
+                    inputMode="numeric"
+                    placeholder="DD"
+                    value={dogData.birthdayDay}
+                    onChange={(e) => setDogData(prev => ({ ...prev, birthdayDay: e.target.value }))}
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              <BreedAutocomplete
+                value={dogData.breed}
+                onChange={(breed) => setDogData(prev => ({ ...prev, breed }))}
+                onBreedIdChange={(breedId) => setDogData(prev => ({ ...prev, breed_id: breedId }))}
+                placeholder="Start typing breed name..."
+                className="w-full"
+              />
+              <p className="text-xs text-muted-foreground">
+                Tip: Start typing to see matching breeds from our database
+              </p>
               <Button
-                key={range.value}
-                variant={dogData.age_range === range.value ? 'default' : 'outline'}
-                size="lg"
-                onClick={() => setDogData(prev => ({ ...prev, age_range: range.value }))}
-                className="w-full justify-start h-16 text-left"
+                type="button"
+                variant="outline"
+                className="w-full"
+                onClick={() => {
+                  // In mock mode, just a placeholder
+                }}
               >
-                <span className="text-2xl mr-3">{range.emoji}</span>
-                <span className="text-base">{range.label}</span>
+                <Plus className="w-4 h-4 mr-2" />
+                Custom/Mixed Breed
               </Button>
-            ))}
+            </div>
           </div>
-
         </div>
         
           <div className="absolute inset-x-0 bottom-0 z-10 bg-background/95 backdrop-blur-sm border-t border-border px-6 pt-4 pb-[calc(env(safe-area-inset-bottom)+1rem)]">
@@ -384,92 +438,9 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
     );
   }
 
-  // Step 4: Breed
+
+  // Step 4: Known Commands
   if (step === 4) {
-    const displayName = dogData.name.trim() || '[dog name]';
-    
-    return (
-       <div className="relative h-dvh max-h-dvh bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in overflow-hidden">
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={onComplete}
-          className="absolute top-4 right-4 z-10 h-8 w-8 p-0 hover:bg-muted"
-        >
-          <X className="w-4 h-4" />
-        </Button>
-
-        <div className="px-6 pt-6 pb-4">
-          <Badge variant="secondary" className="mb-4 bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-200">
-            MOCK MODE
-          </Badge>
-          <Progress value={getProgressPercentage()} className="h-2 mb-2" />
-          <p className="text-xs text-muted-foreground text-center">Step {step} of {TOTAL_STEPS}</p>
-        </div>
-
-        <div className="flex-1 flex flex-col px-6 pb-24 overflow-y-auto">
-          <div className="text-center mb-6">
-            <h1 className="text-3xl font-bold mb-2">What breed is {displayName}?</h1>
-            <p className="text-muted-foreground">This helps us personalize your experience</p>
-          </div>
-
-          <div className="space-y-4 mb-8">
-            <div className="space-y-3">
-              <BreedAutocomplete
-                value={dogData.breed}
-                onChange={(breed) => setDogData(prev => ({ ...prev, breed }))}
-                onBreedIdChange={(breedId) => setDogData(prev => ({ ...prev, breed_id: breedId }))}
-                placeholder="Start typing breed name..."
-                className="w-full"
-              />
-              <p className="text-xs text-muted-foreground">
-                Tip: Start typing to see matching breeds from our database
-              </p>
-              <Button
-                type="button"
-                variant="outline"
-                className="w-full"
-                onClick={() => {
-                  // This would open the EnhancedBreedSelector modal
-                  // For now, just a placeholder in mock mode
-                }}
-              >
-                <Plus className="w-4 h-4 mr-2" />
-                Custom/Mixed Breed
-              </Button>
-            </div>
-          </div>
-
-        </div>
-        
-          <div className="absolute inset-x-0 bottom-0 z-10 bg-background/95 backdrop-blur-sm border-t border-border px-6 pt-4 pb-[calc(env(safe-area-inset-bottom)+1rem)]">
-          <div className="flex gap-3 max-w-md mx-auto">
-            <Button
-              variant="outline"
-              size="lg"
-              onClick={() => setStep(3)}
-              className="flex-1"
-            >
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Back
-            </Button>
-            <Button
-              size="lg"
-              onClick={() => setStep(5)}
-              disabled={!isStepValid()}
-              className="flex-1"
-            >
-              Continue
-              <ArrowRight className="w-4 h-4 ml-2" />
-            </Button>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  // Step 5: Known Commands
-  if (step === 5) {
     const displayName = dogData.name.trim() || '[dog name]';
     
     return (
@@ -525,7 +496,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
             <Button
               variant="outline"
               size="lg"
-              onClick={() => setStep(4)}
+              onClick={() => setStep(3)}
               className="flex-1"
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
@@ -533,7 +504,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
             </Button>
             <Button
               size="lg"
-              onClick={() => setStep(6)}
+              onClick={() => setStep(5)}
               className="flex-1"
             >
               Continue
@@ -545,8 +516,8 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
     );
   }
 
-  // Step 6: Behavioral Goals
-  if (step === 6) {
+  // Step 5: Behavioral Goals
+  if (step === 5) {
     return (
         <div className="relative h-dvh max-h-dvh bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in overflow-hidden">
         <Button
@@ -597,7 +568,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
             <Button
               variant="outline"
               size="lg"
-              onClick={() => setStep(5)}
+              onClick={() => setStep(4)}
               className="flex-1"
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
@@ -605,7 +576,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
             </Button>
             <Button
               size="lg"
-              onClick={() => setStep(7)}
+              onClick={() => setStep(6)}
               className="flex-1"
             >
               Continue
@@ -617,8 +588,8 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
     );
   }
 
-  // Step 7: Time Commitment
-  if (step === 7) {
+  // Step 6: Time Commitment
+  if (step === 6) {
     return (
         <div className="relative h-dvh max-h-dvh bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in overflow-hidden">
         <Button
@@ -665,7 +636,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
             <Button
               variant="outline"
               size="lg"
-              onClick={() => setStep(6)}
+              onClick={() => setStep(5)}
               className="flex-1"
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
@@ -673,7 +644,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
             </Button>
             <Button
               size="lg"
-              onClick={() => setStep(8)}
+              onClick={() => setStep(6)}
               disabled={!isStepValid()}
               className="flex-1"
             >
@@ -686,8 +657,8 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
     );
   }
 
-  // Step 8: Summary & Complete
-  if (step === 8) {
+  // Step 7: Summary & Complete
+  if (step === 7) {
     const displayName = dogData.name.trim() || '[dog name]';
     
     return (
@@ -735,7 +706,11 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
                 <div className="space-y-1 text-sm">
                   <p><span className="text-muted-foreground">Name:</span> {dogData.name || 'Not provided'}</p>
                   <p><span className="text-muted-foreground">Gender:</span> {dogData.gender ? dogData.gender.charAt(0).toUpperCase() + dogData.gender.slice(1) : 'Not provided'}</p>
-                  <p><span className="text-muted-foreground">Age:</span> {AGE_RANGES.find(r => r.value === dogData.age_range)?.label || 'Not provided'}</p>
+                  <p><span className="text-muted-foreground">Birthday:</span> {
+                    dogData.birthdayYear 
+                      ? `${dogData.birthdayYear}${dogData.birthdayMonth ? `-${dogData.birthdayMonth.padStart(2, '0')}` : ''}${dogData.birthdayDay ? `-${dogData.birthdayDay.padStart(2, '0')}` : ''}`
+                      : 'Not provided'
+                  }</p>
                   <p><span className="text-muted-foreground">Breed:</span> {dogData.breed || 'Not provided'}</p>
                 </div>
               </div>

@@ -204,8 +204,8 @@ export function PreSignupJourney({ onComplete }: PreSignupJourneyProps) {
             >
               <div className="flex items-center justify-between w-full">
                 <div>
-                  <div className="font-semibold text-foreground">I am a dog owner</div>
-                  <div className="text-sm text-muted-foreground">Get started with dog care management</div>
+                  <div className="font-semibold text-foreground">I already care for a dog</div>
+                  <div className="text-sm text-muted-foreground">Let's help you look after your dog</div>
                 </div>
                 <ChevronRight className="w-5 h-5 text-muted-foreground" />
               </div>
