@@ -482,22 +482,19 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
           </div>
 
           <div className="space-y-4 mb-8">
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-3 gap-2">
               {COMMANDS.map((command) => (
-                <div
+                <Badge
                   key={command}
-                  className="flex items-center space-x-2 p-3 rounded-lg border cursor-pointer hover:bg-accent"
+                  variant={dogData.known_commands.includes(command) ? "default" : "outline"}
+                  className="cursor-pointer px-3 py-2.5 text-sm hover-scale justify-center text-center"
                   onClick={() => toggleCommand(command)}
                 >
-                  <Checkbox
-                    id={command}
-                    checked={dogData.known_commands.includes(command)}
-                    onCheckedChange={() => toggleCommand(command)}
-                  />
-                  <Label htmlFor={command} className="cursor-pointer flex-1">
-                    {command}
-                  </Label>
-                </div>
+                  {dogData.known_commands.includes(command) && (
+                    <Check className="w-3 h-3 mr-1" />
+                  )}
+                  {command}
+                </Badge>
               ))}
             </div>
 
@@ -516,22 +513,19 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
                 </Button>
               </CollapsibleTrigger>
               <CollapsibleContent className="pt-2">
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-3 gap-2">
                   {ADVANCED_COMMANDS.map((command) => (
-                    <div
+                    <Badge
                       key={command}
-                      className="flex items-center space-x-2 p-3 rounded-lg border cursor-pointer hover:bg-accent"
+                      variant={dogData.known_commands.includes(command) ? "default" : "outline"}
+                      className="cursor-pointer px-3 py-2.5 text-sm hover-scale justify-center text-center"
                       onClick={() => toggleCommand(command)}
                     >
-                      <Checkbox
-                        id={`adv-${command}`}
-                        checked={dogData.known_commands.includes(command)}
-                        onCheckedChange={() => toggleCommand(command)}
-                      />
-                      <Label htmlFor={`adv-${command}`} className="cursor-pointer flex-1">
-                        {command}
-                      </Label>
-                    </div>
+                      {dogData.known_commands.includes(command) && (
+                        <Check className="w-3 h-3 mr-1" />
+                      )}
+                      {command}
+                    </Badge>
                   ))}
                 </div>
               </CollapsibleContent>

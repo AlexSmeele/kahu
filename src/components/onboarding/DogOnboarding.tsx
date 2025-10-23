@@ -380,12 +380,12 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
           </div>
 
           <div className="space-y-4 mb-8">
-            <div className="flex flex-wrap gap-2">
+            <div className="grid grid-cols-3 gap-2">
               {COMMANDS.map((command) => (
                 <Badge
                   key={command}
                   variant={formData.known_commands.includes(command) ? "default" : "outline"}
-                  className="cursor-pointer px-4 py-2 text-sm hover-scale"
+                  className="cursor-pointer px-3 py-2.5 text-sm hover-scale justify-center text-center"
                   onClick={() => toggleCommand(command)}
                 >
                   {formData.known_commands.includes(command) && (
@@ -411,12 +411,12 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
                 </Button>
               </CollapsibleTrigger>
               <CollapsibleContent className="pt-2">
-                <div className="flex flex-wrap gap-2">
+                <div className="grid grid-cols-3 gap-2">
                   {ADVANCED_COMMANDS.map((command) => (
                     <Badge
                       key={command}
                       variant={formData.known_commands.includes(command) ? "default" : "outline"}
-                      className="cursor-pointer px-4 py-2 text-sm hover-scale"
+                      className="cursor-pointer px-3 py-2.5 text-sm hover-scale justify-center text-center"
                       onClick={() => toggleCommand(command)}
                     >
                       {formData.known_commands.includes(command) && (
