@@ -361,90 +361,9 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
     );
   }
 
-  // Step 4: Breed
+
+  // Step 4: Known Commands
   if (step === 4) {
-    const displayName = formData.name.trim() || '[dog name]';
-    
-    return (
-        <div className="relative h-full max-h-full bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in overflow-hidden">
-        <div className="px-6 pt-6 pb-4">
-          <Progress value={getProgressPercentage()} className="h-2 mb-2" />
-          <p className="text-xs text-muted-foreground text-center">Step {step} of {TOTAL_STEPS}</p>
-        </div>
-        
-        <div className="flex-1 flex flex-col px-6 pb-24 overflow-y-auto">
-          <div className="text-center mb-6">
-            <h1 className="text-3xl font-bold mb-2">What's {displayName}'s breed?</h1>
-            <p className="text-muted-foreground">This helps us personalize your experience</p>
-          </div>
-
-          <div className="space-y-4 mb-8">
-            <div className="space-y-3">
-              <BreedAutocomplete
-                value={formData.breed}
-                onChange={(breed) => setFormData(prev => ({ ...prev, breed }))}
-                onBreedIdChange={(breedId) => setFormData(prev => ({ ...prev, breed_id: breedId }))}
-                placeholder="Start typing breed name..."
-                required
-                className="w-full"
-              />
-              <p className="text-xs text-muted-foreground">
-                Tip: Start typing to see matching breeds from our database
-              </p>
-              {showCustomBreedSelector ? (
-                <EnhancedBreedSelector
-                  value={formData.breed}
-                  onBreedSelect={(breedId, isCustom, breedName) => {
-                    setFormData(prev => ({ ...prev, breed: breedName, breed_id: breedId }));
-                    setShowCustomBreedSelector(false);
-                  }}
-                  placeholder="Start typing breed name..."
-                />
-              ) : (
-                <Button
-                  type="button"
-                  variant="outline"
-                  className="w-full"
-                  onClick={() => setShowCustomBreedSelector(true)}
-                >
-                  <Plus className="w-4 h-4 mr-2" />
-                  Custom/Mixed Breed
-                </Button>
-              )}
-            </div>
-          </div>
-
-        </div>
-        
-        <div className="absolute inset-x-0 bottom-0 z-10 bg-background/95 backdrop-blur-sm border-t border-border px-6 pt-4 pb-[calc(env(safe-area-inset-bottom)+1rem)]">
-          <div className="flex gap-3 max-w-md mx-auto">
-            <Button 
-              variant="outline"
-              size="touch"
-              onClick={() => setStep(3)}
-              className="flex-1"
-            >
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Back
-            </Button>
-            <Button 
-              size="touch"
-              onClick={() => setStep(5)}
-              disabled={!isStepValid()}
-              className="flex-1 btn-primary"
-            >
-              Continue
-              <ArrowRight className="w-4 h-4 ml-2" />
-            </Button>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-
-  // Step 5: Known Commands
-  if (step === 5) {
     const displayName = formData.name.trim() || '[dog name]';
     
     return (
@@ -485,7 +404,7 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
             <Button 
               variant="outline"
               size="touch"
-              onClick={() => setStep(4)}
+              onClick={() => setStep(3)}
               className="flex-1"
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
@@ -493,7 +412,7 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
             </Button>
             <Button 
               size="touch"
-              onClick={() => setStep(6)}
+              onClick={() => setStep(5)}
               className="flex-1 btn-primary"
             >
               Continue
@@ -505,8 +424,8 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
     );
   }
 
-  // Step 6: Behavioral Goals
-  if (step === 6) {
+  // Step 5: Behavioral Goals
+  if (step === 5) {
     return (
          <div className="relative h-full max-h-full bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in overflow-hidden">
         <div className="px-6 pt-6 pb-4">
@@ -544,7 +463,7 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
             <Button 
               variant="outline"
               size="touch"
-              onClick={() => setStep(5)}
+              onClick={() => setStep(4)}
               className="flex-1"
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
@@ -552,7 +471,7 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
             </Button>
             <Button 
               size="touch"
-              onClick={() => setStep(7)}
+              onClick={() => setStep(6)}
               className="flex-1 btn-primary"
             >
               Continue
@@ -564,8 +483,8 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
     );
   }
 
-  // Step 7: Time Commitment
-  if (step === 7) {
+  // Step 6: Time Commitment
+  if (step === 6) {
     return (
          <div className="relative h-full max-h-full bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in overflow-hidden">
         <div className="px-6 pt-6 pb-4">
@@ -606,7 +525,7 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
             <Button 
               variant="outline"
               size="touch"
-              onClick={() => setStep(6)}
+              onClick={() => setStep(5)}
               className="flex-1"
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
@@ -614,7 +533,7 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
             </Button>
             <Button 
               size="touch"
-              onClick={() => setStep(8)}
+              onClick={() => setStep(7)}
               disabled={!isStepValid()}
               className="flex-1 btn-primary"
             >
@@ -627,8 +546,8 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
     );
   }
 
-  // Step 8: Final Details & Summary
-  if (step === 8) {
+  // Step 7: Final Details & Summary
+  if (step === 7) {
     const ageLabel = AGE_RANGES.find(r => r.value === formData.age_range)?.label || formData.age_range;
     const displayName = formData.name.trim() || '[dog name]';
     
@@ -723,7 +642,7 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
             <Button 
               variant="outline"
               size="touch"
-              onClick={() => setStep(7)}
+              onClick={() => setStep(6)}
               className="flex-1"
               disabled={loading}
             >
