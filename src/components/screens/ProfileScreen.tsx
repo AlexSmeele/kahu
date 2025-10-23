@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { User, Dog, Settings, CreditCard, Share, Download, HelpCircle, LogOut, Plus, Edit, Trash2, Package, MessageSquare, ChevronUp, ChevronDown, Stethoscope } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -13,7 +14,6 @@ import { useToast } from "@/hooks/use-toast";
 import { DogProfileModal } from "@/components/dogs/DogProfileModal";
 import { OrderHistoryModal } from "@/components/marketplace/OrderHistoryModal";
 import { UserEditModal } from "@/components/profile/UserEditModal";
-import { AccountSettingsModal } from "@/components/profile/AccountSettingsModal";
 import InviteFamilyModal from "@/components/profile/InviteFamilyModal";
 import { BillingModal } from "@/components/profile/BillingModal";
 import { ExportDataModal } from "@/components/profile/ExportDataModal";
@@ -33,6 +33,7 @@ const menuItems = [
 ];
 
 export function ProfileScreen() {
+  const navigate = useNavigate();
   const { signOut, user } = useAuth();
   const { dogs, loading: dogsLoading, deleteDog, reorderDogs } = useDogs();
   const { profile, refetch: refetchProfile } = useProfile();
@@ -42,7 +43,6 @@ export function ProfileScreen() {
   const [modalMode, setModalMode] = useState<'add' | 'edit'>('add');
   const [isOrderHistoryOpen, setIsOrderHistoryOpen] = useState(false);
   const [isUserEditOpen, setIsUserEditOpen] = useState(false);
-  const [isAccountSettingsOpen, setIsAccountSettingsOpen] = useState(false);
   const [isInviteFamilyOpen, setIsInviteFamilyOpen] = useState(false);
   const [isBillingOpen, setIsBillingOpen] = useState(false);
   const [isExportDataOpen, setIsExportDataOpen] = useState(false);
@@ -109,7 +109,7 @@ export function ProfileScreen() {
         setIsBillingOpen(true);
         break;
       case "settings":
-        setIsAccountSettingsOpen(true);
+        navigate('/account-settings');
         break;
       case "invite":
         setIsInviteFamilyOpen(true);
@@ -367,11 +367,6 @@ export function ProfileScreen() {
           // Refresh profile data when closing the edit modal to ensure consistency
           refetchProfile();
         }}
-      />
-      
-      <AccountSettingsModal
-        isOpen={isAccountSettingsOpen}
-        onClose={() => setIsAccountSettingsOpen(false)}
       />
       
       <InviteFamilyModal
