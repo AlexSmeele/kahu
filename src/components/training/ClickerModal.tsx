@@ -1,8 +1,8 @@
-import { useState, useRef } from "react";
+import { useRef } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { RotateCcw, Info } from "lucide-react";
+import { Info } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import clickerSound from "@/assets/dog-clicker.mp3";
 
 interface ClickerModalProps {
   isOpen: boolean;
@@ -10,37 +10,13 @@ interface ClickerModalProps {
 }
 
 export function ClickerModal({ isOpen, onClose }: ClickerModalProps) {
-  const [clickCount, setClickCount] = useState(0);
-  const [showInfo, setShowInfo] = useState(false);
-  const audioContextRef = useRef<AudioContext | null>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const playClickSound = () => {
-    // Create Web Audio API click sound
-    if (!audioContextRef.current) {
-      audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
+    if (audioRef.current) {
+      audioRef.current.currentTime = 0; // Reset to start
+      audioRef.current.play().catch(err => console.log("Audio play failed:", err));
     }
-    
-    const ctx = audioContextRef.current;
-    const oscillator = ctx.createOscillator();
-    const gainNode = ctx.createGain();
-    
-    oscillator.connect(gainNode);
-    gainNode.connect(ctx.destination);
-    
-    oscillator.frequency.value = 2000; // High frequency for click sound
-    oscillator.type = 'square';
-    
-    gainNode.gain.setValueAtTime(0.3, ctx.currentTime);
-    gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
-    
-    oscillator.start(ctx.currentTime);
-    oscillator.stop(ctx.currentTime + 0.1);
-    
-    setClickCount(prev => prev + 1);
-  };
-
-  const handleReset = () => {
-    setClickCount(0);
   };
 
   return (
@@ -51,11 +27,8 @@ export function ClickerModal({ isOpen, onClose }: ClickerModalProps) {
         </DialogHeader>
 
         <div className="space-y-6">
-          {/* Click Counter */}
-          <div className="text-center">
-            <div className="text-6xl font-bold text-primary mb-2">{clickCount}</div>
-            <p className="text-sm text-muted-foreground">Clicks this session</p>
-          </div>
+          {/* Hidden audio element */}
+          <audio ref={audioRef} src={clickerSound} preload="auto" />
 
           {/* Clicker Button */}
           <div className="flex justify-center">
@@ -72,35 +45,13 @@ export function ClickerModal({ isOpen, onClose }: ClickerModalProps) {
             </button>
           </div>
 
-          {/* Action Buttons */}
-          <div className="flex gap-2">
-            <Button
-              variant="outline"
-              onClick={handleReset}
-              className="flex-1"
-            >
-              <RotateCcw className="w-4 h-4 mr-2" />
-              Reset
-            </Button>
-            <Button
-              variant="outline"
-              onClick={() => setShowInfo(!showInfo)}
-              className="flex-1"
-            >
-              <Info className="w-4 h-4 mr-2" />
-              Info
-            </Button>
-          </div>
-
-          {/* Info Section */}
-          {showInfo && (
-            <Alert>
-              <Info className="h-4 w-4" />
-              <AlertDescription className="text-sm">
-                <strong>How to use:</strong> Click the button at the exact moment your dog performs the desired behavior. Follow immediately with a treat. This creates a positive association between the click sound and reward.
-              </AlertDescription>
-            </Alert>
-          )}
+          {/* How to Use - Always Visible */}
+          <Alert>
+            <Info className="h-4 w-4" />
+            <AlertDescription className="text-sm">
+              <strong>How to use:</strong> Click the button at the exact moment your dog performs the desired behavior. Follow immediately with a treat. This creates a positive association between the click sound and reward.
+            </AlertDescription>
+          </Alert>
         </div>
       </DialogContent>
     </Dialog>
