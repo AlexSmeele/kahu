@@ -17,7 +17,7 @@ interface DogOnboardingProps {
   onComplete: (dog: Dog) => void;
 }
 
-const TOTAL_STEPS = 8;
+const TOTAL_STEPS = 7;
 
 const AGE_RANGES = [
   { value: 'under_6m', label: 'Younger than 6 months', emoji: '🐕' },
@@ -52,6 +52,9 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
     breed_id: null as string | null,
     gender: '' as 'male' | 'female' | '',
     age_range: '',
+    birthdayYear: '',
+    birthdayMonth: '',
+    birthdayDay: '',
     known_commands: [] as string[],
     behavioral_goals: [] as string[],
     training_time_commitment: '',
@@ -103,12 +106,20 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
     if (!formData.breed_id) return;
     
     setLoading(true);
+
+    const birthday = (() => {
+      const y = formData.birthdayYear?.trim();
+      if (!y) return undefined;
+      const m = (formData.birthdayMonth || '01').toString().padStart(2, '0');
+      const d = (formData.birthdayDay || '01').toString().padStart(2, '0');
+      return `${y}-${m}-${d}`;
+    })();
     
     const dogData = {
       name: formData.name,
       breed_id: formData.breed_id,
       gender: formData.gender || undefined,
-      age_range: formData.age_range || undefined,
+      birthday,
       known_commands: formData.known_commands,
       behavioral_goals: formData.behavioral_goals,
       training_time_commitment: formData.training_time_commitment || undefined,
@@ -127,12 +138,11 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
     switch (step) {
       case 1: return formData.name.trim() !== '';
       case 2: return formData.gender !== '';
-      case 3: return formData.age_range !== '';
-      case 4: return formData.breed_id !== null;
-      case 5: return true; // Commands optional
-      case 6: return true; // Behavioral goals optional
-      case 7: return formData.training_time_commitment !== '';
-      case 8: return true; // Final details optional
+      case 3: return !!formData.breed_id && formData.birthdayYear.trim() !== '';
+      case 4: return true; // Commands optional
+      case 5: return true; // Behavioral goals optional
+      case 6: return formData.training_time_commitment !== '';
+      case 7: return true; // Final details optional
       default: return false;
     }
   };
@@ -241,32 +251,85 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
           <p className="text-xs text-muted-foreground text-center">Step {step} of {TOTAL_STEPS}</p>
         </div>
         
-        <div className="flex-1 flex flex-col px-6 pb-24 overflow-y-auto">
+        <div className="flex-1 flex flex-col px-6 pb-28 overflow-y-auto">
           <div className="text-center mb-6">
-            <h1 className="text-3xl font-bold mb-2">How old is {displayName}?</h1>
+            <h1 className="text-3xl font-bold mb-2">Tell us more about {displayName}</h1>
+            <p className="text-muted-foreground">How old is {formData.gender === 'male' ? 'he' : formData.gender === 'female' ? 'she' : 'they'}?</p>
           </div>
 
-          <div className="space-y-3 mb-8">
-            {AGE_RANGES.map((range) => (
-              <button
-                key={range.value}
-                onClick={() => setFormData(prev => ({ ...prev, age_range: range.value }))}
-                className={cn(
-                  "w-full p-4 rounded-lg border-2 transition-all hover-scale text-left flex items-center gap-3",
-                  formData.age_range === range.value
-                    ? "border-primary bg-primary/10"
-                    : "border-border bg-card hover:border-primary/50"
-                )}
-              >
-                <span className="text-2xl">{range.emoji}</span>
-                <span className="font-medium">{range.label}</span>
-                {formData.age_range === range.value && (
-                  <Check className="w-5 h-5 ml-auto text-primary" />
-                )}
-              </button>
-            ))}
-          </div>
+          <div className="space-y-6 mb-8">
+            <div>
+              <div className="grid grid-cols-3 gap-3">
+                <div>
+                  <Label htmlFor="year">Year *</Label>
+                  <Input
+                    id="year"
+                    type="number"
+                    inputMode="numeric"
+                    placeholder="YYYY"
+                    value={formData.birthdayYear}
+                    onChange={(e) => setFormData(prev => ({ ...prev, birthdayYear: e.target.value }))}
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="month">Month</Label>
+                  <Input
+                    id="month"
+                    type="number"
+                    inputMode="numeric"
+                    placeholder="MM"
+                    value={formData.birthdayMonth}
+                    onChange={(e) => setFormData(prev => ({ ...prev, birthdayMonth: e.target.value }))}
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="day">Day</Label>
+                  <Input
+                    id="day"
+                    type="number"
+                    inputMode="numeric"
+                    placeholder="DD"
+                    value={formData.birthdayDay}
+                    onChange={(e) => setFormData(prev => ({ ...prev, birthdayDay: e.target.value }))}
+                  />
+                </div>
+              </div>
+            </div>
 
+            <div className="space-y-3">
+              <BreedAutocomplete
+                value={formData.breed}
+                onChange={(breed) => setFormData(prev => ({ ...prev, breed }))}
+                onBreedIdChange={(breedId) => setFormData(prev => ({ ...prev, breed_id: breedId }))}
+                placeholder="Start typing breed name..."
+                required
+                className="w-full"
+              />
+              <p className="text-xs text-muted-foreground">
+                Tip: Start typing to see matching breeds from our database
+              </p>
+              {showCustomBreedSelector ? (
+                <EnhancedBreedSelector
+                  value={formData.breed}
+                  onBreedSelect={(breedId, isCustom, breedName) => {
+                    setFormData(prev => ({ ...prev, breed: breedName, breed_id: breedId }));
+                    setShowCustomBreedSelector(false);
+                  }}
+                  placeholder="Start typing breed name..."
+                />
+              ) : (
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="w-full"
+                  onClick={() => setShowCustomBreedSelector(true)}
+                >
+                  <Plus className="w-4 h-4 mr-2" />
+                  Custom/Mixed Breed
+                </Button>
+              )}
+            </div>
+          </div>
         </div>
         
         <div className="absolute inset-x-0 bottom-0 z-10 bg-background/95 backdrop-blur-sm border-t border-border px-6 pt-4 pb-[calc(env(safe-area-inset-bottom)+1rem)]">
