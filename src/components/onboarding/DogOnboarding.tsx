@@ -656,17 +656,33 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
                 {formData.age_range && <p><span className="font-medium">Age:</span> {ageLabel}</p>}
                 {formData.weight && <p><span className="font-medium">Weight:</span> {formData.weight} kg</p>}
                 {photo && <p><span className="font-medium">Photo:</span> Uploaded</p>}
-                {formData.known_commands.length > 0 && (
-                  <p><span className="font-medium">Known commands:</span> {formData.known_commands.join(', ')}</p>
-                )}
-                {formData.behavioral_goals.length > 0 && (
-                  <p><span className="font-medium">Training goals:</span> {formData.behavioral_goals.join(', ')}</p>
-                )}
                 {formData.training_time_commitment && (
                   <p><span className="font-medium">Training time:</span> {TIME_COMMITMENTS.find(t => t.value === formData.training_time_commitment)?.label}</p>
                 )}
               </div>
             </div>
+
+            {formData.known_commands.length > 0 && (
+              <div className="bg-secondary/50 rounded-lg p-4 space-y-2">
+                <h3 className="font-medium text-foreground">Commands Known:</h3>
+                <div className="flex flex-wrap gap-2">
+                  {formData.known_commands.map((cmd) => (
+                    <Badge key={cmd} variant="secondary">{cmd}</Badge>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {formData.behavioral_goals.length > 0 && (
+              <div className="bg-secondary/50 rounded-lg p-4 space-y-2">
+                <h3 className="font-medium text-foreground">Training Goals:</h3>
+                <div className="flex flex-wrap gap-2">
+                  {formData.behavioral_goals.map((goal) => (
+                    <Badge key={goal} variant="secondary">{goal}</Badge>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
 
         </div>

@@ -90,42 +90,38 @@ export function EnhancedBreedSelector({
     setIsOpen(false);
   };
 
-  const addParentBreed = async () => {
+  const addParentBreed = () => {
     if (!selectedParentId || parentBreeds.length >= 3) return;
 
-    const { data } = await supabase
-      .from('dog_breeds')
-      .select('breed')
-      .eq('id', selectedParentId)
-      .single();
-
-    if (data && !parentBreeds.some(p => p.id === selectedParentId)) {
+    const selectedBreed = breedOptions.find(b => b.id === selectedParentId);
+    
+    if (selectedBreed && !parentBreeds.some(p => p.id === selectedParentId)) {
       const newParent: ParentBreed = {
         id: selectedParentId,
-        name: data.breed,
+        name: selectedBreed.name,
         percentage: parentBreeds.length === 0 ? 100 : 50,
       };
       
-      setParentBreeds([...parentBreeds, newParent]);
-      setSelectedParentId('');
-      
       // Adjust percentages to total 100%
       if (parentBreeds.length === 0) {
-        // First parent gets 100%
+        setParentBreeds([{ ...newParent, percentage: 100 }]);
       } else if (parentBreeds.length === 1) {
         // Split 50/50
-        setParentBreeds(prev => [
-          { ...prev[0], percentage: 50 },
+        setParentBreeds([
+          { ...parentBreeds[0], percentage: 50 },
           { ...newParent, percentage: 50 }
         ]);
       } else {
         // Three breeds, split evenly
-        const evenSplit = Math.floor(100 / (parentBreeds.length + 1));
-        setParentBreeds(prev => [
-          ...prev.map(p => ({ ...p, percentage: evenSplit })),
-          { ...newParent, percentage: 100 - (evenSplit * parentBreeds.length) }
+        const evenSplit = Math.floor(100 / 3);
+        setParentBreeds([
+          { ...parentBreeds[0], percentage: evenSplit },
+          { ...parentBreeds[1], percentage: evenSplit },
+          { ...newParent, percentage: 100 - (evenSplit * 2) }
         ]);
       }
+      
+      setSelectedParentId('');
     }
   };
 

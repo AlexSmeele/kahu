@@ -761,7 +761,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
 
               {dogData.known_commands.length > 0 && (
                 <div className="p-4 rounded-lg bg-secondary/50">
-                  <h4 className="font-semibold mb-2">Known Commands</h4>
+                  <h4 className="font-semibold mb-2">Commands Known</h4>
                   <div className="flex flex-wrap gap-2">
                     {dogData.known_commands.map(cmd => (
                       <Badge key={cmd} variant="secondary">{cmd}</Badge>
