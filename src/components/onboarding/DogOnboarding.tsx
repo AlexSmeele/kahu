@@ -198,13 +198,13 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
     const displayName = formData.name.trim() || '[dog name]';
     
     return (
-      <div className="h-dvh max-h-dvh bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in overflow-hidden">
+      <div className="relative h-dvh max-h-dvh bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in overflow-hidden">
         <div className="px-6 pt-6 pb-4">
           <Progress value={getProgressPercentage()} className="h-2 mb-2" />
           <p className="text-xs text-muted-foreground text-center">Step {step} of {TOTAL_STEPS}</p>
         </div>
         
-        <div className="fixed inset-x-0 bottom-0 bg-background/95 backdrop-blur-sm border-t border-border px-6 pt-4 pb-[calc(env(safe-area-inset-bottom)+1rem)]">
+        <div className="absolute inset-x-0 bottom-0 z-10 bg-background/95 backdrop-blur-sm border-t border-border px-6 pt-4 pb-[calc(env(safe-area-inset-bottom)+1rem)]">
           <div className="flex gap-3 max-w-md mx-auto">
             <Button 
               variant="outline"
@@ -235,7 +235,7 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
     const displayName = formData.name.trim() || '[dog name]';
     
     return (
-       <div className="h-dvh max-h-dvh bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in overflow-hidden">
+       <div className="relative h-dvh max-h-dvh bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in overflow-hidden">
         <div className="px-6 pt-6 pb-4">
           <Progress value={getProgressPercentage()} className="h-2 mb-2" />
           <p className="text-xs text-muted-foreground text-center">Step {step} of {TOTAL_STEPS}</p>
@@ -269,7 +269,7 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
 
         </div>
         
-        <div className="fixed inset-x-0 bottom-0 bg-background/95 backdrop-blur-sm border-t border-border px-6 pt-4 pb-[calc(env(safe-area-inset-bottom)+1rem)]">
+        <div className="absolute inset-x-0 bottom-0 z-10 bg-background/95 backdrop-blur-sm border-t border-border px-6 pt-4 pb-[calc(env(safe-area-inset-bottom)+1rem)]">
           <div className="flex gap-3 max-w-md mx-auto">
             <Button 
               variant="outline"
@@ -300,7 +300,7 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
     const displayName = formData.name.trim() || '[dog name]';
     
     return (
-       <div className="h-dvh max-h-dvh bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in overflow-hidden">
+       <div className="relative h-dvh max-h-dvh bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in overflow-hidden">
         <div className="px-6 pt-6 pb-4">
           <Progress value={getProgressPercentage()} className="h-2 mb-2" />
           <p className="text-xs text-muted-foreground text-center">Step {step} of {TOTAL_STEPS}</p>
@@ -350,7 +350,7 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
 
         </div>
         
-        <div className="fixed inset-x-0 bottom-0 bg-background/95 backdrop-blur-sm border-t border-border px-6 pt-4 pb-[calc(env(safe-area-inset-bottom)+1rem)]">
+        <div className="absolute inset-x-0 bottom-0 z-10 bg-background/95 backdrop-blur-sm border-t border-border px-6 pt-4 pb-[calc(env(safe-area-inset-bottom)+1rem)]">
           <div className="flex gap-3 max-w-md mx-auto">
             <Button 
               variant="outline"
@@ -382,7 +382,7 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
     const displayName = formData.name.trim() || '[dog name]';
     
     return (
-       <div className="h-dvh max-h-dvh bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in overflow-hidden">
+       <div className="relative h-dvh max-h-dvh bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in overflow-hidden">
         <div className="px-6 pt-6 pb-4">
           <Progress value={getProgressPercentage()} className="h-2 mb-2" />
           <p className="text-xs text-muted-foreground text-center">Step {step} of {TOTAL_STEPS}</p>
@@ -414,7 +414,7 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
 
         </div>
         
-        <div className="fixed inset-x-0 bottom-0 bg-background/95 backdrop-blur-sm border-t border-border px-6 pt-4 pb-[calc(env(safe-area-inset-bottom)+1rem)]">
+        <div className="absolute inset-x-0 bottom-0 z-10 bg-background/95 backdrop-blur-sm border-t border-border px-6 pt-4 pb-[calc(env(safe-area-inset-bottom)+1rem)]">
           <div className="flex gap-3 max-w-md mx-auto">
             <Button 
               variant="outline"
@@ -442,7 +442,7 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
   // Step 6: Behavioral Goals
   if (step === 6) {
     return (
-       <div className="h-dvh max-h-dvh bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in overflow-hidden">
+        <div className="relative h-dvh max-h-dvh bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in overflow-hidden">
         <div className="px-6 pt-6 pb-4">
           <Progress value={getProgressPercentage()} className="h-2 mb-2" />
           <p className="text-xs text-muted-foreground text-center">Training goals 1/2</p>
@@ -473,7 +473,7 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
 
         </div>
         
-        <div className="fixed inset-x-0 bottom-0 bg-background/95 backdrop-blur-sm border-t border-border px-6 pt-4 pb-[calc(env(safe-area-inset-bottom)+1rem)]">
+        <div className="absolute inset-x-0 bottom-0 z-10 bg-background/95 backdrop-blur-sm border-t border-border px-6 pt-4 pb-[calc(env(safe-area-inset-bottom)+1rem)]">
           <div className="flex gap-3 max-w-md mx-auto">
             <Button 
               variant="outline"
@@ -501,7 +501,7 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
   // Step 7: Time Commitment
   if (step === 7) {
     return (
-       <div className="h-dvh max-h-dvh bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in overflow-hidden">
+        <div className="relative h-dvh max-h-dvh bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in overflow-hidden">
         <div className="px-6 pt-6 pb-4">
           <Progress value={getProgressPercentage()} className="h-2 mb-2" />
           <p className="text-xs text-muted-foreground text-center">Training goals 2/2</p>
@@ -535,7 +535,7 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
 
         </div>
         
-        <div className="fixed inset-x-0 bottom-0 bg-background/95 backdrop-blur-sm border-t border-border px-6 pt-4 pb-[calc(env(safe-area-inset-bottom)+1rem)]">
+        <div className="absolute inset-x-0 bottom-0 z-10 bg-background/95 backdrop-blur-sm border-t border-border px-6 pt-4 pb-[calc(env(safe-area-inset-bottom)+1rem)]">
           <div className="flex gap-3 max-w-md mx-auto">
             <Button 
               variant="outline"
@@ -567,7 +567,7 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
     const displayName = formData.name.trim() || '[dog name]';
     
     return (
-      <div className="h-dvh max-h-dvh bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in overflow-hidden">
+      <div className="relative h-dvh max-h-dvh bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in overflow-hidden">
         <div className="px-6 pt-6 pb-4">
           <Progress value={getProgressPercentage()} className="h-2 mb-2" />
           <p className="text-xs text-muted-foreground text-center">Step {step} of {TOTAL_STEPS}</p>
@@ -652,7 +652,7 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
 
         </div>
         
-        <div className="fixed inset-x-0 bottom-0 bg-background/95 backdrop-blur-sm border-t border-border px-6 pt-4 pb-[calc(env(safe-area-inset-bottom)+1rem)]">
+        <div className="absolute inset-x-0 bottom-0 z-10 bg-background/95 backdrop-blur-sm border-t border-border px-6 pt-4 pb-[calc(env(safe-area-inset-bottom)+1rem)]">
           <div className="flex gap-3 max-w-md mx-auto">
             <Button 
               variant="outline"

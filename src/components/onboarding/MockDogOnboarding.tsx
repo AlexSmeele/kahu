@@ -138,7 +138,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
   // Step 1: Welcome & Name
   if (step === 1) {
     return (
-       <div className="h-dvh max-h-dvh bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in overflow-hidden">
+       <div className="relative h-dvh max-h-dvh bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in overflow-hidden">
         <Button
           variant="ghost"
           size="sm"
@@ -199,7 +199,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
     const displayName = dogData.name.trim() || '[dog name]';
     
     return (
-       <div className="h-dvh max-h-dvh bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in overflow-hidden">
+       <div className="relative h-dvh max-h-dvh bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in overflow-hidden">
         <Button
           variant="ghost"
           size="sm"
@@ -287,7 +287,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
 
         </div>
         
-         <div className="fixed inset-x-0 bottom-0 bg-background/95 backdrop-blur-sm border-t border-border px-6 pt-4 pb-[calc(env(safe-area-inset-bottom)+1rem)]">
+          <div className="absolute inset-x-0 bottom-0 z-10 bg-background/95 backdrop-blur-sm border-t border-border px-6 pt-4 pb-[calc(env(safe-area-inset-bottom)+1rem)]">
           <div className="flex gap-3 max-w-md mx-auto">
             <Button
               variant="outline"
@@ -318,7 +318,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
     const displayName = dogData.name.trim() || '[dog name]';
     
     return (
-       <div className="h-dvh max-h-dvh bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in overflow-hidden">
+       <div className="relative h-dvh max-h-dvh bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in overflow-hidden">
         <Button
           variant="ghost"
           size="sm"
@@ -358,7 +358,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
 
         </div>
         
-         <div className="fixed inset-x-0 bottom-0 bg-background/95 backdrop-blur-sm border-t border-border px-6 pt-4 pb-[calc(env(safe-area-inset-bottom)+1rem)]">
+          <div className="absolute inset-x-0 bottom-0 z-10 bg-background/95 backdrop-blur-sm border-t border-border px-6 pt-4 pb-[calc(env(safe-area-inset-bottom)+1rem)]">
           <div className="flex gap-3 max-w-md mx-auto">
             <Button
               variant="outline"
@@ -389,7 +389,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
     const displayName = dogData.name.trim() || '[dog name]';
     
     return (
-       <div className="h-dvh max-h-dvh bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in overflow-hidden">
+       <div className="relative h-dvh max-h-dvh bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in overflow-hidden">
         <Button
           variant="ghost"
           size="sm"
@@ -442,7 +442,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
 
         </div>
         
-         <div className="fixed inset-x-0 bottom-0 bg-background/95 backdrop-blur-sm border-t border-border px-6 pt-4 pb-[calc(env(safe-area-inset-bottom)+1rem)]">
+          <div className="absolute inset-x-0 bottom-0 z-10 bg-background/95 backdrop-blur-sm border-t border-border px-6 pt-4 pb-[calc(env(safe-area-inset-bottom)+1rem)]">
           <div className="flex gap-3 max-w-md mx-auto">
             <Button
               variant="outline"
@@ -473,7 +473,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
     const displayName = dogData.name.trim() || '[dog name]';
     
     return (
-       <div className="h-dvh max-h-dvh bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in overflow-hidden">
+       <div className="relative h-dvh max-h-dvh bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in overflow-hidden">
         <Button
           variant="ghost"
           size="sm"
@@ -520,7 +520,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
 
         </div>
         
-         <div className="fixed inset-x-0 bottom-0 bg-background/95 backdrop-blur-sm border-t border-border px-6 pt-4 pb-[calc(env(safe-area-inset-bottom)+1rem)]">
+          <div className="absolute inset-x-0 bottom-0 z-10 bg-background/95 backdrop-blur-sm border-t border-border px-6 pt-4 pb-[calc(env(safe-area-inset-bottom)+1rem)]">
           <div className="flex gap-3 max-w-md mx-auto">
             <Button
               variant="outline"
@@ -548,7 +548,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
   // Step 6: Behavioral Goals
   if (step === 6) {
     return (
-       <div className="h-dvh max-h-dvh bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in overflow-hidden">
+        <div className="relative h-dvh max-h-dvh bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in overflow-hidden">
         <Button
           variant="ghost"
           size="sm"
@@ -592,7 +592,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
 
         </div>
         
-         <div className="fixed inset-x-0 bottom-0 bg-background/95 backdrop-blur-sm border-t border-border px-6 pt-4 pb-[calc(env(safe-area-inset-bottom)+1rem)]">
+          <div className="absolute inset-x-0 bottom-0 z-10 bg-background/95 backdrop-blur-sm border-t border-border px-6 pt-4 pb-[calc(env(safe-area-inset-bottom)+1rem)]">
           <div className="flex gap-3 max-w-md mx-auto">
             <Button
               variant="outline"
@@ -620,7 +620,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
   // Step 7: Time Commitment
   if (step === 7) {
     return (
-       <div className="h-dvh max-h-dvh bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in overflow-hidden">
+        <div className="relative h-dvh max-h-dvh bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in overflow-hidden">
         <Button
           variant="ghost"
           size="sm"
@@ -660,7 +660,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
 
         </div>
         
-         <div className="fixed inset-x-0 bottom-0 bg-background/95 backdrop-blur-sm border-t border-border px-6 pt-4 pb-[calc(env(safe-area-inset-bottom)+1rem)]">
+          <div className="absolute inset-x-0 bottom-0 z-10 bg-background/95 backdrop-blur-sm border-t border-border px-6 pt-4 pb-[calc(env(safe-area-inset-bottom)+1rem)]">
           <div className="flex gap-3 max-w-md mx-auto">
             <Button
               variant="outline"
@@ -691,7 +691,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
     const displayName = dogData.name.trim() || '[dog name]';
     
     return (
-      <div className="h-dvh max-h-dvh bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in overflow-hidden">
+      <div className="relative h-dvh max-h-dvh bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in overflow-hidden">
         <Button
           variant="ghost"
           size="sm"
@@ -773,7 +773,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
 
         </div>
         
-        <div className="fixed inset-x-0 bottom-0 bg-background/95 backdrop-blur-sm border-t border-border px-6 pt-4 pb-[calc(env(safe-area-inset-bottom)+1rem)]">
+        <div className="absolute inset-x-0 bottom-0 z-10 bg-background/95 backdrop-blur-sm border-t border-border px-6 pt-4 pb-[calc(env(safe-area-inset-bottom)+1rem)]">
           <div className="flex gap-3 max-w-md mx-auto">
             <Button
               variant="outline"
