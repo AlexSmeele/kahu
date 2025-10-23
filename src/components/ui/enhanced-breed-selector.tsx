@@ -17,6 +17,7 @@ interface EnhancedBreedSelectorProps {
   onBreedSelect: (breedId: string, isCustom: boolean, breedName: string) => void;
   placeholder?: string;
   className?: string;
+  defaultTab?: 'standard' | 'custom' | 'create';
 }
 
 interface ParentBreed {
@@ -29,11 +30,12 @@ export function EnhancedBreedSelector({
   value, 
   onBreedSelect, 
   placeholder = "Select or create a breed...",
-  className 
+  className,
+  defaultTab = 'standard'
 }: EnhancedBreedSelectorProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedTab, setSelectedTab] = useState('standard');
+  const [selectedTab, setSelectedTab] = useState(defaultTab);
   
   // Custom breed creation state
   const [customBreedName, setCustomBreedName] = useState('');
@@ -201,7 +203,12 @@ export function EnhancedBreedSelector({
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+    <Dialog open={isOpen} onOpenChange={(open) => {
+      setIsOpen(open);
+      if (open) {
+        setSelectedTab(defaultTab);
+      }
+    }}>
       <DialogTrigger asChild>
         <Button variant="outline" className={`justify-start ${className}`}>
           {getCurrentBreedName()}
@@ -210,17 +217,21 @@ export function EnhancedBreedSelector({
       
       <DialogContent className="sm:max-w-[600px] max-h-[80vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Select or Create Breed</DialogTitle>
+          <DialogTitle>
+            {selectedTab === 'create' ? 'Create Custom/Mixed Breed' : 'Select or Create Breed'}
+          </DialogTitle>
         </DialogHeader>
         
         <div className="space-y-4">
-          <Input
-            placeholder="Search breeds..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
+          {selectedTab !== 'create' && (
+            <Input
+              placeholder="Search breeds..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          )}
           
-          <Tabs value={selectedTab} onValueChange={setSelectedTab}>
+          <Tabs value={selectedTab} onValueChange={(value) => setSelectedTab(value as 'standard' | 'custom' | 'create')}>
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="standard">Standard Breeds</TabsTrigger>
               <TabsTrigger value="custom">My Custom Breeds</TabsTrigger>

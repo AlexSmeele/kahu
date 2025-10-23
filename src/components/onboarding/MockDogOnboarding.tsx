@@ -42,11 +42,11 @@ const AGE_RANGES = [
 ];
 
 const COMMANDS = [
-  "Sit", "Stay", "Come", "Down", "Heel", "Leave it", "Drop it", "Wait"
+  "Name", "Sit", "Down", "Stay", "Come", "Leave it", "Wait", "Drop it", "Fetch", "High Five", "Heel", "None of the above"
 ];
 
 const ADVANCED_COMMANDS = [
-  "Place", "Fetch", "Roll over", "Play dead", "Speak", "Quiet", "Spin", "Shake", "Touch", "Back up", "Bow", "Crawl"
+  "Place", "Roll over", "Play dead", "Speak", "Quiet", "Spin", "Shake", "Touch", "Bow", "Crawl", "Back up", "Weave", "Figure 8", "Balance", "Bang", "Army crawl"
 ];
 
 const BEHAVIORAL_ISSUES = [
@@ -420,6 +420,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
                   setDogData(prev => ({ ...prev, breed: breedName, breed_id: breedId }));
                 }}
                 placeholder="Select or create custom/mixed breed"
+                defaultTab="create"
               />
             </div>
           </div>

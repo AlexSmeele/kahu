@@ -29,11 +29,11 @@ const AGE_RANGES = [
 ];
 
 const COMMANDS = [
-  'Name', 'Sit', 'Down', 'Stay', 'Come', 'Leave it', 'High Five', 'None of the above'
+  'Name', 'Sit', 'Down', 'Stay', 'Come', 'Leave it', 'Wait', 'Drop it', 'Fetch', 'High Five', 'Heel', 'None of the above'
 ];
 
 const ADVANCED_COMMANDS = [
-  'Heel', 'Place', 'Wait', 'Drop it', 'Fetch', 'Roll over', 'Play dead', 'Speak', 'Quiet', 'Spin', 'Shake', 'Touch'
+  'Place', 'Roll over', 'Play dead', 'Speak', 'Quiet', 'Spin', 'Shake', 'Touch', 'Bow', 'Crawl', 'Back up', 'Weave', 'Figure 8', 'Balance', 'Bang', 'Army crawl'
 ];
 
 const BEHAVIORAL_ISSUES = [
@@ -330,6 +330,7 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
                   setFormData(prev => ({ ...prev, breed: breedName, breed_id: breedId }));
                 }}
                 placeholder="Select or create custom/mixed breed"
+                defaultTab="create"
               />
             </div>
           </div>
