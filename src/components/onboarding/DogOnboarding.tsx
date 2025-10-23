@@ -158,7 +158,7 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
             </p>
           </CardHeader>
 
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-6 pb-6">
             <div className="space-y-2">
               <label className="block text-sm font-medium text-foreground">
                 What's your dog's name? *

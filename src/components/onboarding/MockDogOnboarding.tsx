@@ -155,14 +155,14 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
           <p className="text-xs text-muted-foreground text-center">Step {step} of {TOTAL_STEPS}</p>
         </div>
 
-        <div className="flex-1 flex flex-col px-6 pb-6">
+        <div className="flex-1 flex flex-col px-6 pb-6 overflow-y-auto">
         <div className="text-center mb-6">
 <img src={logoImage} alt="Kahu Logo" className="w-[83px] h-[83px] mx-auto mb-4 object-contain block" />
             <h1 className="text-3xl font-bold mb-2">Welcome to Kahu!</h1>
             <p className="text-muted-foreground">Let's start training your best friend</p>
           </div>
 
-          <div className="space-y-2 mb-6">
+          <div className="space-y-2 mb-8">
             <Label htmlFor="dogName">What's your dog's name?</Label>
             <Input
               id="dogName"
@@ -174,7 +174,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
             />
           </div>
 
-          <div className="mt-auto">
+          <div className="mt-auto pt-4">
             <Button
               size="lg"
               onClick={() => setStep(2)}
