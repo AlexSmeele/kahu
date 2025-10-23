@@ -284,27 +284,28 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
             </div>
           </div>
 
-          <div className="sticky bottom-0 left-0 right-0 pt-4">
-            <div className="flex gap-3">
-              <Button
-                variant="outline"
-                size="lg"
-                onClick={() => setStep(1)}
-                className="flex-1"
-              >
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Back
-              </Button>
-              <Button
-                size="lg"
-                onClick={() => setStep(3)}
-                disabled={!isStepValid()}
-                className="flex-1"
-              >
-                Continue
-                <ArrowRight className="w-4 h-4 ml-2" />
-              </Button>
-            </div>
+        </div>
+        
+        <div className="fixed bottom-0 left-0 right-0 bg-background/95 backdrop-blur-sm border-t border-border px-6 py-4">
+          <div className="flex gap-3 max-w-md mx-auto">
+            <Button
+              variant="outline"
+              size="lg"
+              onClick={() => setStep(1)}
+              className="flex-1"
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Back
+            </Button>
+            <Button
+              size="lg"
+              onClick={() => setStep(3)}
+              disabled={!isStepValid()}
+              className="flex-1"
+            >
+              Continue
+              <ArrowRight className="w-4 h-4 ml-2" />
+            </Button>
           </div>
         </div>
       </div>
@@ -354,27 +355,28 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
             ))}
           </div>
 
-          <div className="sticky bottom-0 left-0 right-0 pt-4">
-            <div className="flex gap-3">
-              <Button
-                variant="outline"
-                size="lg"
-                onClick={() => setStep(2)}
-                className="flex-1"
-              >
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Back
-              </Button>
-              <Button
-                size="lg"
-                onClick={() => setStep(4)}
-                disabled={!isStepValid()}
-                className="flex-1"
-              >
-                Continue
-                <ArrowRight className="w-4 h-4 ml-2" />
-              </Button>
-            </div>
+        </div>
+        
+        <div className="fixed bottom-0 left-0 right-0 bg-background/95 backdrop-blur-sm border-t border-border px-6 py-4">
+          <div className="flex gap-3 max-w-md mx-auto">
+            <Button
+              variant="outline"
+              size="lg"
+              onClick={() => setStep(2)}
+              className="flex-1"
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Back
+            </Button>
+            <Button
+              size="lg"
+              onClick={() => setStep(4)}
+              disabled={!isStepValid()}
+              className="flex-1"
+            >
+              Continue
+              <ArrowRight className="w-4 h-4 ml-2" />
+            </Button>
           </div>
         </div>
       </div>
@@ -426,27 +428,28 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
             </div>
           </div>
 
-          <div className="sticky bottom-0 left-0 right-0 pt-4">
-            <div className="flex gap-3">
-              <Button
-                variant="outline"
-                size="lg"
-                onClick={() => setStep(3)}
-                className="flex-1"
-              >
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Back
-              </Button>
-              <Button
-                size="lg"
-                onClick={() => setStep(5)}
-                disabled={!isStepValid()}
-                className="flex-1"
-              >
-                Continue
-                <ArrowRight className="w-4 h-4 ml-2" />
-              </Button>
-            </div>
+        </div>
+        
+        <div className="fixed bottom-0 left-0 right-0 bg-background/95 backdrop-blur-sm border-t border-border px-6 py-4">
+          <div className="flex gap-3 max-w-md mx-auto">
+            <Button
+              variant="outline"
+              size="lg"
+              onClick={() => setStep(3)}
+              className="flex-1"
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Back
+            </Button>
+            <Button
+              size="lg"
+              onClick={() => setStep(5)}
+              disabled={!isStepValid()}
+              className="flex-1"
+            >
+              Continue
+              <ArrowRight className="w-4 h-4 ml-2" />
+            </Button>
           </div>
         </div>
       </div>
@@ -503,26 +506,27 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
             </div>
           </div>
 
-          <div className="sticky bottom-0 left-0 right-0 pt-4">
-            <div className="flex gap-3">
-              <Button
-                variant="outline"
-                size="lg"
-                onClick={() => setStep(4)}
-                className="flex-1"
-              >
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Back
-              </Button>
-              <Button
-                size="lg"
-                onClick={() => setStep(6)}
-                className="flex-1"
-              >
-                Continue
-                <ArrowRight className="w-4 h-4 ml-2" />
-              </Button>
-            </div>
+        </div>
+        
+        <div className="fixed bottom-0 left-0 right-0 bg-background/95 backdrop-blur-sm border-t border-border px-6 py-4">
+          <div className="flex gap-3 max-w-md mx-auto">
+            <Button
+              variant="outline"
+              size="lg"
+              onClick={() => setStep(4)}
+              className="flex-1"
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Back
+            </Button>
+            <Button
+              size="lg"
+              onClick={() => setStep(6)}
+              className="flex-1"
+            >
+              Continue
+              <ArrowRight className="w-4 h-4 ml-2" />
+            </Button>
           </div>
         </div>
       </div>
@@ -574,26 +578,27 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
             </div>
           </div>
 
-          <div className="sticky bottom-0 left-0 right-0 pt-4">
-            <div className="flex gap-3">
-              <Button
-                variant="outline"
-                size="lg"
-                onClick={() => setStep(5)}
-                className="flex-1"
-              >
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Back
-              </Button>
-              <Button
-                size="lg"
-                onClick={() => setStep(7)}
-                className="flex-1"
-              >
-                Continue
-                <ArrowRight className="w-4 h-4 ml-2" />
-              </Button>
-            </div>
+        </div>
+        
+        <div className="fixed bottom-0 left-0 right-0 bg-background/95 backdrop-blur-sm border-t border-border px-6 py-4">
+          <div className="flex gap-3 max-w-md mx-auto">
+            <Button
+              variant="outline"
+              size="lg"
+              onClick={() => setStep(5)}
+              className="flex-1"
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Back
+            </Button>
+            <Button
+              size="lg"
+              onClick={() => setStep(7)}
+              className="flex-1"
+            >
+              Continue
+              <ArrowRight className="w-4 h-4 ml-2" />
+            </Button>
           </div>
         </div>
       </div>
@@ -641,27 +646,28 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
             ))}
           </div>
 
-          <div className="sticky bottom-0 left-0 right-0 pt-4">
-            <div className="flex gap-3">
-              <Button
-                variant="outline"
-                size="lg"
-                onClick={() => setStep(6)}
-                className="flex-1"
-              >
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Back
-              </Button>
-              <Button
-                size="lg"
-                onClick={() => setStep(7)}
-                disabled={!isStepValid()}
-                className="flex-1"
-              >
-                Continue
-                <ArrowRight className="w-4 h-4 ml-2" />
-              </Button>
-            </div>
+        </div>
+        
+        <div className="fixed bottom-0 left-0 right-0 bg-background/95 backdrop-blur-sm border-t border-border px-6 py-4">
+          <div className="flex gap-3 max-w-md mx-auto">
+            <Button
+              variant="outline"
+              size="lg"
+              onClick={() => setStep(6)}
+              className="flex-1"
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Back
+            </Button>
+            <Button
+              size="lg"
+              onClick={() => setStep(8)}
+              disabled={!isStepValid()}
+              className="flex-1"
+            >
+              Continue
+              <ArrowRight className="w-4 h-4 ml-2" />
+            </Button>
           </div>
         </div>
       </div>
@@ -753,31 +759,32 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
             </div>
           </div>
 
-          <div className="sticky bottom-0 left-0 right-0 pt-4">
-            <div className="flex gap-3">
-              <Button
-                variant="outline"
-                size="lg"
-                onClick={() => setStep(8)}
-                className="flex-1"
-              >
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Back
-              </Button>
-              <Button
-                size="lg"
-                onClick={handleSubmit}
-                disabled={loading}
-                className="flex-1"
-              >
-                {loading ? 'Processing...' : (
-                  <>
-                    Complete Demo
-                    <ArrowRight className="w-4 h-4 ml-2" />
-                  </>
-                )}
-              </Button>
-            </div>
+        </div>
+        
+        <div className="fixed bottom-0 left-0 right-0 bg-background/95 backdrop-blur-sm border-t border-border px-6 py-4">
+          <div className="flex gap-3 max-w-md mx-auto">
+            <Button
+              variant="outline"
+              size="lg"
+              onClick={() => setStep(7)}
+              className="flex-1"
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Back
+            </Button>
+            <Button
+              size="lg"
+              onClick={handleSubmit}
+              disabled={loading}
+              className="flex-1"
+            >
+              {loading ? 'Processing...' : (
+                <>
+                  Complete Demo
+                  <ArrowRight className="w-4 h-4 ml-2" />
+                </>
+              )}
+            </Button>
           </div>
         </div>
       </div>

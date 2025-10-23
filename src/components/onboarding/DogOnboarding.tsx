@@ -202,102 +202,26 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
           <p className="text-xs text-muted-foreground text-center">Step {step} of {TOTAL_STEPS}</p>
         </div>
         
-        <div className="flex-1 flex flex-col px-6 pb-24 overflow-y-auto">
-          <div className="text-center mb-6">
-            <h1 className="text-3xl font-bold mb-2">Is {displayName} a boy or girl?</h1>
-          </div>
-
-          <div className="space-y-6 mb-8">
-            <div className="grid grid-cols-2 gap-4">
-              <button
-                onClick={() => setFormData(prev => ({ ...prev, gender: 'male' }))}
-                className={cn(
-                  "p-8 rounded-lg border-2 transition-all hover-scale",
-                  formData.gender === 'male'
-                    ? "border-primary bg-primary/10"
-                    : "border-border bg-card hover:border-primary/50"
-                )}
-              >
-                <div className="text-5xl mb-2">♂</div>
-                <div className="font-medium">Male</div>
-              </button>
-              
-              <button
-                onClick={() => setFormData(prev => ({ ...prev, gender: 'female' }))}
-                className={cn(
-                  "p-8 rounded-lg border-2 transition-all hover-scale",
-                  formData.gender === 'female'
-                    ? "border-accent bg-accent/10"
-                    : "border-border bg-card hover:border-accent/50"
-                )}
-              >
-                <div className="text-5xl mb-2">♀</div>
-                <div className="font-medium">Female</div>
-              </button>
-            </div>
-
-            <div className="space-y-2">
-              <Label>Add a photo (optional)</Label>
-              {photoPreview ? (
-                <div className="relative">
-                  <img
-                    src={photoPreview}
-                    alt="Dog preview"
-                    className="w-full h-48 object-cover rounded-lg"
-                  />
-                  <Button
-                    type="button"
-                    variant="destructive"
-                    size="sm"
-                    className="absolute top-2 right-2"
-                    onClick={removePhoto}
-                  >
-                    <X className="w-4 h-4" />
-                  </Button>
-                </div>
-              ) : (
-                <div className="border-2 border-dashed border-border rounded-lg p-8 text-center">
-                  <Upload className="w-10 h-10 mx-auto mb-3 text-muted-foreground" />
-                  <p className="text-sm text-muted-foreground mb-3">
-                    Upload a photo of {displayName}
-                  </p>
-                  <Button type="button" variant="outline" size="sm" asChild>
-                    <label className="cursor-pointer">
-                      Choose File
-                      <input
-                        type="file"
-                        accept="image/*"
-                        onChange={handlePhotoChange}
-                        className="hidden"
-                      />
-                    </label>
-                  </Button>
-                </div>
-              )}
-            </div>
-          </div>
-
-          <div className="sticky bottom-0 left-0 right-0 pt-4">
-            <div className="flex gap-3">
-              <Button 
-                variant="outline"
-                size="touch"
-                onClick={() => setStep(1)}
-                className="flex-1"
-              >
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Back
-              </Button>
-              <Button 
-                size="touch"
-                onClick={() => setStep(3)}
-                disabled={!isStepValid()}
-                className="flex-1 btn-primary"
-              >
-                Continue
-                <ArrowRight className="w-4 h-4 ml-2" />
-              </Button>
-            </div>
+        <div className="fixed bottom-0 left-0 right-0 bg-background/95 backdrop-blur-sm border-t border-border px-6 py-4">
+          <div className="flex gap-3 max-w-md mx-auto">
+            <Button 
+              variant="outline"
+              size="touch"
+              onClick={() => setStep(1)}
+              className="flex-1"
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Back
+            </Button>
+            <Button 
+              size="touch"
+              onClick={() => setStep(3)}
+              disabled={!isStepValid()}
+              className="flex-1 btn-primary"
+            >
+              Continue
+              <ArrowRight className="w-4 h-4 ml-2" />
+            </Button>
           </div>
         </div>
       </div>
@@ -341,27 +265,28 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
             ))}
           </div>
 
-          <div className="sticky bottom-0 left-0 right-0 pt-4">
-            <div className="flex gap-3">
-              <Button 
-                variant="outline"
-                size="touch"
-                onClick={() => setStep(2)}
-                className="flex-1"
-              >
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Back
-              </Button>
-              <Button 
-                size="touch"
-                onClick={() => setStep(4)}
-                disabled={!isStepValid()}
-                className="flex-1 btn-primary"
-              >
-                Continue
-                <ArrowRight className="w-4 h-4 ml-2" />
-              </Button>
-            </div>
+        </div>
+        
+        <div className="fixed bottom-0 left-0 right-0 bg-background/95 backdrop-blur-sm border-t border-border px-6 py-4">
+          <div className="flex gap-3 max-w-md mx-auto">
+            <Button 
+              variant="outline"
+              size="touch"
+              onClick={() => setStep(2)}
+              className="flex-1"
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Back
+            </Button>
+            <Button 
+              size="touch"
+              onClick={() => setStep(4)}
+              disabled={!isStepValid()}
+              className="flex-1 btn-primary"
+            >
+              Continue
+              <ArrowRight className="w-4 h-4 ml-2" />
+            </Button>
           </div>
         </div>
       </div>
@@ -398,27 +323,28 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
             </div>
           </div>
 
-          <div className="sticky bottom-0 left-0 right-0 pt-4">
-            <div className="flex gap-3">
-              <Button 
-                variant="outline"
-                size="touch"
-                onClick={() => setStep(3)}
-                className="flex-1"
-              >
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Back
-              </Button>
-              <Button 
-                size="touch"
-                onClick={() => setStep(5)}
-                disabled={!isStepValid()}
-                className="flex-1 btn-primary"
-              >
-                Continue
-                <ArrowRight className="w-4 h-4 ml-2" />
-              </Button>
-            </div>
+        </div>
+        
+        <div className="fixed bottom-0 left-0 right-0 bg-background/95 backdrop-blur-sm border-t border-border px-6 py-4">
+          <div className="flex gap-3 max-w-md mx-auto">
+            <Button 
+              variant="outline"
+              size="touch"
+              onClick={() => setStep(3)}
+              className="flex-1"
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Back
+            </Button>
+            <Button 
+              size="touch"
+              onClick={() => setStep(5)}
+              disabled={!isStepValid()}
+              className="flex-1 btn-primary"
+            >
+              Continue
+              <ArrowRight className="w-4 h-4 ml-2" />
+            </Button>
           </div>
         </div>
       </div>
@@ -461,26 +387,27 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
             </div>
           </div>
 
-          <div className="sticky bottom-0 left-0 right-0 pt-4">
-            <div className="flex gap-3">
-              <Button 
-                variant="outline"
-                size="touch"
-                onClick={() => setStep(4)}
-                className="flex-1"
-              >
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Back
-              </Button>
-              <Button 
-                size="touch"
-                onClick={() => setStep(6)}
-                className="flex-1 btn-primary"
-              >
-                Continue
-                <ArrowRight className="w-4 h-4 ml-2" />
-              </Button>
-            </div>
+        </div>
+        
+        <div className="fixed bottom-0 left-0 right-0 bg-background/95 backdrop-blur-sm border-t border-border px-6 py-4">
+          <div className="flex gap-3 max-w-md mx-auto">
+            <Button 
+              variant="outline"
+              size="touch"
+              onClick={() => setStep(4)}
+              className="flex-1"
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Back
+            </Button>
+            <Button 
+              size="touch"
+              onClick={() => setStep(6)}
+              className="flex-1 btn-primary"
+            >
+              Continue
+              <ArrowRight className="w-4 h-4 ml-2" />
+            </Button>
           </div>
         </div>
       </div>
@@ -519,26 +446,27 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
             </div>
           </div>
 
-          <div className="sticky bottom-0 left-0 right-0 pt-4">
-            <div className="flex gap-3">
-              <Button 
-                variant="outline"
-                size="touch"
-                onClick={() => setStep(5)}
-                className="flex-1"
-              >
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Back
-              </Button>
-              <Button 
-                size="touch"
-                onClick={() => setStep(7)}
-                className="flex-1 btn-primary"
-              >
-                Continue
-                <ArrowRight className="w-4 h-4 ml-2" />
-              </Button>
-            </div>
+        </div>
+        
+        <div className="fixed bottom-0 left-0 right-0 bg-background/95 backdrop-blur-sm border-t border-border px-6 py-4">
+          <div className="flex gap-3 max-w-md mx-auto">
+            <Button 
+              variant="outline"
+              size="touch"
+              onClick={() => setStep(5)}
+              className="flex-1"
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Back
+            </Button>
+            <Button 
+              size="touch"
+              onClick={() => setStep(7)}
+              className="flex-1 btn-primary"
+            >
+              Continue
+              <ArrowRight className="w-4 h-4 ml-2" />
+            </Button>
           </div>
         </div>
       </div>
@@ -580,27 +508,28 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
             ))}
           </div>
 
-          <div className="sticky bottom-0 left-0 right-0 pt-4">
-            <div className="flex gap-3">
-              <Button 
-                variant="outline"
-                size="touch"
-                onClick={() => setStep(6)}
-                className="flex-1"
-              >
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Back
-              </Button>
-              <Button 
-                size="touch"
-                onClick={() => setStep(8)}
-                disabled={!isStepValid()}
-                className="flex-1 btn-primary"
-              >
-                Continue
-                <ArrowRight className="w-4 h-4 ml-2" />
-              </Button>
-            </div>
+        </div>
+        
+        <div className="fixed bottom-0 left-0 right-0 bg-background/95 backdrop-blur-sm border-t border-border px-6 py-4">
+          <div className="flex gap-3 max-w-md mx-auto">
+            <Button 
+              variant="outline"
+              size="touch"
+              onClick={() => setStep(6)}
+              className="flex-1"
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Back
+            </Button>
+            <Button 
+              size="touch"
+              onClick={() => setStep(8)}
+              disabled={!isStepValid()}
+              className="flex-1 btn-primary"
+            >
+              Continue
+              <ArrowRight className="w-4 h-4 ml-2" />
+            </Button>
           </div>
         </div>
       </div>
@@ -696,28 +625,29 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
             </div>
           </div>
 
-          <div className="sticky bottom-0 left-0 right-0 pt-4">
-            <div className="flex gap-3">
-              <Button 
-                variant="outline"
-                size="touch"
-                onClick={() => setStep(7)}
-                className="flex-1"
-                disabled={loading}
-              >
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Back
-              </Button>
-              <Button 
-                size="touch"
-                onClick={handleSubmit}
-                className="flex-1 btn-primary hover-scale"
-                disabled={loading}
-              >
-                {loading ? 'Creating...' : "Let's Start!"}
-                <ArrowRight className="w-4 h-4 ml-2" />
-              </Button>
-            </div>
+        </div>
+        
+        <div className="fixed bottom-0 left-0 right-0 bg-background/95 backdrop-blur-sm border-t border-border px-6 py-4">
+          <div className="flex gap-3 max-w-md mx-auto">
+            <Button 
+              variant="outline"
+              size="touch"
+              onClick={() => setStep(7)}
+              className="flex-1"
+              disabled={loading}
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Back
+            </Button>
+            <Button 
+              size="touch"
+              onClick={handleSubmit}
+              className="flex-1 btn-primary hover-scale"
+              disabled={loading}
+            >
+              {loading ? 'Creating...' : "Let's Start!"}
+              <ArrowRight className="w-4 h-4 ml-2" />
+            </Button>
           </div>
         </div>
       </div>
