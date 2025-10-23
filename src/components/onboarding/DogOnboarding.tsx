@@ -297,6 +297,9 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
             </div>
 
             <div className="space-y-3">
+              <label className="text-sm font-medium text-foreground">
+                What breed is {formData.gender === 'male' ? 'he' : formData.gender === 'female' ? 'she' : displayName}?
+              </label>
               <BreedAutocomplete
                 value={formData.breed}
                 onChange={(breed) => setFormData(prev => ({ ...prev, breed }))}
