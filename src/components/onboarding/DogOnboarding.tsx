@@ -194,21 +194,21 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
 
   // Step 2: Gender
   if (step === 2) {
+    const displayName = formData.name.trim() || '[dog name]';
+    
     return (
-      <div className="h-full bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex items-center justify-center p-4 animate-fade-in">
-        <Card className="w-full max-w-md border-0 shadow-[var(--shadow-large)] animate-scale-in">
-          <div className="p-4 pb-0">
-            <Progress value={getProgressPercentage()} className="h-2" />
-            <p className="text-xs text-muted-foreground mt-2 text-center">Step 2 of {TOTAL_STEPS}</p>
+      <div className="min-h-screen bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in">
+        <div className="px-6 pt-6 pb-4">
+          <Progress value={getProgressPercentage()} className="h-2 mb-2" />
+          <p className="text-xs text-muted-foreground text-center">Step {step} of {TOTAL_STEPS}</p>
+        </div>
+        
+        <div className="flex-1 flex flex-col px-6 pb-24 overflow-y-auto">
+          <div className="text-center mb-6">
+            <h1 className="text-3xl font-bold mb-2">Is {displayName} a boy or girl?</h1>
           </div>
-          
-          <CardHeader className="text-center pb-6">
-            <CardTitle className="text-xl font-bold text-foreground">
-              What's {formData.name}'s gender?
-            </CardTitle>
-          </CardHeader>
 
-          <CardContent className="space-y-4">
+          <div className="space-y-4 mb-8">
             <div className="grid grid-cols-2 gap-4">
               <button
                 onClick={() => setFormData(prev => ({ ...prev, gender: 'male' }))}
@@ -236,8 +236,10 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
                 <div className="font-medium">Female</div>
               </button>
             </div>
+          </div>
 
-            <div className="flex gap-3 pt-4">
+          <div className="sticky bottom-0 left-0 right-0 pt-4">
+            <div className="flex gap-3">
               <Button 
                 variant="outline"
                 size="touch"
@@ -257,51 +259,51 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </div>
     );
   }
 
   // Step 3: Age Range
   if (step === 3) {
+    const displayName = formData.name.trim() || '[dog name]';
+    
     return (
-      <div className="h-full bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex items-center justify-center p-4 animate-fade-in">
-        <Card className="w-full max-w-md border-0 shadow-[var(--shadow-large)] animate-scale-in max-h-[calc(100vh-2rem)] overflow-y-auto">
-          <div className="p-4 pb-0">
-            <Progress value={getProgressPercentage()} className="h-2" />
-            <p className="text-xs text-muted-foreground mt-2 text-center">Step 3 of {TOTAL_STEPS}</p>
+      <div className="min-h-screen bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in">
+        <div className="px-6 pt-6 pb-4">
+          <Progress value={getProgressPercentage()} className="h-2 mb-2" />
+          <p className="text-xs text-muted-foreground text-center">Step {step} of {TOTAL_STEPS}</p>
+        </div>
+        
+        <div className="flex-1 flex flex-col px-6 pb-24 overflow-y-auto">
+          <div className="text-center mb-6">
+            <h1 className="text-3xl font-bold mb-2">How old is {displayName}?</h1>
           </div>
-          
-          <CardHeader className="text-center pb-6">
-            <CardTitle className="text-xl font-bold text-foreground">
-              How old is {formData.name}?
-            </CardTitle>
-          </CardHeader>
 
-          <CardContent className="space-y-4">
-            <div className="space-y-3">
-              {AGE_RANGES.map((range) => (
-                <button
-                  key={range.value}
-                  onClick={() => setFormData(prev => ({ ...prev, age_range: range.value }))}
-                  className={cn(
-                    "w-full p-4 rounded-lg border-2 transition-all hover-scale text-left flex items-center gap-3",
-                    formData.age_range === range.value
-                      ? "border-primary bg-primary/10"
-                      : "border-border bg-card hover:border-primary/50"
-                  )}
-                >
-                  <span className="text-2xl">{range.emoji}</span>
-                  <span className="font-medium">{range.label}</span>
-                  {formData.age_range === range.value && (
-                    <Check className="w-5 h-5 ml-auto text-primary" />
-                  )}
-                </button>
-              ))}
-            </div>
+          <div className="space-y-3 mb-8">
+            {AGE_RANGES.map((range) => (
+              <button
+                key={range.value}
+                onClick={() => setFormData(prev => ({ ...prev, age_range: range.value }))}
+                className={cn(
+                  "w-full p-4 rounded-lg border-2 transition-all hover-scale text-left flex items-center gap-3",
+                  formData.age_range === range.value
+                    ? "border-primary bg-primary/10"
+                    : "border-border bg-card hover:border-primary/50"
+                )}
+              >
+                <span className="text-2xl">{range.emoji}</span>
+                <span className="font-medium">{range.label}</span>
+                {formData.age_range === range.value && (
+                  <Check className="w-5 h-5 ml-auto text-primary" />
+                )}
+              </button>
+            ))}
+          </div>
 
-            <div className="flex gap-3 pt-4">
+          <div className="sticky bottom-0 left-0 right-0 pt-4">
+            <div className="flex gap-3">
               <Button 
                 variant="outline"
                 size="touch"
@@ -321,32 +323,30 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </div>
     );
   }
 
   // Step 4: Breed
   if (step === 4) {
+    const displayName = formData.name.trim() || '[dog name]';
+    
     return (
-      <div className="h-full bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex items-center justify-center p-4 animate-fade-in">
-        <Card className="w-full max-w-md border-0 shadow-[var(--shadow-large)] animate-scale-in">
-          <div className="p-4 pb-0">
-            <Progress value={getProgressPercentage()} className="h-2" />
-            <p className="text-xs text-muted-foreground mt-2 text-center">Step 4 of {TOTAL_STEPS}</p>
+      <div className="min-h-screen bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in">
+        <div className="px-6 pt-6 pb-4">
+          <Progress value={getProgressPercentage()} className="h-2 mb-2" />
+          <p className="text-xs text-muted-foreground text-center">Step {step} of {TOTAL_STEPS}</p>
+        </div>
+        
+        <div className="flex-1 flex flex-col px-6 pb-24 overflow-y-auto">
+          <div className="text-center mb-6">
+            <h1 className="text-3xl font-bold mb-2">What's {displayName}'s breed?</h1>
+            <p className="text-muted-foreground">Get breed-based tips for faster and easier learning</p>
           </div>
-          
-          <CardHeader className="text-center pb-6">
-            <CardTitle className="text-xl font-bold text-foreground">
-              What's {formData.name}'s breed?
-            </CardTitle>
-            <p className="text-sm text-muted-foreground">
-              Get breed-based tips for faster and easier learning
-            </p>
-          </CardHeader>
 
-          <CardContent className="space-y-4">
+          <div className="space-y-4 mb-8">
             <div className="space-y-2">
               <Label htmlFor="breed">Breed *</Label>
               <BreedAutocomplete
@@ -357,8 +357,10 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
                 required
               />
             </div>
+          </div>
 
-            <div className="flex gap-3 pt-4">
+          <div className="sticky bottom-0 left-0 right-0 pt-4">
+            <div className="flex gap-3">
               <Button 
                 variant="outline"
                 size="touch"
@@ -378,32 +380,30 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </div>
     );
   }
 
   // Step 5: Photo Upload
   if (step === 5) {
+    const displayName = formData.name.trim() || '[dog name]';
+    
     return (
-      <div className="h-full bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex items-center justify-center p-4 animate-fade-in">
-        <Card className="w-full max-w-md border-0 shadow-[var(--shadow-large)] animate-scale-in">
-          <div className="p-4 pb-0">
-            <Progress value={getProgressPercentage()} className="h-2" />
-            <p className="text-xs text-muted-foreground mt-2 text-center">Step 5 of {TOTAL_STEPS}</p>
+      <div className="min-h-screen bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in">
+        <div className="px-6 pt-6 pb-4">
+          <Progress value={getProgressPercentage()} className="h-2 mb-2" />
+          <p className="text-xs text-muted-foreground text-center">Step {step} of {TOTAL_STEPS}</p>
+        </div>
+        
+        <div className="flex-1 flex flex-col px-6 pb-24 overflow-y-auto">
+          <div className="text-center mb-6">
+            <h1 className="text-3xl font-bold mb-2">Let's see that adorable face!</h1>
+            <p className="text-muted-foreground">Upload a photo of {displayName} (optional)</p>
           </div>
-          
-          <CardHeader className="text-center pb-6">
-            <CardTitle className="text-xl font-bold text-foreground">
-              Let's see that adorable face!
-            </CardTitle>
-            <p className="text-sm text-muted-foreground">
-              Upload a photo of {formData.name} (optional)
-            </p>
-          </CardHeader>
 
-          <CardContent className="space-y-4">
+          <div className="space-y-4 mb-8">
             {photoPreview ? (
               <div className="relative">
                 <img
@@ -425,7 +425,7 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
               <div className="border-2 border-dashed border-border rounded-lg p-12 text-center">
                 <Upload className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
                 <p className="text-sm text-muted-foreground mb-4">
-                  Upload a photo of {formData.name}
+                  Upload a photo of {displayName}
                 </p>
                 <Button type="button" variant="outline" asChild>
                   <label className="cursor-pointer">
@@ -440,8 +440,10 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
                 </Button>
               </div>
             )}
+          </div>
 
-            <div className="flex gap-3 pt-4">
+          <div className="sticky bottom-0 left-0 right-0 pt-4">
+            <div className="flex gap-3">
               <Button 
                 variant="outline"
                 size="touch"
@@ -460,32 +462,30 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </div>
     );
   }
 
   // Step 6: Known Commands
   if (step === 6) {
+    const displayName = formData.name.trim() || '[dog name]';
+    
     return (
-      <div className="h-full bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex items-center justify-center p-4 animate-fade-in">
-        <Card className="w-full max-w-md border-0 shadow-[var(--shadow-large)] animate-scale-in max-h-[calc(100vh-2rem)] overflow-y-auto">
-          <div className="p-4 pb-0">
-            <Progress value={getProgressPercentage()} className="h-2" />
-            <p className="text-xs text-muted-foreground mt-2 text-center">Step 6 of {TOTAL_STEPS}</p>
+      <div className="min-h-screen bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in">
+        <div className="px-6 pt-6 pb-4">
+          <Progress value={getProgressPercentage()} className="h-2 mb-2" />
+          <p className="text-xs text-muted-foreground text-center">Step {step} of {TOTAL_STEPS}</p>
+        </div>
+        
+        <div className="flex-1 flex flex-col px-6 pb-24 overflow-y-auto">
+          <div className="text-center mb-6">
+            <h1 className="text-3xl font-bold mb-2">Which commands does {displayName} know?</h1>
+            <p className="text-muted-foreground">Mark all that {displayName} knows for sure!</p>
           </div>
-          
-          <CardHeader className="text-center pb-6">
-            <CardTitle className="text-xl font-bold text-foreground">
-              Which commands does {formData.name} know?
-            </CardTitle>
-            <p className="text-sm text-muted-foreground">
-              Mark all that {formData.name} knows for sure!
-            </p>
-          </CardHeader>
 
-          <CardContent className="space-y-4">
+          <div className="space-y-4 mb-8">
             <div className="flex flex-wrap gap-2">
               {COMMANDS.map((command) => (
                 <Badge
@@ -501,8 +501,10 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
                 </Badge>
               ))}
             </div>
+          </div>
 
-            <div className="flex gap-3 pt-4">
+          <div className="sticky bottom-0 left-0 right-0 pt-4">
+            <div className="flex gap-3">
               <Button 
                 variant="outline"
                 size="touch"
@@ -521,8 +523,8 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </div>
     );
   }
@@ -530,20 +532,18 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
   // Step 7: Behavioral Goals
   if (step === 7) {
     return (
-      <div className="h-full bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex items-center justify-center p-4 animate-fade-in">
-        <Card className="w-full max-w-md border-0 shadow-[var(--shadow-large)] animate-scale-in max-h-[calc(100vh-2rem)] overflow-y-auto">
-          <div className="p-4 pb-0">
-            <Progress value={getProgressPercentage()} className="h-2" />
-            <p className="text-xs text-muted-foreground mt-2 text-center">Training goals 1/2</p>
+      <div className="min-h-screen bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in">
+        <div className="px-6 pt-6 pb-4">
+          <Progress value={getProgressPercentage()} className="h-2 mb-2" />
+          <p className="text-xs text-muted-foreground text-center">Training goals 1/2</p>
+        </div>
+        
+        <div className="flex-1 flex flex-col px-6 pb-24 overflow-y-auto">
+          <div className="text-center mb-6">
+            <h1 className="text-3xl font-bold mb-2">Which behavioral issues would you like to solve?</h1>
           </div>
-          
-          <CardHeader className="text-center pb-6">
-            <CardTitle className="text-xl font-bold text-foreground">
-              Which behavioral issues would you like to solve?
-            </CardTitle>
-          </CardHeader>
 
-          <CardContent className="space-y-4">
+          <div className="space-y-4 mb-8">
             <div className="flex flex-wrap gap-2">
               {BEHAVIORAL_ISSUES.map((issue) => (
                 <Badge
@@ -559,8 +559,10 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
                 </Badge>
               ))}
             </div>
+          </div>
 
-            <div className="flex gap-3 pt-4">
+          <div className="sticky bottom-0 left-0 right-0 pt-4">
+            <div className="flex gap-3">
               <Button 
                 variant="outline"
                 size="touch"
@@ -579,8 +581,8 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </div>
     );
   }
@@ -588,44 +590,40 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
   // Step 8: Time Commitment
   if (step === 8) {
     return (
-      <div className="h-full bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex items-center justify-center p-4 animate-fade-in">
-        <Card className="w-full max-w-md border-0 shadow-[var(--shadow-large)] animate-scale-in">
-          <div className="p-4 pb-0">
-            <Progress value={getProgressPercentage()} className="h-2" />
-            <p className="text-xs text-muted-foreground mt-2 text-center">Training goals 2/2</p>
+      <div className="min-h-screen bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in">
+        <div className="px-6 pt-6 pb-4">
+          <Progress value={getProgressPercentage()} className="h-2 mb-2" />
+          <p className="text-xs text-muted-foreground text-center">Training goals 2/2</p>
+        </div>
+        
+        <div className="flex-1 flex flex-col px-6 pb-24 overflow-y-auto">
+          <div className="text-center mb-6">
+            <h1 className="text-3xl font-bold mb-2">How much time can you spend training?</h1>
+            <p className="text-muted-foreground">Per day</p>
           </div>
-          
-          <CardHeader className="text-center pb-6">
-            <CardTitle className="text-xl font-bold text-foreground">
-              How much time can you spend training?
-            </CardTitle>
-            <p className="text-sm text-muted-foreground">
-              Per day
-            </p>
-          </CardHeader>
 
-          <CardContent className="space-y-4">
-            <div className="space-y-3">
-              {TIME_COMMITMENTS.map((time) => (
-                <button
-                  key={time.value}
-                  onClick={() => setFormData(prev => ({ ...prev, training_time_commitment: time.value }))}
-                  className={cn(
-                    "w-full p-4 rounded-lg border-2 transition-all hover-scale text-center font-medium",
-                    formData.training_time_commitment === time.value
-                      ? "border-primary bg-primary/10"
-                      : "border-border bg-card hover:border-primary/50"
-                  )}
-                >
-                  {time.label}
-                  {formData.training_time_commitment === time.value && (
-                    <Check className="w-5 h-5 ml-2 inline text-primary" />
-                  )}
-                </button>
-              ))}
-            </div>
+          <div className="space-y-3 mb-8">
+            {TIME_COMMITMENTS.map((time) => (
+              <button
+                key={time.value}
+                onClick={() => setFormData(prev => ({ ...prev, training_time_commitment: time.value }))}
+                className={cn(
+                  "w-full p-4 rounded-lg border-2 transition-all hover-scale text-center font-medium",
+                  formData.training_time_commitment === time.value
+                    ? "border-primary bg-primary/10"
+                    : "border-border bg-card hover:border-primary/50"
+                )}
+              >
+                {time.label}
+                {formData.training_time_commitment === time.value && (
+                  <Check className="w-5 h-5 ml-2 inline text-primary" />
+                )}
+              </button>
+            ))}
+          </div>
 
-            <div className="flex gap-3 pt-4">
+          <div className="sticky bottom-0 left-0 right-0 pt-4">
+            <div className="flex gap-3">
               <Button 
                 variant="outline"
                 size="touch"
@@ -645,8 +643,8 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </div>
     );
   }
@@ -654,76 +652,71 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
   // Step 9: Final Details & Summary
   if (step === 9) {
     const ageLabel = AGE_RANGES.find(r => r.value === formData.age_range)?.label || formData.age_range;
+    const displayName = formData.name.trim() || '[dog name]';
     
     return (
-      <div className="h-full bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex items-center justify-center p-4 animate-fade-in">
-        <Card className="w-full max-w-md border-0 shadow-[var(--shadow-large)] animate-scale-in max-h-[calc(100vh-2rem)] overflow-y-auto">
-          <div className="p-4 pb-0">
-            <Progress value={getProgressPercentage()} className="h-2" />
-            <p className="text-xs text-muted-foreground mt-2 text-center">Step 9 of {TOTAL_STEPS}</p>
+      <div className="min-h-screen bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in">
+        <div className="px-6 pt-6 pb-4">
+          <Progress value={getProgressPercentage()} className="h-2 mb-2" />
+          <p className="text-xs text-muted-foreground text-center">Step {step} of {TOTAL_STEPS}</p>
+        </div>
+        
+        <div className="flex-1 flex flex-col px-6 pb-24 overflow-y-auto">
+          <div className="text-center mb-6">
+            <img src={logoIcon} alt="Kahu Logo" className="mx-auto w-16 h-16 mb-4 object-contain block" />
+            <h1 className="text-3xl font-bold mb-2">Welcome, {formData.name}!</h1>
+            <p className="text-muted-foreground">Just a few more optional details</p>
           </div>
-          
-          <CardHeader className="text-center pb-6">
-<img src={logoIcon} alt="Kahu Logo" className="mx-auto w-16 h-16 mb-4 object-contain block" />
-            <CardTitle className="text-2xl font-bold text-foreground">
-              Welcome, {formData.name}!
-            </CardTitle>
-            <p className="text-muted-foreground">
-              Just a few more optional details
-            </p>
-          </CardHeader>
 
-          <CardContent className="space-y-4">
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="weight">Weight (kg) - optional</Label>
-                <Input
-                  id="weight"
-                  type="number"
-                  value={formData.weight}
-                  onChange={(e) => setFormData(prev => ({ ...prev, weight: e.target.value }))}
-                  placeholder="25"
-                  min="0"
-                  max="200"
-                  step="0.1"
-                />
-              </div>
-
-              <div className="space-y-3">
-                <Label>Have you adopted {formData.name} from a shelter?</Label>
-                <div className="grid grid-cols-2 gap-3">
-                  <button
-                    onClick={() => setFormData(prev => ({ ...prev, is_shelter_dog: true }))}
-                    className={cn(
-                      "p-4 rounded-lg border-2 transition-all hover-scale font-medium",
-                      formData.is_shelter_dog
-                        ? "border-primary bg-primary/10"
-                        : "border-border bg-card hover:border-primary/50"
-                    )}
-                  >
-                    Yes
-                  </button>
-                  <button
-                    onClick={() => setFormData(prev => ({ ...prev, is_shelter_dog: false }))}
-                    className={cn(
-                      "p-4 rounded-lg border-2 transition-all hover-scale font-medium",
-                      !formData.is_shelter_dog
-                        ? "border-primary bg-primary/10"
-                        : "border-border bg-card hover:border-primary/50"
-                    )}
-                  >
-                    No
-                  </button>
-                </div>
-                {formData.is_shelter_dog && (
-                  <p className="text-xs text-muted-foreground">
-                    Kahu's program for rescued dogs can help you bond better
-                  </p>
-                )}
-              </div>
+          <div className="space-y-4 mb-8">
+            <div className="space-y-2">
+              <Label htmlFor="weight">Weight (kg) - optional</Label>
+              <Input
+                id="weight"
+                type="number"
+                value={formData.weight}
+                onChange={(e) => setFormData(prev => ({ ...prev, weight: e.target.value }))}
+                placeholder="25"
+                min="0"
+                max="200"
+                step="0.1"
+              />
             </div>
 
-            <div className="bg-secondary/50 rounded-lg p-4 space-y-2 mt-6">
+            <div className="space-y-3">
+              <Label>Have you adopted {displayName} from a shelter?</Label>
+              <div className="grid grid-cols-2 gap-3">
+                <button
+                  onClick={() => setFormData(prev => ({ ...prev, is_shelter_dog: true }))}
+                  className={cn(
+                    "p-4 rounded-lg border-2 transition-all hover-scale font-medium",
+                    formData.is_shelter_dog
+                      ? "border-primary bg-primary/10"
+                      : "border-border bg-card hover:border-primary/50"
+                  )}
+                >
+                  Yes
+                </button>
+                <button
+                  onClick={() => setFormData(prev => ({ ...prev, is_shelter_dog: false }))}
+                  className={cn(
+                    "p-4 rounded-lg border-2 transition-all hover-scale font-medium",
+                    !formData.is_shelter_dog
+                      ? "border-primary bg-primary/10"
+                      : "border-border bg-card hover:border-primary/50"
+                  )}
+                >
+                  No
+                </button>
+              </div>
+              {formData.is_shelter_dog && (
+                <p className="text-xs text-muted-foreground">
+                  Kahu's program for rescued dogs can help you bond better
+                </p>
+              )}
+            </div>
+
+            <div className="bg-secondary/50 rounded-lg p-4 space-y-2">
               <h3 className="font-medium text-foreground">Profile Summary:</h3>
               <div className="text-sm text-muted-foreground space-y-1">
                 <p><span className="font-medium">Name:</span> {formData.name}</p>
@@ -743,8 +736,10 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
                 )}
               </div>
             </div>
+          </div>
 
-            <div className="flex gap-3 pt-4">
+          <div className="sticky bottom-0 left-0 right-0 pt-4">
+            <div className="flex gap-3">
               <Button 
                 variant="outline"
                 size="touch"
@@ -765,8 +760,8 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </div>
     );
   }

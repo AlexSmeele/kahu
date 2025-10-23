@@ -195,31 +195,33 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
 
   // Step 2: Gender
   if (step === 2) {
+    const displayName = dogData.name.trim() || '[dog name]';
+    
     return (
-      <div className="min-h-screen bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex items-center justify-center p-4 animate-fade-in">
-        <Card className="w-full max-w-md border-0 shadow-[var(--shadow-large)] animate-scale-in relative">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={onComplete}
-            className="absolute top-4 right-4 z-10 h-8 w-8 p-0 hover:bg-muted"
-          >
-            <X className="w-4 h-4" />
-          </Button>
-          
-          <div className="px-6 pt-6 pb-4">
-            <Badge variant="secondary" className="mb-4 bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-200">
-              MOCK MODE
-            </Badge>
-            <Progress value={getProgressPercentage()} className="h-2 mb-2" />
-            <p className="text-xs text-muted-foreground text-center">Step {step} of {TOTAL_STEPS}</p>
+      <div className="min-h-screen bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in">
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={onComplete}
+          className="absolute top-4 right-4 z-10 h-8 w-8 p-0 hover:bg-muted"
+        >
+          <X className="w-4 h-4" />
+        </Button>
+
+        <div className="px-6 pt-6 pb-4">
+          <Badge variant="secondary" className="mb-4 bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-200">
+            MOCK MODE
+          </Badge>
+          <Progress value={getProgressPercentage()} className="h-2 mb-2" />
+          <p className="text-xs text-muted-foreground text-center">Step {step} of {TOTAL_STEPS}</p>
+        </div>
+
+        <div className="flex-1 flex flex-col px-6 pb-24 overflow-y-auto">
+          <div className="text-center mb-6">
+            <h1 className="text-3xl font-bold mb-2">Is {displayName} a boy or girl?</h1>
           </div>
 
-          <CardHeader className="text-center pb-4 pt-0">
-            <CardTitle className="text-2xl font-bold">Is {dogData.name || 'your dog'} a boy or girl?</CardTitle>
-          </CardHeader>
-
-          <CardContent className="space-y-6">
+          <div className="space-y-4 mb-8">
             <div className="grid grid-cols-2 gap-4">
               <Button
                 variant={dogData.gender === 'male' ? 'default' : 'outline'}
@@ -240,7 +242,9 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
                 <span className="text-lg">Female</span>
               </Button>
             </div>
+          </div>
 
+          <div className="sticky bottom-0 left-0 right-0 pt-4">
             <div className="flex gap-3">
               <Button
                 variant="outline"
@@ -261,54 +265,56 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </div>
     );
   }
 
   // Step 3: Age Range
   if (step === 3) {
+    const displayName = dogData.name.trim() || '[dog name]';
+    
     return (
-      <div className="min-h-screen bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex items-center justify-center p-4 animate-fade-in">
-        <Card className="w-full max-w-md border-0 shadow-[var(--shadow-large)] animate-scale-in relative">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={onComplete}
-            className="absolute top-4 right-4 z-10 h-8 w-8 p-0 hover:bg-muted"
-          >
-            <X className="w-4 h-4" />
-          </Button>
-          
-          <div className="px-6 pt-6 pb-4">
-            <Badge variant="secondary" className="mb-4 bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-200">
-              MOCK MODE
-            </Badge>
-            <Progress value={getProgressPercentage()} className="h-2 mb-2" />
-            <p className="text-xs text-muted-foreground text-center">Step {step} of {TOTAL_STEPS}</p>
+      <div className="min-h-screen bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in">
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={onComplete}
+          className="absolute top-4 right-4 z-10 h-8 w-8 p-0 hover:bg-muted"
+        >
+          <X className="w-4 h-4" />
+        </Button>
+
+        <div className="px-6 pt-6 pb-4">
+          <Badge variant="secondary" className="mb-4 bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-200">
+            MOCK MODE
+          </Badge>
+          <Progress value={getProgressPercentage()} className="h-2 mb-2" />
+          <p className="text-xs text-muted-foreground text-center">Step {step} of {TOTAL_STEPS}</p>
+        </div>
+
+        <div className="flex-1 flex flex-col px-6 pb-24 overflow-y-auto">
+          <div className="text-center mb-6">
+            <h1 className="text-3xl font-bold mb-2">How old is {displayName}?</h1>
           </div>
 
-          <CardHeader className="text-center pb-4 pt-0">
-            <CardTitle className="text-2xl font-bold">How old is {dogData.name || 'your dog'}?</CardTitle>
-          </CardHeader>
+          <div className="space-y-3 mb-8">
+            {AGE_RANGES.map((range) => (
+              <Button
+                key={range.value}
+                variant={dogData.age_range === range.value ? 'default' : 'outline'}
+                size="lg"
+                onClick={() => setDogData(prev => ({ ...prev, age_range: range.value }))}
+                className="w-full justify-start h-16 text-left"
+              >
+                <span className="text-2xl mr-3">{range.emoji}</span>
+                <span className="text-base">{range.label}</span>
+              </Button>
+            ))}
+          </div>
 
-          <CardContent className="space-y-6">
-            <div className="space-y-3">
-              {AGE_RANGES.map((range) => (
-                <Button
-                  key={range.value}
-                  variant={dogData.age_range === range.value ? 'default' : 'outline'}
-                  size="lg"
-                  onClick={() => setDogData(prev => ({ ...prev, age_range: range.value }))}
-                  className="w-full justify-start h-16 text-left"
-                >
-                  <span className="text-2xl mr-3">{range.emoji}</span>
-                  <span className="text-base">{range.label}</span>
-                </Button>
-              ))}
-            </div>
-
+          <div className="sticky bottom-0 left-0 right-0 pt-4">
             <div className="flex gap-3">
               <Button
                 variant="outline"
@@ -329,40 +335,42 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </div>
     );
   }
 
   // Step 4: Breed
   if (step === 4) {
+    const displayName = dogData.name.trim() || '[dog name]';
+    
     return (
-      <div className="min-h-screen bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex items-center justify-center p-4 animate-fade-in">
-        <Card className="w-full max-w-md border-0 shadow-[var(--shadow-large)] animate-scale-in relative">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={onComplete}
-            className="absolute top-4 right-4 z-10 h-8 w-8 p-0 hover:bg-muted"
-          >
-            <X className="w-4 h-4" />
-          </Button>
-          
-          <div className="px-6 pt-6 pb-4">
-            <Badge variant="secondary" className="mb-4 bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-200">
-              MOCK MODE
-            </Badge>
-            <Progress value={getProgressPercentage()} className="h-2 mb-2" />
-            <p className="text-xs text-muted-foreground text-center">Step {step} of {TOTAL_STEPS}</p>
+      <div className="min-h-screen bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in">
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={onComplete}
+          className="absolute top-4 right-4 z-10 h-8 w-8 p-0 hover:bg-muted"
+        >
+          <X className="w-4 h-4" />
+        </Button>
+
+        <div className="px-6 pt-6 pb-4">
+          <Badge variant="secondary" className="mb-4 bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-200">
+            MOCK MODE
+          </Badge>
+          <Progress value={getProgressPercentage()} className="h-2 mb-2" />
+          <p className="text-xs text-muted-foreground text-center">Step {step} of {TOTAL_STEPS}</p>
+        </div>
+
+        <div className="flex-1 flex flex-col px-6 pb-24 overflow-y-auto">
+          <div className="text-center mb-6">
+            <h1 className="text-3xl font-bold mb-2">What breed is {displayName}?</h1>
+            <p className="text-muted-foreground">This helps us personalize training recommendations</p>
           </div>
 
-          <CardHeader className="text-center pb-4 pt-0">
-            <CardTitle className="text-2xl font-bold">What breed is {dogData.name || 'your dog'}?</CardTitle>
-            <CardDescription>This helps us personalize training recommendations</CardDescription>
-          </CardHeader>
-
-          <CardContent className="space-y-6">
+          <div className="space-y-4 mb-8">
             <div className="space-y-2">
               <Label htmlFor="breed">Breed</Label>
               <EnhancedBreedSelector
@@ -376,7 +384,9 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
                 💡 Tip: If you're not sure about the breed, try "Mixed" or "Unknown"
               </p>
             </div>
+          </div>
 
+          <div className="sticky bottom-0 left-0 right-0 pt-4">
             <div className="flex gap-3">
               <Button
                 variant="outline"
@@ -397,79 +407,81 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </div>
     );
   }
 
   // Step 5: Photo Upload
   if (step === 5) {
+    const displayName = dogData.name.trim() || '[dog name]';
+    
     return (
-      <div className="min-h-screen bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex items-center justify-center p-4 animate-fade-in">
-        <Card className="w-full max-w-md border-0 shadow-[var(--shadow-large)] animate-scale-in relative">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={onComplete}
-            className="absolute top-4 right-4 z-10 h-8 w-8 p-0 hover:bg-muted"
-          >
-            <X className="w-4 h-4" />
-          </Button>
-          
-          <div className="px-6 pt-6 pb-4">
-            <Badge variant="secondary" className="mb-4 bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-200">
-              MOCK MODE
-            </Badge>
-            <Progress value={getProgressPercentage()} className="h-2 mb-2" />
-            <p className="text-xs text-muted-foreground text-center">Step {step} of {TOTAL_STEPS}</p>
+      <div className="min-h-screen bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in">
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={onComplete}
+          className="absolute top-4 right-4 z-10 h-8 w-8 p-0 hover:bg-muted"
+        >
+          <X className="w-4 h-4" />
+        </Button>
+
+        <div className="px-6 pt-6 pb-4">
+          <Badge variant="secondary" className="mb-4 bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-200">
+            MOCK MODE
+          </Badge>
+          <Progress value={getProgressPercentage()} className="h-2 mb-2" />
+          <p className="text-xs text-muted-foreground text-center">Step {step} of {TOTAL_STEPS}</p>
+        </div>
+
+        <div className="flex-1 flex flex-col px-6 pb-24 overflow-y-auto">
+          <div className="text-center mb-6">
+            <h1 className="text-3xl font-bold mb-2">Add a photo of {displayName}</h1>
+            <p className="text-muted-foreground">Optional, but helps personalize your experience</p>
           </div>
 
-          <CardHeader className="text-center pb-4 pt-0">
-            <CardTitle className="text-2xl font-bold">Add a photo of {dogData.name || 'your dog'}</CardTitle>
-            <CardDescription>Optional, but helps personalize your experience</CardDescription>
-          </CardHeader>
+          <div className="space-y-4 mb-8">
+            {dogData.photoPreview ? (
+              <div className="relative">
+                <img
+                  src={dogData.photoPreview}
+                  alt="Dog preview"
+                  className="w-full h-64 object-cover rounded-lg"
+                />
+                <Button
+                  type="button"
+                  variant="destructive"
+                  size="sm"
+                  className="absolute top-2 right-2"
+                  onClick={removePhoto}
+                >
+                  <X className="w-4 h-4" />
+                </Button>
+              </div>
+            ) : (
+              <div className="border-2 border-dashed border-border rounded-lg p-12 text-center">
+                <Camera className="w-16 h-16 mx-auto mb-4 text-muted-foreground" />
+                <p className="text-sm text-muted-foreground mb-4">
+                  Upload a clear photo of {displayName}
+                </p>
+                <Button type="button" variant="outline" asChild>
+                  <label className="cursor-pointer">
+                    Choose Photo
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handlePhotoChange}
+                      className="hidden"
+                    />
+                  </label>
+                </Button>
+              </div>
+            )}
+          </div>
 
-          <CardContent className="space-y-6">
-            <div className="space-y-4">
-              {dogData.photoPreview ? (
-                <div className="relative">
-                  <img
-                    src={dogData.photoPreview}
-                    alt="Dog preview"
-                    className="w-full h-64 object-cover rounded-lg"
-                  />
-                  <Button
-                    type="button"
-                    variant="destructive"
-                    size="sm"
-                    className="absolute top-2 right-2"
-                    onClick={removePhoto}
-                  >
-                    <X className="w-4 h-4" />
-                  </Button>
-                </div>
-              ) : (
-                <div className="border-2 border-dashed border-border rounded-lg p-12 text-center">
-                  <Camera className="w-16 h-16 mx-auto mb-4 text-muted-foreground" />
-                  <p className="text-sm text-muted-foreground mb-4">
-                    Upload a clear photo of {dogData.name || 'your dog'}
-                  </p>
-                  <Button type="button" variant="outline" asChild>
-                    <label className="cursor-pointer">
-                      Choose Photo
-                      <input
-                        type="file"
-                        accept="image/*"
-                        onChange={handlePhotoChange}
-                        className="hidden"
-                      />
-                    </label>
-                  </Button>
-                </div>
-              )}
-            </div>
-
+          <div className="sticky bottom-0 left-0 right-0 pt-4">
             <div className="flex gap-3">
               <Button
                 variant="outline"
@@ -498,40 +510,42 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
                 )}
               </Button>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </div>
     );
   }
 
   // Step 6: Known Commands
   if (step === 6) {
+    const displayName = dogData.name.trim() || '[dog name]';
+    
     return (
-      <div className="min-h-screen bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex items-center justify-center p-4 animate-fade-in">
-        <Card className="w-full max-w-md border-0 shadow-[var(--shadow-large)] animate-scale-in relative">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={onComplete}
-            className="absolute top-4 right-4 z-10 h-8 w-8 p-0 hover:bg-muted"
-          >
-            <X className="w-4 h-4" />
-          </Button>
-          
-          <div className="px-6 pt-6 pb-4">
-            <Badge variant="secondary" className="mb-4 bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-200">
-              MOCK MODE
-            </Badge>
-            <Progress value={getProgressPercentage()} className="h-2 mb-2" />
-            <p className="text-xs text-muted-foreground text-center">Step {step} of {TOTAL_STEPS}</p>
+      <div className="min-h-screen bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in">
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={onComplete}
+          className="absolute top-4 right-4 z-10 h-8 w-8 p-0 hover:bg-muted"
+        >
+          <X className="w-4 h-4" />
+        </Button>
+
+        <div className="px-6 pt-6 pb-4">
+          <Badge variant="secondary" className="mb-4 bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-200">
+            MOCK MODE
+          </Badge>
+          <Progress value={getProgressPercentage()} className="h-2 mb-2" />
+          <p className="text-xs text-muted-foreground text-center">Step {step} of {TOTAL_STEPS}</p>
+        </div>
+
+        <div className="flex-1 flex flex-col px-6 pb-24 overflow-y-auto">
+          <div className="text-center mb-6">
+            <h1 className="text-3xl font-bold mb-2">What commands does {displayName} know?</h1>
+            <p className="text-muted-foreground">Select all that apply</p>
           </div>
 
-          <CardHeader className="text-center pb-4 pt-0">
-            <CardTitle className="text-2xl font-bold">What commands does {dogData.name || 'your dog'} know?</CardTitle>
-            <CardDescription>Select all that apply</CardDescription>
-          </CardHeader>
-
-          <CardContent className="space-y-6">
+          <div className="space-y-4 mb-8">
             <div className="grid grid-cols-2 gap-3">
               {COMMANDS.map((command) => (
                 <div
@@ -550,7 +564,9 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
                 </div>
               ))}
             </div>
+          </div>
 
+          <div className="sticky bottom-0 left-0 right-0 pt-4">
             <div className="flex gap-3">
               <Button
                 variant="outline"
@@ -570,8 +586,8 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </div>
     );
   }
@@ -579,51 +595,51 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
   // Step 7: Behavioral Goals
   if (step === 7) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex items-center justify-center p-4 animate-fade-in">
-        <Card className="w-full max-w-md border-0 shadow-[var(--shadow-large)] animate-scale-in relative max-h-[90vh] overflow-hidden">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={onComplete}
-            className="absolute top-4 right-4 z-10 h-8 w-8 p-0 hover:bg-muted"
-          >
-            <X className="w-4 h-4" />
-          </Button>
-          
-          <div className="px-6 pt-6 pb-4">
-            <Badge variant="secondary" className="mb-4 bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-200">
-              MOCK MODE
-            </Badge>
-            <Progress value={getProgressPercentage()} className="h-2 mb-2" />
-            <p className="text-xs text-muted-foreground text-center">Step {step} of {TOTAL_STEPS}</p>
+      <div className="min-h-screen bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in">
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={onComplete}
+          className="absolute top-4 right-4 z-10 h-8 w-8 p-0 hover:bg-muted"
+        >
+          <X className="w-4 h-4" />
+        </Button>
+
+        <div className="px-6 pt-6 pb-4">
+          <Badge variant="secondary" className="mb-4 bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-200">
+            MOCK MODE
+          </Badge>
+          <Progress value={getProgressPercentage()} className="h-2 mb-2" />
+          <p className="text-xs text-muted-foreground text-center">Step {step} of {TOTAL_STEPS}</p>
+        </div>
+
+        <div className="flex-1 flex flex-col px-6 pb-24 overflow-y-auto">
+          <div className="text-center mb-6">
+            <h1 className="text-3xl font-bold mb-2">Any behavioral issues to work on?</h1>
+            <p className="text-muted-foreground">Select all that apply, or skip if none</p>
           </div>
 
-          <CardHeader className="text-center pb-4 pt-0">
-            <CardTitle className="text-2xl font-bold">Any behavioral issues to work on?</CardTitle>
-            <CardDescription>Select all that apply, or skip if none</CardDescription>
-          </CardHeader>
+          <div className="space-y-3 mb-8">
+            {BEHAVIORAL_ISSUES.map((issue) => (
+              <div
+                key={issue}
+                className="flex items-center space-x-2 p-3 rounded-lg border cursor-pointer hover:bg-accent"
+                onClick={() => toggleBehavioralGoal(issue)}
+              >
+                <Checkbox
+                  id={issue}
+                  checked={dogData.behavioral_goals.includes(issue)}
+                  onCheckedChange={() => toggleBehavioralGoal(issue)}
+                />
+                <Label htmlFor={issue} className="cursor-pointer flex-1">
+                  {issue}
+                </Label>
+              </div>
+            ))}
+          </div>
 
-          <CardContent className="space-y-6 overflow-y-auto max-h-[calc(90vh-300px)]">
-            <div className="space-y-3">
-              {BEHAVIORAL_ISSUES.map((issue) => (
-                <div
-                  key={issue}
-                  className="flex items-center space-x-2 p-3 rounded-lg border cursor-pointer hover:bg-accent"
-                  onClick={() => toggleBehavioralGoal(issue)}
-                >
-                  <Checkbox
-                    id={issue}
-                    checked={dogData.behavioral_goals.includes(issue)}
-                    onCheckedChange={() => toggleBehavioralGoal(issue)}
-                  />
-                  <Label htmlFor={issue} className="cursor-pointer flex-1">
-                    {issue}
-                  </Label>
-                </div>
-              ))}
-            </div>
-
-            <div className="flex gap-3 pt-4 sticky bottom-0 bg-card">
+          <div className="sticky bottom-0 left-0 right-0 pt-4">
+            <div className="flex gap-3">
               <Button
                 variant="outline"
                 size="lg"
@@ -642,8 +658,8 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </div>
     );
   }
@@ -651,45 +667,45 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
   // Step 8: Time Commitment
   if (step === 8) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex items-center justify-center p-4 animate-fade-in">
-        <Card className="w-full max-w-md border-0 shadow-[var(--shadow-large)] animate-scale-in relative">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={onComplete}
-            className="absolute top-4 right-4 z-10 h-8 w-8 p-0 hover:bg-muted"
-          >
-            <X className="w-4 h-4" />
-          </Button>
-          
-          <div className="px-6 pt-6 pb-4">
-            <Badge variant="secondary" className="mb-4 bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-200">
-              MOCK MODE
-            </Badge>
-            <Progress value={getProgressPercentage()} className="h-2 mb-2" />
-            <p className="text-xs text-muted-foreground text-center">Step {step} of {TOTAL_STEPS}</p>
+      <div className="min-h-screen bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in">
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={onComplete}
+          className="absolute top-4 right-4 z-10 h-8 w-8 p-0 hover:bg-muted"
+        >
+          <X className="w-4 h-4" />
+        </Button>
+
+        <div className="px-6 pt-6 pb-4">
+          <Badge variant="secondary" className="mb-4 bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-200">
+            MOCK MODE
+          </Badge>
+          <Progress value={getProgressPercentage()} className="h-2 mb-2" />
+          <p className="text-xs text-muted-foreground text-center">Step {step} of {TOTAL_STEPS}</p>
+        </div>
+
+        <div className="flex-1 flex flex-col px-6 pb-24 overflow-y-auto">
+          <div className="text-center mb-6">
+            <h1 className="text-3xl font-bold mb-2">How much time can you commit to training?</h1>
+            <p className="text-muted-foreground">Be realistic - consistency is more important than duration</p>
           </div>
 
-          <CardHeader className="text-center pb-4 pt-0">
-            <CardTitle className="text-2xl font-bold">How much time can you commit to training?</CardTitle>
-            <CardDescription>Be realistic - consistency is more important than duration</CardDescription>
-          </CardHeader>
+          <div className="space-y-3 mb-8">
+            {TIME_COMMITMENTS.map((commitment) => (
+              <Button
+                key={commitment.value}
+                variant={dogData.training_time_commitment === commitment.value ? 'default' : 'outline'}
+                size="lg"
+                onClick={() => setDogData(prev => ({ ...prev, training_time_commitment: commitment.value }))}
+                className="w-full justify-start h-14"
+              >
+                <span className="text-base">{commitment.label}</span>
+              </Button>
+            ))}
+          </div>
 
-          <CardContent className="space-y-6">
-            <div className="space-y-3">
-              {TIME_COMMITMENTS.map((commitment) => (
-                <Button
-                  key={commitment.value}
-                  variant={dogData.training_time_commitment === commitment.value ? 'default' : 'outline'}
-                  size="lg"
-                  onClick={() => setDogData(prev => ({ ...prev, training_time_commitment: commitment.value }))}
-                  className="w-full justify-start h-14"
-                >
-                  <span className="text-base">{commitment.label}</span>
-                </Button>
-              ))}
-            </div>
-
+          <div className="sticky bottom-0 left-0 right-0 pt-4">
             <div className="flex gap-3">
               <Button
                 variant="outline"
@@ -710,43 +726,45 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </div>
     );
   }
 
   // Step 9: Summary & Complete
   if (step === 9) {
+    const displayName = dogData.name.trim() || '[dog name]';
+    
     return (
-      <div className="min-h-screen bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex items-center justify-center p-4 animate-fade-in">
-        <Card className="w-full max-w-md border-0 shadow-[var(--shadow-large)] animate-scale-in relative max-h-[90vh] overflow-hidden">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={onComplete}
-            className="absolute top-4 right-4 z-10 h-8 w-8 p-0 hover:bg-muted"
-          >
-            <X className="w-4 h-4" />
-          </Button>
-          
-          <div className="px-6 pt-6 pb-4">
-            <Badge variant="secondary" className="mb-4 bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-200">
-              MOCK MODE - No data will be saved
-            </Badge>
-            <Progress value={getProgressPercentage()} className="h-2 mb-2" />
-            <p className="text-xs text-muted-foreground text-center">Step {step} of {TOTAL_STEPS}</p>
-          </div>
+      <div className="min-h-screen bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in">
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={onComplete}
+          className="absolute top-4 right-4 z-10 h-8 w-8 p-0 hover:bg-muted"
+        >
+          <X className="w-4 h-4" />
+        </Button>
 
-          <CardHeader className="text-center pb-4 pt-0">
+        <div className="px-6 pt-6 pb-4">
+          <Badge variant="secondary" className="mb-4 bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-200">
+            MOCK MODE - No data will be saved
+          </Badge>
+          <Progress value={getProgressPercentage()} className="h-2 mb-2" />
+          <p className="text-xs text-muted-foreground text-center">Step {step} of {TOTAL_STEPS}</p>
+        </div>
+
+        <div className="flex-1 flex flex-col px-6 pb-24 overflow-y-auto">
+          <div className="text-center mb-6">
             <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-4">
               <Check className="w-8 h-8 text-primary-foreground" />
             </div>
-            <CardTitle className="text-2xl font-bold">Great! Let's review</CardTitle>
-            <CardDescription>Here's what we know about {dogData.name || 'your dog'}</CardDescription>
-          </CardHeader>
+            <h1 className="text-3xl font-bold mb-2">Great! Let's review</h1>
+            <p className="text-muted-foreground">Here's what we know about {displayName}</p>
+          </div>
 
-          <CardContent className="space-y-6 overflow-y-auto max-h-[calc(90vh-320px)]">
+          <div className="space-y-6 mb-8">
             {dogData.photoPreview && (
               <div className="w-full">
                 <img
@@ -797,8 +815,10 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
                 </div>
               )}
             </div>
+          </div>
 
-            <div className="flex gap-3 pt-4 sticky bottom-0 bg-card">
+          <div className="sticky bottom-0 left-0 right-0 pt-4">
+            <div className="flex gap-3">
               <Button
                 variant="outline"
                 size="lg"
@@ -822,8 +842,8 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
                 )}
               </Button>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </div>
     );
   }
