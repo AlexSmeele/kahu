@@ -69,7 +69,6 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
   const [photo, setPhoto] = useState<File | null>(null);
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const [showCustomBreedSelector, setShowCustomBreedSelector] = useState(false);
   const [showAdvancedCommands, setShowAdvancedCommands] = useState(false);
   const { addDog } = useDogs();
 
@@ -317,26 +316,21 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
               <p className="text-xs text-muted-foreground">
                 Tip: Start typing to see matching breeds from our database
               </p>
-              {showCustomBreedSelector ? (
-                <EnhancedBreedSelector
-                  value={formData.breed}
-                  onBreedSelect={(breedId, isCustom, breedName) => {
-                    setFormData(prev => ({ ...prev, breed: breedName, breed_id: breedId }));
-                    setShowCustomBreedSelector(false);
-                  }}
-                  placeholder="Start typing breed name..."
-                />
-              ) : (
-                <Button
-                  type="button"
-                  variant="outline"
-                  className="w-full"
-                  onClick={() => setShowCustomBreedSelector(true)}
-                >
-                  <Plus className="w-4 h-4 mr-2" />
-                  Custom/Mixed Breed
-                </Button>
-              )}
+              <div className="relative">
+                <div className="absolute inset-0 flex items-center">
+                  <span className="w-full border-t" />
+                </div>
+                <div className="relative flex justify-center text-xs uppercase">
+                  <span className="bg-background px-2 text-muted-foreground">Or</span>
+                </div>
+              </div>
+              <EnhancedBreedSelector
+                value={formData.breed}
+                onBreedSelect={(breedId, isCustom, breedName) => {
+                  setFormData(prev => ({ ...prev, breed: breedName, breed_id: breedId }));
+                }}
+                placeholder="Select or create custom/mixed breed"
+              />
             </div>
           </div>
         </div>
