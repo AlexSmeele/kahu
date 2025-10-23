@@ -4,7 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { EnhancedBreedSelector } from "@/components/ui/enhanced-breed-selector";
-import { Camera, X, ArrowLeft, Check, ArrowRight } from "lucide-react";
+import { BreedAutocomplete } from "@/components/ui/breed-autocomplete";
+import { Camera, X, ArrowLeft, Check, ArrowRight, Plus } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -409,22 +410,33 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
         <div className="flex-1 flex flex-col px-6 pb-24 overflow-y-auto">
           <div className="text-center mb-6">
             <h1 className="text-3xl font-bold mb-2">What breed is {displayName}?</h1>
-            <p className="text-muted-foreground">This helps us personalize training recommendations</p>
+            <p className="text-muted-foreground">This helps us personalize your experience</p>
           </div>
 
           <div className="space-y-4 mb-8">
-            <div className="space-y-2">
-              <Label htmlFor="breed">Breed</Label>
-              <EnhancedBreedSelector
+            <div className="space-y-3">
+              <BreedAutocomplete
                 value={dogData.breed}
-                onBreedSelect={(breedId, isCustom, breedName) => {
-                  setDogData(prev => ({ ...prev, breed: breedName, breed_id: breedId }));
-                }}
+                onChange={(breed) => setDogData(prev => ({ ...prev, breed }))}
+                onBreedIdChange={(breedId) => setDogData(prev => ({ ...prev, breed_id: breedId }))}
                 placeholder="Start typing breed name..."
+                className="w-full"
               />
-              <p className="text-xs text-muted-foreground mt-2">
-                💡 Tip: If you're not sure about the breed, try "Mixed" or "Unknown"
+              <p className="text-xs text-muted-foreground">
+                Tip: Start typing to see matching breeds from our database
               </p>
+              <Button
+                type="button"
+                variant="outline"
+                className="w-full"
+                onClick={() => {
+                  // This would open the EnhancedBreedSelector modal
+                  // For now, just a placeholder in mock mode
+                }}
+              >
+                <Plus className="w-4 h-4 mr-2" />
+                Custom/Mixed Breed
+              </Button>
             </div>
           </div>
 

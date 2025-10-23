@@ -3,11 +3,12 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ArrowRight, ArrowLeft, Upload, X, Check } from 'lucide-react';
+import { ArrowRight, ArrowLeft, Upload, X, Check, Plus } from 'lucide-react';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { useDogs, Dog, calculateAge } from '@/hooks/useDogs';
 import { BreedAutocomplete } from '@/components/ui/breed-autocomplete';
+import { EnhancedBreedSelector } from '@/components/ui/enhanced-breed-selector';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import logoIcon from '@/assets/logo-new.png';
@@ -60,6 +61,7 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
   const [photo, setPhoto] = useState<File | null>(null);
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [showCustomBreedSelector, setShowCustomBreedSelector] = useState(false);
   const { addDog } = useDogs();
 
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -307,19 +309,42 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
         <div className="flex-1 flex flex-col px-6 pb-24 overflow-y-auto">
           <div className="text-center mb-6">
             <h1 className="text-3xl font-bold mb-2">What's {displayName}'s breed?</h1>
-            <p className="text-muted-foreground">Get breed-based tips for faster and easier learning</p>
+            <p className="text-muted-foreground">This helps us personalize your experience</p>
           </div>
 
           <div className="space-y-4 mb-8">
-            <div className="space-y-2">
-              <Label htmlFor="breed">Breed *</Label>
+            <div className="space-y-3">
               <BreedAutocomplete
                 value={formData.breed}
                 onChange={(breed) => setFormData(prev => ({ ...prev, breed }))}
                 onBreedIdChange={(breedId) => setFormData(prev => ({ ...prev, breed_id: breedId }))}
-                placeholder="e.g., Golden Retriever, Mixed"
+                placeholder="Start typing breed name..."
                 required
+                className="w-full"
               />
+              <p className="text-xs text-muted-foreground">
+                Tip: Start typing to see matching breeds from our database
+              </p>
+              {showCustomBreedSelector ? (
+                <EnhancedBreedSelector
+                  value={formData.breed}
+                  onBreedSelect={(breedId, isCustom, breedName) => {
+                    setFormData(prev => ({ ...prev, breed: breedName, breed_id: breedId }));
+                    setShowCustomBreedSelector(false);
+                  }}
+                  placeholder="Start typing breed name..."
+                />
+              ) : (
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="w-full"
+                  onClick={() => setShowCustomBreedSelector(true)}
+                >
+                  <Plus className="w-4 h-4 mr-2" />
+                  Custom/Mixed Breed
+                </Button>
+              )}
             </div>
           </div>
 
