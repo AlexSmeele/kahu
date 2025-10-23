@@ -48,7 +48,7 @@ export function TodaysGoalsBanner({
         icon: Target,
         title: "Today's Goal",
         description: `Practice "${nextTrick.name}" - Session ${nextTrick.total_sessions + 1}`,
-        action: "Start Training",
+        action: "Start",
         gradient: "from-primary/20 to-accent/20"
       };
     }
