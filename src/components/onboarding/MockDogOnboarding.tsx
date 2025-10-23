@@ -155,7 +155,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
           <p className="text-xs text-muted-foreground text-center">Step {step} of {TOTAL_STEPS}</p>
         </div>
 
-        <div className="flex-1 flex flex-col px-6 pb-6 overflow-y-auto">
+        <div className="flex-1 flex flex-col px-6 pb-24 overflow-y-auto">
         <div className="text-center mb-6">
 <img src={logoImage} alt="Kahu Logo" className="w-[83px] h-[83px] mx-auto mb-4 object-contain block" />
             <h1 className="text-3xl font-bold mb-2">Welcome to Kahu!</h1>
@@ -174,7 +174,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
             />
           </div>
 
-          <div className="mt-auto pt-4">
+          <div className="sticky bottom-0 left-0 right-0 bg-background/80 backdrop-blur-sm pt-4">
             <Button
               size="lg"
               onClick={() => setStep(2)}

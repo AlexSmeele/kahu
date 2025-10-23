@@ -158,7 +158,7 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
             </p>
           </CardHeader>
 
-          <CardContent className="space-y-6 pb-6">
+          <CardContent className="space-y-6 pb-24">
             <div className="space-y-2">
               <label className="block text-sm font-medium text-foreground">
                 What's your dog's name? *
@@ -172,15 +172,17 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
               />
             </div>
 
-            <Button 
-              size="touch"
-              onClick={() => setStep(2)}
-              disabled={!isStepValid()}
-              className="w-full btn-primary hover-scale"
-            >
-              Continue
-              <ArrowRight className="w-4 h-4 ml-2" />
-            </Button>
+            <div className="sticky bottom-0 left-0 right-0 bg-background/80 backdrop-blur-sm pt-4">
+              <Button 
+                size="touch"
+                onClick={() => setStep(2)}
+                disabled={!isStepValid()}
+                className="w-full btn-primary hover-scale"
+              >
+                Continue
+                <ArrowRight className="w-4 h-4 ml-2" />
+              </Button>
+            </div>
           </CardContent>
         </Card>
       </div>
