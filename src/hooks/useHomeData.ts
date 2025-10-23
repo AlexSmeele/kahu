@@ -5,10 +5,11 @@ import { useTricks } from './useTricks';
 import { useGroomingSchedule } from './useGroomingSchedule';
 import { useHealthCheckups } from './useHealthCheckups';
 import { useVaccines } from './useVaccines';
+import { useMedicalTreatments } from './useMedicalTreatments';
 
 export interface HealthAlert {
   id: string;
-  type: 'grooming' | 'checkup' | 'vaccination' | 'injury';
+  type: 'grooming' | 'checkup' | 'vaccination' | 'injury' | 'treatment';
   title: string;
   description: string;
   priority: 'high' | 'medium' | 'low';
@@ -30,8 +31,9 @@ export const useHomeData = (dogId: string) => {
   const { schedules: groomingSchedules, loading: groomingLoading } = useGroomingSchedule(dogId);
   const { checkups, loading: checkupsLoading } = useHealthCheckups(dogId);
   const { vaccinationRecords, loading: vaccinesLoading } = useVaccines(dogId);
+  const { treatments, loading: treatmentsLoading } = useMedicalTreatments(dogId);
 
-  const loading = healthLoading || activityLoading || tricksLoading || groomingLoading || checkupsLoading || vaccinesLoading;
+  const loading = healthLoading || activityLoading || tricksLoading || groomingLoading || checkupsLoading || vaccinesLoading || treatmentsLoading;
 
   // Get next trick to practice
   const nextTrick = useMemo(() => {
@@ -115,12 +117,40 @@ export const useHomeData = (dogId: string) => {
       }
     });
 
+    // Check medical treatments (like Cytopoint injections)
+    treatments.forEach(treatment => {
+      if (treatment.next_due_date) {
+        const dueDate = new Date(treatment.next_due_date);
+        const daysUntilDue = Math.floor((dueDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
+        
+        if (daysUntilDue < 0) {
+          alerts.push({
+            id: `treatment-${treatment.id}`,
+            type: 'treatment',
+            title: `${treatment.treatment_name} Overdue`,
+            description: `${Math.abs(daysUntilDue)} days overdue`,
+            priority: 'high',
+            dueDate
+          });
+        } else if (daysUntilDue <= 7) {
+          alerts.push({
+            id: `treatment-${treatment.id}`,
+            type: 'treatment',
+            title: `${treatment.treatment_name} Due Soon`,
+            description: `Due in ${daysUntilDue} days`,
+            priority: 'medium',
+            dueDate
+          });
+        }
+      }
+    });
+
     // Sort by priority
     return alerts.sort((a, b) => {
       const priorityOrder = { high: 0, medium: 1, low: 2 };
       return priorityOrder[a.priority] - priorityOrder[b.priority];
     });
-  }, [groomingSchedules, checkups, vaccinationRecords]);
+  }, [groomingSchedules, checkups, vaccinationRecords, treatments]);
 
   // Get upcoming events
   const upcomingEvents = useMemo((): UpcomingEvent[] => {

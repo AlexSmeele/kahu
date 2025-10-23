@@ -902,6 +902,42 @@ export type Database = {
           },
         ]
       }
+      medical_treatments: {
+        Row: {
+          created_at: string
+          dog_id: string
+          frequency_weeks: number
+          id: string
+          last_administered_date: string
+          next_due_date: string | null
+          notes: string | null
+          treatment_name: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          dog_id: string
+          frequency_weeks: number
+          id?: string
+          last_administered_date: string
+          next_due_date?: string | null
+          notes?: string | null
+          treatment_name: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          dog_id?: string
+          frequency_weeks?: number
+          id?: string
+          last_administered_date?: string
+          next_due_date?: string | null
+          notes?: string | null
+          treatment_name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       message_reports: {
         Row: {
           admin_notes: string | null
