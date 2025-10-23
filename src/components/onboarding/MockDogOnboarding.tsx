@@ -142,7 +142,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
   // Step 1: Welcome & Name
   if (step === 1) {
     return (
-       <div className="relative h-dvh max-h-dvh bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in overflow-hidden">
+       <div className="relative h-full max-h-full bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in overflow-hidden">
         <Button
           variant="ghost"
           size="sm"
@@ -203,7 +203,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
     const displayName = dogData.name.trim() || '[dog name]';
     
     return (
-       <div className="relative h-dvh max-h-dvh bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in overflow-hidden">
+       <div className="relative h-full max-h-full bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in overflow-hidden">
         <Button
           variant="ghost"
           size="sm"
@@ -323,7 +323,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
     const pronoun = dogData.gender === 'male' ? 'he' : dogData.gender === 'female' ? 'she' : 'they';
     
     return (
-       <div className="relative h-dvh max-h-dvh bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in overflow-hidden">
+       <div className="relative h-full max-h-full bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in overflow-hidden">
         <Button
           variant="ghost"
           size="sm"
@@ -444,7 +444,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
     const displayName = dogData.name.trim() || '[dog name]';
     
     return (
-       <div className="relative h-dvh max-h-dvh bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in overflow-hidden">
+       <div className="relative h-full max-h-full bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in overflow-hidden">
         <Button
           variant="ghost"
           size="sm"
@@ -519,7 +519,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
   // Step 5: Behavioral Goals
   if (step === 5) {
     return (
-        <div className="relative h-dvh max-h-dvh bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in overflow-hidden">
+         <div className="relative h-full max-h-full bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in overflow-hidden">
         <Button
           variant="ghost"
           size="sm"
@@ -591,7 +591,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
   // Step 6: Time Commitment
   if (step === 6) {
     return (
-        <div className="relative h-dvh max-h-dvh bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in overflow-hidden">
+         <div className="relative h-full max-h-full bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in overflow-hidden">
         <Button
           variant="ghost"
           size="sm"
@@ -662,7 +662,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
     const displayName = dogData.name.trim() || '[dog name]';
     
     return (
-      <div className="relative h-dvh max-h-dvh bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in overflow-hidden">
+      <div className="relative h-full max-h-full bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in overflow-hidden">
         <Button
           variant="ghost"
           size="sm"
