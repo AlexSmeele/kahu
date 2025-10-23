@@ -244,6 +244,42 @@ export type Database = {
           },
         ]
       }
+      dog_breed_health_issues: {
+        Row: {
+          breed_id: string
+          created_at: string
+          health_issue_id: string
+          id: string
+        }
+        Insert: {
+          breed_id: string
+          created_at?: string
+          health_issue_id: string
+          id?: string
+        }
+        Update: {
+          breed_id?: string
+          created_at?: string
+          health_issue_id?: string
+          id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "dog_breed_health_issues_breed_id_fkey"
+            columns: ["breed_id"]
+            isOneToOne: false
+            referencedRelation: "dog_breeds"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "dog_breed_health_issues_health_issue_id_fkey"
+            columns: ["health_issue_id"]
+            isOneToOne: false
+            referencedRelation: "dog_health_issues"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       dog_breeds: {
         Row: {
           also_known_as: string | null
@@ -343,6 +379,42 @@ export type Database = {
           trainability?: string | null
           updated_at?: string
           weights_confidence?: string | null
+        }
+        Relationships: []
+      }
+      dog_health_issues: {
+        Row: {
+          category: string | null
+          created_at: string
+          first_line_screening: string | null
+          id: string
+          name: string
+          notes: string | null
+          subcategory: string | null
+          typical_signs: string | null
+          updated_at: string
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string
+          first_line_screening?: string | null
+          id?: string
+          name: string
+          notes?: string | null
+          subcategory?: string | null
+          typical_signs?: string | null
+          updated_at?: string
+        }
+        Update: {
+          category?: string | null
+          created_at?: string
+          first_line_screening?: string | null
+          id?: string
+          name?: string
+          notes?: string | null
+          subcategory?: string | null
+          typical_signs?: string | null
+          updated_at?: string
         }
         Relationships: []
       }

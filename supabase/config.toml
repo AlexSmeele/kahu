@@ -14,3 +14,6 @@ verify_jwt = true
 
 [functions.seed-breed-encyclopedia]
 verify_jwt = false
+
+[functions.import-breed-health-data]
+verify_jwt = false
