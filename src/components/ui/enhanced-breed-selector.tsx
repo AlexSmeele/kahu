@@ -42,10 +42,26 @@ export function EnhancedBreedSelector({
   const [customBreedDescription, setCustomBreedDescription] = useState('');
   const [parentBreeds, setParentBreeds] = useState<ParentBreed[]>([]);
   const [selectedParentId, setSelectedParentId] = useState('');
+  const [breedOptions, setBreedOptions] = useState<Array<{ id: string; name: string }>>([]);
 
   const { data: standardBreeds = [], isLoading: loadingStandard } = useAllBreeds();
   const { data: customBreeds = [], isLoading: loadingCustom } = useCustomBreeds();
   const createCustomBreed = useCreateCustomBreed();
+
+  // Fetch breed IDs for the dropdown
+  React.useEffect(() => {
+    const fetchBreedIds = async () => {
+      const { data } = await supabase
+        .from('dog_breeds')
+        .select('id, breed')
+        .order('breed');
+      
+      if (data) {
+        setBreedOptions(data.map(b => ({ id: b.id, name: b.breed })));
+      }
+    };
+    fetchBreedIds();
+  }, []);
 
   const filteredStandardBreeds = standardBreeds.filter(breed =>
     breed.toLowerCase().includes(searchTerm.toLowerCase())
@@ -370,12 +386,12 @@ export function EnhancedBreedSelector({
                       <select
                         value={selectedParentId}
                         onChange={(e) => setSelectedParentId(e.target.value)}
-                        className="flex-1 p-2 border rounded"
+                        className="flex-1 p-2 border rounded bg-background"
                       >
                         <option value="">Select parent breed...</option>
-                        {standardBreeds.map((breed) => (
-                          <option key={breed} value={breed}>
-                            {breed}
+                        {breedOptions.map((breed) => (
+                          <option key={breed.id} value={breed.id}>
+                            {breed.name}
                           </option>
                         ))}
                       </select>
