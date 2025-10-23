@@ -5,7 +5,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { EnhancedBreedSelector } from "@/components/ui/enhanced-breed-selector";
 import { BreedAutocomplete } from "@/components/ui/breed-autocomplete";
-import { Camera, X, ArrowLeft, Check, ArrowRight, Plus } from "lucide-react";
+import { Camera, X, ArrowLeft, Check, ArrowRight, Plus, ChevronDown, ChevronUp } from "lucide-react";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -44,6 +45,10 @@ const COMMANDS = [
   "Sit", "Stay", "Come", "Down", "Heel", "Leave it", "Drop it", "Wait"
 ];
 
+const ADVANCED_COMMANDS = [
+  "Place", "Fetch", "Roll over", "Play dead", "Speak", "Quiet", "Spin", "Shake", "Touch", "Back up", "Bow", "Crawl"
+];
+
 const BEHAVIORAL_ISSUES = [
   "Excessive barking",
   "Pulling on leash",
@@ -67,6 +72,7 @@ const TIME_COMMITMENTS = [
 export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [showAdvancedCommands, setShowAdvancedCommands] = useState(false);
   
   const [dogData, setDogData] = useState<DogData>({
     name: '',
@@ -490,6 +496,42 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
                 </div>
               ))}
             </div>
+
+            <Collapsible open={showAdvancedCommands} onOpenChange={setShowAdvancedCommands}>
+              <CollapsibleTrigger asChild>
+                <Button 
+                  variant="ghost" 
+                  className="w-full flex items-center justify-between p-3 hover:bg-accent/50"
+                >
+                  <span className="font-medium">Advanced Commands</span>
+                  {showAdvancedCommands ? (
+                    <ChevronUp className="w-4 h-4" />
+                  ) : (
+                    <ChevronDown className="w-4 h-4" />
+                  )}
+                </Button>
+              </CollapsibleTrigger>
+              <CollapsibleContent className="pt-2">
+                <div className="grid grid-cols-2 gap-3">
+                  {ADVANCED_COMMANDS.map((command) => (
+                    <div
+                      key={command}
+                      className="flex items-center space-x-2 p-3 rounded-lg border cursor-pointer hover:bg-accent"
+                      onClick={() => toggleCommand(command)}
+                    >
+                      <Checkbox
+                        id={`adv-${command}`}
+                        checked={dogData.known_commands.includes(command)}
+                        onCheckedChange={() => toggleCommand(command)}
+                      />
+                      <Label htmlFor={`adv-${command}`} className="cursor-pointer flex-1">
+                        {command}
+                      </Label>
+                    </div>
+                  ))}
+                </div>
+              </CollapsibleContent>
+            </Collapsible>
           </div>
 
         </div>

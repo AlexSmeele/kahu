@@ -3,7 +3,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ArrowRight, ArrowLeft, Upload, X, Check, Plus } from 'lucide-react';
+import { ArrowRight, ArrowLeft, Upload, X, Check, Plus, ChevronDown, ChevronUp } from 'lucide-react';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { useDogs, Dog, calculateAge } from '@/hooks/useDogs';
@@ -29,6 +30,10 @@ const AGE_RANGES = [
 
 const COMMANDS = [
   'Name', 'Sit', 'Down', 'Stay', 'Come', 'Leave it', 'High Five', 'None of the above'
+];
+
+const ADVANCED_COMMANDS = [
+  'Heel', 'Place', 'Wait', 'Drop it', 'Fetch', 'Roll over', 'Play dead', 'Speak', 'Quiet', 'Spin', 'Shake', 'Touch'
 ];
 
 const BEHAVIORAL_ISSUES = [
@@ -65,6 +70,7 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [showCustomBreedSelector, setShowCustomBreedSelector] = useState(false);
+  const [showAdvancedCommands, setShowAdvancedCommands] = useState(false);
   const { addDog } = useDogs();
 
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -395,6 +401,39 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
                 </Badge>
               ))}
             </div>
+
+            <Collapsible open={showAdvancedCommands} onOpenChange={setShowAdvancedCommands}>
+              <CollapsibleTrigger asChild>
+                <Button 
+                  variant="ghost" 
+                  className="w-full flex items-center justify-between p-3 hover:bg-accent/50"
+                >
+                  <span className="font-medium">Advanced Commands</span>
+                  {showAdvancedCommands ? (
+                    <ChevronUp className="w-4 h-4" />
+                  ) : (
+                    <ChevronDown className="w-4 h-4" />
+                  )}
+                </Button>
+              </CollapsibleTrigger>
+              <CollapsibleContent className="pt-2">
+                <div className="flex flex-wrap gap-2">
+                  {ADVANCED_COMMANDS.map((command) => (
+                    <Badge
+                      key={command}
+                      variant={formData.known_commands.includes(command) ? "default" : "outline"}
+                      className="cursor-pointer px-4 py-2 text-sm hover-scale"
+                      onClick={() => toggleCommand(command)}
+                    >
+                      {formData.known_commands.includes(command) && (
+                        <Check className="w-3 h-3 mr-1" />
+                      )}
+                      {command}
+                    </Badge>
+                  ))}
+                </div>
+              </CollapsibleContent>
+            </Collapsible>
           </div>
 
         </div>
