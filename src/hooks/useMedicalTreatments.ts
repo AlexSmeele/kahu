@@ -26,6 +26,7 @@ export const useMedicalTreatments = (dogId: string) => {
     }
 
     try {
+      console.log('Fetching medical treatments for dog:', dogId);
       const { data, error } = await supabase
         .from('medical_treatments')
         .select('*')
@@ -34,6 +35,7 @@ export const useMedicalTreatments = (dogId: string) => {
 
       if (error) throw error;
 
+      console.log('Medical treatments fetched:', data);
       setTreatments(data || []);
     } catch (error: any) {
       console.error('Error fetching medical treatments:', error);

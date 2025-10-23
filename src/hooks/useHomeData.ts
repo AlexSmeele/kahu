@@ -123,6 +123,13 @@ export const useHomeData = (dogId: string) => {
         const dueDate = new Date(treatment.next_due_date);
         const daysUntilDue = Math.floor((dueDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
         
+        console.log('Treatment check:', {
+          name: treatment.treatment_name,
+          dueDate: treatment.next_due_date,
+          daysUntilDue,
+          isOverdue: daysUntilDue < 0
+        });
+        
         if (daysUntilDue < 0) {
           alerts.push({
             id: `treatment-${treatment.id}`,
@@ -144,6 +151,8 @@ export const useHomeData = (dogId: string) => {
         }
       }
     });
+
+    console.log('Total health alerts generated:', alerts);
 
     // Sort by priority
     return alerts.sort((a, b) => {
