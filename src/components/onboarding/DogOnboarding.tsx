@@ -142,7 +142,7 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
   if (step === 1) {
     return (
       <div className="h-full bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex items-center justify-center p-4 animate-fade-in">
-        <Card className="w-full max-w-md border-0 shadow-[var(--shadow-large)] animate-scale-in">
+        <Card className="w-full max-w-md border-0 shadow-[var(--shadow-large)] animate-scale-in max-h-[calc(100vh-2rem)] overflow-y-auto">
           <div className="p-4 pb-0">
             <Progress value={getProgressPercentage()} className="h-2" />
             <p className="text-xs text-muted-foreground mt-2 text-center">Step 1 of {TOTAL_STEPS}</p>
