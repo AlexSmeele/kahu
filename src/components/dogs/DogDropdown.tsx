@@ -31,7 +31,7 @@ export function DogDropdown({ selectedDogId, onDogChange }: DogDropdownProps) {
       <DropdownMenuTrigger asChild>
         <Button 
           variant="outline" 
-          className="absolute top-3 left-3 z-[100] flex items-center gap-2 h-[58px] px-3 bg-background border-2 shadow-lg hover:bg-accent"
+          className="absolute top-3 left-3 z-[100] flex items-center justify-start gap-2 h-[58px] px-3 bg-background border-2 shadow-lg hover:bg-accent"
           style={{ minWidth: `${minWidth}px` }}
         >
           <Avatar className="w-10 h-10 border-2 border-border shadow-sm">
@@ -41,7 +41,7 @@ export function DogDropdown({ selectedDogId, onDogChange }: DogDropdownProps) {
             </AvatarFallback>
           </Avatar>
           <span className="font-medium text-foreground">{selectedDog.name}</span>
-          <ChevronDown className="w-4 h-4 text-muted-foreground" />
+          <ChevronDown className="w-4 h-4 text-muted-foreground ml-auto" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" className="z-[100] bg-background border-2 shadow-xl" style={{ minWidth: `${minWidth}px` }}>
