@@ -7,6 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { Textarea } from '@/components/ui/textarea';
 import { Slider } from '@/components/ui/slider';
+import { BreedAutocomplete } from '@/components/ui/breed-autocomplete';
 import { useAllBreeds } from '@/hooks/useBreedInfo';
 import { useCustomBreeds, useCreateCustomBreed } from '@/hooks/useCustomBreeds';
 import { supabase } from '@/integrations/supabase/client';
@@ -41,27 +42,12 @@ export function EnhancedBreedSelector({
   const [customBreedName, setCustomBreedName] = useState('');
   const [customBreedDescription, setCustomBreedDescription] = useState('');
   const [parentBreeds, setParentBreeds] = useState<ParentBreed[]>([]);
-  const [selectedParentId, setSelectedParentId] = useState('');
-  const [breedOptions, setBreedOptions] = useState<Array<{ id: string; name: string }>>([]);
+  const [selectedParentBreed, setSelectedParentBreed] = useState('');
+  const [selectedParentId, setSelectedParentId] = useState<string | null>(null);
 
   const { data: standardBreeds = [], isLoading: loadingStandard } = useAllBreeds();
   const { data: customBreeds = [], isLoading: loadingCustom } = useCustomBreeds();
   const createCustomBreed = useCreateCustomBreed();
-
-  // Fetch breed IDs for the dropdown
-  React.useEffect(() => {
-    const fetchBreedIds = async () => {
-      const { data } = await supabase
-        .from('dog_breeds')
-        .select('id, breed')
-        .order('breed');
-      
-      if (data) {
-        setBreedOptions(data.map(b => ({ id: b.id, name: b.breed })));
-      }
-    };
-    fetchBreedIds();
-  }, []);
 
   const filteredStandardBreeds = standardBreeds.filter(breed =>
     breed.toLowerCase().includes(searchTerm.toLowerCase())
@@ -91,14 +77,12 @@ export function EnhancedBreedSelector({
   };
 
   const addParentBreed = () => {
-    if (!selectedParentId || parentBreeds.length >= 3) return;
-
-    const selectedBreed = breedOptions.find(b => b.id === selectedParentId);
+    if (!selectedParentId || !selectedParentBreed || parentBreeds.length >= 3) return;
     
-    if (selectedBreed && !parentBreeds.some(p => p.id === selectedParentId)) {
+    if (!parentBreeds.some(p => p.id === selectedParentId)) {
       const newParent: ParentBreed = {
         id: selectedParentId,
-        name: selectedBreed.name,
+        name: selectedParentBreed,
         percentage: parentBreeds.length === 0 ? 100 : 50,
       };
       
@@ -121,7 +105,8 @@ export function EnhancedBreedSelector({
         ]);
       }
       
-      setSelectedParentId('');
+      setSelectedParentBreed('');
+      setSelectedParentId(null);
     }
   };
 
@@ -379,18 +364,13 @@ export function EnhancedBreedSelector({
                   
                   {parentBreeds.length < 3 && (
                     <div className="flex gap-2">
-                      <select
-                        value={selectedParentId}
-                        onChange={(e) => setSelectedParentId(e.target.value)}
-                        className="flex-1 p-2 border rounded bg-background"
-                      >
-                        <option value="">Select parent breed...</option>
-                        {breedOptions.map((breed) => (
-                          <option key={breed.id} value={breed.id}>
-                            {breed.name}
-                          </option>
-                        ))}
-                      </select>
+                      <BreedAutocomplete
+                        value={selectedParentBreed}
+                        onChange={setSelectedParentBreed}
+                        onBreedIdChange={setSelectedParentId}
+                        placeholder="Search parent breed..."
+                        className="flex-1"
+                      />
                       <Button onClick={addParentBreed} disabled={!selectedParentId}>
                         Add
                       </Button>
