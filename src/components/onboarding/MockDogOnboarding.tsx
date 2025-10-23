@@ -27,7 +27,7 @@ interface DogData {
   training_time_commitment: string;
 }
 
-const TOTAL_STEPS = 9;
+const TOTAL_STEPS = 8;
 
 const AGE_RANGES = [
   { value: "puppy", label: "Puppy (0-1 year)", emoji: "🐶" },
@@ -193,7 +193,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
     );
   }
 
-  // Step 2: Gender
+  // Step 2: Gender & Photo
   if (step === 2) {
     const displayName = dogData.name.trim() || '[dog name]';
     
@@ -221,7 +221,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
             <h1 className="text-3xl font-bold mb-2">Is {displayName} a boy or girl?</h1>
           </div>
 
-          <div className="space-y-4 mb-8">
+          <div className="space-y-6 mb-8">
             <div className="grid grid-cols-2 gap-4">
               <Button
                 variant={dogData.gender === 'male' ? 'default' : 'outline'}
@@ -241,6 +241,46 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
                 <span className="text-5xl">♀</span>
                 <span className="text-lg">Female</span>
               </Button>
+            </div>
+
+            <div className="space-y-2">
+              <Label>Add a photo (optional)</Label>
+              {dogData.photoPreview ? (
+                <div className="relative">
+                  <img
+                    src={dogData.photoPreview}
+                    alt="Dog preview"
+                    className="w-full h-48 object-cover rounded-lg"
+                  />
+                  <Button
+                    type="button"
+                    variant="destructive"
+                    size="sm"
+                    className="absolute top-2 right-2"
+                    onClick={removePhoto}
+                  >
+                    <X className="w-4 h-4" />
+                  </Button>
+                </div>
+              ) : (
+                <div className="border-2 border-dashed border-border rounded-lg p-8 text-center">
+                  <Camera className="w-10 h-10 mx-auto mb-3 text-muted-foreground" />
+                  <p className="text-sm text-muted-foreground mb-3">
+                    Upload a photo of {displayName}
+                  </p>
+                  <Button type="button" variant="outline" size="sm" asChild>
+                    <label className="cursor-pointer">
+                      Choose Photo
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handlePhotoChange}
+                        className="hidden"
+                      />
+                    </label>
+                  </Button>
+                </div>
+              )}
             </div>
           </div>
 
@@ -413,111 +453,8 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
     );
   }
 
-  // Step 5: Photo Upload
+  // Step 5: Known Commands
   if (step === 5) {
-    const displayName = dogData.name.trim() || '[dog name]';
-    
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in">
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={onComplete}
-          className="absolute top-4 right-4 z-10 h-8 w-8 p-0 hover:bg-muted"
-        >
-          <X className="w-4 h-4" />
-        </Button>
-
-        <div className="px-6 pt-6 pb-4">
-          <Badge variant="secondary" className="mb-4 bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-200">
-            MOCK MODE
-          </Badge>
-          <Progress value={getProgressPercentage()} className="h-2 mb-2" />
-          <p className="text-xs text-muted-foreground text-center">Step {step} of {TOTAL_STEPS}</p>
-        </div>
-
-        <div className="flex-1 flex flex-col px-6 pb-24 overflow-y-auto">
-          <div className="text-center mb-6">
-            <h1 className="text-3xl font-bold mb-2">Add a photo of {displayName}</h1>
-            <p className="text-muted-foreground">Optional, but helps personalize your experience</p>
-          </div>
-
-          <div className="space-y-4 mb-8">
-            {dogData.photoPreview ? (
-              <div className="relative">
-                <img
-                  src={dogData.photoPreview}
-                  alt="Dog preview"
-                  className="w-full h-64 object-cover rounded-lg"
-                />
-                <Button
-                  type="button"
-                  variant="destructive"
-                  size="sm"
-                  className="absolute top-2 right-2"
-                  onClick={removePhoto}
-                >
-                  <X className="w-4 h-4" />
-                </Button>
-              </div>
-            ) : (
-              <div className="border-2 border-dashed border-border rounded-lg p-12 text-center">
-                <Camera className="w-16 h-16 mx-auto mb-4 text-muted-foreground" />
-                <p className="text-sm text-muted-foreground mb-4">
-                  Upload a clear photo of {displayName}
-                </p>
-                <Button type="button" variant="outline" asChild>
-                  <label className="cursor-pointer">
-                    Choose Photo
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={handlePhotoChange}
-                      className="hidden"
-                    />
-                  </label>
-                </Button>
-              </div>
-            )}
-          </div>
-
-          <div className="sticky bottom-0 left-0 right-0 pt-4">
-            <div className="flex gap-3">
-              <Button
-                variant="outline"
-                size="lg"
-                onClick={() => setStep(4)}
-                className="flex-1"
-              >
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Back
-              </Button>
-              <Button
-                size="lg"
-                onClick={() => setStep(6)}
-                className="flex-1"
-              >
-                {dogData.photoPreview ? (
-                  <>
-                    Continue
-                    <ArrowRight className="w-4 h-4 ml-2" />
-                  </>
-                ) : (
-                  <>
-                    Skip for now
-                    <ArrowRight className="w-4 h-4 ml-2" />
-                  </>
-                )}
-              </Button>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  // Step 6: Known Commands
-  if (step === 6) {
     const displayName = dogData.name.trim() || '[dog name]';
     
     return (
@@ -571,7 +508,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
               <Button
                 variant="outline"
                 size="lg"
-                onClick={() => setStep(5)}
+                onClick={() => setStep(4)}
                 className="flex-1"
               >
                 <ArrowLeft className="w-4 h-4 mr-2" />
@@ -579,7 +516,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
               </Button>
               <Button
                 size="lg"
-                onClick={() => setStep(7)}
+                onClick={() => setStep(6)}
                 className="flex-1"
               >
                 Continue
@@ -592,8 +529,8 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
     );
   }
 
-  // Step 7: Behavioral Goals
-  if (step === 7) {
+  // Step 6: Behavioral Goals
+  if (step === 6) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in">
         <Button
@@ -619,23 +556,22 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
             <p className="text-muted-foreground">Select all that apply, or skip if none</p>
           </div>
 
-          <div className="space-y-3 mb-8">
-            {BEHAVIORAL_ISSUES.map((issue) => (
-              <div
-                key={issue}
-                className="flex items-center space-x-2 p-3 rounded-lg border cursor-pointer hover:bg-accent"
-                onClick={() => toggleBehavioralGoal(issue)}
-              >
-                <Checkbox
-                  id={issue}
-                  checked={dogData.behavioral_goals.includes(issue)}
-                  onCheckedChange={() => toggleBehavioralGoal(issue)}
-                />
-                <Label htmlFor={issue} className="cursor-pointer flex-1">
+          <div className="space-y-4 mb-8">
+            <div className="flex flex-wrap gap-2">
+              {BEHAVIORAL_ISSUES.map((issue) => (
+                <Badge
+                  key={issue}
+                  variant={dogData.behavioral_goals.includes(issue) ? "default" : "outline"}
+                  className="cursor-pointer px-3 py-2 text-sm hover-scale"
+                  onClick={() => toggleBehavioralGoal(issue)}
+                >
+                  {dogData.behavioral_goals.includes(issue) && (
+                    <Check className="w-3 h-3 mr-1" />
+                  )}
                   {issue}
-                </Label>
-              </div>
-            ))}
+                </Badge>
+              ))}
+            </div>
           </div>
 
           <div className="sticky bottom-0 left-0 right-0 pt-4">
@@ -643,7 +579,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
               <Button
                 variant="outline"
                 size="lg"
-                onClick={() => setStep(6)}
+                onClick={() => setStep(5)}
                 className="flex-1"
               >
                 <ArrowLeft className="w-4 h-4 mr-2" />
@@ -651,7 +587,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
               </Button>
               <Button
                 size="lg"
-                onClick={() => setStep(8)}
+                onClick={() => setStep(7)}
                 className="flex-1"
               >
                 Continue
@@ -664,8 +600,8 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
     );
   }
 
-  // Step 8: Time Commitment
-  if (step === 8) {
+  // Step 7: Time Commitment
+  if (step === 7) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in">
         <Button
@@ -710,7 +646,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
               <Button
                 variant="outline"
                 size="lg"
-                onClick={() => setStep(7)}
+                onClick={() => setStep(6)}
                 className="flex-1"
               >
                 <ArrowLeft className="w-4 h-4 mr-2" />
@@ -718,7 +654,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
               </Button>
               <Button
                 size="lg"
-                onClick={() => setStep(9)}
+                onClick={() => setStep(7)}
                 disabled={!isStepValid()}
                 className="flex-1"
               >
@@ -732,8 +668,8 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
     );
   }
 
-  // Step 9: Summary & Complete
-  if (step === 9) {
+  // Step 8: Summary & Complete
+  if (step === 8) {
     const displayName = dogData.name.trim() || '[dog name]';
     
     return (

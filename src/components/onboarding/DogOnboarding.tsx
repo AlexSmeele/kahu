@@ -16,7 +16,7 @@ interface DogOnboardingProps {
   onComplete: (dog: Dog) => void;
 }
 
-const TOTAL_STEPS = 9;
+const TOTAL_STEPS = 8;
 
 const AGE_RANGES = [
   { value: 'under_6m', label: 'Younger than 6 months', emoji: '🐕' },
@@ -127,11 +127,10 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
       case 2: return formData.gender !== '';
       case 3: return formData.age_range !== '';
       case 4: return formData.breed_id !== null;
-      case 5: return true; // Photo optional
-      case 6: return true; // Commands optional
-      case 7: return true; // Behavioral goals optional
-      case 8: return formData.training_time_commitment !== '';
-      case 9: return true; // Final details optional
+      case 5: return true; // Commands optional
+      case 6: return true; // Behavioral goals optional
+      case 7: return formData.training_time_commitment !== '';
+      case 8: return true; // Final details optional
       default: return false;
     }
   };
@@ -192,7 +191,7 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
     );
   }
 
-  // Step 2: Gender
+  // Step 2: Gender & Photo
   if (step === 2) {
     const displayName = formData.name.trim() || '[dog name]';
     
@@ -208,7 +207,7 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
             <h1 className="text-3xl font-bold mb-2">Is {displayName} a boy or girl?</h1>
           </div>
 
-          <div className="space-y-4 mb-8">
+          <div className="space-y-6 mb-8">
             <div className="grid grid-cols-2 gap-4">
               <button
                 onClick={() => setFormData(prev => ({ ...prev, gender: 'male' }))}
@@ -219,7 +218,7 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
                     : "border-border bg-card hover:border-primary/50"
                 )}
               >
-                <div className="text-4xl mb-2">♂</div>
+                <div className="text-5xl mb-2">♂</div>
                 <div className="font-medium">Male</div>
               </button>
               
@@ -232,9 +231,49 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
                     : "border-border bg-card hover:border-accent/50"
                 )}
               >
-                <div className="text-4xl mb-2">♀</div>
+                <div className="text-5xl mb-2">♀</div>
                 <div className="font-medium">Female</div>
               </button>
+            </div>
+
+            <div className="space-y-2">
+              <Label>Add a photo (optional)</Label>
+              {photoPreview ? (
+                <div className="relative">
+                  <img
+                    src={photoPreview}
+                    alt="Dog preview"
+                    className="w-full h-48 object-cover rounded-lg"
+                  />
+                  <Button
+                    type="button"
+                    variant="destructive"
+                    size="sm"
+                    className="absolute top-2 right-2"
+                    onClick={removePhoto}
+                  >
+                    <X className="w-4 h-4" />
+                  </Button>
+                </div>
+              ) : (
+                <div className="border-2 border-dashed border-border rounded-lg p-8 text-center">
+                  <Upload className="w-10 h-10 mx-auto mb-3 text-muted-foreground" />
+                  <p className="text-sm text-muted-foreground mb-3">
+                    Upload a photo of {displayName}
+                  </p>
+                  <Button type="button" variant="outline" size="sm" asChild>
+                    <label className="cursor-pointer">
+                      Choose File
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handlePhotoChange}
+                        className="hidden"
+                      />
+                    </label>
+                  </Button>
+                </div>
+              )}
             </div>
           </div>
 
@@ -386,90 +425,9 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
     );
   }
 
-  // Step 5: Photo Upload
+
+  // Step 5: Known Commands
   if (step === 5) {
-    const displayName = formData.name.trim() || '[dog name]';
-    
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in">
-        <div className="px-6 pt-6 pb-4">
-          <Progress value={getProgressPercentage()} className="h-2 mb-2" />
-          <p className="text-xs text-muted-foreground text-center">Step {step} of {TOTAL_STEPS}</p>
-        </div>
-        
-        <div className="flex-1 flex flex-col px-6 pb-24 overflow-y-auto">
-          <div className="text-center mb-6">
-            <h1 className="text-3xl font-bold mb-2">Let's see that adorable face!</h1>
-            <p className="text-muted-foreground">Upload a photo of {displayName} (optional)</p>
-          </div>
-
-          <div className="space-y-4 mb-8">
-            {photoPreview ? (
-              <div className="relative">
-                <img
-                  src={photoPreview}
-                  alt="Dog preview"
-                  className="w-full h-64 object-cover rounded-lg"
-                />
-                <Button
-                  type="button"
-                  variant="destructive"
-                  size="sm"
-                  className="absolute top-2 right-2"
-                  onClick={removePhoto}
-                >
-                  <X className="w-4 h-4" />
-                </Button>
-              </div>
-            ) : (
-              <div className="border-2 border-dashed border-border rounded-lg p-12 text-center">
-                <Upload className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
-                <p className="text-sm text-muted-foreground mb-4">
-                  Upload a photo of {displayName}
-                </p>
-                <Button type="button" variant="outline" asChild>
-                  <label className="cursor-pointer">
-                    Choose File
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={handlePhotoChange}
-                      className="hidden"
-                    />
-                  </label>
-                </Button>
-              </div>
-            )}
-          </div>
-
-          <div className="sticky bottom-0 left-0 right-0 pt-4">
-            <div className="flex gap-3">
-              <Button 
-                variant="outline"
-                size="touch"
-                onClick={() => setStep(4)}
-                className="flex-1"
-              >
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Back
-              </Button>
-              <Button 
-                size="touch"
-                onClick={() => setStep(6)}
-                className="flex-1 btn-primary"
-              >
-                Continue
-                <ArrowRight className="w-4 h-4 ml-2" />
-              </Button>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  // Step 6: Known Commands
-  if (step === 6) {
     const displayName = formData.name.trim() || '[dog name]';
     
     return (
@@ -508,6 +466,64 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
               <Button 
                 variant="outline"
                 size="touch"
+                onClick={() => setStep(4)}
+                className="flex-1"
+              >
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Back
+              </Button>
+              <Button 
+                size="touch"
+                onClick={() => setStep(6)}
+                className="flex-1 btn-primary"
+              >
+                Continue
+                <ArrowRight className="w-4 h-4 ml-2" />
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Step 6: Behavioral Goals
+  if (step === 6) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in">
+        <div className="px-6 pt-6 pb-4">
+          <Progress value={getProgressPercentage()} className="h-2 mb-2" />
+          <p className="text-xs text-muted-foreground text-center">Training goals 1/2</p>
+        </div>
+        
+        <div className="flex-1 flex flex-col px-6 pb-24 overflow-y-auto">
+          <div className="text-center mb-6">
+            <h1 className="text-3xl font-bold mb-2">Which behavioral issues would you like to solve?</h1>
+          </div>
+
+          <div className="space-y-4 mb-8">
+            <div className="flex flex-wrap gap-2">
+              {BEHAVIORAL_ISSUES.map((issue) => (
+                <Badge
+                  key={issue}
+                  variant={formData.behavioral_goals.includes(issue) ? "default" : "outline"}
+                  className="cursor-pointer px-3 py-2 text-sm hover-scale"
+                  onClick={() => toggleBehavioralGoal(issue)}
+                >
+                  {formData.behavioral_goals.includes(issue) && (
+                    <Check className="w-3 h-3 mr-1" />
+                  )}
+                  {issue}
+                </Badge>
+              ))}
+            </div>
+          </div>
+
+          <div className="sticky bottom-0 left-0 right-0 pt-4">
+            <div className="flex gap-3">
+              <Button 
+                variant="outline"
+                size="touch"
                 onClick={() => setStep(5)}
                 className="flex-1"
               >
@@ -529,66 +545,8 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
     );
   }
 
-  // Step 7: Behavioral Goals
+  // Step 7: Time Commitment
   if (step === 7) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in">
-        <div className="px-6 pt-6 pb-4">
-          <Progress value={getProgressPercentage()} className="h-2 mb-2" />
-          <p className="text-xs text-muted-foreground text-center">Training goals 1/2</p>
-        </div>
-        
-        <div className="flex-1 flex flex-col px-6 pb-24 overflow-y-auto">
-          <div className="text-center mb-6">
-            <h1 className="text-3xl font-bold mb-2">Which behavioral issues would you like to solve?</h1>
-          </div>
-
-          <div className="space-y-4 mb-8">
-            <div className="flex flex-wrap gap-2">
-              {BEHAVIORAL_ISSUES.map((issue) => (
-                <Badge
-                  key={issue}
-                  variant={formData.behavioral_goals.includes(issue) ? "default" : "outline"}
-                  className="cursor-pointer px-4 py-2 text-sm hover-scale"
-                  onClick={() => toggleBehavioralGoal(issue)}
-                >
-                  {formData.behavioral_goals.includes(issue) && (
-                    <Check className="w-3 h-3 mr-1" />
-                  )}
-                  {issue}
-                </Badge>
-              ))}
-            </div>
-          </div>
-
-          <div className="sticky bottom-0 left-0 right-0 pt-4">
-            <div className="flex gap-3">
-              <Button 
-                variant="outline"
-                size="touch"
-                onClick={() => setStep(6)}
-                className="flex-1"
-              >
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Back
-              </Button>
-              <Button 
-                size="touch"
-                onClick={() => setStep(8)}
-                className="flex-1 btn-primary"
-              >
-                Continue
-                <ArrowRight className="w-4 h-4 ml-2" />
-              </Button>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  // Step 8: Time Commitment
-  if (step === 8) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in">
         <div className="px-6 pt-6 pb-4">
@@ -627,7 +585,7 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
               <Button 
                 variant="outline"
                 size="touch"
-                onClick={() => setStep(7)}
+                onClick={() => setStep(6)}
                 className="flex-1"
               >
                 <ArrowLeft className="w-4 h-4 mr-2" />
@@ -635,7 +593,7 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
               </Button>
               <Button 
                 size="touch"
-                onClick={() => setStep(9)}
+                onClick={() => setStep(8)}
                 disabled={!isStepValid()}
                 className="flex-1 btn-primary"
               >
@@ -649,8 +607,8 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
     );
   }
 
-  // Step 9: Final Details & Summary
-  if (step === 9) {
+  // Step 8: Final Details & Summary
+  if (step === 8) {
     const ageLabel = AGE_RANGES.find(r => r.value === formData.age_range)?.label || formData.age_range;
     const displayName = formData.name.trim() || '[dog name]';
     
@@ -743,7 +701,7 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
               <Button 
                 variant="outline"
                 size="touch"
-                onClick={() => setStep(8)}
+                onClick={() => setStep(7)}
                 className="flex-1"
                 disabled={loading}
               >
