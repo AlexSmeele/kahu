@@ -48,15 +48,21 @@ export function BreedAutocomplete({
 
   // Filter breeds based on input
   useEffect(() => {
-    if (inputValue.trim() && availableBreeds.length > 0) {
-      const filtered = availableBreeds.filter((breed: string) =>
-        breed.toLowerCase().includes(inputValue.toLowerCase())
-      ).slice(0, 10);
-      setFilteredBreeds(filtered);
-      const exactMatch = availableBreeds.some((breed: string) => 
-        breed.toLowerCase() === inputValue.toLowerCase()
-      );
-      setShowCustomOption(!exactMatch && inputValue.length > 2);
+    if (availableBreeds.length > 0) {
+      if (inputValue.trim()) {
+        const filtered = availableBreeds.filter((breed: string) =>
+          breed.toLowerCase().includes(inputValue.toLowerCase())
+        ).slice(0, 10);
+        setFilteredBreeds(filtered);
+        const exactMatch = availableBreeds.some((breed: string) => 
+          breed.toLowerCase() === inputValue.toLowerCase()
+        );
+        setShowCustomOption(!exactMatch && inputValue.length > 2);
+      } else {
+        // Show top suggestions when empty
+        setFilteredBreeds(availableBreeds.slice(0, 10));
+        setShowCustomOption(false);
+      }
     } else {
       setFilteredBreeds([]);
       setShowCustomOption(false);
@@ -132,9 +138,7 @@ export function BreedAutocomplete({
   };
 
   const handleInputFocus = () => {
-    if (inputValue.trim()) {
-      setOpen(true);
-    }
+    setOpen(true);
   };
 
   const handleInputBlur = () => {
@@ -156,7 +160,7 @@ export function BreedAutocomplete({
       />
       
       {open && (filteredBreeds.length > 0 || showCustomOption) && (
-        <div className="absolute z-50 w-full mt-1 bg-popover border rounded-md shadow-lg max-h-60 overflow-auto">
+        <div className="absolute z-50 w-full mt-1 bg-background border rounded-md shadow-lg max-h-60 overflow-auto">
           <ScrollArea className="max-h-60">
             <div className="p-1">
               {filteredBreeds.map((breed) => (
