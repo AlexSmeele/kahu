@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/contexts/AuthContext';
 
 export interface MedicalTreatment {
   id: string;
@@ -18,9 +19,34 @@ export const useMedicalTreatments = (dogId: string) => {
   const [treatments, setTreatments] = useState<MedicalTreatment[]>([]);
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
+  const { user } = useAuth();
 
   const fetchTreatments = async () => {
     if (!dogId) {
+      setLoading(false);
+      return;
+    }
+
+    // Dev mode: provide mock Cytopoint treatment so UI shows warning
+    if (user?.id === '00000000-0000-0000-0000-000000000001') {
+      const now = new Date();
+      const last = new Date(now.getTime() - 10 * 7 * 24 * 60 * 60 * 1000); // 10 weeks ago
+      const nextDue = new Date(last.getTime() + 8 * 7 * 24 * 60 * 60 * 1000); // 8-week cycle
+      const mock: MedicalTreatment[] = [
+        {
+          id: 'mock-cytopoint',
+          dog_id: dogId,
+          treatment_name: 'Cytopoint Injection',
+          last_administered_date: last.toISOString(),
+          frequency_weeks: 8,
+          next_due_date: nextDue.toISOString(),
+          notes: 'Allergy treatment - administered every 8 weeks',
+          created_at: now.toISOString(),
+          updated_at: now.toISOString(),
+        },
+      ];
+      console.log('Dev mode: using mock medical treatments', mock);
+      setTreatments(mock);
       setLoading(false);
       return;
     }
