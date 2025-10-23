@@ -138,7 +138,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
   // Step 1: Welcome & Name
   if (step === 1) {
     return (
-       <div className="min-h-dvh bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in">
+       <div className="h-dvh max-h-dvh bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in overflow-hidden">
         <Button
           variant="ghost"
           size="sm"
@@ -199,7 +199,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
     const displayName = dogData.name.trim() || '[dog name]';
     
     return (
-       <div className="min-h-dvh bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in">
+       <div className="h-dvh max-h-dvh bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in overflow-hidden">
         <Button
           variant="ghost"
           size="sm"
@@ -318,7 +318,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
     const displayName = dogData.name.trim() || '[dog name]';
     
     return (
-       <div className="min-h-dvh bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in">
+       <div className="h-dvh max-h-dvh bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in overflow-hidden">
         <Button
           variant="ghost"
           size="sm"
@@ -389,7 +389,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
     const displayName = dogData.name.trim() || '[dog name]';
     
     return (
-       <div className="min-h-dvh bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in">
+       <div className="h-dvh max-h-dvh bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in overflow-hidden">
         <Button
           variant="ghost"
           size="sm"
@@ -473,7 +473,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
     const displayName = dogData.name.trim() || '[dog name]';
     
     return (
-       <div className="min-h-dvh bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in">
+       <div className="h-dvh max-h-dvh bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in overflow-hidden">
         <Button
           variant="ghost"
           size="sm"
@@ -548,7 +548,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
   // Step 6: Behavioral Goals
   if (step === 6) {
     return (
-       <div className="min-h-dvh bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in">
+       <div className="h-dvh max-h-dvh bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in overflow-hidden">
         <Button
           variant="ghost"
           size="sm"
@@ -620,7 +620,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
   // Step 7: Time Commitment
   if (step === 7) {
     return (
-       <div className="min-h-dvh bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in">
+       <div className="h-dvh max-h-dvh bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in overflow-hidden">
         <Button
           variant="ghost"
           size="sm"
@@ -691,7 +691,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
     const displayName = dogData.name.trim() || '[dog name]';
     
     return (
-      <div className="min-h-dvh bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in">
+      <div className="h-dvh max-h-dvh bg-gradient-to-br from-background via-secondary/20 to-accent/10 flex flex-col animate-fade-in overflow-hidden">
         <Button
           variant="ghost"
           size="sm"
