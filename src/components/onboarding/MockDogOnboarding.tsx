@@ -42,11 +42,11 @@ const AGE_RANGES = [
 ];
 
 const COMMANDS = [
-  "Name", "Sit", "Down", "Stay", "Come", "Leave it", "Wait", "Drop it", "Fetch", "High Five", "Heel", "None of the above"
+  "Name", "Sit", "Down", "Stay", "Come", "Leave it", "Wait", "Drop it", "Fetch", "High Five", "Heel", "Place"
 ];
 
 const ADVANCED_COMMANDS = [
-  "Place", "Roll over", "Play dead", "Speak", "Quiet", "Spin", "Shake", "Touch", "Bow", "Crawl", "Back up", "Weave", "Figure 8", "Balance", "Bang", "Army crawl"
+  "Roll over", "Play dead", "Speak", "Quiet", "Spin", "Shake", "Touch", "Bow", "Crawl", "Back up", "Weave", "Figure 8", "Balance", "Bang", "Army crawl"
 ];
 
 const BEHAVIORAL_ISSUES = [
