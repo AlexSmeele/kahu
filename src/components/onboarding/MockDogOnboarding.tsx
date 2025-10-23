@@ -229,7 +229,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
                 onClick={() => setDogData(prev => ({ ...prev, gender: 'male' }))}
                 className="h-32 flex flex-col gap-2"
               >
-                <span className="text-4xl">🐕</span>
+                <span className="text-5xl">♂</span>
                 <span className="text-lg">Male</span>
               </Button>
               <Button
@@ -238,7 +238,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
                 onClick={() => setDogData(prev => ({ ...prev, gender: 'female' }))}
                 className="h-32 flex flex-col gap-2"
               >
-                <span className="text-4xl">🐕</span>
+                <span className="text-5xl">♀</span>
                 <span className="text-lg">Female</span>
               </Button>
             </div>
