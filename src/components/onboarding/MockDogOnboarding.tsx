@@ -647,7 +647,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
             </Button>
             <Button
               size="lg"
-              onClick={() => setStep(6)}
+              onClick={() => setStep(7)}
               disabled={!isStepValid()}
               className="flex-1"
             >
@@ -756,7 +756,7 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
             <Button
               variant="outline"
               size="lg"
-              onClick={() => setStep(7)}
+              onClick={() => setStep(6)}
               className="flex-1"
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
