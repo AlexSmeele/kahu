@@ -38,8 +38,19 @@ export function BreedAutocomplete({
   const [loading, setLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const { data: allBreeds = [] } = useAllBreeds();
-  const availableBreeds = useMemo(() => (allBreeds && allBreeds.length > 0 ? allBreeds : LOCAL_BREED_NAMES), [allBreeds]);
+  const { data: allBreeds = [], isLoading: isLoadingBreeds, error: breedsError } = useAllBreeds();
+  const availableBreeds = useMemo(() => {
+    // Always prefer database breeds if available
+    if (allBreeds && allBreeds.length > 0) {
+      console.log(`Loaded ${allBreeds.length} breeds from database`);
+      return allBreeds;
+    }
+    // Fallback to local breeds only if loading failed
+    if (breedsError) {
+      console.warn('Failed to load breeds from database, using fallback list:', breedsError);
+    }
+    return LOCAL_BREED_NAMES;
+  }, [allBreeds, breedsError]);
 
   // Update input value when prop value changes
   useEffect(() => {
@@ -52,7 +63,7 @@ export function BreedAutocomplete({
       if (inputValue.trim()) {
         const filtered = availableBreeds.filter((breed: string) =>
           breed.toLowerCase().includes(inputValue.toLowerCase())
-        ).slice(0, 10);
+        ).slice(0, 20); // Show top 20 matches
         setFilteredBreeds(filtered);
         const exactMatch = availableBreeds.some((breed: string) => 
           breed.toLowerCase() === inputValue.toLowerCase()
@@ -60,7 +71,7 @@ export function BreedAutocomplete({
         setShowCustomOption(!exactMatch && inputValue.length > 2);
       } else {
         // Show top suggestions when empty
-        setFilteredBreeds(availableBreeds.slice(0, 10));
+        setFilteredBreeds(availableBreeds.slice(0, 20));
         setShowCustomOption(false);
       }
     } else {
@@ -163,6 +174,11 @@ export function BreedAutocomplete({
         <div className="absolute z-50 w-full mt-1 bg-background border rounded-md shadow-lg max-h-60 overflow-auto">
           <ScrollArea className="max-h-60">
             <div className="p-1">
+              {isLoadingBreeds && (
+                <div className="px-2 py-1.5 text-sm text-muted-foreground">
+                  Loading breeds from database...
+                </div>
+              )}
               {filteredBreeds.map((breed) => (
                 <div
                   key={breed}
@@ -172,6 +188,12 @@ export function BreedAutocomplete({
                   {breed}
                 </div>
               ))}
+              
+              {!isLoadingBreeds && filteredBreeds.length > 0 && availableBreeds.length > filteredBreeds.length && (
+                <div className="px-2 py-1 text-xs text-muted-foreground text-center border-t">
+                  Showing {filteredBreeds.length} of {availableBreeds.length} breeds
+                </div>
+              )}
               
               {showCustomOption && (
                 <div

@@ -45,9 +45,19 @@ export function EnhancedBreedSelector({
   const [selectedParentBreed, setSelectedParentBreed] = useState('');
   const [selectedParentId, setSelectedParentId] = useState<string | null>(null);
 
-  const { data: standardBreeds = [], isLoading: loadingStandard } = useAllBreeds();
+  const { data: standardBreeds = [], isLoading: loadingStandard, error: breedsError } = useAllBreeds();
   const { data: customBreeds = [], isLoading: loadingCustom } = useCustomBreeds();
   const createCustomBreed = useCreateCustomBreed();
+
+  // Log breed count for debugging
+  React.useEffect(() => {
+    if (standardBreeds.length > 0) {
+      console.log(`EnhancedBreedSelector: Loaded ${standardBreeds.length} standard breeds from database`);
+    }
+    if (breedsError) {
+      console.error('EnhancedBreedSelector: Error loading breeds:', breedsError);
+    }
+  }, [standardBreeds, breedsError]);
 
   const filteredStandardBreeds = standardBreeds.filter(breed =>
     breed.toLowerCase().includes(searchTerm.toLowerCase())
@@ -237,18 +247,33 @@ export function EnhancedBreedSelector({
             <TabsContent value="standard" className="space-y-2">
               <div className="max-h-60 overflow-y-auto space-y-1">
                 {loadingStandard ? (
-                  <div>Loading breeds...</div>
+                  <div className="text-center py-4 text-muted-foreground">Loading breeds...</div>
+                ) : breedsError ? (
+                  <div className="text-center py-4 text-destructive">
+                    Error loading breeds. Please try again.
+                  </div>
+                ) : filteredStandardBreeds.length === 0 ? (
+                  <div className="text-center py-4 text-muted-foreground">
+                    No breeds found matching "{searchTerm}"
+                  </div>
                 ) : (
-                  filteredStandardBreeds.map((breed) => (
-                    <Button
-                      key={breed}
-                      variant="ghost"
-                      className="w-full justify-start text-left"
-                      onClick={() => handleStandardBreedSelect(breed)}
-                    >
-                      {breed}
-                    </Button>
-                  ))
+                  <>
+                    {filteredStandardBreeds.map((breed) => (
+                      <Button
+                        key={breed}
+                        variant="ghost"
+                        className="w-full justify-start text-left"
+                        onClick={() => handleStandardBreedSelect(breed)}
+                      >
+                        {breed}
+                      </Button>
+                    ))}
+                    {standardBreeds.length > filteredStandardBreeds.length && (
+                      <div className="text-xs text-muted-foreground text-center py-2">
+                        Showing {filteredStandardBreeds.length} of {standardBreeds.length} breeds
+                      </div>
+                    )}
+                  </>
                 )}
               </div>
               
