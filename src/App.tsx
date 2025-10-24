@@ -12,7 +12,6 @@ import Auth from "./pages/Auth";
 import AcceptInvitation from "./pages/AcceptInvitation";
 import AIChat from "./pages/AIChat";
 import AccountSettings from "./pages/AccountSettings";
-import AdminImportBreeds from "./pages/AdminImportBreeds";
 import NotFound from "./pages/NotFound";
 import { PasswordGate } from "@/components/PasswordGate";
 import { logger } from "@/lib/logger";
@@ -68,11 +67,6 @@ const App = () => {
                     <Route path="/account-settings" element={
                       <ProtectedRoute>
                         <AccountSettings />
-                      </ProtectedRoute>
-                    } />
-                    <Route path="/admin-import-breeds" element={
-                      <ProtectedRoute>
-                        <AdminImportBreeds />
                       </ProtectedRoute>
                     } />
                     {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
