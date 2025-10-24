@@ -350,11 +350,11 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
         <div className="flex-1 flex flex-col px-6 pb-28 overflow-y-auto">
           <div className="text-center mb-6">
             <h1 className="text-3xl font-bold mb-2">Tell us more about {displayName}</h1>
-            <p className="text-muted-foreground">How old is {pronoun}?</p>
           </div>
 
           <div className="space-y-6 mb-8">
             <div>
+              <h2 className="text-lg font-semibold mb-3">When were they born?</h2>
               <div className="grid grid-cols-3 gap-3">
                 <div>
                   <Label htmlFor="year">Year *</Label>
