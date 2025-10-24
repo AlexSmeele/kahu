@@ -393,9 +393,9 @@ export function MockDogOnboarding({ onComplete }: MockDogOnboardingProps) {
             </div>
 
             <div className="space-y-3">
-              <label className="text-sm font-medium text-foreground">
+              <h2 className="text-lg font-semibold">
                 What breed is {dogData.gender === 'male' ? 'he' : dogData.gender === 'female' ? 'she' : displayName}?
-              </label>
+              </h2>
               <BreedAutocomplete
                 value={dogData.breed}
                 onChange={(breed) => setDogData(prev => ({ ...prev, breed }))}
