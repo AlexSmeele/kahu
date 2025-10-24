@@ -171,9 +171,9 @@ export function BreedAutocomplete({
       />
       
       {open && (filteredBreeds.length > 0 || showCustomOption) && (
-        <div className="absolute z-50 w-full mt-1 bg-background border rounded-md shadow-lg max-h-60 overflow-auto">
+        <div className="absolute z-50 w-full mt-1 bg-background border rounded-md shadow-lg">
           <ScrollArea className="max-h-60">
-            <div className="p-1">
+            <div className="p-1 space-y-0.5">
               {isLoadingBreeds && (
                 <div className="px-2 py-1.5 text-sm text-muted-foreground">
                   Loading breeds from database...
