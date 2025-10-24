@@ -61,9 +61,12 @@ export function BreedAutocomplete({
   useEffect(() => {
     if (availableBreeds.length > 0) {
       if (inputValue.trim()) {
-        const filtered = availableBreeds.filter((breed: string) =>
-          breed.toLowerCase().includes(inputValue.toLowerCase())
-        ).slice(0, 20); // Show top 20 matches
+        const searchWords = inputValue.toLowerCase().split(/\s+/).filter(Boolean);
+        const filtered = availableBreeds.filter((breed: string) => {
+          const breedLower = breed.toLowerCase();
+          // Match if all search words appear in the breed name (any order)
+          return searchWords.every(word => breedLower.includes(word));
+        }).slice(0, 20); // Show top 20 matches
         setFilteredBreeds(filtered);
         const exactMatch = availableBreeds.some((breed: string) => 
           breed.toLowerCase() === inputValue.toLowerCase()
