@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Plus, Target, Clock, MapPin, Edit3, Trash2, Play, Pause } from "lucide-react";
+import { Plus, Target, Clock, MapPin, Edit3, Trash2, Play, Pause, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
@@ -12,6 +12,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/ui/textarea";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useActivity, ActivityRecord } from "@/hooks/useActivity";
+import { EditActivityGoalModal } from "@/components/home/EditActivityGoalModal";
 import { format } from "date-fns";
 
 interface ActivityMonitorProps {
@@ -49,18 +50,8 @@ export function ActivityMonitor({ dogId }: ActivityMonitorProps) {
     }
   };
 
-  const handleUpdateGoal = async (formData: FormData) => {
-    const targetMinutes = parseInt(formData.get('target_minutes') as string);
-    const activityLevel = formData.get('activity_level') as string;
-
-    const success = await updateGoal({
-      target_minutes: targetMinutes,
-      activity_level: activityLevel as any
-    });
-
-    if (success) {
-      setIsEditingGoal(false);
-    }
+  const handleUpdateGoal = async (targetMinutes: number) => {
+    return await updateGoal({ target_minutes: targetMinutes });
   };
 
   const startTracking = () => {
@@ -106,7 +97,14 @@ export function ActivityMonitor({ dogId }: ActivityMonitorProps) {
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">Today's Activity</CardTitle>
-          <Target className="h-4 w-4 text-muted-foreground" />
+          <Button
+            variant="ghost"
+            size="sm"
+            className="h-8 w-8 p-0"
+            onClick={() => setIsEditingGoal(true)}
+          >
+            <Settings className="h-4 w-4" />
+          </Button>
         </CardHeader>
         <CardContent>
           <div className="space-y-3">
@@ -206,68 +204,6 @@ export function ActivityMonitor({ dogId }: ActivityMonitorProps) {
         </Button>
       </div>
 
-      {/* Goal Settings */}
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Activity Goal</CardTitle>
-          <Dialog open={isEditingGoal} onOpenChange={setIsEditingGoal}>
-            <DialogTrigger asChild>
-              <Button variant="ghost" size="sm">
-                <Edit3 className="h-4 w-4" />
-              </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Edit Activity Goal</DialogTitle>
-              </DialogHeader>
-              <form onSubmit={(e) => {
-                e.preventDefault();
-                const formData = new FormData(e.currentTarget);
-                handleUpdateGoal(formData);
-              }} className="space-y-4">
-                <div>
-                  <Label htmlFor="target_minutes">Daily Target (minutes)</Label>
-                  <Input 
-                    type="number" 
-                    name="target_minutes" 
-                    defaultValue={goal?.target_minutes || 60}
-                    required 
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="activity_level">Activity Level</Label>
-                  <Select name="activity_level" defaultValue={goal?.activity_level || 'moderate'}>
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="low">Low - Senior/Calm dogs</SelectItem>
-                      <SelectItem value="moderate">Moderate - Most dogs</SelectItem>
-                      <SelectItem value="high">High - Working/Active breeds</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="flex gap-2">
-                  <Button type="submit" className="flex-1">Update Goal</Button>
-                  <Button type="button" variant="outline" onClick={() => setIsEditingGoal(false)}>
-                    Cancel
-                  </Button>
-                </div>
-              </form>
-            </DialogContent>
-          </Dialog>
-        </CardHeader>
-        <CardContent>
-          <div className="text-lg font-semibold">
-            {goal?.target_minutes || 60} minutes daily
-          </div>
-          <div className="text-sm text-muted-foreground capitalize">
-            {goal?.activity_level || 'moderate'} intensity level
-          </div>
-        </CardContent>
-      </Card>
 
       {/* Today's Activities */}
       <Card>
@@ -347,6 +283,15 @@ export function ActivityMonitor({ dogId }: ActivityMonitorProps) {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      {/* Edit Goal Modal */}
+      <EditActivityGoalModal
+        dogId={dogId}
+        isOpen={isEditingGoal}
+        onClose={() => setIsEditingGoal(false)}
+        currentGoal={goal}
+        onSave={handleUpdateGoal}
+      />
     </div>
   );
 }
