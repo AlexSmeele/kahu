@@ -1,15 +1,18 @@
-import { Activity } from "lucide-react";
+import { Activity, Settings } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface ActivityCircleCardProps {
   completedMinutes: number;
   targetMinutes: number;
   onClick: () => void;
+  onEditGoal?: () => void;
 }
 
 export function ActivityCircleCard({ 
   completedMinutes, 
   targetMinutes, 
-  onClick 
+  onClick,
+  onEditGoal
 }: ActivityCircleCardProps) {
   const percentage = Math.min((completedMinutes / targetMinutes) * 100, 100);
   const circumference = 2 * Math.PI * 45; // radius = 45
@@ -26,11 +29,26 @@ export function ActivityCircleCard({
       onClick={onClick}
       className="rounded-2xl border bg-card p-4 hover:bg-accent transition-all hover:scale-[1.02] text-left w-full"
     >
-      <div className="flex items-center gap-2 mb-3">
-        <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
-          <Activity className="w-4 h-4 text-primary" />
+      <div className="flex items-center justify-between mb-3">
+        <div className="flex items-center gap-2">
+          <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+            <Activity className="w-4 h-4 text-primary" />
+          </div>
+          <h3 className="font-semibold text-foreground">Today's Activity</h3>
         </div>
-        <h3 className="font-semibold text-foreground">Activity</h3>
+        {onEditGoal && (
+          <Button
+            variant="ghost"
+            size="sm"
+            className="h-8 w-8 p-0"
+            onClick={(e) => {
+              e.stopPropagation();
+              onEditGoal();
+            }}
+          >
+            <Settings className="h-4 w-4" />
+          </Button>
+        )}
       </div>
       
       <div className="flex items-center justify-center my-4">

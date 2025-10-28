@@ -9,7 +9,9 @@ import { QuickNoteTile } from "@/components/home/QuickNoteTile";
 import { GetAdviceCard } from "@/components/home/GetAdviceCard";
 import { ActivityRecordModal } from "@/components/home/ActivityRecordModal";
 import { QuickNoteModal } from "@/components/home/QuickNoteModal";
+import { EditActivityGoalModal } from "@/components/home/EditActivityGoalModal";
 import { useHomeData } from "@/hooks/useHomeData";
+import { useActivity } from "@/hooks/useActivity";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { TabType } from "@/components/layout/BottomNavigation";
 
@@ -22,6 +24,7 @@ interface HomeScreenProps {
 export function HomeScreen({ selectedDogId, onDogChange, onTabChange }: HomeScreenProps) {
   const [showActivityModal, setShowActivityModal] = useState(false);
   const [showNoteModal, setShowNoteModal] = useState(false);
+  const [showEditGoalModal, setShowEditGoalModal] = useState(false);
   
   const {
     loading,
@@ -32,6 +35,12 @@ export function HomeScreen({ selectedDogId, onDogChange, onTabChange }: HomeScre
     upcomingEvents,
     quickStats
   } = useHomeData(selectedDogId);
+
+  const { updateGoal } = useActivity(selectedDogId);
+
+  const handleUpdateGoal = async (targetMinutes: number) => {
+    return await updateGoal({ target_minutes: targetMinutes });
+  };
 
   const getGreeting = () => {
     const hour = new Date().getHours();
@@ -65,6 +74,7 @@ export function HomeScreen({ selectedDogId, onDogChange, onTabChange }: HomeScre
               completedMinutes={activityProgress.minutes}
               targetMinutes={activityGoal?.target_minutes || 60}
               onClick={() => setShowActivityModal(true)}
+              onEditGoal={() => setShowEditGoalModal(true)}
             />
             <TrainingTile
               trickName={nextTrick?.trick?.name}
@@ -79,6 +89,13 @@ export function HomeScreen({ selectedDogId, onDogChange, onTabChange }: HomeScre
 
       <ActivityRecordModal dogId={selectedDogId} isOpen={showActivityModal} onClose={() => setShowActivityModal(false)} />
       <QuickNoteModal dogId={selectedDogId} isOpen={showNoteModal} onClose={() => setShowNoteModal(false)} />
+      <EditActivityGoalModal 
+        dogId={selectedDogId}
+        isOpen={showEditGoalModal}
+        onClose={() => setShowEditGoalModal(false)}
+        currentGoal={activityGoal}
+        onSave={handleUpdateGoal}
+      />
     </>
   );
 }
