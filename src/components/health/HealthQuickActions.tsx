@@ -18,7 +18,7 @@ export const HealthQuickActions = ({
   return (
     <div className="mb-6">
       <h3 className="text-sm font-semibold mb-3">Quick Actions</h3>
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-4 gap-3">
         <Button variant="secondary" onClick={onGroomingClick} className="h-20 flex-col gap-2 bg-card hover:bg-accent border">
           <Scissors className="h-5 w-5" />
           <span className="text-sm">Log Grooming</span>
