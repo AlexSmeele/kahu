@@ -21,19 +21,19 @@ export const HealthQuickActions = ({
       <div className="grid grid-cols-4 gap-3">
         <Button variant="secondary" onClick={onGroomingClick} className="h-20 flex-col gap-2 bg-card hover:bg-accent border">
           <Scissors className="h-5 w-5" />
-          <span className="text-sm">Log Grooming</span>
+          <span className="text-sm">Grooming</span>
         </Button>
         <Button variant="secondary" onClick={onCheckupClick} className="h-20 flex-col gap-2 bg-card hover:bg-accent border">
           <Stethoscope className="h-5 w-5" />
-          <span className="text-sm">Weekly Checkup</span>
+          <span className="text-sm">Checkup</span>
         </Button>
         <Button variant="secondary" onClick={onWeightClick} className="h-20 flex-col gap-2 bg-card hover:bg-accent border">
           <Weight className="h-5 w-5" />
-          <span className="text-sm">Add Weight</span>
+          <span className="text-sm">Weight</span>
         </Button>
         <Button variant="secondary" onClick={onAddRecordClick} className="h-20 flex-col gap-2 bg-card hover:bg-accent border">
           <Plus className="h-5 w-5" />
-          <span className="text-sm">Add Record</span>
+          <span className="text-sm">Record</span>
         </Button>
       </div>
     </div>
