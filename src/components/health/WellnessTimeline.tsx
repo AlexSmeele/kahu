@@ -5,7 +5,6 @@ import { TimelineEventCard } from "./TimelineEventCard";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { MealDetailModal } from "./MealDetailModal";
 import { VetVisitDetailModal } from "./VetVisitDetailModal";
 import { GroomingDetailModal } from "./GroomingDetailModal";
 import { CheckupDetailModal } from "./CheckupDetailModal";
@@ -38,6 +37,24 @@ export function WellnessTimeline({ dogId }: WellnessTimelineProps) {
         sessionStorage.setItem(`wellnessScroll:${dogId}`, String(scrollPosition));
       } catch {}
       navigate(`/activity/${event.metadata.activityId}`, { 
+        state: { 
+          dogId, 
+          from: '/?tab=wellness',
+          scrollPosition 
+        } 
+      });
+    } else if (event.type === 'meal' && event.details?.id) {
+      const scrollableContainer = document.querySelector('.overflow-y-auto');
+      const scrollPosition = scrollableContainer?.scrollTop || 0;
+      try {
+        const h = window.history as any;
+        const prevUsr = h.state?.usr || {};
+        h.replaceState({ ...h.state, usr: { ...prevUsr, scrollPosition } }, document.title, window.location.href);
+      } catch {}
+      try {
+        sessionStorage.setItem(`wellnessScroll:${dogId}`, String(scrollPosition));
+      } catch {}
+      navigate(`/meal/${event.details.id}`, { 
         state: { 
           dogId, 
           from: '/?tab=wellness',
@@ -134,21 +151,8 @@ export function WellnessTimeline({ dogId }: WellnessTimelineProps) {
           <Button
             variant="outline"
             onClick={() => {
-              const scrollableContainer = document.querySelector('.overflow-y-auto');
-              const scrollPosition = scrollableContainer?.scrollTop || 0;
-              try {
-                const h = window.history as any;
-                const prevUsr = h.state?.usr || {};
-                h.replaceState({ ...h.state, usr: { ...prevUsr, scrollPosition } }, document.title, window.location.href);
-              } catch {}
-              try {
-                sessionStorage.setItem(`wellnessScroll:${dogId}`, String(scrollPosition));
-              } catch {}
               navigate(`/full-timeline/${dogId}`, { 
-                state: { 
-                  from: 'wellness',
-                  scrollPosition 
-                } 
+                state: { from: 'wellness' } 
               });
             }}
             className="w-full"
@@ -190,19 +194,6 @@ export function WellnessTimeline({ dogId }: WellnessTimelineProps) {
       </div>
 
       {/* Detail Modals */}
-      {selectedEvent && modalType === 'meal' && (
-        <MealDetailModal
-          open={true}
-          onOpenChange={(open) => {
-            if (!open) {
-              setSelectedEvent(null);
-              setModalType(null);
-            }
-          }}
-          meal={selectedEvent}
-        />
-      )}
-
       {selectedEvent && modalType === 'vet_visit' && (
         <VetVisitDetailModal
           open={true}

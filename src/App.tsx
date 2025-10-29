@@ -14,6 +14,7 @@ import AIChat from "./pages/AIChat";
 import AccountSettings from "./pages/AccountSettings";
 import FullTimeline from "./pages/FullTimeline";
 import ActivityDetail from "./pages/ActivityDetail";
+import MealDetail from "./pages/MealDetail";
 import NotFound from "./pages/NotFound";
 import { PasswordGate } from "@/components/PasswordGate";
 import { logger } from "@/lib/logger";
@@ -79,6 +80,11 @@ const App = () => {
                     <Route path="/activity/:activityId" element={
                       <ProtectedRoute>
                         <ActivityDetail />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="/meal/:mealId" element={
+                      <ProtectedRoute>
+                        <MealDetail />
                       </ProtectedRoute>
                     } />
                     {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

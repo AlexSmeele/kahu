@@ -35,6 +35,13 @@ export function WellnessScreen({ selectedDogId, onDogChange }: WellnessScreenPro
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const { loading: timelineLoading } = useWellnessTimeline(selectedDogId);
 
+  // Clear stale scroll data on mount
+  useEffect(() => {
+    try {
+      sessionStorage.removeItem(`wellnessScroll:${selectedDogId}`);
+    } catch {}
+  }, [selectedDogId]);
+
   useEffect(() => {
     if (!scrollContainerRef.current || timelineLoading) return;
 
