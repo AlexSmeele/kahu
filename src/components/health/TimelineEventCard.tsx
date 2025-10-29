@@ -6,34 +6,49 @@ import { cn } from "@/lib/utils";
 interface TimelineEventCardProps {
   event: TimelineEvent;
   onClick?: () => void;
+  isLast?: boolean;
+  isToday?: boolean;
 }
 
-export function TimelineEventCard({ event, onClick }: TimelineEventCardProps) {
+export function TimelineEventCard({ event, onClick, isLast = false, isToday = false }: TimelineEventCardProps) {
   const Icon = event.icon;
   
-  const getStatusColor = () => {
+  const getIconBgColor = () => {
     switch (event.status) {
       case 'completed':
-        return 'bg-success/10 border-success/20';
+        return 'bg-success/15';
       case 'upcoming':
-        return 'bg-primary/10 border-primary/20';
+        return 'bg-primary/15';
       case 'overdue':
-        return 'bg-destructive/10 border-destructive/20';
+        return 'bg-destructive/15';
       default:
-        return 'bg-muted';
+        return 'bg-muted/30';
+    }
+  };
+
+  const getIconColor = () => {
+    switch (event.status) {
+      case 'completed':
+        return 'text-success';
+      case 'upcoming':
+        return 'text-primary';
+      case 'overdue':
+        return 'text-destructive';
+      default:
+        return 'text-muted-foreground';
     }
   };
 
   const getStatusDotColor = () => {
     switch (event.status) {
       case 'completed':
-        return 'bg-success';
+        return 'bg-success shadow-[0_0_8px_hsl(var(--success)/0.4)]';
       case 'upcoming':
-        return 'bg-primary';
+        return 'bg-primary shadow-[0_0_8px_hsl(var(--primary)/0.4)]';
       case 'overdue':
-        return 'bg-destructive';
+        return 'bg-destructive shadow-[0_0_8px_hsl(var(--destructive)/0.4)]';
       default:
-        return 'bg-muted';
+        return 'bg-muted-foreground';
     }
   };
 
@@ -48,82 +63,90 @@ export function TimelineEventCard({ event, onClick }: TimelineEventCardProps) {
   return (
     <div 
       className={cn(
-        "relative pl-6 pb-6 cursor-pointer group",
-        "before:absolute before:left-[7px] before:top-0 before:bottom-0 before:w-[2px] before:bg-border",
-        "last:before:hidden"
+        "relative pl-8 pb-3 cursor-pointer group",
+        "before:absolute before:left-[11px] before:top-0 before:bottom-0 before:w-[3px]",
+        "before:bg-gradient-to-b before:from-border before:to-border/40",
+        isLast && "before:hidden"
       )}
       onClick={onClick}
     >
-      {/* Timeline dot */}
+      {/* Timeline dot with glow effect */}
       <div className={cn(
-        "absolute left-0 top-1 w-4 h-4 rounded-full border-2 border-background z-10",
+        "absolute left-0 top-2 w-6 h-6 rounded-full border-[3px] border-background z-10",
+        "transition-all duration-300 flex items-center justify-center",
         getStatusDotColor(),
-        event.status === 'upcoming' && "bg-transparent border-4"
-      )} />
-
-      {/* Event card */}
-      <div className={cn(
-        "card-soft p-4 transition-all duration-200",
-        "group-hover:shadow-md group-hover:scale-[1.01]",
-        getStatusColor()
+        isToday && event.status === 'upcoming' && "animate-pulse",
+        "group-hover:scale-125"
       )}>
-        <div className="flex items-start justify-between gap-3">
-          <div className="flex items-start gap-3 flex-1 min-w-0">
-            {/* Icon */}
-            <div className={cn(
-              "w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0",
-              event.status === 'completed' && "bg-success/20",
-              event.status === 'upcoming' && "bg-primary/20",
-              event.status === 'overdue' && "bg-destructive/20"
-            )}>
-              <Icon className={cn(
-                "w-5 h-5",
-                event.status === 'completed' && "text-success",
-                event.status === 'upcoming' && "text-primary",
-                event.status === 'overdue' && "text-destructive"
-              )} />
-            </div>
+        {event.status === 'upcoming' && (
+          <div className="w-2 h-2 rounded-full bg-primary" />
+        )}
+      </div>
 
-            {/* Content */}
-            <div className="flex-1 min-w-0">
-              <div className="flex items-start justify-between gap-2 mb-1">
-                <h4 className="font-semibold text-foreground truncate">{event.title}</h4>
-                <span className="text-xs text-muted-foreground whitespace-nowrap">
-                  {formatTime(event.timestamp)}
-                </span>
-              </div>
-
-              {/* Metrics */}
-              {event.metrics && event.metrics.length > 0 && (
-                <div className="flex flex-wrap gap-3 text-sm text-muted-foreground mt-2">
-                  {event.metrics.map((metric, idx) => (
-                    <div key={idx} className="flex items-center gap-1">
-                      {metric.icon && <metric.icon className="w-4 h-4" />}
-                      <span className="font-medium text-foreground">{metric.value}</span>
-                      <span className="text-muted-foreground">{metric.label}</span>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {/* Status badge for upcoming/overdue */}
-              {event.status !== 'completed' && (
-                <Badge 
-                  variant="outline" 
-                  className={cn(
-                    "mt-2",
-                    event.status === 'upcoming' && "border-primary/30 text-primary",
-                    event.status === 'overdue' && "border-destructive/30 text-destructive"
-                  )}
-                >
-                  {event.status === 'upcoming' ? 'Upcoming' : 'Overdue'}
-                </Badge>
-              )}
-            </div>
+      {/* Event card - borderless with shadow only */}
+      <div className={cn(
+        "bg-card rounded-xl p-3 transition-all duration-200",
+        "shadow-[0_1px_3px_rgba(0,0,0,0.08)]",
+        "hover:shadow-[0_4px_12px_rgba(0,0,0,0.12)] hover:scale-[1.01]",
+        "active:scale-[0.99]"
+      )}>
+        <div className="flex items-start gap-3">
+          {/* Icon with colored circle background */}
+          <div className={cn(
+            "w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0",
+            "transition-all duration-200 group-hover:scale-110",
+            getIconBgColor()
+          )}>
+            <Icon className={cn(
+              "w-5 h-5",
+              getIconColor()
+            )} />
           </div>
 
-          {/* Chevron */}
-          <ChevronRight className="w-5 h-5 text-muted-foreground flex-shrink-0 group-hover:translate-x-1 transition-transform" />
+          {/* Content */}
+          <div className="flex-1 min-w-0">
+            <div className="flex items-start justify-between gap-2">
+              <h4 className="font-semibold text-[15px] text-foreground leading-tight">
+                {event.title}
+              </h4>
+              <span className="text-[11px] text-muted-foreground/80 whitespace-nowrap font-medium">
+                {formatTime(event.timestamp)}
+              </span>
+            </div>
+
+            {/* Metrics - Horizontal compact layout */}
+            {event.metrics && event.metrics.length > 0 && (
+              <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs mt-2">
+                {event.metrics.map((metric, idx) => (
+                  <div key={idx} className="flex items-center gap-1.5">
+                    {metric.icon && <metric.icon className="w-3.5 h-3.5 text-muted-foreground/60" />}
+                    <span className="font-semibold text-foreground">{metric.value}</span>
+                    <span className="text-muted-foreground/80">{metric.label}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* Status badge for upcoming/overdue - More compact */}
+            {event.status !== 'completed' && (
+              <Badge 
+                variant="outline" 
+                className={cn(
+                  "mt-2 text-[10px] px-2 py-0.5 h-5",
+                  event.status === 'upcoming' && "border-primary/30 text-primary bg-primary/5",
+                  event.status === 'overdue' && "border-destructive/30 text-destructive bg-destructive/5"
+                )}
+              >
+                {event.status === 'upcoming' ? 'Scheduled' : 'Overdue'}
+              </Badge>
+            )}
+          </div>
+
+          {/* Chevron - Subtle */}
+          <ChevronRight className={cn(
+            "w-4 h-4 text-muted-foreground/40 flex-shrink-0 transition-all duration-200",
+            "group-hover:text-muted-foreground group-hover:translate-x-0.5"
+          )} />
         </div>
       </div>
     </div>
