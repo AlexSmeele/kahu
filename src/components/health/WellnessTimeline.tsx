@@ -31,6 +31,14 @@ export function WellnessTimeline({ dogId }: WellnessTimelineProps) {
     if (event.type === 'activity' && event.metadata.activityId) {
       const scrollableContainer = document.querySelector('.overflow-y-auto');
       const scrollPosition = scrollableContainer?.scrollTop || 0;
+      try {
+        const h = window.history as any;
+        const prevUsr = h.state?.usr || {};
+        h.replaceState({ ...h.state, usr: { ...prevUsr, scrollPosition } }, document.title, window.location.href);
+      } catch {}
+      try {
+        sessionStorage.setItem(`wellnessScroll:${dogId}`, String(scrollPosition));
+      } catch {}
       navigate(`/activity/${event.metadata.activityId}`, { 
         state: { 
           dogId, 
@@ -130,6 +138,14 @@ export function WellnessTimeline({ dogId }: WellnessTimelineProps) {
             onClick={() => {
               const scrollableContainer = document.querySelector('.overflow-y-auto');
               const scrollPosition = scrollableContainer?.scrollTop || 0;
+              try {
+                const h = window.history as any;
+                const prevUsr = h.state?.usr || {};
+                h.replaceState({ ...h.state, usr: { ...prevUsr, scrollPosition } }, document.title, window.location.href);
+              } catch {}
+              try {
+                sessionStorage.setItem(`wellnessScroll:${dogId}`, String(scrollPosition));
+              } catch {}
               navigate(`/full-timeline/${dogId}`, { 
                 state: { 
                   from: 'wellness',
