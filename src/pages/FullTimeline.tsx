@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { ArrowLeft, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
@@ -8,15 +8,12 @@ import { TimelineEventCard } from "@/components/health/TimelineEventCard";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
-interface FullTimelineProps {
-  selectedDogId: string;
-}
-
-export default function FullTimeline({ selectedDogId }: FullTimelineProps) {
+export default function FullTimeline() {
   const navigate = useNavigate();
+  const { dogId } = useParams<{ dogId: string }>();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [selectedDayIndex, setSelectedDayIndex] = useState(0);
-  const { timelineData, loading } = useWellnessTimeline(selectedDogId);
+  const { timelineData, loading } = useWellnessTimeline(dogId || '');
 
   // Auto-scroll to selected day
   useEffect(() => {

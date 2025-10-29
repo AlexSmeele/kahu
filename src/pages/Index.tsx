@@ -16,19 +16,8 @@ const Index = () => {
   const [isQuickActionOpen, setIsQuickActionOpen] = useState(false);
   const [isUserTyping, setIsUserTyping] = useState(false);
   const [selectedDogId, setSelectedDogId] = useState<string>('');
-  const [showFullTimeline, setShowFullTimeline] = useState(false);
   const { user, session } = useAuth();
   const { dogs, loading } = useDogs();
-
-  // Check URL for full-timeline param
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    if (params.get('tab') === 'full-timeline') {
-      setShowFullTimeline(true);
-      const dogId = params.get('dog');
-      if (dogId) setSelectedDogId(dogId);
-    }
-  }, []);
 
   logger.info('Index: Component rendered', { 
     activeTab, 
@@ -58,7 +47,7 @@ const Index = () => {
   }
 
   const renderActiveScreen = () => {
-    logger.debug('Index: Rendering screen', { activeTab, selectedDogId, showFullTimeline });
+    logger.debug('Index: Rendering screen', { activeTab, selectedDogId });
     
     // Check if we're on the activity detail route
     if (window.location.pathname.startsWith('/activity/')) {
@@ -66,16 +55,6 @@ const Index = () => {
       return (
         <Suspense fallback={<div>Loading...</div>}>
           <ActivityDetail />
-        </Suspense>
-      );
-    }
-    
-    // Import FullTimeline lazily
-    if (showFullTimeline) {
-      const FullTimeline = lazy(() => import('@/pages/FullTimeline'));
-      return (
-        <Suspense fallback={<div>Loading...</div>}>
-          <FullTimeline selectedDogId={selectedDogId} />
         </Suspense>
       );
     }

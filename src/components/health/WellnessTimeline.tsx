@@ -100,7 +100,7 @@ export function WellnessTimeline({ dogId }: WellnessTimelineProps) {
       {hasMoreData && (
         <Button
           variant="outline"
-          onClick={() => window.location.href = `/?tab=full-timeline&dog=${dogId}`}
+          onClick={() => navigate(`/full-timeline/${dogId}`)}
           className="w-full"
         >
           <ChevronDown className="w-4 h-4 mr-2" />

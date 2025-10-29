@@ -12,6 +12,7 @@ import Auth from "./pages/Auth";
 import AcceptInvitation from "./pages/AcceptInvitation";
 import AIChat from "./pages/AIChat";
 import AccountSettings from "./pages/AccountSettings";
+import FullTimeline from "./pages/FullTimeline";
 import NotFound from "./pages/NotFound";
 import { PasswordGate } from "@/components/PasswordGate";
 import { logger } from "@/lib/logger";
@@ -67,6 +68,11 @@ const App = () => {
                     <Route path="/account-settings" element={
                       <ProtectedRoute>
                         <AccountSettings />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="/full-timeline/:dogId" element={
+                      <ProtectedRoute>
+                        <FullTimeline />
                       </ProtectedRoute>
                     } />
                     {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
