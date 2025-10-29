@@ -100,7 +100,7 @@ export function WellnessTimeline({ dogId }: WellnessTimelineProps) {
       {hasMoreData && (
         <Button
           variant="outline"
-          onClick={() => navigate(`/full-timeline/${dogId}`)}
+          onClick={() => navigate(`/full-timeline/${dogId}`, { state: { from: 'health' } })}
           className="w-full"
         >
           <Calendar className="w-4 h-4 mr-2" />

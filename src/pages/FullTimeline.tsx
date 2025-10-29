@@ -12,6 +12,7 @@ import { cn } from "@/lib/utils";
 export default function FullTimeline() {
   const navigate = useNavigate();
   const { dogId } = useParams<{ dogId: string }>();
+  const location = window.location;
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const verticalScrollRef = useRef<HTMLDivElement>(null);
   const { timelineData: rawTimelineData, loading } = useWellnessTimeline(dogId || '');
@@ -69,7 +70,10 @@ export default function FullTimeline() {
     }
   };
 
-  // Helper to get time of day group
+  const handleBackClick = () => {
+    // Navigate to home with health tab selected
+    navigate('/?tab=health');
+  };
   const getTimeOfDay = (date: Date) => {
     const hour = date.getHours();
     if (hour < 6) return 'Night';
@@ -110,7 +114,7 @@ export default function FullTimeline() {
           <Button
             variant="ghost"
             size="icon"
-            onClick={() => navigate(-1)}
+            onClick={handleBackClick}
             className="shrink-0"
           >
             <ArrowLeft className="w-5 h-5" />

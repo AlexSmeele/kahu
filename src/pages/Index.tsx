@@ -1,4 +1,5 @@
 import { useState, useEffect, lazy, Suspense } from "react";
+import { useSearchParams } from "react-router-dom";
 import { HomeScreen } from "@/components/screens/HomeScreen";
 import { TricksScreen } from "@/components/screens/TricksScreen";
 import { HealthScreen } from "@/components/screens/HealthScreen";
@@ -12,7 +13,9 @@ import { logger } from "@/lib/logger";
 
 
 const Index = () => {
-  const [activeTab, setActiveTab] = useState<TabType>('home');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const tabFromUrl = searchParams.get('tab') as TabType | null;
+  const [activeTab, setActiveTab] = useState<TabType>(tabFromUrl || 'home');
   const [isQuickActionOpen, setIsQuickActionOpen] = useState(false);
   const [isUserTyping, setIsUserTyping] = useState(false);
   const [selectedDogId, setSelectedDogId] = useState<string>('');
@@ -26,6 +29,15 @@ const Index = () => {
     selectedDogId,
     userId: user?.id 
   });
+
+  // Update active tab when URL param changes
+  useEffect(() => {
+    if (tabFromUrl && ['home', 'tricks', 'health', 'profile'].includes(tabFromUrl)) {
+      setActiveTab(tabFromUrl);
+      // Clear the URL param after setting the tab
+      setSearchParams({});
+    }
+  }, [tabFromUrl, setSearchParams]);
 
   // Update selected dog when dogs load
   useEffect(() => {
