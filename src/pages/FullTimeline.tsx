@@ -15,6 +15,8 @@ export default function FullTimeline() {
   const location = window.location;
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const verticalScrollRef = useRef<HTMLDivElement>(null);
+  const isScrollingRef = useRef(false);
+  const observerRef = useRef<IntersectionObserver | null>(null);
   const { timelineData: rawTimelineData, loading, setShowFullTimeline } = useWellnessTimeline(dogId || '');
   
   // Filter state
@@ -148,6 +150,51 @@ export default function FullTimeline() {
       return () => clearTimeout(timeoutId);
     }
   }, [selectedDayIndex, timelineData.length]);
+
+  // IntersectionObserver to sync horizontal scroller with vertical scroll position
+  useEffect(() => {
+    if (!verticalScrollRef.current || timelineData.length === 0) return;
+    
+    const viewport = verticalScrollRef.current.querySelector('[data-radix-scroll-area-viewport]');
+    if (!viewport) return;
+    
+    // Cleanup existing observer
+    if (observerRef.current) {
+      observerRef.current.disconnect();
+    }
+    
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (isScrollingRef.current) return; // Ignore during horizontal pill clicks
+        
+        // Find the most visible day header in the top threshold
+        const visibleEntries = entries
+          .filter(e => e.isIntersecting && e.intersectionRatio > 0)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+        
+        if (visibleEntries.length > 0) {
+          const topEntry = visibleEntries[0];
+          const dayIndex = parseInt(topEntry.target.getAttribute('data-vertical-day-index') || '-1');
+          if (dayIndex >= 0 && dayIndex !== selectedDayIndex) {
+            setSelectedDayIndex(dayIndex);
+          }
+        }
+      },
+      {
+        root: viewport,
+        rootMargin: '-20% 0px -70% 0px', // Top 30% of viewport
+        threshold: [0, 0.25, 0.5, 0.75, 1]
+      }
+    );
+    
+    // Observe all day headers
+    const dayHeaders = verticalScrollRef.current.querySelectorAll('[data-vertical-day-index]');
+    dayHeaders.forEach(header => observer.observe(header));
+    
+    observerRef.current = observer;
+    
+    return () => observer.disconnect();
+  }, [timelineData.length, selectedDayIndex]);
 
   const handlePrevDay = () => {
     if (selectedDayIndex > 0) {
@@ -484,7 +531,16 @@ export default function FullTimeline() {
                     )}
                     <button
                       data-day-index={index}
-                      onClick={() => !isEmpty && setSelectedDayIndex(index)}
+                      onClick={() => {
+                        if (!isEmpty) {
+                          isScrollingRef.current = true;
+                          setSelectedDayIndex(index);
+                          // Reset after scroll completes
+                          setTimeout(() => {
+                            isScrollingRef.current = false;
+                          }, 600);
+                        }
+                      }}
                       disabled={isEmpty}
                       className={cn(
                         "timeline-date-pill flex-shrink-0 px-3 py-2 rounded-full transition-all duration-200",
