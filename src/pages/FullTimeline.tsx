@@ -12,29 +12,28 @@ export default function FullTimeline() {
   const navigate = useNavigate();
   const { dogId } = useParams<{ dogId: string }>();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const verticalScrollRef = useRef<HTMLDivElement>(null);
   const { timelineData: rawTimelineData, loading } = useWellnessTimeline(dogId || '');
   
-  // Reverse timeline data so past dates are on the left
+  // Reverse timeline data so past dates are on the left in horizontal scroll
   const timelineData = [...rawTimelineData].reverse();
   
-  // Find today's index or the closest past date
+  // Find today's index or the closest date
   const now = new Date();
   now.setHours(0, 0, 0, 0);
+  
   const todayIndex = timelineData.findIndex(day => {
     const dayDate = new Date(day.date);
     dayDate.setHours(0, 0, 0, 0);
     return dayDate.getTime() === now.getTime();
   });
   
-  // If today not found, find the most recent past date
-  const defaultIndex = todayIndex >= 0 ? todayIndex : 
-    timelineData.findIndex(day => new Date(day.date) <= now);
+  // Default to today if it exists, otherwise the last date (most recent)
+  const defaultIndex = todayIndex >= 0 ? todayIndex : timelineData.length - 1;
   
-  const [selectedDayIndex, setSelectedDayIndex] = useState(
-    defaultIndex >= 0 ? defaultIndex : timelineData.length - 1
-  );
+  const [selectedDayIndex, setSelectedDayIndex] = useState(defaultIndex);
 
-  // Auto-scroll to selected day
+  // Auto-scroll to selected day in horizontal scroll
   useEffect(() => {
     if (scrollContainerRef.current && selectedDayIndex >= 0) {
       const dayElements = scrollContainerRef.current.querySelectorAll('[data-day-index]');
@@ -44,6 +43,18 @@ export default function FullTimeline() {
       }
     }
   }, [selectedDayIndex]);
+
+  // Auto-scroll to selected date in vertical scroll
+  useEffect(() => {
+    if (verticalScrollRef.current && selectedDayIndex >= 0 && timelineData.length > 0) {
+      const selectedDateElement = verticalScrollRef.current.querySelector(
+        `[data-vertical-day-index="${selectedDayIndex}"]`
+      ) as HTMLElement;
+      if (selectedDateElement) {
+        selectedDateElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+  }, [selectedDayIndex, timelineData.length]);
 
   const handlePrevDay = () => {
     if (selectedDayIndex > 0) {
@@ -147,7 +158,7 @@ export default function FullTimeline() {
       </div>
 
       {/* Timeline Content - Vertical Scroll */}
-      <ScrollArea className="flex-1">
+      <ScrollArea className="flex-1" ref={verticalScrollRef}>
         <div className="p-4">
           {loading ? (
             <div className="space-y-4">
@@ -168,35 +179,50 @@ export default function FullTimeline() {
             </div>
           ) : timelineData.length > 0 ? (
             <div className="space-y-6">
-              {timelineData.slice(0, selectedDayIndex + 1).reverse().map((day) => (
-                <div key={day.date.toISOString()}>
-                  <div className="flex items-center gap-3 mb-4 sticky top-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 py-2 z-10">
-                    <h3 className="text-base font-semibold">
-                      {day.label}
-                    </h3>
-                    <Badge 
-                      variant="outline" 
-                      className="text-xs"
-                    >
-                      {day.events.length} {day.events.length === 1 ? 'event' : 'events'}
-                    </Badge>
-                  </div>
+              {[...timelineData].reverse().map((day, reverseIndex) => {
+                const originalIndex = timelineData.length - 1 - reverseIndex;
+                const isSelectedDate = originalIndex === selectedDayIndex;
+                
+                return (
+                  <div 
+                    key={day.date.toISOString()}
+                    data-vertical-day-index={originalIndex}
+                  >
+                    <div className={cn(
+                      "flex items-center gap-3 mb-4 sticky top-0 py-2 z-10",
+                      "bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60",
+                      isSelectedDate && "bg-primary/5"
+                    )}>
+                      <h3 className={cn(
+                        "text-base font-semibold",
+                        isSelectedDate && "text-primary"
+                      )}>
+                        {day.label}
+                      </h3>
+                      <Badge 
+                        variant={isSelectedDate ? "default" : "outline"}
+                        className="text-xs"
+                      >
+                        {day.events.length} {day.events.length === 1 ? 'event' : 'events'}
+                      </Badge>
+                    </div>
 
-                  <div className="space-y-0">
-                    {day.events.map((event) => (
-                      <TimelineEventCard 
-                        key={event.id} 
-                        event={event}
-                        onClick={() => {
-                          if (event.type === 'activity' && event.metadata?.activityId) {
-                            navigate(`/activity/${event.metadata.activityId}`);
-                          }
-                        }}
-                      />
-                    ))}
+                    <div className="space-y-0">
+                      {day.events.map((event) => (
+                        <TimelineEventCard 
+                          key={event.id} 
+                          event={event}
+                          onClick={() => {
+                            if (event.type === 'activity' && event.metadata?.activityId) {
+                              navigate(`/activity/${event.metadata.activityId}`);
+                            }
+                          }}
+                        />
+                      ))}
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           ) : (
             <div className="text-center py-12">
