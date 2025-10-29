@@ -5,6 +5,14 @@ import { TimelineEventCard } from "./TimelineEventCard";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { MealDetailModal } from "./MealDetailModal";
+import { VetVisitDetailModal } from "./VetVisitDetailModal";
+import { GroomingDetailModal } from "./GroomingDetailModal";
+import { CheckupDetailModal } from "./CheckupDetailModal";
+import { VaccinationDetailModal } from "./VaccinationDetailModal";
+import { WeightDetailModal } from "./WeightDetailModal";
+import { TreatmentDetailModal } from "./TreatmentDetailModal";
+import { InjuryDetailModal } from "./InjuryDetailModal";
 
 interface WellnessTimelineProps {
   dogId: string;
@@ -13,6 +21,20 @@ interface WellnessTimelineProps {
 export function WellnessTimeline({ dogId }: WellnessTimelineProps) {
   const { timelineData, loading, showFullTimeline, setShowFullTimeline } = useWellnessTimeline(dogId);
   const navigate = useNavigate();
+  
+  const [selectedEvent, setSelectedEvent] = useState<any>(null);
+  const [modalType, setModalType] = useState<string | null>(null);
+
+  const handleEventClick = (event: any) => {
+    if (!event.metadata) return;
+    
+    if (event.type === 'activity' && event.metadata.activityId) {
+      navigate(`/activity/${event.metadata.activityId}`);
+    } else if (event.details) {
+      setSelectedEvent(event.details);
+      setModalType(event.type);
+    }
+  };
   
   if (loading) {
     return (
@@ -61,86 +83,185 @@ export function WellnessTimeline({ dogId }: WellnessTimelineProps) {
   const hasMoreData = !showFullTimeline;
 
   return (
-    <div className="space-y-8">
-      {/* Past & Today Events */}
-      {pastDays.length > 0 && (
-        <div className="space-y-6">
-          {pastDays.map((day) => (
-            <div key={day.date.toISOString()}>
-              <div className="flex items-center gap-3 mb-4">
-                <h3 className="text-base font-semibold">
-                  {day.label}
-                </h3>
-                {day.isToday && (
-                  <Badge variant="default" className="text-xs">
-                    {day.events.length} {day.events.length === 1 ? 'event' : 'events'}
-                  </Badge>
-                )}
+    <>
+      <div className="space-y-8">
+        {/* Past & Today Events */}
+        {pastDays.length > 0 && (
+          <div className="space-y-6">
+            {pastDays.map((day) => (
+              <div key={day.date.toISOString()}>
+                <div className="flex items-center gap-3 mb-4">
+                  <h3 className="text-base font-semibold">
+                    {day.label}
+                  </h3>
+                  {day.isToday && (
+                    <Badge variant="default" className="text-xs">
+                      {day.events.length} {day.events.length === 1 ? 'event' : 'events'}
+                    </Badge>
+                  )}
+                </div>
+
+                <div className="space-y-0">
+                  {day.events.map((event) => (
+                    <TimelineEventCard 
+                      key={event.id} 
+                      event={event}
+                      onClick={() => handleEventClick(event)}
+                    />
+                  ))}
+                </div>
               </div>
-
-              <div className="space-y-0">
-                {day.events.map((event) => (
-                  <TimelineEventCard 
-                    key={event.id} 
-                    event={event}
-                    onClick={() => {
-                      if (event.type === 'activity' && event.metadata?.activityId) {
-                        navigate(`/activity/${event.metadata.activityId}`);
-                      }
-                    }}
-                  />
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
-
-      {/* View Full Timeline Button */}
-      {hasMoreData && (
-        <Button
-          variant="outline"
-          onClick={() => navigate(`/full-timeline/${dogId}`, { state: { from: 'health' } })}
-          className="w-full"
-        >
-          <Calendar className="w-4 h-4 mr-2" />
-          View Full Timeline
-        </Button>
-      )}
-
-      {/* Upcoming Events Section */}
-      {upcomingDays.length > 0 && (
-        <div className="space-y-6">
-          <div className="flex items-center gap-3">
-            <h3 className="text-base font-semibold">Due Soon</h3>
-            <Badge variant="outline" className="text-xs">
-              {upcomingDays.reduce((sum, day) => sum + day.events.length, 0)} upcoming
-            </Badge>
+            ))}
           </div>
+        )}
 
-          {upcomingDays.map((day) => (
-            <div key={day.date.toISOString()}>
-              <h4 className="text-sm font-medium text-muted-foreground mb-3">
-                {day.label}
-              </h4>
+        {/* View Full Timeline Button */}
+        {hasMoreData && (
+          <Button
+            variant="outline"
+            onClick={() => navigate(`/full-timeline/${dogId}`, { state: { from: 'health' } })}
+            className="w-full"
+          >
+            <Calendar className="w-4 h-4 mr-2" />
+            View Full Timeline
+          </Button>
+        )}
 
-              <div className="space-y-0">
-                {day.events.map((event) => (
-                  <TimelineEventCard 
-                    key={event.id} 
-                    event={event}
-                    onClick={() => {
-                      if (event.type === 'activity' && event.metadata?.activityId) {
-                        navigate(`/activity/${event.metadata.activityId}`);
-                      }
-                    }}
-                  />
-                ))}
-              </div>
+        {/* Upcoming Events Section */}
+        {upcomingDays.length > 0 && (
+          <div className="space-y-6">
+            <div className="flex items-center gap-3">
+              <h3 className="text-base font-semibold">Due Soon</h3>
+              <Badge variant="outline" className="text-xs">
+                {upcomingDays.reduce((sum, day) => sum + day.events.length, 0)} upcoming
+              </Badge>
             </div>
-          ))}
-        </div>
+
+            {upcomingDays.map((day) => (
+              <div key={day.date.toISOString()}>
+                <h4 className="text-sm font-medium text-muted-foreground mb-3">
+                  {day.label}
+                </h4>
+
+                <div className="space-y-0">
+                  {day.events.map((event) => (
+                    <TimelineEventCard 
+                      key={event.id} 
+                      event={event}
+                      onClick={() => handleEventClick(event)}
+                    />
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Detail Modals */}
+      {selectedEvent && modalType === 'meal' && (
+        <MealDetailModal
+          open={true}
+          onOpenChange={(open) => {
+            if (!open) {
+              setSelectedEvent(null);
+              setModalType(null);
+            }
+          }}
+          meal={selectedEvent}
+        />
       )}
-    </div>
+
+      {selectedEvent && modalType === 'vet_visit' && (
+        <VetVisitDetailModal
+          open={true}
+          onOpenChange={(open) => {
+            if (!open) {
+              setSelectedEvent(null);
+              setModalType(null);
+            }
+          }}
+          visit={selectedEvent}
+        />
+      )}
+
+      {selectedEvent && modalType === 'grooming' && (
+        <GroomingDetailModal
+          open={true}
+          onOpenChange={(open) => {
+            if (!open) {
+              setSelectedEvent(null);
+              setModalType(null);
+            }
+          }}
+          grooming={selectedEvent}
+        />
+      )}
+
+      {selectedEvent && modalType === 'checkup' && (
+        <CheckupDetailModal
+          open={true}
+          onOpenChange={(open) => {
+            if (!open) {
+              setSelectedEvent(null);
+              setModalType(null);
+            }
+          }}
+          checkup={selectedEvent}
+        />
+      )}
+
+      {selectedEvent && modalType === 'vaccination' && (
+        <VaccinationDetailModal
+          open={true}
+          onOpenChange={(open) => {
+            if (!open) {
+              setSelectedEvent(null);
+              setModalType(null);
+            }
+          }}
+          vaccination={selectedEvent}
+        />
+      )}
+
+      {selectedEvent && modalType === 'weight' && (
+        <WeightDetailModal
+          open={true}
+          onOpenChange={(open) => {
+            if (!open) {
+              setSelectedEvent(null);
+              setModalType(null);
+            }
+          }}
+          weight={selectedEvent}
+        />
+      )}
+
+      {selectedEvent && modalType === 'treatment' && (
+        <TreatmentDetailModal
+          open={true}
+          onOpenChange={(open) => {
+            if (!open) {
+              setSelectedEvent(null);
+              setModalType(null);
+            }
+          }}
+          treatment={selectedEvent}
+        />
+      )}
+
+      {selectedEvent && modalType === 'injury' && (
+        <InjuryDetailModal
+          open={true}
+          onOpenChange={(open) => {
+            if (!open) {
+              setSelectedEvent(null);
+              setModalType(null);
+            }
+          }}
+          injury={selectedEvent}
+        />
+      )}
+    </>
   );
 }

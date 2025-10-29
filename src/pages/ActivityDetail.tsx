@@ -12,6 +12,8 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { useActivity, ActivityRecord } from "@/hooks/useActivity";
 import { format } from "date-fns";
 import { logger } from "@/lib/logger";
+import { MOCK_ACTIVITY_RECORDS, isMockDogId } from "@/lib/mockData";
+import { useToast } from "@/hooks/use-toast";
 
 export default function ActivityDetail() {
   const { activityId } = useParams<{ activityId: string }>();
@@ -37,6 +39,7 @@ export default function ActivityDetail() {
   }, []);
 
   const { updateActivity, deleteActivity } = useActivity(dogId);
+  const { toast } = useToast();
 
   // Fetch activity details
   useEffect(() => {
@@ -45,6 +48,29 @@ export default function ActivityDetail() {
 
       logger.info("ActivityDetail: Fetching activity", { activityId, dogId });
       
+      // Support mock data
+      if (isMockDogId(dogId)) {
+        const mockActivity = MOCK_ACTIVITY_RECORDS.find(
+          (a) => a.id === activityId && a.dog_id === dogId
+        );
+        
+        if (!mockActivity) {
+          logger.error("ActivityDetail: Mock activity not found");
+          navigate(-1);
+          return;
+        }
+        
+        setActivity(mockActivity);
+        setEditForm({
+          activity_type: mockActivity.activity_type || '',
+          duration_minutes: mockActivity.duration_minutes || 0,
+          distance_km: mockActivity.distance_km || 0,
+          calories_burned: mockActivity.calories_burned || 0,
+          notes: mockActivity.notes || '',
+        });
+        return;
+      }
+
       const { supabase } = await import("@/integrations/supabase/client");
       const { data, error } = await supabase
         .from("activity_records")
@@ -77,7 +103,17 @@ export default function ActivityDetail() {
   };
 
   const handleSave = async () => {
-    if (!activityId) return;
+    if (!activityId || !dogId) return;
+
+    // Handle mock data
+    if (isMockDogId(dogId)) {
+      toast({
+        title: 'Demo mode',
+        description: 'Changes are not persisted in demo mode',
+      });
+      setIsEditing(false);
+      return;
+    }
 
     const success = await updateActivity(activityId, {
       activity_type: editForm.activity_type as any,
@@ -114,7 +150,17 @@ export default function ActivityDetail() {
   };
 
   const handleDelete = async () => {
-    if (!activityId) return;
+    if (!activityId || !dogId) return;
+
+    // Handle mock data
+    if (isMockDogId(dogId)) {
+      toast({
+        title: 'Demo mode',
+        description: 'Cannot delete activities in demo mode',
+      });
+      setShowDeleteDialog(false);
+      return;
+    }
 
     const success = await deleteActivity(activityId);
     if (success) {
