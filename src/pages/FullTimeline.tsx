@@ -102,14 +102,19 @@ export default function FullTimeline() {
 
   // Auto-scroll to selected day in horizontal scroll
   useEffect(() => {
-    if (scrollContainerRef.current && selectedDayIndex >= 0) {
-      const dayElements = scrollContainerRef.current.querySelectorAll('[data-day-index]');
-      const targetElement = dayElements[selectedDayIndex] as HTMLElement;
-      if (targetElement) {
-        targetElement.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-      }
+    if (scrollContainerRef.current && selectedDayIndex >= 0 && timelineData.length > 0) {
+      // Add a small delay to ensure DOM is fully rendered
+      const timeoutId = setTimeout(() => {
+        const dayElements = scrollContainerRef.current?.querySelectorAll('[data-day-index]');
+        const targetElement = dayElements?.[selectedDayIndex] as HTMLElement;
+        if (targetElement) {
+          targetElement.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+        }
+      }, 100);
+      
+      return () => clearTimeout(timeoutId);
     }
-  }, [selectedDayIndex]);
+  }, [selectedDayIndex, timelineData.length]);
 
   // Auto-scroll to selected date in vertical scroll
   useEffect(() => {
@@ -441,39 +446,52 @@ export default function FullTimeline() {
                 const isEmpty = day.isEmpty;
                 const dayOfWeek = day.date.toLocaleDateString('en-US', { weekday: 'short' });
                 
+                // Check if this is the first day of a month
+                const isFirstOfMonth = day.date.getDate() === 1;
+                const monthLabel = day.date.toLocaleDateString('en-US', { month: 'short' });
+                
                 return (
-                  <button
-                    key={day.date.toISOString()}
-                    data-day-index={index}
-                    onClick={() => !isEmpty && setSelectedDayIndex(index)}
-                    disabled={isEmpty}
-                    className={cn(
-                      "timeline-date-pill flex-shrink-0 px-3 py-2 rounded-full transition-all duration-200",
-                      !isEmpty && "hover:scale-105 active:scale-95",
-                      isSelected 
-                        ? "bg-primary text-primary-foreground shadow-md shadow-primary/20 scale-110" 
-                        : isToday
-                        ? "bg-primary/10 border-2 border-primary/30 text-primary"
-                        : isEmpty
-                        ? "opacity-40 cursor-not-allowed bg-muted border border-border/50"
-                        : "bg-card border border-border hover:bg-accent hover:border-primary/20"
+                  <>
+                    {isFirstOfMonth && (
+                      <div className="flex items-center justify-center px-2 min-w-[60px]">
+                        <div className="text-xs font-semibold text-primary uppercase tracking-wider">
+                          {monthLabel}
+                        </div>
+                      </div>
                     )}
-                  >
-                    <div className="text-center">
-                      <p className="text-[10px] font-medium opacity-70 uppercase tracking-wide">
-                        {dayOfWeek}
-                      </p>
-                      <p className={cn(
-                        "text-sm font-bold",
-                        isSelected && "text-primary-foreground"
-                      )}>
-                        {day.date.getDate()}
-                      </p>
-                      {isToday && !isSelected && (
-                        <div className="w-1 h-1 rounded-full bg-primary mx-auto mt-0.5" />
+                    <button
+                      key={day.date.toISOString()}
+                      data-day-index={index}
+                      onClick={() => !isEmpty && setSelectedDayIndex(index)}
+                      disabled={isEmpty}
+                      className={cn(
+                        "timeline-date-pill flex-shrink-0 px-3 py-2 rounded-full transition-all duration-200",
+                        !isEmpty && "hover:scale-105 active:scale-95",
+                        isSelected 
+                          ? "bg-primary text-primary-foreground shadow-md shadow-primary/20 scale-110" 
+                          : isToday
+                          ? "bg-primary/10 border-2 border-primary/30 text-primary"
+                          : isEmpty
+                          ? "opacity-40 cursor-not-allowed bg-muted border border-border/50"
+                          : "bg-card border border-border hover:bg-accent hover:border-primary/20"
                       )}
-                    </div>
-                  </button>
+                    >
+                      <div className="text-center">
+                        <p className="text-[10px] font-medium opacity-70 uppercase tracking-wide">
+                          {dayOfWeek}
+                        </p>
+                        <p className={cn(
+                          "text-sm font-bold",
+                          isSelected && "text-primary-foreground"
+                        )}>
+                          {day.date.getDate()}
+                        </p>
+                        {isToday && !isSelected && (
+                          <div className="w-1 h-1 rounded-full bg-primary mx-auto mt-0.5" />
+                        )}
+                      </div>
+                    </button>
+                  </>
                 );
               })}
             </div>
