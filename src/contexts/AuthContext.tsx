@@ -91,7 +91,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     logger.info('AuthProvider: User signed out successfully');
   };
 
-  const devBypass = () => {
+  const devBypass = async () => {
     logger.info('AuthProvider: Development bypass activated');
     const mockUser = {
       id: '00000000-0000-0000-0000-000000000001',
@@ -113,6 +113,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setUser(mockUser);
     setSession(mockSession);
     setLoading(false);
+
+    // Trigger mock data generation in the background
+    import('@/lib/mockDataUpdater').then(({ updateMockDataOnLogin }) => {
+      updateMockDataOnLogin(mockUser.id).catch(error => {
+        logger.error('Failed to update mock data', error);
+      });
+    });
   };
 
   const value = {
