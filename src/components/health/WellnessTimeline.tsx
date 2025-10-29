@@ -29,7 +29,7 @@ export function WellnessTimeline({ dogId }: WellnessTimelineProps) {
     if (!event.metadata) return;
     
     if (event.type === 'activity' && event.metadata.activityId) {
-      navigate(`/activity/${event.metadata.activityId}`, { state: { dogId, from: location.pathname } });
+      navigate(`/activity/${event.metadata.activityId}`, { state: { dogId, from: '/?tab=wellness' } });
     } else if (event.details) {
       setSelectedEvent(event.details);
       setModalType(event.type);
@@ -119,7 +119,7 @@ export function WellnessTimeline({ dogId }: WellnessTimelineProps) {
         {hasMoreData && (
           <Button
             variant="outline"
-            onClick={() => navigate(`/full-timeline/${dogId}`, { state: { from: 'health' } })}
+            onClick={() => navigate(`/full-timeline/${dogId}`, { state: { from: 'wellness' } })}
             className="w-full"
           >
             <Calendar className="w-4 h-4 mr-2" />

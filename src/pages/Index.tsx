@@ -2,7 +2,7 @@ import { useState, useEffect, lazy, Suspense } from "react";
 import { useSearchParams } from "react-router-dom";
 import { HomeScreen } from "@/components/screens/HomeScreen";
 import { TricksScreen } from "@/components/screens/TricksScreen";
-import { HealthScreen } from "@/components/screens/HealthScreen";
+import { WellnessScreen } from "@/components/screens/HealthScreen";
 import { ProfileScreen } from "@/components/screens/ProfileScreen";
 import { BottomNavigation, TabType } from "@/components/layout/BottomNavigation";
 import { QuickActionModal } from "@/components/layout/QuickActionModal";
@@ -32,7 +32,7 @@ const Index = () => {
 
   // Update active tab when URL param changes
   useEffect(() => {
-    if (tabFromUrl && ['home', 'tricks', 'health', 'profile'].includes(tabFromUrl)) {
+    if (tabFromUrl && ['home', 'tricks', 'wellness', 'profile'].includes(tabFromUrl)) {
       setActiveTab(tabFromUrl);
       // Clear the URL param after setting the tab
       setSearchParams({});
@@ -76,8 +76,8 @@ const Index = () => {
         return <HomeScreen selectedDogId={selectedDogId} onDogChange={setSelectedDogId} onTabChange={setActiveTab} />;
       case 'tricks':
         return <TricksScreen selectedDogId={selectedDogId} onDogChange={setSelectedDogId} />;
-      case 'health':
-        return <HealthScreen selectedDogId={selectedDogId} onDogChange={setSelectedDogId} />;
+      case 'wellness':
+        return <WellnessScreen selectedDogId={selectedDogId} onDogChange={setSelectedDogId} />;
       case 'profile':
         return <ProfileScreen />;
       default:

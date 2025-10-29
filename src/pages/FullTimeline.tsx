@@ -76,8 +76,8 @@ export default function FullTimeline() {
   };
 
   const handleBackClick = () => {
-    // Navigate to home with health tab selected
-    navigate('/?tab=health');
+    // Navigate to home with wellness tab selected
+    navigate('/?tab=wellness');
   };
   const getTimeOfDay = (date: Date) => {
     const hour = date.getHours();

@@ -13,12 +13,12 @@ import { TimelineQuickActions } from "@/components/health/TimelineQuickActions";
 import { WellnessTimeline } from "@/components/health/WellnessTimeline";
 import { ActivityRecordModal } from "@/components/home/ActivityRecordModal";
 
-interface HealthScreenProps {
+interface WellnessScreenProps {
   selectedDogId: string;
   onDogChange: (dogId: string) => void;
 }
 
-export function HealthScreen({ selectedDogId, onDogChange }: HealthScreenProps) {
+export function WellnessScreen({ selectedDogId, onDogChange }: WellnessScreenProps) {
   const [isWeightTrackerOpen, setIsWeightTrackerOpen] = useState(false);
   const [isVaccineModalOpen, setIsVaccineModalOpen] = useState(false);
   const [isVetVisitsModalOpen, setIsVetVisitsModalOpen] = useState(false);

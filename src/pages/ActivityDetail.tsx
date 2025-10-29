@@ -189,7 +189,7 @@ export default function ActivityDetail() {
     if (window.history.length > 1) {
       navigate(-1);
     } else {
-      navigate('/health');
+      navigate('/?tab=wellness');
     }
   };
 

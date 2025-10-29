@@ -32,7 +32,7 @@ const exportOptions: ExportOption[] = [
   },
   {
     id: 'health-records',
-    label: 'Health Records',
+    label: 'Wellness Records',
     description: 'Vet visits, vaccinations, and health notes',
     size: '~1.5MB',
     icon: FileText,
