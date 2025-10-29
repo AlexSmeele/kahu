@@ -105,12 +105,20 @@ export default function FullTimeline() {
     if (scrollContainerRef.current && selectedDayIndex >= 0 && timelineData.length > 0) {
       // Add a small delay to ensure DOM is fully rendered
       const timeoutId = setTimeout(() => {
+        const viewport = scrollContainerRef.current?.querySelector('[data-radix-scroll-area-viewport]') as HTMLElement;
         const dayElements = scrollContainerRef.current?.querySelectorAll('[data-day-index]');
         const targetElement = dayElements?.[selectedDayIndex] as HTMLElement;
-        if (targetElement) {
-          targetElement.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+        
+        if (targetElement && viewport) {
+          // Calculate the scroll position to center the element
+          const targetLeft = targetElement.offsetLeft;
+          const targetWidth = targetElement.offsetWidth;
+          const viewportWidth = viewport.offsetWidth;
+          const scrollLeft = targetLeft - (viewportWidth / 2) + (targetWidth / 2);
+          
+          viewport.scrollTo({ left: scrollLeft, behavior: 'smooth' });
         }
-      }, 100);
+      }, 200);
       
       return () => clearTimeout(timeoutId);
     }
