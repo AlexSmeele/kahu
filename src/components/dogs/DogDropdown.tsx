@@ -30,8 +30,8 @@ export function DogDropdown({ selectedDogId, onDogChange }: DogDropdownProps) {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button 
-          variant="outline" 
-          className="absolute top-3 left-3 z-[100] flex items-center justify-start gap-2 h-[58px] px-3 bg-background border-2 shadow-lg hover:bg-accent"
+          variant="ghost" 
+          className="absolute top-3 left-3 z-[100] flex items-center justify-start gap-2 h-[58px] px-3 bg-background/80 backdrop-blur-sm hover:bg-accent"
           style={{ minWidth: `${minWidth}px` }}
         >
           <Avatar className="w-10 h-10 border-2 border-border shadow-sm">
