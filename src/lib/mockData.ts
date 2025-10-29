@@ -1,11 +1,16 @@
 // Mock data for dev mode bypass
 // Based on data from alexsmeele@gmail.com account
 
-import {
-  generateHistoricalActivityRecords,
+import { 
+  generateHistoricalActivityRecords, 
   generateHistoricalMealRecords,
   generateHistoricalWeightRecords,
   generateHistoricalHealthCheckups,
+  generateHistoricalVetVisits,
+  generateHistoricalGroomingRecords,
+  generateHistoricalVaccinations,
+  generateHistoricalInjuries,
+  generateHistoricalMedicalTreatments,
 } from './generateHistoricalMockData';
 
 export const MOCK_USER_ID = '00000000-0000-0000-0000-000000000001';
@@ -20,26 +25,52 @@ export const REAL_DOG_IDS = {
   JETT: '00cec743-bb6f-4895-8f10-5c2adabf8d72',
 };
 
-// Generate extensive historical data (6 months) for both dogs
+// Generate extensive historical data (3 months) for both dogs
 const historicalActivities = [
-  ...generateHistoricalActivityRecords(MOCK_DOG_IDS.SUKI, 12, 6),
-  ...generateHistoricalActivityRecords(MOCK_DOG_IDS.JETT, 19, 6),
+  ...generateHistoricalActivityRecords(MOCK_DOG_IDS.SUKI, 12, 3),
+  ...generateHistoricalActivityRecords(MOCK_DOG_IDS.JETT, 19, 3),
 ];
 
 const historicalMeals = [
-  ...generateHistoricalMealRecords(MOCK_DOG_IDS.SUKI, '00000000-0000-0000-0000-000000000051', 200, 6),
-  ...generateHistoricalMealRecords(MOCK_DOG_IDS.JETT, '00000000-0000-0000-0000-000000000052', 300, 6),
+  ...generateHistoricalMealRecords(MOCK_DOG_IDS.SUKI, '00000000-0000-0000-0000-000000000051', 200, 3),
+  ...generateHistoricalMealRecords(MOCK_DOG_IDS.JETT, '00000000-0000-0000-0000-000000000052', 300, 3),
 ];
 
 const historicalWeights = [
-  ...generateHistoricalWeightRecords(MOCK_DOG_IDS.SUKI, 11.5, 6),
-  ...generateHistoricalWeightRecords(MOCK_DOG_IDS.JETT, 17, 6),
+  ...generateHistoricalWeightRecords(MOCK_DOG_IDS.SUKI, 11.5, 3),
+  ...generateHistoricalWeightRecords(MOCK_DOG_IDS.JETT, 17, 3),
 ];
 
 const historicalCheckups = [
-  ...generateHistoricalHealthCheckups(MOCK_DOG_IDS.SUKI, 6),
-  ...generateHistoricalHealthCheckups(MOCK_DOG_IDS.JETT, 6),
+  ...generateHistoricalHealthCheckups(MOCK_DOG_IDS.SUKI, 3),
+  ...generateHistoricalHealthCheckups(MOCK_DOG_IDS.JETT, 3),
 ];
+
+const historicalVetVisits = [
+  ...generateHistoricalVetVisits(MOCK_DOG_IDS.SUKI, 3),
+  ...generateHistoricalVetVisits(MOCK_DOG_IDS.JETT, 3),
+];
+
+const historicalGrooming = [
+  ...generateHistoricalGroomingRecords(MOCK_DOG_IDS.SUKI, 3),
+  ...generateHistoricalGroomingRecords(MOCK_DOG_IDS.JETT, 3),
+];
+
+const historicalVaccinations = [
+  ...generateHistoricalVaccinations(MOCK_DOG_IDS.SUKI, 3),
+  ...generateHistoricalVaccinations(MOCK_DOG_IDS.JETT, 3),
+];
+
+const historicalInjuries = [
+  ...generateHistoricalInjuries(MOCK_DOG_IDS.SUKI, 3),
+  ...generateHistoricalInjuries(MOCK_DOG_IDS.JETT, 3),
+];
+
+const historicalTreatments = [
+  ...generateHistoricalMedicalTreatments(MOCK_DOG_IDS.SUKI, 3),
+  ...generateHistoricalMedicalTreatments(MOCK_DOG_IDS.JETT, 3),
+];
+
 
 export const MOCK_WEIGHT_RECORDS = [
   // Recent weight records
@@ -89,7 +120,7 @@ export const MOCK_WEIGHT_RECORDS = [
     created_at: '2024-02-05T13:35:00Z',
     updated_at: '2024-02-05T13:35:00Z',
   },
-  // Add 6 months of historical weight records
+  // Add 3 months of historical weight records
   ...historicalWeights,
 ];
 
@@ -511,6 +542,10 @@ export const MOCK_ACTIVITY_RECORDS: any[] = [
   }
 ];
 export const MOCK_HEALTH_RECORDS: any[] = [
+  ...historicalCheckups,
+  ...historicalVetVisits,
+  ...historicalGrooming,
+  ...historicalInjuries,
   {
     id: '00000000-0000-0000-0000-000000000071',
     dog_id: MOCK_DOG_IDS.SUKI,
@@ -561,6 +596,7 @@ export const MOCK_HEALTH_RECORDS: any[] = [
   }
 ];
 export const MOCK_VACCINATION_RECORDS: any[] = [
+  ...historicalVaccinations,
   {
     id: '00000000-0000-0000-0000-000000000081',
     dog_id: MOCK_DOG_IDS.SUKI,
@@ -770,7 +806,7 @@ export const MOCK_HEALTH_CHECKUPS: any[] = [
     created_at: '2025-10-11T11:00:00Z',
     updated_at: '2025-10-11T11:00:00Z'
   },
-  // Add 6 months of historical health checkups
+  // Add 3 months of historical health checkups
   ...historicalCheckups,
 ];
 export const MOCK_MEAL_RECORDS: any[] = [
@@ -853,8 +889,24 @@ export const MOCK_MEAL_RECORDS: any[] = [
     created_at: '2025-10-21T07:35:00Z',
     updated_at: '2025-10-21T07:35:00Z'
   },
-  // Add 6 months of historical meal records
+  // Add 3 months of historical meal records
   ...historicalMeals,
+];
+
+export const MOCK_MEDICAL_TREATMENTS: any[] = [
+  {
+    id: '00000000-0000-0000-0000-000000000301',
+    dog_id: MOCK_DOG_IDS.SUKI,
+    treatment_name: 'Cytopoint',
+    last_administered_date: '2025-09-15T10:00:00Z',
+    frequency_weeks: 4,
+    next_due_date: '2025-10-13',
+    notes: 'For seasonal allergies',
+    created_at: '2025-09-15T10:00:00Z',
+    updated_at: '2025-09-15T10:00:00Z'
+  },
+  // Add 3 months of historical treatment records
+  ...historicalTreatments,
 ];
 
 export const MOCK_TRAINING_SESSIONS: any[] = [

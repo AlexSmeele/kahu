@@ -1,6 +1,6 @@
 export const MOCK_DATA_CONFIG = {
-  // Generate 6 months of historical data
-  historicalMonths: 6,
+  // Generate 3 months of historical data
+  historicalMonths: 3,
   
   // Maximum entries per day (realistic limit)
   maxEntriesPerDay: 10,

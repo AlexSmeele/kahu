@@ -261,3 +261,239 @@ export function generateHistoricalHealthCheckups(
   
   return records;
 }
+
+// Simple seeded random for historical data
+function seededRandom(seed: string): number {
+  let hash = 0;
+  for (let i = 0; i < seed.length; i++) {
+    const char = seed.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash = hash & hash;
+  }
+  return Math.abs(Math.sin(hash));
+}
+
+// Generate historical vet visit records
+export function generateHistoricalVetVisits(dogId: string, months: number = 3) {
+  const visits: any[] = [];
+  const endDate = new Date();
+  const startDate = new Date();
+  startDate.setMonth(startDate.getMonth() - months);
+  
+  const visitTypes = [
+    { type: 'Annual Wellness', reason: 'Annual wellness examination' },
+    { type: 'Vaccine Appointment', reason: 'Vaccination booster' },
+    { type: 'Follow-up Visit', reason: 'Follow-up examination' },
+    { type: 'Dental Cleaning', reason: 'Professional dental cleaning' },
+  ];
+  
+  const veterinarians = ['Dr. Sarah Chen', 'Dr. Michael Roberts', 'Dr. Emily Thompson'];
+  
+  // Generate 1-2 vet visits over the period
+  const numVisits = seededRandom(dogId + 'vet_count') < 0.5 ? 1 : 2;
+  
+  for (let i = 0; i < numVisits; i++) {
+    const dayOffset = Math.floor(seededRandom(dogId + `vet_${i}`) * (months * 30));
+    const visitDate = new Date(startDate);
+    visitDate.setDate(visitDate.getDate() + dayOffset);
+    
+    const visitTypeIndex = Math.floor(seededRandom(dogId + `vet_type_${i}`) * visitTypes.length);
+    const visitInfo = visitTypes[visitTypeIndex];
+    const vetIndex = Math.floor(seededRandom(dogId + `vet_name_${i}`) * veterinarians.length);
+    
+    visits.push({
+      id: `hist-vet-${dogId}-${i}`,
+      dog_id: dogId,
+      record_type: 'vet_visit',
+      title: visitInfo.type,
+      date: visitDate.toISOString().split('T')[0],
+      veterinarian: veterinarians[vetIndex],
+      reason: visitInfo.reason,
+      description: `Routine ${visitInfo.type.toLowerCase()}`,
+      notes: 'No concerns noted',
+      created_at: visitDate.toISOString(),
+      updated_at: visitDate.toISOString(),
+    });
+  }
+  
+  return visits;
+}
+
+// Generate historical grooming completion records
+export function generateHistoricalGroomingRecords(dogId: string, months: number = 3) {
+  const groomingRecords: any[] = [];
+  const endDate = new Date();
+  const startDate = new Date();
+  startDate.setMonth(startDate.getMonth() - months);
+  
+  const groomingTypes = [
+    { type: 'bath', frequency: 8, title: 'Bath' },
+    { type: 'nails', frequency: 14, title: 'Nail Trim' },
+    { type: 'ears', frequency: 7, title: 'Ear Cleaning' },
+    { type: 'teeth', frequency: 4, title: 'Teeth Brushing' },
+  ];
+  
+  groomingTypes.forEach((grooming) => {
+    let currentDate = new Date(startDate);
+    let recordIndex = 0;
+    
+    while (currentDate <= endDate) {
+      const variance = Math.floor(seededRandom(dogId + grooming.type + recordIndex) * 2) - 1;
+      currentDate.setDate(currentDate.getDate() + grooming.frequency + variance);
+      
+      if (currentDate <= endDate) {
+        groomingRecords.push({
+          id: `hist-groom-${dogId}-${grooming.type}-${recordIndex}`,
+          dog_id: dogId,
+          record_type: 'grooming',
+          title: grooming.title,
+          date: currentDate.toISOString().split('T')[0],
+          description: `Completed ${grooming.title.toLowerCase()}`,
+          notes: 'No issues',
+          created_at: currentDate.toISOString(),
+          updated_at: currentDate.toISOString(),
+        });
+      }
+      
+      recordIndex++;
+    }
+  });
+  
+  return groomingRecords;
+}
+
+// Generate historical vaccination records
+export function generateHistoricalVaccinations(dogId: string, months: number = 3) {
+  const vaccinations: any[] = [];
+  const endDate = new Date();
+  const startDate = new Date();
+  startDate.setMonth(startDate.getMonth() - months);
+  
+  // Common vaccine IDs from MOCK_VACCINES
+  const vaccineIds = [
+    '00000000-0000-0000-0000-000000000201', // Rabies
+    '00000000-0000-0000-0000-000000000202', // DHPP
+    '00000000-0000-0000-0000-000000000203', // Bordetella
+  ];
+  
+  const veterinarians = ['Dr. Sarah Chen', 'Dr. Michael Roberts', 'Dr. Emily Thompson'];
+  
+  // Generate 1-2 vaccination records
+  const numVaccinations = seededRandom(dogId + 'vacc_count') < 0.6 ? 1 : 2;
+  
+  for (let i = 0; i < numVaccinations; i++) {
+    const dayOffset = Math.floor(seededRandom(dogId + `vacc_${i}`) * (months * 30));
+    const adminDate = new Date(startDate);
+    adminDate.setDate(adminDate.getDate() + dayOffset);
+    
+    const vaccineId = vaccineIds[Math.floor(seededRandom(dogId + `vacc_id_${i}`) * vaccineIds.length)];
+    const vetIndex = Math.floor(seededRandom(dogId + `vacc_vet_${i}`) * veterinarians.length);
+    
+    const dueDate = new Date(adminDate);
+    dueDate.setFullYear(dueDate.getFullYear() + 1);
+    
+    vaccinations.push({
+      id: `hist-vacc-${dogId}-${i}`,
+      dog_id: dogId,
+      vaccine_id: vaccineId,
+      administered_date: adminDate.toISOString().split('T')[0],
+      due_date: dueDate.toISOString().split('T')[0],
+      veterinarian: veterinarians[vetIndex],
+      batch_number: `BATCH${Math.floor(seededRandom(dogId + `batch_${i}`) * 10000)}`,
+      notes: 'Vaccine administered without complications',
+      created_at: adminDate.toISOString(),
+      updated_at: adminDate.toISOString(),
+    });
+  }
+  
+  return vaccinations;
+}
+
+// Generate historical injury/incident records
+export function generateHistoricalInjuries(dogId: string, months: number = 3) {
+  const injuries: any[] = [];
+  const endDate = new Date();
+  const startDate = new Date();
+  startDate.setMonth(startDate.getMonth() - months);
+  
+  // Low probability of injuries (15% chance)
+  if (seededRandom(dogId + 'injury_chance') > 0.15) {
+    return injuries;
+  }
+  
+  const incidentTypes = [
+    { type: 'Minor Cut', description: 'Small cut on paw pad, cleaned and monitored' },
+    { type: 'Upset Stomach', description: 'Mild gastrointestinal upset, resolved with bland diet' },
+    { type: 'Sprain', description: 'Minor sprain from play, rest recommended' },
+    { type: 'Skin Irritation', description: 'Small area of skin irritation, treated topically' },
+  ];
+  
+  // Generate 0-2 incidents
+  const numIncidents = seededRandom(dogId + 'injury_count') < 0.5 ? 1 : 2;
+  
+  for (let i = 0; i < numIncidents; i++) {
+    const dayOffset = Math.floor(seededRandom(dogId + `injury_${i}`) * (months * 30));
+    const incidentDate = new Date(startDate);
+    incidentDate.setDate(incidentDate.getDate() + dayOffset);
+    
+    const incidentIndex = Math.floor(seededRandom(dogId + `injury_type_${i}`) * incidentTypes.length);
+    const incident = incidentTypes[incidentIndex];
+    
+    injuries.push({
+      id: `hist-injury-${dogId}-${i}`,
+      dog_id: dogId,
+      record_type: 'injury',
+      title: incident.type,
+      date: incidentDate.toISOString().split('T')[0],
+      description: incident.description,
+      notes: 'Resolved without veterinary intervention',
+      created_at: incidentDate.toISOString(),
+      updated_at: incidentDate.toISOString(),
+    });
+  }
+  
+  return injuries;
+}
+
+// Generate historical medical treatment records
+export function generateHistoricalMedicalTreatments(dogId: string, months: number = 3) {
+  const treatments: any[] = [];
+  const endDate = new Date();
+  const startDate = new Date();
+  startDate.setMonth(startDate.getMonth() - months);
+  
+  const treatmentTypes = [
+    { name: 'Flea & Tick Prevention', frequency: 4 },
+    { name: 'Heartworm Prevention', frequency: 4 },
+  ];
+  
+  treatmentTypes.forEach((treatment, treatmentIndex) => {
+    let currentDate = new Date(startDate);
+    let adminIndex = 0;
+    
+    while (currentDate <= endDate) {
+      currentDate.setDate(currentDate.getDate() + (treatment.frequency * 7));
+      
+      if (currentDate <= endDate) {
+        const nextDue = new Date(currentDate);
+        nextDue.setDate(nextDue.getDate() + (treatment.frequency * 7));
+        
+        treatments.push({
+          id: `hist-treatment-${dogId}-${treatmentIndex}-${adminIndex}`,
+          dog_id: dogId,
+          treatment_name: treatment.name,
+          last_administered_date: currentDate.toISOString(),
+          frequency_weeks: treatment.frequency,
+          next_due_date: nextDue.toISOString().split('T')[0],
+          notes: 'Monthly preventive care',
+          created_at: currentDate.toISOString(),
+          updated_at: currentDate.toISOString(),
+        });
+      }
+      
+      adminIndex++;
+    }
+  });
+  
+  return treatments;
+}
