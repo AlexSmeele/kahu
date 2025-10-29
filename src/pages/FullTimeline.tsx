@@ -12,11 +12,27 @@ export default function FullTimeline() {
   const navigate = useNavigate();
   const { dogId } = useParams<{ dogId: string }>();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const [selectedDayIndex, setSelectedDayIndex] = useState(0);
   const { timelineData: rawTimelineData, loading } = useWellnessTimeline(dogId || '');
   
   // Reverse timeline data so past dates are on the left
   const timelineData = [...rawTimelineData].reverse();
+  
+  // Find today's index or the closest past date
+  const now = new Date();
+  now.setHours(0, 0, 0, 0);
+  const todayIndex = timelineData.findIndex(day => {
+    const dayDate = new Date(day.date);
+    dayDate.setHours(0, 0, 0, 0);
+    return dayDate.getTime() === now.getTime();
+  });
+  
+  // If today not found, find the most recent past date
+  const defaultIndex = todayIndex >= 0 ? todayIndex : 
+    timelineData.findIndex(day => new Date(day.date) <= now);
+  
+  const [selectedDayIndex, setSelectedDayIndex] = useState(
+    defaultIndex >= 0 ? defaultIndex : timelineData.length - 1
+  );
 
   // Auto-scroll to selected day
   useEffect(() => {
@@ -29,10 +45,6 @@ export default function FullTimeline() {
     }
   }, [selectedDayIndex]);
 
-  const now = new Date();
-  const pastDays = timelineData.filter(day => day.date <= now);
-  const upcomingDays = timelineData.filter(day => day.date > now);
-
   const handlePrevDay = () => {
     if (selectedDayIndex > 0) {
       setSelectedDayIndex(selectedDayIndex - 1);
@@ -44,8 +56,6 @@ export default function FullTimeline() {
       setSelectedDayIndex(selectedDayIndex + 1);
     }
   };
-
-  const selectedDay = timelineData[selectedDayIndex];
 
   return (
     <div className="flex flex-col h-full safe-top bg-background">
@@ -84,7 +94,6 @@ export default function FullTimeline() {
             <div className="flex gap-2 px-8">
               {timelineData.map((day, index) => {
                 const isSelected = index === selectedDayIndex;
-                const isPast = day.date < now;
                 
                 return (
                   <button
@@ -159,7 +168,7 @@ export default function FullTimeline() {
             </div>
           ) : timelineData.length > 0 ? (
             <div className="space-y-6">
-              {timelineData.map((day) => (
+              {timelineData.slice(0, selectedDayIndex + 1).reverse().map((day) => (
                 <div key={day.date.toISOString()}>
                   <div className="flex items-center gap-3 mb-4 sticky top-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 py-2 z-10">
                     <h3 className="text-base font-semibold">
