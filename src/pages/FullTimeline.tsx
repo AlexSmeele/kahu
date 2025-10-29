@@ -114,12 +114,17 @@ export default function FullTimeline() {
   // Auto-scroll to selected date in vertical scroll
   useEffect(() => {
     if (verticalScrollRef.current && selectedDayIndex >= 0 && timelineData.length > 0) {
-      const selectedDateElement = verticalScrollRef.current.querySelector(
-        `[data-vertical-day-index="${selectedDayIndex}"]`
-      ) as HTMLElement;
-      if (selectedDateElement) {
-        selectedDateElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
+      // Add a small delay to ensure DOM is fully rendered
+      const timeoutId = setTimeout(() => {
+        const selectedDateElement = verticalScrollRef.current?.querySelector(
+          `[data-vertical-day-index="${selectedDayIndex}"]`
+        ) as HTMLElement;
+        if (selectedDateElement) {
+          selectedDateElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 100);
+      
+      return () => clearTimeout(timeoutId);
     }
   }, [selectedDayIndex, timelineData.length]);
 
@@ -513,8 +518,8 @@ export default function FullTimeline() {
                 const originalIndex = filteredTimelineData.length - 1 - reverseIndex;
                 const isSelectedDate = originalIndex === selectedDayIndex;
                 
-                // Skip days with no events after filtering
-                if (day.events.length === 0 && !selectedFilters.has('all')) {
+                // Skip days with no events (always filter empty dates in vertical scroll)
+                if (day.events.length === 0) {
                   return null;
                 }
                 
@@ -589,9 +594,13 @@ export default function FullTimeline() {
                                      const routeMap: Record<string, string> = {
                                        'activity': `/activity/${event.metadata?.activityId}`,
                                        'meal': `/meal/${event.details?.id}`,
-                                       'vet_visit': `/vet-visit/${event.details?.id}`,
+                                       'vet-visit': `/vet-visit/${event.details?.id}`,
                                        'grooming': `/grooming/${event.details?.id}`,
                                        'vaccination': `/vaccination/${event.details?.id}`,
+                                       'checkup': `/checkup/${event.details?.id}`,
+                                       'weight': `/weight/${event.details?.id}`,
+                                       'treatment': `/treatment/${event.details?.id}`,
+                                       'injury': `/injury/${event.details?.id}`,
                                      };
                                      const route = routeMap[event.type];
                                      if (route) {
