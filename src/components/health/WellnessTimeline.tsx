@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useWellnessTimeline } from "@/hooks/useWellnessTimeline";
 import { TimelineEventCard } from "./TimelineEventCard";
 import { Button } from "@/components/ui/button";
@@ -21,7 +21,7 @@ interface WellnessTimelineProps {
 export function WellnessTimeline({ dogId }: WellnessTimelineProps) {
   const { timelineData, loading, showFullTimeline, setShowFullTimeline } = useWellnessTimeline(dogId);
   const navigate = useNavigate();
-  
+  const location = useLocation();
   const [selectedEvent, setSelectedEvent] = useState<any>(null);
   const [modalType, setModalType] = useState<string | null>(null);
 
@@ -29,7 +29,7 @@ export function WellnessTimeline({ dogId }: WellnessTimelineProps) {
     if (!event.metadata) return;
     
     if (event.type === 'activity' && event.metadata.activityId) {
-      navigate(`/activity/${event.metadata.activityId}`, { state: { dogId } });
+      navigate(`/activity/${event.metadata.activityId}`, { state: { dogId, from: location.pathname } });
     } else if (event.details) {
       setSelectedEvent(event.details);
       setModalType(event.type);

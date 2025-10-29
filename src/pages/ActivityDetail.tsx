@@ -180,6 +180,19 @@ export default function ActivityDetail() {
     return type.charAt(0).toUpperCase() + type.slice(1);
   };
 
+  const handleBack = () => {
+    const from = (location as any)?.state?.from as string | undefined;
+    if (from) {
+      navigate(from);
+      return;
+    }
+    if (window.history.length > 1) {
+      navigate(-1);
+    } else {
+      navigate('/health');
+    }
+  };
+
   if (!activity) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
@@ -198,7 +211,7 @@ export default function ActivityDetail() {
               <Button
                 variant="ghost"
                 size="icon"
-                onClick={() => navigate(-1)}
+                onClick={handleBack}
               >
                 <ArrowLeft className="h-5 w-5" />
               </Button>
