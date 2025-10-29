@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { ArrowLeft, Edit3, Trash2, Clock, MapPin, TrendingUp, Calendar, Navigation } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -18,8 +18,8 @@ import { useToast } from "@/hooks/use-toast";
 export default function ActivityDetail() {
   const { activityId } = useParams<{ activityId: string }>();
   const navigate = useNavigate();
+  const location = useLocation();
   const [activity, setActivity] = useState<ActivityRecord | null>(null);
-  const [dogId, setDogId] = useState<string>("");
   const [isEditing, setIsEditing] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [editForm, setEditForm] = useState({
@@ -30,13 +30,10 @@ export default function ActivityDetail() {
     notes: "",
   });
 
-  // Get dogId from localStorage (assuming it's stored there from the parent)
-  useEffect(() => {
-    const storedDogId = localStorage.getItem("selectedDogId");
-    if (storedDogId) {
-      setDogId(storedDogId);
-    }
-  }, []);
+  // Get dogId from route state first, fallback to localStorage
+  const dogIdFromState = location.state?.dogId;
+  const dogIdFromStorage = localStorage.getItem("selectedDogId");
+  const dogId = dogIdFromState || dogIdFromStorage;
 
   const { updateActivity, deleteActivity } = useActivity(dogId);
   const { toast } = useToast();

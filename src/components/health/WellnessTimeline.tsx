@@ -29,7 +29,7 @@ export function WellnessTimeline({ dogId }: WellnessTimelineProps) {
     if (!event.metadata) return;
     
     if (event.type === 'activity' && event.metadata.activityId) {
-      navigate(`/activity/${event.metadata.activityId}`);
+      navigate(`/activity/${event.metadata.activityId}`, { state: { dogId } });
     } else if (event.details) {
       setSelectedEvent(event.details);
       setModalType(event.type);
