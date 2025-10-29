@@ -218,7 +218,7 @@ export default function FullTimeline() {
     return 'Evening';
   };
 
-  // Group events by time of day and sort chronologically
+  // Group events by time of day and sort with latest first
   const groupEventsByTimeOfDay = (events: any[]) => {
     const groups: Record<string, any[]> = {};
     events.forEach(event => {
@@ -229,9 +229,9 @@ export default function FullTimeline() {
       groups[timeOfDay].push(event);
     });
     
-    // Sort events within each group chronologically (earliest first)
+    // Sort events within each group with latest first
     Object.keys(groups).forEach(key => {
-      groups[key].sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime());
+      groups[key].sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime());
     });
     
     return groups;
