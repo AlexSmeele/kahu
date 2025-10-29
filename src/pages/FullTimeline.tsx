@@ -110,7 +110,7 @@ export default function FullTimeline() {
           <Button
             variant="ghost"
             size="icon"
-            onClick={() => navigate("/")}
+            onClick={() => navigate(-1)}
             className="shrink-0"
           >
             <ArrowLeft className="w-5 h-5" />
