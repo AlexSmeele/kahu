@@ -564,7 +564,7 @@ export default function FullTimeline() {
                 }
                 
                 const eventGroups = groupEventsByTimeOfDay(day.events);
-                const timeOrder = ['Morning', 'Afternoon', 'Evening', 'Night'];
+                const timeOrder = ['Night', 'Evening', 'Afternoon', 'Morning'];
                 
                 return (
                   <div 
