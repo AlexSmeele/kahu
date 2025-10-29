@@ -39,22 +39,19 @@ export function TimelineQuickActions({
 
   return (
     <div className="mb-6">
-      <ScrollArea className="w-full">
-        <div className="flex gap-3 pb-2">
-          {actions.map((action) => (
-            <Button
-              key={action.label}
-              variant="outline"
-              onClick={action.onClick}
-              className="flex items-center gap-2 px-4 py-2 h-auto rounded-full whitespace-nowrap hover:bg-accent"
-            >
-              <action.icon className={`w-4 h-4 ${action.color}`} />
-              <span className="text-sm font-medium">{action.label}</span>
-            </Button>
-          ))}
-        </div>
-        <ScrollBar orientation="horizontal" />
-      </ScrollArea>
+      <div className="grid grid-cols-3 gap-2">
+        {actions.map((action) => (
+          <Button
+            key={action.label}
+            variant="outline"
+            onClick={action.onClick}
+            className="flex items-center gap-2 px-3 py-2 h-auto rounded-full hover:bg-accent"
+          >
+            <action.icon className={`w-4 h-4 ${action.color}`} />
+            <span className="text-sm font-medium">{action.label}</span>
+          </Button>
+        ))}
+      </div>
     </div>
   );
 }
