@@ -103,13 +103,14 @@ export default function VaccinationDetail() {
     }
     
     try {
-      await updateVaccinationRecord(vaccinationId!, {
-        administered_date: editForm.administered_date,
-        due_date: editForm.due_date || undefined,
-        veterinarian: editForm.veterinarian || undefined,
-        batch_number: editForm.batch_number || undefined,
-        notes: editForm.notes || undefined,
-      });
+      await updateVaccinationRecord(
+        vaccinationId!,
+        editForm.administered_date,
+        editForm.due_date || undefined,
+        editForm.veterinarian || undefined,
+        editForm.batch_number || undefined,
+        editForm.notes || undefined
+      );
       setIsEditing(false);
       fetchVaccinationData();
     } catch (error) {
