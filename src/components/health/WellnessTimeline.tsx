@@ -26,9 +26,7 @@ export function WellnessTimeline({ dogId }: WellnessTimelineProps) {
   const [modalType, setModalType] = useState<string | null>(null);
 
   const handleEventClick = (event: any) => {
-    if (!event.metadata) return;
-    
-    if (event.type === 'activity' && event.metadata.activityId) {
+    if (event.type === 'activity' && event.metadata?.activityId) {
       const scrollableContainer = document.querySelector('.overflow-y-auto');
       const scrollPosition = scrollableContainer?.scrollTop || 0;
       try {

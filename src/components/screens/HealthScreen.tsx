@@ -36,20 +36,58 @@ export function WellnessScreen({ selectedDogId, onDogChange }: WellnessScreenPro
   const { loading: timelineLoading } = useWellnessTimeline(selectedDogId);
 
   useEffect(() => {
+    if (!scrollContainerRef.current || timelineLoading) return;
+
+    // Try to recover saved scroll from multiple sources
+    let saved: number | null = null;
     const state = location.state as any;
-    if (state?.scrollPosition !== undefined && scrollContainerRef.current && !timelineLoading) {
-      // Double RAF to ensure content is fully rendered
+
+    // Priority 1: location.state (programmatic navigate)
+    if (state?.scrollPosition !== undefined) {
+      saved = Number(state.scrollPosition);
+    }
+
+    // Priority 2: history.state.usr (browser back button)
+    if (saved == null) {
+      try {
+        const hs = (window.history as any).state?.usr?.scrollPosition;
+        if (typeof hs === 'number') saved = hs;
+      } catch {}
+    }
+
+    // Priority 3: sessionStorage fallback
+    if (saved == null) {
+      try {
+        const s = sessionStorage.getItem(`wellnessScroll:${selectedDogId}`);
+        if (s) saved = parseInt(s, 10);
+      } catch {}
+    }
+
+    if (saved != null && !Number.isNaN(saved)) {
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
-          scrollContainerRef.current?.scrollTo({
-            top: state.scrollPosition,
-            behavior: 'instant'
-          });
+          scrollContainerRef.current?.scrollTo({ top: saved, behavior: 'auto' });
+          
+          // Clear sessionStorage
+          try { 
+            sessionStorage.removeItem(`wellnessScroll:${selectedDogId}`); 
+          } catch {}
+
+          // Clear only usr.scrollPosition from history.state, preserving everything else
+          try {
+            const h = window.history as any;
+            const curr = h.state || {};
+            const usr = { ...(curr.usr || {}) };
+            if ('scrollPosition' in usr) {
+              delete usr.scrollPosition;
+              const nextState = { ...curr, usr };
+              h.replaceState(nextState, document.title, window.location.href);
+            }
+          } catch {}
         });
       });
-      window.history.replaceState({}, document.title);
     }
-  }, [location.state, timelineLoading]);
+  }, [location.state, timelineLoading, selectedDogId]);
 
   return (
     <div className="flex flex-col h-full safe-top relative">
