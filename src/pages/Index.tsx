@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, lazy, Suspense } from "react";
 import { HomeScreen } from "@/components/screens/HomeScreen";
 import { TricksScreen } from "@/components/screens/TricksScreen";
 import { HealthScreen } from "@/components/screens/HealthScreen";
@@ -60,10 +60,24 @@ const Index = () => {
   const renderActiveScreen = () => {
     logger.debug('Index: Rendering screen', { activeTab, selectedDogId, showFullTimeline });
     
+    // Check if we're on the activity detail route
+    if (window.location.pathname.startsWith('/activity/')) {
+      const ActivityDetail = lazy(() => import("@/pages/ActivityDetail"));
+      return (
+        <Suspense fallback={<div>Loading...</div>}>
+          <ActivityDetail />
+        </Suspense>
+      );
+    }
+    
     // Import FullTimeline lazily
     if (showFullTimeline) {
-      const FullTimeline = require('@/pages/FullTimeline').default;
-      return <FullTimeline selectedDogId={selectedDogId} />;
+      const FullTimeline = lazy(() => import('@/pages/FullTimeline'));
+      return (
+        <Suspense fallback={<div>Loading...</div>}>
+          <FullTimeline selectedDogId={selectedDogId} />
+        </Suspense>
+      );
     }
     
     switch (activeTab) {

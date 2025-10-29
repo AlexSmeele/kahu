@@ -1,30 +1,26 @@
 import { useState } from "react";
-import { Plus, Target, Clock, MapPin, Edit3, Trash2, Play, Pause, Settings } from "lucide-react";
+import { Plus, Play, Pause, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
+
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { useActivity, ActivityRecord } from "@/hooks/useActivity";
+import { useActivity } from "@/hooks/useActivity";
 import { EditActivityGoalModal } from "@/components/home/EditActivityGoalModal";
-import { format } from "date-fns";
 
 interface ActivityMonitorProps {
   dogId: string;
 }
 
 export function ActivityMonitor({ dogId }: ActivityMonitorProps) {
-  const { goal, records, todayProgress, loading, addActivity, updateActivity, deleteActivity, updateGoal } = useActivity(dogId);
+  const { goal, todayProgress, loading, addActivity, updateGoal } = useActivity(dogId);
   const [isAddingActivity, setIsAddingActivity] = useState(false);
   const [isEditingGoal, setIsEditingGoal] = useState(false);
-  const [editingActivity, setEditingActivity] = useState<ActivityRecord | null>(null);
-  const [deletingActivityId, setDeletingActivityId] = useState<string | null>(null);
   const [isTracking, setIsTracking] = useState(false);
   const [trackingStart, setTrackingStart] = useState<Date | null>(null);
 
@@ -203,86 +199,6 @@ export function ActivityMonitor({ dogId }: ActivityMonitorProps) {
           )}
         </Button>
       </div>
-
-
-      {/* Today's Activities */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-sm font-medium">Today's Activities</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <ScrollArea className="h-[200px]">
-            {records.length === 0 ? (
-              <div className="text-center text-muted-foreground py-4">
-                No activities recorded today
-              </div>
-            ) : (
-              <div className="space-y-3">
-                {records.map((record) => (
-                  <div key={record.id} className="flex items-center justify-between p-3 rounded-lg border">
-                    <div className="flex items-center gap-3">
-                      <span className="text-xl">{getActivityIcon(record.activity_type)}</span>
-                      <div className="text-sm text-muted-foreground">
-                        {format(new Date(record.start_time), 'HH:mm')}
-                        {record.duration_minutes && ` • ${record.duration_minutes}min`}
-                        {record.distance_km && ` • ${record.distance_km}km`}
-                      </div>
-                    </div>
-                    <div className="flex gap-1">
-                      <Button 
-                        variant="ghost" 
-                        size="sm"
-                        onClick={() => setEditingActivity(record)}
-                      >
-                        <Edit3 className="h-3 w-3" />
-                      </Button>
-                      <Button 
-                        variant="ghost" 
-                        size="sm"
-                        onClick={() => setDeletingActivityId(record.id)}
-                      >
-                        <Trash2 className="h-3 w-3" />
-                      </Button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </ScrollArea>
-        </CardContent>
-      </Card>
-
-      {/* Edit Activity Modal */}
-      {editingActivity && (
-        <Dialog open={true} onOpenChange={() => setEditingActivity(null)}>
-...
-        </Dialog>
-      )}
-
-      {/* Delete Confirmation Dialog */}
-      <AlertDialog open={deletingActivityId !== null} onOpenChange={() => setDeletingActivityId(null)}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-            <AlertDialogDescription>
-              This will permanently delete this activity record. This action cannot be undone.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction
-              onClick={async () => {
-                if (deletingActivityId) {
-                  await deleteActivity(deletingActivityId);
-                  setDeletingActivityId(null);
-                }
-              }}
-            >
-              Delete
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
 
       {/* Edit Goal Modal */}
       <EditActivityGoalModal

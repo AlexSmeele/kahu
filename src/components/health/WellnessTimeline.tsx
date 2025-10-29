@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useWellnessTimeline } from "@/hooks/useWellnessTimeline";
 import { TimelineEventCard } from "./TimelineEventCard";
 import { Button } from "@/components/ui/button";
@@ -11,6 +12,7 @@ interface WellnessTimelineProps {
 
 export function WellnessTimeline({ dogId }: WellnessTimelineProps) {
   const { timelineData, loading, showFullTimeline, setShowFullTimeline } = useWellnessTimeline(dogId);
+  const navigate = useNavigate();
   
   if (loading) {
     return (
@@ -82,8 +84,9 @@ export function WellnessTimeline({ dogId }: WellnessTimelineProps) {
                     key={event.id} 
                     event={event}
                     onClick={() => {
-                      // Handle event click - could open modal with details
-                      console.log('Event clicked:', event);
+                      if (event.type === 'activity' && event.metadata?.activityId) {
+                        navigate(`/activity/${event.metadata.activityId}`);
+                      }
                     }}
                   />
                 ))}
@@ -127,7 +130,9 @@ export function WellnessTimeline({ dogId }: WellnessTimelineProps) {
                     key={event.id} 
                     event={event}
                     onClick={() => {
-                      console.log('Event clicked:', event);
+                      if (event.type === 'activity' && event.metadata?.activityId) {
+                        navigate(`/activity/${event.metadata.activityId}`);
+                      }
                     }}
                   />
                 ))}

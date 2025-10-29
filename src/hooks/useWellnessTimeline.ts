@@ -29,6 +29,10 @@ export interface TimelineEvent {
   metrics?: { label: string; value: string; icon?: LucideIcon }[];
   status: 'completed' | 'upcoming' | 'overdue';
   details?: any;
+  metadata?: {
+    activityId?: string;
+    [key: string]: any;
+  };
 }
 
 export interface TimelineDay {
@@ -74,6 +78,9 @@ export function useWellnessTimeline(dogId: string) {
             ...(record.calories_burned ? [{ label: 'Calories', value: `${record.calories_burned} Cal` }] : []),
           ],
           details: record,
+          metadata: {
+            activityId: record.id,
+          },
         });
       });
 

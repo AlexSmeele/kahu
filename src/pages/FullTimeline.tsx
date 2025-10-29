@@ -172,7 +172,9 @@ export default function FullTimeline({ selectedDogId }: FullTimelineProps) {
                     key={event.id} 
                     event={event}
                     onClick={() => {
-                      console.log('Event clicked:', event);
+                      if (event.type === 'activity' && event.metadata?.activityId) {
+                        navigate(`/activity/${event.metadata.activityId}`);
+                      }
                     }}
                   />
                 ))
