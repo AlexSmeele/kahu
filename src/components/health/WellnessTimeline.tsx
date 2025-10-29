@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useWellnessTimeline } from "@/hooks/useWellnessTimeline";
 import { TimelineEventCard } from "./TimelineEventCard";
 import { Button } from "@/components/ui/button";
-import { ChevronDown, Calendar } from "lucide-react";
+import { Calendar } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 interface WellnessTimelineProps {
@@ -103,7 +103,7 @@ export function WellnessTimeline({ dogId }: WellnessTimelineProps) {
           onClick={() => navigate(`/full-timeline/${dogId}`)}
           className="w-full"
         >
-          <ChevronDown className="w-4 h-4 mr-2" />
+          <Calendar className="w-4 h-4 mr-2" />
           View Full Timeline
         </Button>
       )}

@@ -13,7 +13,10 @@ export default function FullTimeline() {
   const { dogId } = useParams<{ dogId: string }>();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [selectedDayIndex, setSelectedDayIndex] = useState(0);
-  const { timelineData, loading } = useWellnessTimeline(dogId || '');
+  const { timelineData: rawTimelineData, loading } = useWellnessTimeline(dogId || '');
+  
+  // Reverse timeline data so past dates are on the left
+  const timelineData = [...rawTimelineData].reverse();
 
   // Auto-scroll to selected day
   useEffect(() => {
@@ -52,7 +55,7 @@ export default function FullTimeline() {
           <Button
             variant="ghost"
             size="icon"
-            onClick={() => navigate(-1)}
+            onClick={() => navigate("/")}
             className="shrink-0"
           >
             <ArrowLeft className="w-5 h-5" />
@@ -154,32 +157,37 @@ export default function FullTimeline() {
                 </div>
               ))}
             </div>
-          ) : selectedDay ? (
-            <div className="space-y-0">
-              <div className="mb-6">
-                <h2 className="text-2xl font-bold mb-1">{selectedDay.label}</h2>
-                <p className="text-sm text-muted-foreground">
-                  {selectedDay.date.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}
-                </p>
-              </div>
+          ) : timelineData.length > 0 ? (
+            <div className="space-y-6">
+              {timelineData.map((day) => (
+                <div key={day.date.toISOString()}>
+                  <div className="flex items-center gap-3 mb-4 sticky top-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 py-2 z-10">
+                    <h3 className="text-base font-semibold">
+                      {day.label}
+                    </h3>
+                    <Badge 
+                      variant="outline" 
+                      className="text-xs"
+                    >
+                      {day.events.length} {day.events.length === 1 ? 'event' : 'events'}
+                    </Badge>
+                  </div>
 
-              {selectedDay.events.length > 0 ? (
-                selectedDay.events.map((event) => (
-                  <TimelineEventCard 
-                    key={event.id} 
-                    event={event}
-                    onClick={() => {
-                      if (event.type === 'activity' && event.metadata?.activityId) {
-                        navigate(`/activity/${event.metadata.activityId}`);
-                      }
-                    }}
-                  />
-                ))
-              ) : (
-                <div className="text-center py-12">
-                  <p className="text-muted-foreground">No events for this day</p>
+                  <div className="space-y-0">
+                    {day.events.map((event) => (
+                      <TimelineEventCard 
+                        key={event.id} 
+                        event={event}
+                        onClick={() => {
+                          if (event.type === 'activity' && event.metadata?.activityId) {
+                            navigate(`/activity/${event.metadata.activityId}`);
+                          }
+                        }}
+                      />
+                    ))}
+                  </div>
                 </div>
-              )}
+              ))}
             </div>
           ) : (
             <div className="text-center py-12">
