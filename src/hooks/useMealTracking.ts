@@ -213,6 +213,64 @@ export function useMealTracking(dogId?: string, nutritionPlanId?: string) {
     }
   };
 
+  const updateMealRecord = async (mealId: string, updates: Partial<MealRecord>) => {
+    try {
+      const { data, error } = await supabase
+        .from('meal_records')
+        .update(updates)
+        .eq('id', mealId)
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      setMealRecords(prev => prev.map(record => 
+        record.id === mealId ? data : record
+      ));
+
+      toast({
+        title: 'Meal updated successfully',
+      });
+
+      return true;
+    } catch (error) {
+      console.error('Error updating meal record:', error);
+      toast({
+        title: 'Error updating meal',
+        description: 'Please try again',
+        variant: 'destructive',
+      });
+      return false;
+    }
+  };
+
+  const deleteMealRecord = async (mealId: string) => {
+    try {
+      const { error } = await supabase
+        .from('meal_records')
+        .delete()
+        .eq('id', mealId);
+
+      if (error) throw error;
+
+      setMealRecords(prev => prev.filter(record => record.id !== mealId));
+
+      toast({
+        title: 'Meal deleted successfully',
+      });
+
+      return true;
+    } catch (error) {
+      console.error('Error deleting meal record:', error);
+      toast({
+        title: 'Error deleting meal',
+        description: 'Please try again',
+        variant: 'destructive',
+      });
+      return false;
+    }
+  };
+
   const getTodayProgress = (mealSchedule: any[], mealRecords: MealRecord[], dailyAmount?: number) => {
     if (!mealSchedule || mealSchedule.length === 0) {
       return { consumed: 0, target: 480, percentage: 0 };
@@ -243,6 +301,8 @@ export function useMealTracking(dogId?: string, nutritionPlanId?: string) {
     loading,
     markMealCompleted,
     undoMealCompletion,
+    updateMealRecord,
+    deleteMealRecord,
     getTodayProgress,
     generateTodayMeals,
     refetch: fetchMealRecords,
