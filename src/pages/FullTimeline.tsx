@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { ArrowLeft, ChevronLeft, ChevronRight, Activity, Heart, Utensils } from "lucide-react";
+import { ArrowLeft, ChevronLeft, ChevronRight, Activity, Heart, Utensils, Weight, Scissors, Stethoscope, Syringe, ClipboardCheck, Pill } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useWellnessTimeline } from "@/hooks/useWellnessTimeline";
@@ -17,13 +17,73 @@ export default function FullTimeline() {
   const verticalScrollRef = useRef<HTMLDivElement>(null);
   const { timelineData: rawTimelineData, loading, setShowFullTimeline } = useWellnessTimeline(dogId || '');
   
+  // Filter state
+  const [selectedFilters, setSelectedFilters] = useState<Set<string>>(new Set(['all']));
+  
   // Enable full timeline view (no 12-entry cap)
   useEffect(() => {
     setShowFullTimeline(true);
   }, [setShowFullTimeline]);
   
   // Reverse timeline data so past dates are on the left in horizontal scroll
-  const timelineData = [...rawTimelineData].reverse();
+  const reversedData = [...rawTimelineData].reverse();
+  
+  // Generate complete date range including future dates
+  const generateDateRange = () => {
+    if (reversedData.length === 0) return [];
+    
+    const now = new Date();
+    now.setHours(0, 0, 0, 0);
+    
+    // Find earliest date
+    const dates = reversedData.map(d => d.date.getTime());
+    const earliest = new Date(Math.min(...dates));
+    earliest.setHours(0, 0, 0, 0);
+    
+    // Add 30 days into future
+    const futureEnd = new Date(now);
+    futureEnd.setDate(futureEnd.getDate() + 30);
+    
+    // Generate all dates in range
+    const allDates: any[] = [];
+    const current = new Date(earliest);
+    
+    while (current <= futureEnd) {
+      const currentDateStr = current.toDateString();
+      const existingDay = reversedData.find(d => 
+        d.date.toDateString() === currentDateStr
+      );
+      
+      const isFuture = current > now;
+      const isToday = current.toDateString() === now.toDateString();
+      const isEmpty = !existingDay || existingDay.events.length === 0;
+      
+      if (existingDay) {
+        allDates.push({
+          ...existingDay,
+          isFuture,
+          isEmpty: false
+        });
+      } else if (isFuture) {
+        // Add empty future dates
+        allDates.push({
+          date: new Date(current),
+          label: isToday ? 'Today' : current.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+          events: [],
+          isToday,
+          isYesterday: false,
+          isFuture: true,
+          isEmpty: true
+        });
+      }
+      
+      current.setDate(current.getDate() + 1);
+    }
+    
+    return allDates;
+  };
+  
+  const timelineData = generateDateRange();
   
   // Find today's index or the closest date
   const now = new Date();
@@ -79,6 +139,51 @@ export default function FullTimeline() {
     // Navigate to home with wellness tab selected
     navigate('/?tab=wellness');
   };
+  
+  // Filter toggle
+  const toggleFilter = (filter: string) => {
+    setSelectedFilters(prev => {
+      const newFilters = new Set(prev);
+      if (filter === 'all') {
+        return new Set(['all']);
+      }
+      newFilters.delete('all');
+      if (newFilters.has(filter)) {
+        newFilters.delete(filter);
+      } else {
+        newFilters.add(filter);
+      }
+      return newFilters.size === 0 ? new Set(['all']) : newFilters;
+    });
+  };
+  
+  // Apply filters to timeline data
+  const filteredTimelineData = timelineData.map(day => {
+    if (selectedFilters.has('all')) return day;
+    
+    const filteredEvents = day.events.filter(event => 
+      selectedFilters.has(event.type)
+    );
+    
+    return {
+      ...day,
+      events: filteredEvents
+    };
+  });
+  
+  // Count events by type
+  const eventCounts = {
+    all: timelineData.reduce((sum, day) => sum + day.events.length, 0),
+    activity: timelineData.reduce((sum, day) => sum + day.events.filter(e => e.type === 'activity').length, 0),
+    meal: timelineData.reduce((sum, day) => sum + day.events.filter(e => e.type === 'meal').length, 0),
+    weight: timelineData.reduce((sum, day) => sum + day.events.filter(e => e.type === 'weight').length, 0),
+    grooming: timelineData.reduce((sum, day) => sum + day.events.filter(e => e.type === 'grooming').length, 0),
+    'vet-visit': timelineData.reduce((sum, day) => sum + day.events.filter(e => e.type === 'vet-visit').length, 0),
+    vaccination: timelineData.reduce((sum, day) => sum + day.events.filter(e => e.type === 'vaccination').length, 0),
+    checkup: timelineData.reduce((sum, day) => sum + day.events.filter(e => e.type === 'checkup').length, 0),
+    treatment: timelineData.reduce((sum, day) => sum + day.events.filter(e => e.type === 'treatment').length, 0),
+  };
+  
   const getTimeOfDay = (date: Date) => {
     const hour = date.getHours();
     if (hour < 6) return 'Night';
@@ -100,16 +205,18 @@ export default function FullTimeline() {
     return groups;
   };
 
-  const totalDistance = timelineData.reduce((sum, day) => {
+  const totalDistance = filteredTimelineData.reduce((sum, day) => {
     return sum + day.events.reduce((daySum, event) => {
       const distance = event.metrics?.find(m => m.label.includes('km'));
       return daySum + (distance ? parseFloat(distance.value) : 0);
     }, 0);
   }, 0);
 
-  const totalActivities = timelineData.reduce((sum, day) => 
+  const totalActivities = filteredTimelineData.reduce((sum, day) => 
     sum + day.events.filter(e => e.type === 'activity').length, 0
   );
+  
+  const totalEvents = filteredTimelineData.reduce((sum, day) => sum + day.events.length, 0);
 
   return (
     <div className="flex flex-col h-full safe-top bg-background">
@@ -125,12 +232,146 @@ export default function FullTimeline() {
             <ArrowLeft className="w-5 h-5" />
           </Button>
           <div className="flex-1">
-            <h1 className="text-2xl font-bold">Wellness Timeline</h1>
+            <h1 className="text-2xl font-bold">Timeline</h1>
             <p className="text-xs text-muted-foreground mt-0.5">
-              Last {timelineData.length} days
+              {totalEvents} events
             </p>
           </div>
         </div>
+
+        {/* Filter Pills */}
+        {!loading && timelineData.length > 0 && (
+          <div className="px-4 pb-3">
+            <ScrollArea className="w-full">
+              <div className="flex gap-2 pb-2">
+                <Button
+                  variant={selectedFilters.has('all') ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => toggleFilter('all')}
+                  className="flex-shrink-0 h-8"
+                >
+                  All
+                  <Badge variant="secondary" className="ml-1.5 px-1.5 min-w-[20px] justify-center">
+                    {eventCounts.all}
+                  </Badge>
+                </Button>
+                {eventCounts.activity > 0 && (
+                  <Button
+                    variant={selectedFilters.has('activity') ? 'default' : 'outline'}
+                    size="sm"
+                    onClick={() => toggleFilter('activity')}
+                    className="flex-shrink-0 h-8"
+                  >
+                    <Activity className="w-3 h-3 mr-1" />
+                    Activity
+                    <Badge variant="secondary" className="ml-1.5 px-1.5 min-w-[20px] justify-center">
+                      {eventCounts.activity}
+                    </Badge>
+                  </Button>
+                )}
+                {eventCounts.meal > 0 && (
+                  <Button
+                    variant={selectedFilters.has('meal') ? 'default' : 'outline'}
+                    size="sm"
+                    onClick={() => toggleFilter('meal')}
+                    className="flex-shrink-0 h-8"
+                  >
+                    <Utensils className="w-3 h-3 mr-1" />
+                    Meal
+                    <Badge variant="secondary" className="ml-1.5 px-1.5 min-w-[20px] justify-center">
+                      {eventCounts.meal}
+                    </Badge>
+                  </Button>
+                )}
+                {eventCounts.weight > 0 && (
+                  <Button
+                    variant={selectedFilters.has('weight') ? 'default' : 'outline'}
+                    size="sm"
+                    onClick={() => toggleFilter('weight')}
+                    className="flex-shrink-0 h-8"
+                  >
+                    <Weight className="w-3 h-3 mr-1" />
+                    Weight
+                    <Badge variant="secondary" className="ml-1.5 px-1.5 min-w-[20px] justify-center">
+                      {eventCounts.weight}
+                    </Badge>
+                  </Button>
+                )}
+                {eventCounts.grooming > 0 && (
+                  <Button
+                    variant={selectedFilters.has('grooming') ? 'default' : 'outline'}
+                    size="sm"
+                    onClick={() => toggleFilter('grooming')}
+                    className="flex-shrink-0 h-8"
+                  >
+                    <Scissors className="w-3 h-3 mr-1" />
+                    Grooming
+                    <Badge variant="secondary" className="ml-1.5 px-1.5 min-w-[20px] justify-center">
+                      {eventCounts.grooming}
+                    </Badge>
+                  </Button>
+                )}
+                {eventCounts['vet-visit'] > 0 && (
+                  <Button
+                    variant={selectedFilters.has('vet-visit') ? 'default' : 'outline'}
+                    size="sm"
+                    onClick={() => toggleFilter('vet-visit')}
+                    className="flex-shrink-0 h-8"
+                  >
+                    <Stethoscope className="w-3 h-3 mr-1" />
+                    Vet Visit
+                    <Badge variant="secondary" className="ml-1.5 px-1.5 min-w-[20px] justify-center">
+                      {eventCounts['vet-visit']}
+                    </Badge>
+                  </Button>
+                )}
+                {eventCounts.vaccination > 0 && (
+                  <Button
+                    variant={selectedFilters.has('vaccination') ? 'default' : 'outline'}
+                    size="sm"
+                    onClick={() => toggleFilter('vaccination')}
+                    className="flex-shrink-0 h-8"
+                  >
+                    <Syringe className="w-3 h-3 mr-1" />
+                    Vaccination
+                    <Badge variant="secondary" className="ml-1.5 px-1.5 min-w-[20px] justify-center">
+                      {eventCounts.vaccination}
+                    </Badge>
+                  </Button>
+                )}
+                {eventCounts.checkup > 0 && (
+                  <Button
+                    variant={selectedFilters.has('checkup') ? 'default' : 'outline'}
+                    size="sm"
+                    onClick={() => toggleFilter('checkup')}
+                    className="flex-shrink-0 h-8"
+                  >
+                    <ClipboardCheck className="w-3 h-3 mr-1" />
+                    Checkup
+                    <Badge variant="secondary" className="ml-1.5 px-1.5 min-w-[20px] justify-center">
+                      {eventCounts.checkup}
+                    </Badge>
+                  </Button>
+                )}
+                {eventCounts.treatment > 0 && (
+                  <Button
+                    variant={selectedFilters.has('treatment') ? 'default' : 'outline'}
+                    size="sm"
+                    onClick={() => toggleFilter('treatment')}
+                    className="flex-shrink-0 h-8"
+                  >
+                    <Pill className="w-3 h-3 mr-1" />
+                    Treatment
+                    <Badge variant="secondary" className="ml-1.5 px-1.5 min-w-[20px] justify-center">
+                      {eventCounts.treatment}
+                    </Badge>
+                  </Button>
+                )}
+              </div>
+              <ScrollBar orientation="horizontal" />
+            </ScrollArea>
+          </div>
+        )}
 
         {/* Summary Stats */}
         {!loading && timelineData.length > 0 && (
@@ -159,7 +400,7 @@ export default function FullTimeline() {
                 <div>
                   <p className="text-xs text-muted-foreground">Events</p>
                   <p className="text-sm font-bold text-secondary">
-                    {timelineData.reduce((sum, day) => sum + day.events.length, 0)}
+                    {totalEvents}
                   </p>
                 </div>
               </div>
@@ -191,20 +432,25 @@ export default function FullTimeline() {
               {timelineData.map((day, index) => {
                 const isSelected = index === selectedDayIndex;
                 const isToday = index === todayIndex;
+                const isFuture = day.isFuture;
+                const isEmpty = day.isEmpty;
                 const dayOfWeek = day.date.toLocaleDateString('en-US', { weekday: 'short' });
                 
                 return (
                   <button
                     key={day.date.toISOString()}
                     data-day-index={index}
-                    onClick={() => setSelectedDayIndex(index)}
+                    onClick={() => !isEmpty && setSelectedDayIndex(index)}
+                    disabled={isEmpty}
                     className={cn(
                       "timeline-date-pill flex-shrink-0 px-3 py-2 rounded-full transition-all duration-200",
-                      "hover:scale-105 active:scale-95",
+                      !isEmpty && "hover:scale-105 active:scale-95",
                       isSelected 
                         ? "bg-primary text-primary-foreground shadow-md shadow-primary/20 scale-110" 
                         : isToday
                         ? "bg-primary/10 border-2 border-primary/30 text-primary"
+                        : isEmpty
+                        ? "opacity-40 cursor-not-allowed bg-muted border border-border/50"
                         : "bg-card border border-border hover:bg-accent hover:border-primary/20"
                     )}
                   >
@@ -263,9 +509,15 @@ export default function FullTimeline() {
             </div>
           ) : timelineData.length > 0 ? (
             <div className="space-y-8">
-              {[...timelineData].reverse().map((day, reverseIndex) => {
-                const originalIndex = timelineData.length - 1 - reverseIndex;
+              {[...filteredTimelineData].reverse().map((day, reverseIndex) => {
+                const originalIndex = filteredTimelineData.length - 1 - reverseIndex;
                 const isSelectedDate = originalIndex === selectedDayIndex;
+                
+                // Skip days with no events after filtering
+                if (day.events.length === 0 && !selectedFilters.has('all')) {
+                  return null;
+                }
+                
                 const eventGroups = groupEventsByTimeOfDay(day.events);
                 const timeOrder = ['Morning', 'Afternoon', 'Evening', 'Night'];
                 
@@ -348,6 +600,16 @@ export default function FullTimeline() {
                   </div>
                 );
               })}
+            </div>
+          ) : !loading && selectedFilters.size > 0 && !selectedFilters.has('all') ? (
+            <div className="flex flex-col items-center justify-center py-20 text-center">
+              <div className="w-16 h-16 rounded-full bg-muted/30 flex items-center justify-center mb-4">
+                <Activity className="w-8 h-8 text-muted-foreground/50" />
+              </div>
+              <h3 className="text-lg font-semibold mb-1">No {Array.from(selectedFilters).join(', ')} Events</h3>
+              <p className="text-sm text-muted-foreground max-w-xs">
+                Try selecting a different filter or "All" to see your timeline
+              </p>
             </div>
           ) : (
             <div className="flex flex-col items-center justify-center py-20 text-center">
