@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
-import { ArrowLeft, Edit3, Trash2, Clock, MapPin, TrendingUp, Calendar, Navigation } from "lucide-react";
+import { ArrowLeft, Edit3, Trash2, Clock, MapPin, TrendingUp, Calendar, Navigation, Footprints, Zap, PlayCircle, GraduationCap, Moon, Dog, FileText, LucideIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -165,15 +165,15 @@ export default function ActivityDetail() {
     }
   };
 
-  const getActivityIcon = (type: string) => {
-    const icons: Record<string, string> = {
-      walk: "🚶",
-      run: "🏃",
-      play: "🎾",
-      training: "🎓",
-      rest: "😴",
+  const getActivityIcon = (type: string): LucideIcon => {
+    const icons: Record<string, LucideIcon> = {
+      walk: Footprints,
+      run: Zap,
+      play: PlayCircle,
+      training: GraduationCap,
+      rest: Moon,
     };
-    return icons[type] || "🐕";
+    return icons[type] || Dog;
   };
 
   const getActivityLabel = (type: string) => {
@@ -203,7 +203,10 @@ export default function ActivityDetail() {
                 <ArrowLeft className="h-5 w-5" />
               </Button>
               <div className="flex items-center gap-2">
-                <span className="text-2xl">{getActivityIcon(activity.activity_type)}</span>
+                {(() => {
+                  const IconComponent = getActivityIcon(activity.activity_type);
+                  return <IconComponent className="h-6 w-6 text-primary" />;
+                })()}
                 <h1 className="text-xl font-semibold">{getActivityLabel(activity.activity_type)}</h1>
               </div>
             </div>
@@ -349,7 +352,7 @@ export default function ActivityDetail() {
 
                 {activity.notes && (
                   <div className="flex items-start gap-3">
-                    <div className="w-5 h-5 flex items-center justify-center text-primary mt-0.5">📝</div>
+                    <FileText className="h-5 w-5 text-primary mt-0.5" />
                     <div className="flex-1">
                       <p className="text-sm font-medium mb-1">Notes</p>
                       <p className="text-muted-foreground">{activity.notes}</p>
