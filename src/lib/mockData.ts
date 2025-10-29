@@ -1,6 +1,13 @@
 // Mock data for dev mode bypass
 // Based on data from alexsmeele@gmail.com account
 
+import {
+  generateHistoricalActivityRecords,
+  generateHistoricalMealRecords,
+  generateHistoricalWeightRecords,
+  generateHistoricalHealthCheckups,
+} from './generateHistoricalMockData';
+
 export const MOCK_USER_ID = '00000000-0000-0000-0000-000000000001';
 
 export const MOCK_DOG_IDS = {
@@ -13,8 +20,29 @@ export const REAL_DOG_IDS = {
   JETT: '00cec743-bb6f-4895-8f10-5c2adabf8d72',
 };
 
+// Generate extensive historical data (6 months) for both dogs
+const historicalActivities = [
+  ...generateHistoricalActivityRecords(MOCK_DOG_IDS.SUKI, 12, 6),
+  ...generateHistoricalActivityRecords(MOCK_DOG_IDS.JETT, 19, 6),
+];
+
+const historicalMeals = [
+  ...generateHistoricalMealRecords(MOCK_DOG_IDS.SUKI, '00000000-0000-0000-0000-000000000041', 200, 6),
+  ...generateHistoricalMealRecords(MOCK_DOG_IDS.JETT, '00000000-0000-0000-0000-000000000042', 300, 6),
+];
+
+const historicalWeights = [
+  ...generateHistoricalWeightRecords(MOCK_DOG_IDS.SUKI, 11.5, 6),
+  ...generateHistoricalWeightRecords(MOCK_DOG_IDS.JETT, 17, 6),
+];
+
+const historicalCheckups = [
+  ...generateHistoricalHealthCheckups(MOCK_DOG_IDS.SUKI, 6),
+  ...generateHistoricalHealthCheckups(MOCK_DOG_IDS.JETT, 6),
+];
+
 export const MOCK_WEIGHT_RECORDS = [
-  // Suki's weight records
+  // Recent weight records
   {
     id: '00000000-0000-0000-0000-000000000021',
     dog_id: MOCK_DOG_IDS.SUKI,
@@ -61,6 +89,8 @@ export const MOCK_WEIGHT_RECORDS = [
     created_at: '2024-02-05T13:35:00Z',
     updated_at: '2024-02-05T13:35:00Z',
   },
+  // Add 6 months of historical weight records
+  ...historicalWeights,
 ];
 
 export const MOCK_DOG_TRICKS = [
@@ -192,6 +222,7 @@ export const MOCK_NUTRITION_PLANS = [
 ];
 
 export const MOCK_ACTIVITY_RECORDS: any[] = [
+  // Recent manually defined activities for immediate context
   // Today - Multiple activities
   {
     id: '00000000-0000-0000-0000-000000000061',
@@ -220,6 +251,8 @@ export const MOCK_ACTIVITY_RECORDS: any[] = [
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),
   },
+  // Add 6 months of historical data
+  ...historicalActivities,
   // Yesterday - 3 activities
   {
     id: '00000000-0000-0000-0000-000000000063',
@@ -736,13 +769,15 @@ export const MOCK_HEALTH_CHECKUPS: any[] = [
     overall_notes: 'Weekly check, all good',
     created_at: '2025-10-11T11:00:00Z',
     updated_at: '2025-10-11T11:00:00Z'
-  }
+  },
+  // Add 6 months of historical health checkups
+  ...historicalCheckups,
 ];
 export const MOCK_MEAL_RECORDS: any[] = [
   {
     id: '00000000-0000-0000-0000-000000000121',
     dog_id: MOCK_DOG_IDS.SUKI,
-    nutrition_plan_id: '00000000-0000-0000-0000-000000000051',
+    nutrition_plan_id: '00000000-0000-0000-0000-000000000041',
     meal_time: '08:30',
     meal_name: 'Breakfast',
     scheduled_date: '2025-10-22',
@@ -755,7 +790,7 @@ export const MOCK_MEAL_RECORDS: any[] = [
   {
     id: '00000000-0000-0000-0000-000000000122',
     dog_id: MOCK_DOG_IDS.SUKI,
-    nutrition_plan_id: '00000000-0000-0000-0000-000000000051',
+    nutrition_plan_id: '00000000-0000-0000-0000-000000000041',
     meal_time: '08:30',
     meal_name: 'Breakfast',
     scheduled_date: '2025-10-21',
@@ -768,7 +803,7 @@ export const MOCK_MEAL_RECORDS: any[] = [
   {
     id: '00000000-0000-0000-0000-000000000123',
     dog_id: MOCK_DOG_IDS.SUKI,
-    nutrition_plan_id: '00000000-0000-0000-0000-000000000051',
+    nutrition_plan_id: '00000000-0000-0000-0000-000000000041',
     meal_time: '08:30',
     meal_name: 'Breakfast',
     scheduled_date: '2025-10-20',
@@ -782,7 +817,7 @@ export const MOCK_MEAL_RECORDS: any[] = [
   {
     id: '00000000-0000-0000-0000-000000000124',
     dog_id: MOCK_DOG_IDS.JETT,
-    nutrition_plan_id: '00000000-0000-0000-0000-000000000052',
+    nutrition_plan_id: '00000000-0000-0000-0000-000000000042',
     meal_time: '07:30',
     meal_name: 'Breakfast',
     scheduled_date: '2025-10-22',
@@ -795,7 +830,7 @@ export const MOCK_MEAL_RECORDS: any[] = [
   {
     id: '00000000-0000-0000-0000-000000000125',
     dog_id: MOCK_DOG_IDS.JETT,
-    nutrition_plan_id: '00000000-0000-0000-0000-000000000052',
+    nutrition_plan_id: '00000000-0000-0000-0000-000000000042',
     meal_time: '17:30',
     meal_name: 'Dinner',
     scheduled_date: '2025-10-21',
@@ -808,7 +843,7 @@ export const MOCK_MEAL_RECORDS: any[] = [
   {
     id: '00000000-0000-0000-0000-000000000126',
     dog_id: MOCK_DOG_IDS.JETT,
-    nutrition_plan_id: '00000000-0000-0000-0000-000000000052',
+    nutrition_plan_id: '00000000-0000-0000-0000-000000000042',
     meal_time: '07:30',
     meal_name: 'Breakfast',
     scheduled_date: '2025-10-21',
@@ -817,7 +852,9 @@ export const MOCK_MEAL_RECORDS: any[] = [
     notes: null,
     created_at: '2025-10-21T07:35:00Z',
     updated_at: '2025-10-21T07:35:00Z'
-  }
+  },
+  // Add 6 months of historical meal records
+  ...historicalMeals,
 ];
 
 export const MOCK_TRAINING_SESSIONS: any[] = [
