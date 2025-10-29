@@ -1,12 +1,13 @@
 import { useState, useRef, useEffect, Fragment } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { ArrowLeft, ChevronLeft, ChevronRight, Activity, Heart, Utensils, Weight, Scissors, Stethoscope, Syringe, ClipboardCheck, Pill } from "lucide-react";
+import { ArrowLeft, ChevronLeft, ChevronRight, Activity, Heart, Utensils, Weight, Scissors, Stethoscope, Syringe, ClipboardCheck, Pill, Filter } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useWellnessTimeline } from "@/hooks/useWellnessTimeline";
 import { TimelineEventCard } from "@/components/health/TimelineEventCard";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 
 export default function FullTimeline() {
@@ -21,6 +22,7 @@ export default function FullTimeline() {
   
   // Filter state
   const [selectedFilters, setSelectedFilters] = useState<Set<string>>(new Set(['all']));
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
   
   // Enable full timeline view (no 12-entry cap)
   useEffect(() => {
@@ -330,176 +332,149 @@ export default function FullTimeline() {
               {totalEvents} events
             </p>
           </div>
+          
+          {/* Filter Button */}
+          {!loading && timelineData.length > 0 && (
+            <Popover open={isFilterOpen} onOpenChange={setIsFilterOpen}>
+              <PopoverTrigger asChild>
+                <Button variant="outline" size="icon" className="shrink-0">
+                  <Filter className="w-4 h-4" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent align="end" className="w-80 p-4 bg-background border shadow-lg z-50">
+                <div className="space-y-3">
+                  <h3 className="font-semibold text-sm mb-3">Filter Events</h3>
+                  <div className="flex flex-wrap gap-2">
+                    <Button
+                      variant={selectedFilters.has('all') ? 'default' : 'outline'}
+                      size="sm"
+                      onClick={() => toggleFilter('all')}
+                      className="h-8"
+                    >
+                      All
+                      <Badge variant="secondary" className="ml-1.5 px-1.5 min-w-[20px] justify-center">
+                        {eventCounts.all}
+                      </Badge>
+                    </Button>
+                    {eventCounts.activity > 0 && (
+                      <Button
+                        variant={selectedFilters.has('activity') ? 'default' : 'outline'}
+                        size="sm"
+                        onClick={() => toggleFilter('activity')}
+                        className="h-8"
+                      >
+                        <Activity className="w-3 h-3 mr-1" />
+                        Activity
+                        <Badge variant="secondary" className="ml-1.5 px-1.5 min-w-[20px] justify-center">
+                          {eventCounts.activity}
+                        </Badge>
+                      </Button>
+                    )}
+                    {eventCounts.meal > 0 && (
+                      <Button
+                        variant={selectedFilters.has('meal') ? 'default' : 'outline'}
+                        size="sm"
+                        onClick={() => toggleFilter('meal')}
+                        className="h-8"
+                      >
+                        <Utensils className="w-3 h-3 mr-1" />
+                        Meal
+                        <Badge variant="secondary" className="ml-1.5 px-1.5 min-w-[20px] justify-center">
+                          {eventCounts.meal}
+                        </Badge>
+                      </Button>
+                    )}
+                    {eventCounts.weight > 0 && (
+                      <Button
+                        variant={selectedFilters.has('weight') ? 'default' : 'outline'}
+                        size="sm"
+                        onClick={() => toggleFilter('weight')}
+                        className="h-8"
+                      >
+                        <Weight className="w-3 h-3 mr-1" />
+                        Weight
+                        <Badge variant="secondary" className="ml-1.5 px-1.5 min-w-[20px] justify-center">
+                          {eventCounts.weight}
+                        </Badge>
+                      </Button>
+                    )}
+                    {eventCounts.grooming > 0 && (
+                      <Button
+                        variant={selectedFilters.has('grooming') ? 'default' : 'outline'}
+                        size="sm"
+                        onClick={() => toggleFilter('grooming')}
+                        className="h-8"
+                      >
+                        <Scissors className="w-3 h-3 mr-1" />
+                        Grooming
+                        <Badge variant="secondary" className="ml-1.5 px-1.5 min-w-[20px] justify-center">
+                          {eventCounts.grooming}
+                        </Badge>
+                      </Button>
+                    )}
+                    {eventCounts['vet-visit'] > 0 && (
+                      <Button
+                        variant={selectedFilters.has('vet-visit') ? 'default' : 'outline'}
+                        size="sm"
+                        onClick={() => toggleFilter('vet-visit')}
+                        className="h-8"
+                      >
+                        <Stethoscope className="w-3 h-3 mr-1" />
+                        Vet Visit
+                        <Badge variant="secondary" className="ml-1.5 px-1.5 min-w-[20px] justify-center">
+                          {eventCounts['vet-visit']}
+                        </Badge>
+                      </Button>
+                    )}
+                    {eventCounts.vaccination > 0 && (
+                      <Button
+                        variant={selectedFilters.has('vaccination') ? 'default' : 'outline'}
+                        size="sm"
+                        onClick={() => toggleFilter('vaccination')}
+                        className="h-8"
+                      >
+                        <Syringe className="w-3 h-3 mr-1" />
+                        Vaccination
+                        <Badge variant="secondary" className="ml-1.5 px-1.5 min-w-[20px] justify-center">
+                          {eventCounts.vaccination}
+                        </Badge>
+                      </Button>
+                    )}
+                    {eventCounts.checkup > 0 && (
+                      <Button
+                        variant={selectedFilters.has('checkup') ? 'default' : 'outline'}
+                        size="sm"
+                        onClick={() => toggleFilter('checkup')}
+                        className="h-8"
+                      >
+                        <ClipboardCheck className="w-3 h-3 mr-1" />
+                        Checkup
+                        <Badge variant="secondary" className="ml-1.5 px-1.5 min-w-[20px] justify-center">
+                          {eventCounts.checkup}
+                        </Badge>
+                      </Button>
+                    )}
+                    {eventCounts.treatment > 0 && (
+                      <Button
+                        variant={selectedFilters.has('treatment') ? 'default' : 'outline'}
+                        size="sm"
+                        onClick={() => toggleFilter('treatment')}
+                        className="h-8"
+                      >
+                        <Pill className="w-3 h-3 mr-1" />
+                        Treatment
+                        <Badge variant="secondary" className="ml-1.5 px-1.5 min-w-[20px] justify-center">
+                          {eventCounts.treatment}
+                        </Badge>
+                      </Button>
+                    )}
+                  </div>
+                </div>
+              </PopoverContent>
+            </Popover>
+          )}
         </div>
 
-        {/* Filter Pills */}
-        {!loading && timelineData.length > 0 && (
-          <div className="px-4 pb-3">
-            <ScrollArea className="w-full">
-              <div className="flex gap-2 pb-2">
-                <Button
-                  variant={selectedFilters.has('all') ? 'default' : 'outline'}
-                  size="sm"
-                  onClick={() => toggleFilter('all')}
-                  className="flex-shrink-0 h-8"
-                >
-                  All
-                  <Badge variant="secondary" className="ml-1.5 px-1.5 min-w-[20px] justify-center">
-                    {eventCounts.all}
-                  </Badge>
-                </Button>
-                {eventCounts.activity > 0 && (
-                  <Button
-                    variant={selectedFilters.has('activity') ? 'default' : 'outline'}
-                    size="sm"
-                    onClick={() => toggleFilter('activity')}
-                    className="flex-shrink-0 h-8"
-                  >
-                    <Activity className="w-3 h-3 mr-1" />
-                    Activity
-                    <Badge variant="secondary" className="ml-1.5 px-1.5 min-w-[20px] justify-center">
-                      {eventCounts.activity}
-                    </Badge>
-                  </Button>
-                )}
-                {eventCounts.meal > 0 && (
-                  <Button
-                    variant={selectedFilters.has('meal') ? 'default' : 'outline'}
-                    size="sm"
-                    onClick={() => toggleFilter('meal')}
-                    className="flex-shrink-0 h-8"
-                  >
-                    <Utensils className="w-3 h-3 mr-1" />
-                    Meal
-                    <Badge variant="secondary" className="ml-1.5 px-1.5 min-w-[20px] justify-center">
-                      {eventCounts.meal}
-                    </Badge>
-                  </Button>
-                )}
-                {eventCounts.weight > 0 && (
-                  <Button
-                    variant={selectedFilters.has('weight') ? 'default' : 'outline'}
-                    size="sm"
-                    onClick={() => toggleFilter('weight')}
-                    className="flex-shrink-0 h-8"
-                  >
-                    <Weight className="w-3 h-3 mr-1" />
-                    Weight
-                    <Badge variant="secondary" className="ml-1.5 px-1.5 min-w-[20px] justify-center">
-                      {eventCounts.weight}
-                    </Badge>
-                  </Button>
-                )}
-                {eventCounts.grooming > 0 && (
-                  <Button
-                    variant={selectedFilters.has('grooming') ? 'default' : 'outline'}
-                    size="sm"
-                    onClick={() => toggleFilter('grooming')}
-                    className="flex-shrink-0 h-8"
-                  >
-                    <Scissors className="w-3 h-3 mr-1" />
-                    Grooming
-                    <Badge variant="secondary" className="ml-1.5 px-1.5 min-w-[20px] justify-center">
-                      {eventCounts.grooming}
-                    </Badge>
-                  </Button>
-                )}
-                {eventCounts['vet-visit'] > 0 && (
-                  <Button
-                    variant={selectedFilters.has('vet-visit') ? 'default' : 'outline'}
-                    size="sm"
-                    onClick={() => toggleFilter('vet-visit')}
-                    className="flex-shrink-0 h-8"
-                  >
-                    <Stethoscope className="w-3 h-3 mr-1" />
-                    Vet Visit
-                    <Badge variant="secondary" className="ml-1.5 px-1.5 min-w-[20px] justify-center">
-                      {eventCounts['vet-visit']}
-                    </Badge>
-                  </Button>
-                )}
-                {eventCounts.vaccination > 0 && (
-                  <Button
-                    variant={selectedFilters.has('vaccination') ? 'default' : 'outline'}
-                    size="sm"
-                    onClick={() => toggleFilter('vaccination')}
-                    className="flex-shrink-0 h-8"
-                  >
-                    <Syringe className="w-3 h-3 mr-1" />
-                    Vaccination
-                    <Badge variant="secondary" className="ml-1.5 px-1.5 min-w-[20px] justify-center">
-                      {eventCounts.vaccination}
-                    </Badge>
-                  </Button>
-                )}
-                {eventCounts.checkup > 0 && (
-                  <Button
-                    variant={selectedFilters.has('checkup') ? 'default' : 'outline'}
-                    size="sm"
-                    onClick={() => toggleFilter('checkup')}
-                    className="flex-shrink-0 h-8"
-                  >
-                    <ClipboardCheck className="w-3 h-3 mr-1" />
-                    Checkup
-                    <Badge variant="secondary" className="ml-1.5 px-1.5 min-w-[20px] justify-center">
-                      {eventCounts.checkup}
-                    </Badge>
-                  </Button>
-                )}
-                {eventCounts.treatment > 0 && (
-                  <Button
-                    variant={selectedFilters.has('treatment') ? 'default' : 'outline'}
-                    size="sm"
-                    onClick={() => toggleFilter('treatment')}
-                    className="flex-shrink-0 h-8"
-                  >
-                    <Pill className="w-3 h-3 mr-1" />
-                    Treatment
-                    <Badge variant="secondary" className="ml-1.5 px-1.5 min-w-[20px] justify-center">
-                      {eventCounts.treatment}
-                    </Badge>
-                  </Button>
-                )}
-              </div>
-              <ScrollBar orientation="horizontal" />
-            </ScrollArea>
-          </div>
-        )}
-
-        {/* Summary Stats */}
-        {!loading && timelineData.length > 0 && (
-          <div className="flex gap-2 px-4 pb-3 overflow-x-auto">
-            <div className="flex-shrink-0 bg-primary/5 rounded-lg px-3 py-2 border border-primary/20">
-              <div className="flex items-center gap-2">
-                <Activity className="w-4 h-4 text-primary" />
-                <div>
-                  <p className="text-xs text-muted-foreground">Activities</p>
-                  <p className="text-sm font-bold text-primary">{totalActivities}</p>
-                </div>
-              </div>
-            </div>
-            <div className="flex-shrink-0 bg-success/5 rounded-lg px-3 py-2 border border-success/20">
-              <div className="flex items-center gap-2">
-                <Heart className="w-4 h-4 text-success" />
-                <div>
-                  <p className="text-xs text-muted-foreground">Distance</p>
-                  <p className="text-sm font-bold text-success">{totalDistance.toFixed(1)} km</p>
-                </div>
-              </div>
-            </div>
-            <div className="flex-shrink-0 bg-secondary/5 rounded-lg px-3 py-2 border border-secondary/20">
-              <div className="flex items-center gap-2">
-                <Utensils className="w-4 h-4 text-secondary" />
-                <div>
-                  <p className="text-xs text-muted-foreground">Events</p>
-                  <p className="text-sm font-bold text-secondary">
-                    {totalEvents}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
 
         {/* Horizontal Day Selector - Compact Pills */}
         <div className="relative px-2 pb-3">
