@@ -12,6 +12,7 @@ import { format } from "date-fns";
 import { useToast } from "@/hooks/use-toast";
 import { isMockDogId } from "@/lib/mockData";
 import { Slider } from "@/components/ui/slider";
+import { Checkbox } from "@/components/ui/checkbox";
 
 export default function CheckupDetail() {
   const { checkupId } = useParams();
@@ -150,7 +151,7 @@ export default function CheckupDetail() {
         title: "Success",
         description: "Checkup deleted successfully.",
       });
-      handleBack();
+      navigate(-1);
     } catch (error) {
       console.error("Error deleting checkup:", error);
       toast({
@@ -161,24 +162,10 @@ export default function CheckupDetail() {
     }
   };
   
-  const handleBack = () => {
-    const from = location.state?.from;
-    if (from) {
-      navigate(from);
-    } else {
-      navigate(-1);
-    }
-  };
-  
   const getScoreColor = (score: number) => {
     if (score >= 4) return "text-green-600";
     if (score === 3) return "text-yellow-600";
     return "text-red-600";
-  };
-  
-  const getScoreLabel = (score: number) => {
-    const labels = ["Poor", "Below Average", "Average", "Good", "Excellent"];
-    return labels[score - 1] || "Average";
   };
   
   if (loading) {
@@ -199,11 +186,10 @@ export default function CheckupDetail() {
   
   return (
     <div className="min-h-screen bg-background pb-20">
-      {/* Header */}
       <div className="sticky top-0 z-10 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b">
         <div className="container max-w-2xl mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <Button variant="ghost" size="icon" onClick={handleBack}>
+            <Button variant="ghost" size="icon" onClick={() => navigate(-1)}>
               <ArrowLeft className="h-5 w-5" />
             </Button>
             <ClipboardCheck className="h-6 w-6 text-primary" />
@@ -221,9 +207,7 @@ export default function CheckupDetail() {
               </>
             ) : (
               <>
-                <Button variant="outline" onClick={handleCancel}>
-                  Cancel
-                </Button>
+                <Button variant="outline" onClick={handleCancel}>Cancel</Button>
                 <Button onClick={handleSave}>Save</Button>
               </>
             )}
@@ -231,9 +215,7 @@ export default function CheckupDetail() {
         </div>
       </div>
       
-      {/* Content */}
       <div className="container max-w-2xl mx-auto px-4 py-6 space-y-6">
-        {/* Date Card */}
         <Card>
           <CardContent className="pt-6">
             <div className="flex items-center gap-3">
@@ -255,13 +237,12 @@ export default function CheckupDetail() {
           </CardContent>
         </Card>
         
-        {/* Checkup Sections */}
         <Card>
           <CardHeader>
             <CardTitle>Health Assessment</CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
-            {/* Body Condition */}
+            {/* Body Condition Score */}
             <div className="space-y-2">
               <div className="flex justify-between items-center">
                 <Label>Body Condition Score</Label>
@@ -280,129 +261,120 @@ export default function CheckupDetail() {
               )}
             </div>
             
-            {/* Skin & Coat */}
+            {/* Ears */}
             <div className="space-y-2">
-              <div className="flex justify-between items-center">
-                <Label>Skin & Coat</Label>
-                <span className={`text-sm font-medium ${getScoreColor(isEditing ? editForm.skin_coat_score : checkup.skin_coat_score)}`}>
-                  {getScoreLabel(isEditing ? editForm.skin_coat_score : checkup.skin_coat_score)} ({isEditing ? editForm.skin_coat_score : checkup.skin_coat_score}/5)
-                </span>
-              </div>
+              <Label>Ear Condition</Label>
               {isEditing ? (
                 <>
-                  <Slider
-                    value={[editForm.skin_coat_score]}
-                    onValueChange={(value) => setEditForm({ ...editForm, skin_coat_score: value[0] })}
-                    min={1}
-                    max={5}
-                    step={1}
+                  <Input
+                    placeholder="e.g., Normal, Clean"
+                    value={editForm.ear_condition}
+                    onChange={(e) => setEditForm({ ...editForm, ear_condition: e.target.value })}
                   />
                   <Textarea
-                    placeholder="Notes about skin and coat..."
-                    value={editForm.skin_coat_notes}
-                    onChange={(e) => setEditForm({ ...editForm, skin_coat_notes: e.target.value })}
+                    placeholder="Notes about ears..."
+                    value={editForm.ear_notes}
+                    onChange={(e) => setEditForm({ ...editForm, ear_notes: e.target.value })}
                   />
                 </>
               ) : (
-                checkup.skin_coat_notes && <p className="text-sm text-muted-foreground">{checkup.skin_coat_notes}</p>
+                <>
+                  {checkup.ear_condition && <p className="text-sm">{checkup.ear_condition}</p>}
+                  {checkup.ear_notes && <p className="text-sm text-muted-foreground">{checkup.ear_notes}</p>}
+                </>
               )}
             </div>
             
-            {/* Body Condition */}
+            {/* Eyes */}
             <div className="space-y-2">
-              <div className="flex justify-between items-center">
-                <Label>Body Condition</Label>
-                <span className={`text-sm font-medium ${getScoreColor(isEditing ? editForm.body_condition_score : checkup.body_condition_score)}`}>
-                  {getScoreLabel(isEditing ? editForm.body_condition_score : checkup.body_condition_score)} ({isEditing ? editForm.body_condition_score : checkup.body_condition_score}/5)
-                </span>
-              </div>
+              <Label>Eye Condition</Label>
               {isEditing ? (
                 <>
-                  <Slider
-                    value={[editForm.body_condition_score]}
-                    onValueChange={(value) => setEditForm({ ...editForm, body_condition_score: value[0] })}
-                    min={1}
-                    max={5}
-                    step={1}
+                  <Input
+                    placeholder="e.g., Clear, Bright"
+                    value={editForm.eye_condition}
+                    onChange={(e) => setEditForm({ ...editForm, eye_condition: e.target.value })}
                   />
                   <Textarea
-                    placeholder="Notes about body condition..."
-                    value={editForm.body_condition_notes}
-                    onChange={(e) => setEditForm({ ...editForm, body_condition_notes: e.target.value })}
+                    placeholder="Notes about eyes..."
+                    value={editForm.eye_notes}
+                    onChange={(e) => setEditForm({ ...editForm, eye_notes: e.target.value })}
                   />
                 </>
               ) : (
-                checkup.body_condition_notes && <p className="text-sm text-muted-foreground">{checkup.body_condition_notes}</p>
+                <>
+                  {checkup.eye_condition && <p className="text-sm">{checkup.eye_condition}</p>}
+                  {checkup.eye_notes && <p className="text-sm text-muted-foreground">{checkup.eye_notes}</p>}
+                </>
               )}
             </div>
             
-            {/* Teeth & Gums */}
+            {/* Skin */}
             <div className="space-y-2">
-              <div className="flex justify-between items-center">
-                <Label>Teeth & Gums</Label>
-                <span className={`text-sm font-medium ${getScoreColor(isEditing ? editForm.teeth_gums_score : checkup.teeth_gums_score)}`}>
-                  {getScoreLabel(isEditing ? editForm.teeth_gums_score : checkup.teeth_gums_score)} ({isEditing ? editForm.teeth_gums_score : checkup.teeth_gums_score}/5)
-                </span>
-              </div>
+              <Label>Skin Condition</Label>
               {isEditing ? (
                 <>
-                  <Slider
-                    value={[editForm.teeth_gums_score]}
-                    onValueChange={(value) => setEditForm({ ...editForm, teeth_gums_score: value[0] })}
-                    min={1}
-                    max={5}
-                    step={1}
+                  <Input
+                    placeholder="e.g., Healthy, No issues"
+                    value={editForm.skin_condition}
+                    onChange={(e) => setEditForm({ ...editForm, skin_condition: e.target.value })}
                   />
                   <Textarea
-                    placeholder="Notes about teeth and gums..."
-                    value={editForm.teeth_gums_notes}
-                    onChange={(e) => setEditForm({ ...editForm, teeth_gums_notes: e.target.value })}
+                    placeholder="Notes about skin..."
+                    value={editForm.skin_notes}
+                    onChange={(e) => setEditForm({ ...editForm, skin_notes: e.target.value })}
                   />
                 </>
               ) : (
-                checkup.teeth_gums_notes && <p className="text-sm text-muted-foreground">{checkup.teeth_gums_notes}</p>
-              )}
-            </div>
-            
-            {/* Behavior & Energy */}
-            <div className="space-y-2">
-              <div className="flex justify-between items-center">
-                <Label>Behavior & Energy</Label>
-                <span className={`text-sm font-medium ${getScoreColor(isEditing ? editForm.behavior_energy_score : checkup.behavior_energy_score)}`}>
-                  {getScoreLabel(isEditing ? editForm.behavior_energy_score : checkup.behavior_energy_score)} ({isEditing ? editForm.behavior_energy_score : checkup.behavior_energy_score}/5)
-                </span>
-              </div>
-              {isEditing ? (
                 <>
-                  <Slider
-                    value={[editForm.behavior_energy_score]}
-                    onValueChange={(value) => setEditForm({ ...editForm, behavior_energy_score: value[0] })}
-                    min={1}
-                    max={5}
-                    step={1}
-                  />
-                  <Textarea
-                    placeholder="Notes about behavior and energy..."
-                    value={editForm.behavior_energy_notes}
-                    onChange={(e) => setEditForm({ ...editForm, behavior_energy_notes: e.target.value })}
-                  />
+                  {checkup.skin_condition && <p className="text-sm">{checkup.skin_condition}</p>}
+                  {checkup.skin_notes && <p className="text-sm text-muted-foreground">{checkup.skin_notes}</p>}
                 </>
-              ) : (
-                checkup.behavior_energy_notes && <p className="text-sm text-muted-foreground">{checkup.behavior_energy_notes}</p>
               )}
             </div>
             
-            {/* Lumps & Bumps */}
+            {/* Lumps */}
             <div className="space-y-2">
-              <Label>Lumps & Bumps</Label>
+              <div className="flex items-center gap-2">
+                {isEditing ? (
+                  <>
+                    <Checkbox
+                      checked={editForm.lumps_found}
+                      onCheckedChange={(checked) => setEditForm({ ...editForm, lumps_found: checked as boolean })}
+                    />
+                    <Label>Lumps or bumps found</Label>
+                  </>
+                ) : (
+                  <>
+                    <Label>Lumps Found:</Label>
+                    <span className="text-sm">{checkup.lumps_found ? "Yes" : "No"}</span>
+                  </>
+                )}
+              </div>
+              {(isEditing || checkup.lump_notes) && (
+                isEditing ? (
+                  <Textarea
+                    placeholder="Details about any lumps..."
+                    value={editForm.lump_notes}
+                    onChange={(e) => setEditForm({ ...editForm, lump_notes: e.target.value })}
+                  />
+                ) : (
+                  checkup.lump_notes && <p className="text-sm text-muted-foreground">{checkup.lump_notes}</p>
+                )
+              )}
+            </div>
+            
+            {/* Behavior Changes */}
+            <div className="space-y-2">
+              <Label>Behavior Changes</Label>
               {isEditing ? (
                 <Textarea
-                  placeholder="Any lumps or bumps found..."
-                  value={editForm.lumps_bumps_notes}
-                  onChange={(e) => setEditForm({ ...editForm, lumps_bumps_notes: e.target.value })}
+                  placeholder="Any behavioral observations..."
+                  value={editForm.behavior_changes}
+                  onChange={(e) => setEditForm({ ...editForm, behavior_changes: e.target.value })}
                 />
               ) : (
-                checkup.lumps_bumps_notes && <p className="text-sm text-muted-foreground">{checkup.lumps_bumps_notes}</p>
+                checkup.behavior_changes && <p className="text-sm">{checkup.behavior_changes}</p>
               )}
             </div>
             
@@ -416,14 +388,13 @@ export default function CheckupDetail() {
                   onChange={(e) => setEditForm({ ...editForm, overall_notes: e.target.value })}
                 />
               ) : (
-                checkup.overall_notes && <p className="text-sm text-muted-foreground">{checkup.overall_notes}</p>
+                checkup.overall_notes && <p className="text-sm">{checkup.overall_notes}</p>
               )}
             </div>
           </CardContent>
         </Card>
       </div>
       
-      {/* Delete Dialog */}
       <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
         <AlertDialogContent>
           <AlertDialogHeader>
