@@ -265,8 +265,39 @@ export function useWellnessTimeline(dogId: string) {
         });
       });
 
-      // Limit to recent days if not showing full timeline
-      const filteredDays = showFullTimeline ? timelineDays : timelineDays.slice(0, 10);
+      // Limit to max 3 days or 10 entries (whichever comes first) if not showing full timeline
+      let filteredDays = timelineDays;
+      if (!showFullTimeline) {
+        // Take first 3 days
+        const first3Days = timelineDays.slice(0, 3);
+        
+        // Count total entries in those 3 days
+        const totalEntries = first3Days.reduce((sum, day) => sum + day.events.length, 0);
+        
+        // If more than 10 entries, cut it down
+        if (totalEntries > 10) {
+          filteredDays = [];
+          let entriesCount = 0;
+          for (const day of timelineDays) {
+            const remainingSlots = 10 - entriesCount;
+            if (remainingSlots <= 0) break;
+            
+            if (day.events.length <= remainingSlots) {
+              filteredDays.push(day);
+              entriesCount += day.events.length;
+            } else {
+              // Add partial day
+              filteredDays.push({
+                ...day,
+                events: day.events.slice(0, remainingSlots)
+              });
+              entriesCount += remainingSlots;
+            }
+          }
+        } else {
+          filteredDays = first3Days;
+        }
+      }
 
       setTimelineData(filteredDays);
       setLoading(false);

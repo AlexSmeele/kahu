@@ -16,8 +16,19 @@ const Index = () => {
   const [isQuickActionOpen, setIsQuickActionOpen] = useState(false);
   const [isUserTyping, setIsUserTyping] = useState(false);
   const [selectedDogId, setSelectedDogId] = useState<string>('');
+  const [showFullTimeline, setShowFullTimeline] = useState(false);
   const { user, session } = useAuth();
   const { dogs, loading } = useDogs();
+
+  // Check URL for full-timeline param
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('tab') === 'full-timeline') {
+      setShowFullTimeline(true);
+      const dogId = params.get('dog');
+      if (dogId) setSelectedDogId(dogId);
+    }
+  }, []);
 
   logger.info('Index: Component rendered', { 
     activeTab, 
@@ -47,7 +58,13 @@ const Index = () => {
   }
 
   const renderActiveScreen = () => {
-    logger.debug('Index: Rendering screen', { activeTab, selectedDogId });
+    logger.debug('Index: Rendering screen', { activeTab, selectedDogId, showFullTimeline });
+    
+    // Import FullTimeline lazily
+    if (showFullTimeline) {
+      const FullTimeline = require('@/pages/FullTimeline').default;
+      return <FullTimeline selectedDogId={selectedDogId} />;
+    }
     
     switch (activeTab) {
       case 'home':

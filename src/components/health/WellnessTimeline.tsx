@@ -54,6 +54,9 @@ export function WellnessTimeline({ dogId }: WellnessTimelineProps) {
   const now = new Date();
   const pastDays = timelineData.filter(day => day.date <= now);
   const upcomingDays = timelineData.filter(day => day.date > now);
+  
+  // Check if there's more data to show
+  const hasMoreData = !showFullTimeline;
 
   return (
     <div className="space-y-8">
@@ -91,10 +94,10 @@ export function WellnessTimeline({ dogId }: WellnessTimelineProps) {
       )}
 
       {/* View Full Timeline Button */}
-      {!showFullTimeline && timelineData.length > 10 && (
+      {hasMoreData && (
         <Button
           variant="outline"
-          onClick={() => setShowFullTimeline(true)}
+          onClick={() => window.location.href = `/?tab=full-timeline&dog=${dogId}`}
           className="w-full"
         >
           <ChevronDown className="w-4 h-4 mr-2" />
