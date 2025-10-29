@@ -121,7 +121,6 @@ export function TimelineEventCard({ event, onClick, isLast = false, isToday = fa
                   <div key={idx} className="flex items-center gap-1.5">
                     {metric.icon && <metric.icon className="w-3.5 h-3.5 text-muted-foreground/60" />}
                     <span className="font-semibold text-foreground">{metric.value}</span>
-                    <span className="text-muted-foreground/80">{metric.label}</span>
                   </div>
                 ))}
               </div>
