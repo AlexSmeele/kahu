@@ -27,8 +27,8 @@ const historicalActivities = [
 ];
 
 const historicalMeals = [
-  ...generateHistoricalMealRecords(MOCK_DOG_IDS.SUKI, '00000000-0000-0000-0000-000000000041', 200, 6),
-  ...generateHistoricalMealRecords(MOCK_DOG_IDS.JETT, '00000000-0000-0000-0000-000000000042', 300, 6),
+  ...generateHistoricalMealRecords(MOCK_DOG_IDS.SUKI, '00000000-0000-0000-0000-000000000051', 200, 6),
+  ...generateHistoricalMealRecords(MOCK_DOG_IDS.JETT, '00000000-0000-0000-0000-000000000052', 300, 6),
 ];
 
 const historicalWeights = [
@@ -777,7 +777,7 @@ export const MOCK_MEAL_RECORDS: any[] = [
   {
     id: '00000000-0000-0000-0000-000000000121',
     dog_id: MOCK_DOG_IDS.SUKI,
-    nutrition_plan_id: '00000000-0000-0000-0000-000000000041',
+    nutrition_plan_id: '00000000-0000-0000-0000-000000000051',
     meal_time: '08:30',
     meal_name: 'Breakfast',
     scheduled_date: '2025-10-22',
@@ -790,7 +790,7 @@ export const MOCK_MEAL_RECORDS: any[] = [
   {
     id: '00000000-0000-0000-0000-000000000122',
     dog_id: MOCK_DOG_IDS.SUKI,
-    nutrition_plan_id: '00000000-0000-0000-0000-000000000041',
+    nutrition_plan_id: '00000000-0000-0000-0000-000000000051',
     meal_time: '08:30',
     meal_name: 'Breakfast',
     scheduled_date: '2025-10-21',
@@ -803,7 +803,7 @@ export const MOCK_MEAL_RECORDS: any[] = [
   {
     id: '00000000-0000-0000-0000-000000000123',
     dog_id: MOCK_DOG_IDS.SUKI,
-    nutrition_plan_id: '00000000-0000-0000-0000-000000000041',
+    nutrition_plan_id: '00000000-0000-0000-0000-000000000051',
     meal_time: '08:30',
     meal_name: 'Breakfast',
     scheduled_date: '2025-10-20',
@@ -817,7 +817,7 @@ export const MOCK_MEAL_RECORDS: any[] = [
   {
     id: '00000000-0000-0000-0000-000000000124',
     dog_id: MOCK_DOG_IDS.JETT,
-    nutrition_plan_id: '00000000-0000-0000-0000-000000000042',
+    nutrition_plan_id: '00000000-0000-0000-0000-000000000052',
     meal_time: '07:30',
     meal_name: 'Breakfast',
     scheduled_date: '2025-10-22',
@@ -830,7 +830,7 @@ export const MOCK_MEAL_RECORDS: any[] = [
   {
     id: '00000000-0000-0000-0000-000000000125',
     dog_id: MOCK_DOG_IDS.JETT,
-    nutrition_plan_id: '00000000-0000-0000-0000-000000000042',
+    nutrition_plan_id: '00000000-0000-0000-0000-000000000052',
     meal_time: '17:30',
     meal_name: 'Dinner',
     scheduled_date: '2025-10-21',
@@ -843,7 +843,7 @@ export const MOCK_MEAL_RECORDS: any[] = [
   {
     id: '00000000-0000-0000-0000-000000000126',
     dog_id: MOCK_DOG_IDS.JETT,
-    nutrition_plan_id: '00000000-0000-0000-0000-000000000042',
+    nutrition_plan_id: '00000000-0000-0000-0000-000000000052',
     meal_time: '07:30',
     meal_name: 'Breakfast',
     scheduled_date: '2025-10-21',

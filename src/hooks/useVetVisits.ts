@@ -34,7 +34,7 @@ export function useVetVisits(dogId?: string) {
     // Return mock data for dev mode
     if (isMockDogId(dogId)) {
       const mockRecords = MOCK_HEALTH_RECORDS.filter(r => 
-        r.dog_id === dogId && r.record_type === 'visit'
+        r.dog_id === dogId && r.record_type === 'vet_visit'
       );
       
       const convertedVisits: VetVisit[] = mockRecords.map(record => {

@@ -42,11 +42,10 @@ export function useMealTracking(dogId?: string, nutritionPlanId?: string) {
       return;
     }
 
-    // Return ALL mock data for dev mode (not just today)
+    // Return ALL mock data for dev mode (not just today, ignore nutrition_plan_id mismatch)
     if (isMockDogId(dogId)) {
       const mockRecords = MOCK_MEAL_RECORDS.filter(r => 
-        r.dog_id === dogId && 
-        r.nutrition_plan_id === nutritionPlanId
+        r.dog_id === dogId
       );
       setMealRecords(mockRecords);
       setLoading(false);

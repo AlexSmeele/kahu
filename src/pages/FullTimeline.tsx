@@ -15,7 +15,12 @@ export default function FullTimeline() {
   const location = window.location;
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const verticalScrollRef = useRef<HTMLDivElement>(null);
-  const { timelineData: rawTimelineData, loading } = useWellnessTimeline(dogId || '');
+  const { timelineData: rawTimelineData, loading, setShowFullTimeline } = useWellnessTimeline(dogId || '');
+  
+  // Enable full timeline view (no 12-entry cap)
+  useEffect(() => {
+    setShowFullTimeline(true);
+  }, [setShowFullTimeline]);
   
   // Reverse timeline data so past dates are on the left in horizontal scroll
   const timelineData = [...rawTimelineData].reverse();
