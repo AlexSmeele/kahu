@@ -13,6 +13,7 @@ import { HealthCheckupModal } from "@/components/health/HealthCheckupModal";
 import { TimelineQuickActions } from "@/components/health/TimelineQuickActions";
 import { WellnessTimeline } from "@/components/health/WellnessTimeline";
 import { ActivityRecordModal } from "@/components/home/ActivityRecordModal";
+import { useWellnessTimeline } from "@/hooks/useWellnessTimeline";
 
 interface WellnessScreenProps {
   selectedDogId: string;
@@ -32,19 +33,23 @@ export function WellnessScreen({ selectedDogId, onDogChange }: WellnessScreenPro
   const currentDog = dogs.find(dog => dog.id === selectedDogId) || dogs[0];
   const location = useLocation();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const { loading: timelineLoading } = useWellnessTimeline(selectedDogId);
 
   useEffect(() => {
     const state = location.state as any;
-    if (state?.scrollPosition !== undefined && scrollContainerRef.current) {
+    if (state?.scrollPosition !== undefined && scrollContainerRef.current && !timelineLoading) {
+      // Double RAF to ensure content is fully rendered
       requestAnimationFrame(() => {
-        scrollContainerRef.current?.scrollTo({
-          top: state.scrollPosition,
-          behavior: 'instant'
+        requestAnimationFrame(() => {
+          scrollContainerRef.current?.scrollTo({
+            top: state.scrollPosition,
+            behavior: 'instant'
+          });
         });
       });
       window.history.replaceState({}, document.title);
     }
-  }, [location.state]);
+  }, [location.state, timelineLoading]);
 
   return (
     <div className="flex flex-col h-full safe-top relative">
