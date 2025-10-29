@@ -15,6 +15,9 @@ import AccountSettings from "./pages/AccountSettings";
 import FullTimeline from "./pages/FullTimeline";
 import ActivityDetail from "./pages/ActivityDetail";
 import MealDetail from "./pages/MealDetail";
+import VetVisitDetail from "./pages/VetVisitDetail";
+import GroomingDetail from "./pages/GroomingDetail";
+import VaccinationDetail from "./pages/VaccinationDetail";
 import NotFound from "./pages/NotFound";
 import { PasswordGate } from "@/components/PasswordGate";
 import { logger } from "@/lib/logger";
@@ -85,6 +88,21 @@ const App = () => {
                     <Route path="/meal/:mealId" element={
                       <ProtectedRoute>
                         <MealDetail />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="/vet-visit/:visitId" element={
+                      <ProtectedRoute>
+                        <VetVisitDetail />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="/grooming/:groomingId" element={
+                      <ProtectedRoute>
+                        <GroomingDetail />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="/vaccination/:vaccinationId" element={
+                      <ProtectedRoute>
+                        <VaccinationDetail />
                       </ProtectedRoute>
                     } />
                     {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

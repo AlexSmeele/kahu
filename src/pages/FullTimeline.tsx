@@ -585,11 +585,19 @@ export default function FullTimeline() {
                                   event={event}
                                   isLast={eventIdx === events.length - 1 && timeOfDay === timeOrder[timeOrder.length - 1]}
                                   isToday={originalIndex === todayIndex}
-                                  onClick={() => {
-                                    if (event.type === 'activity' && event.metadata?.activityId) {
-                                      navigate(`/activity/${event.metadata.activityId}`);
-                                    }
-                                  }}
+                                   onClick={() => {
+                                     const routeMap: Record<string, string> = {
+                                       'activity': `/activity/${event.metadata?.activityId}`,
+                                       'meal': `/meal/${event.details?.id}`,
+                                       'vet_visit': `/vet-visit/${event.details?.id}`,
+                                       'grooming': `/grooming/${event.details?.id}`,
+                                       'vaccination': `/vaccination/${event.details?.id}`,
+                                     };
+                                     const route = routeMap[event.type];
+                                     if (route) {
+                                       navigate(route, { state: { dogId, from: `/full-timeline/${dogId}` } });
+                                     }
+                                   }}
                                 />
                               ))}
                             </div>
