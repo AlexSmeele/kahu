@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
+import { useLocation } from "react-router-dom";
 import { DogDropdown } from "@/components/dogs/DogDropdown";
 import { PageLogo } from "@/components/layout/PageLogo";
 import { useDogs } from "@/hooks/useDogs";
@@ -29,6 +30,21 @@ export function WellnessScreen({ selectedDogId, onDogChange }: WellnessScreenPro
   
   const { dogs } = useDogs();
   const currentDog = dogs.find(dog => dog.id === selectedDogId) || dogs[0];
+  const location = useLocation();
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const state = location.state as any;
+    if (state?.scrollPosition !== undefined && scrollContainerRef.current) {
+      requestAnimationFrame(() => {
+        scrollContainerRef.current?.scrollTo({
+          top: state.scrollPosition,
+          behavior: 'instant'
+        });
+      });
+      window.history.replaceState({}, document.title);
+    }
+  }, [location.state]);
 
   return (
     <div className="flex flex-col h-full safe-top relative">
@@ -38,7 +54,7 @@ export function WellnessScreen({ selectedDogId, onDogChange }: WellnessScreenPro
       </div>
 
       {/* Scrollable Content */}
-      <div className="flex-1 overflow-y-auto">
+      <div ref={scrollContainerRef} className="flex-1 overflow-y-auto">
         <div className="p-4 space-y-6">
           {/* Quick Actions - Horizontal scrollable */}
           <TimelineQuickActions

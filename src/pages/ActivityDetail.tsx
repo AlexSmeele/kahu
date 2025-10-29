@@ -181,9 +181,12 @@ export default function ActivityDetail() {
   };
 
   const handleBack = () => {
-    const from = (location as any)?.state?.from as string | undefined;
+    const state = location.state as any;
+    const from = state?.from as string | undefined;
+    const scrollPosition = state?.scrollPosition;
+    
     if (from) {
-      navigate(from);
+      navigate(from, { state: { scrollPosition } });
       return;
     }
     if (window.history.length > 1) {

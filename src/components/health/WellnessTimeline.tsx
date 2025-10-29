@@ -29,7 +29,15 @@ export function WellnessTimeline({ dogId }: WellnessTimelineProps) {
     if (!event.metadata) return;
     
     if (event.type === 'activity' && event.metadata.activityId) {
-      navigate(`/activity/${event.metadata.activityId}`, { state: { dogId, from: '/?tab=wellness' } });
+      const scrollableContainer = document.querySelector('.overflow-y-auto');
+      const scrollPosition = scrollableContainer?.scrollTop || 0;
+      navigate(`/activity/${event.metadata.activityId}`, { 
+        state: { 
+          dogId, 
+          from: '/?tab=wellness',
+          scrollPosition 
+        } 
+      });
     } else if (event.details) {
       setSelectedEvent(event.details);
       setModalType(event.type);
@@ -119,7 +127,16 @@ export function WellnessTimeline({ dogId }: WellnessTimelineProps) {
         {hasMoreData && (
           <Button
             variant="outline"
-            onClick={() => navigate(`/full-timeline/${dogId}`, { state: { from: 'wellness' } })}
+            onClick={() => {
+              const scrollableContainer = document.querySelector('.overflow-y-auto');
+              const scrollPosition = scrollableContainer?.scrollTop || 0;
+              navigate(`/full-timeline/${dogId}`, { 
+                state: { 
+                  from: 'wellness',
+                  scrollPosition 
+                } 
+              });
+            }}
             className="w-full"
           >
             <Calendar className="w-4 h-4 mr-2" />
