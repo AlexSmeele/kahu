@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, Fragment } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ArrowLeft, ChevronLeft, ChevronRight, Activity, Heart, Utensils, Weight, Scissors, Stethoscope, Syringe, ClipboardCheck, Pill } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -64,15 +64,15 @@ export default function FullTimeline() {
           isFuture,
           isEmpty: false
         });
-      } else if (isFuture) {
-        // Add empty future dates
+      } else if (isFuture || isToday) {
+        // Add empty future dates and today even if it has no events
         allDates.push({
           date: new Date(current),
           label: isToday ? 'Today' : current.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
           events: [],
           isToday,
           isYesterday: false,
-          isFuture: true,
+          isFuture: isFuture,
           isEmpty: true
         });
       }
@@ -100,27 +100,35 @@ export default function FullTimeline() {
   
   const [selectedDayIndex, setSelectedDayIndex] = useState(defaultIndex);
 
-  // Auto-scroll to selected day in horizontal scroll
+  // Re-sync selectedDayIndex when data loads
+  useEffect(() => {
+    if (timelineData.length === 0) return;
+    if (selectedDayIndex < 0 || selectedDayIndex >= timelineData.length) {
+      setSelectedDayIndex(defaultIndex);
+    }
+  }, [timelineData.length, defaultIndex]);
+
+  // Auto-scroll to selected day in horizontal scroll - center it
   useEffect(() => {
     if (scrollContainerRef.current && selectedDayIndex >= 0 && timelineData.length > 0) {
-      // Add a small delay to ensure DOM is fully rendered
-      const timeoutId = setTimeout(() => {
-        const viewport = scrollContainerRef.current?.querySelector('[data-radix-scroll-area-viewport]') as HTMLElement;
-        const dayElements = scrollContainerRef.current?.querySelectorAll('[data-day-index]');
-        const targetElement = dayElements?.[selectedDayIndex] as HTMLElement;
-        
-        if (targetElement && viewport) {
-          // Calculate the scroll position to center the element
-          const targetLeft = targetElement.offsetLeft;
-          const targetWidth = targetElement.offsetWidth;
-          const viewportWidth = viewport.offsetWidth;
-          const scrollLeft = targetLeft - (viewportWidth / 2) + (targetWidth / 2);
+      // Use requestAnimationFrame to ensure layout is complete
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          const viewport = scrollContainerRef.current?.querySelector('[data-radix-scroll-area-viewport]') as HTMLElement;
+          const dayElements = scrollContainerRef.current?.querySelectorAll('[data-day-index]');
+          const targetElement = dayElements?.[selectedDayIndex] as HTMLElement;
           
-          viewport.scrollTo({ left: scrollLeft, behavior: 'smooth' });
-        }
-      }, 200);
-      
-      return () => clearTimeout(timeoutId);
+          if (targetElement && viewport) {
+            // Calculate precise scroll position using getBoundingClientRect
+            const viewportRect = viewport.getBoundingClientRect();
+            const targetRect = targetElement.getBoundingClientRect();
+            const offsetWithinViewport = targetRect.left - viewportRect.left;
+            const scrollLeft = viewport.scrollLeft + offsetWithinViewport - (viewportRect.width / 2) + (targetRect.width / 2);
+            
+            viewport.scrollTo({ left: scrollLeft, behavior: 'smooth' });
+          }
+        });
+      });
     }
   }, [selectedDayIndex, timelineData.length]);
 
@@ -457,9 +465,10 @@ export default function FullTimeline() {
                 // Check if this is the first day of a month
                 const isFirstOfMonth = day.date.getDate() === 1;
                 const monthLabel = day.date.toLocaleDateString('en-US', { month: 'short' });
+                const key = day.date.toISOString();
                 
                 return (
-                  <>
+                  <Fragment key={key}>
                     {isFirstOfMonth && (
                       <div className="flex items-center justify-center px-2 min-w-[60px]">
                         <div className="text-xs font-semibold text-primary uppercase tracking-wider">
@@ -468,7 +477,6 @@ export default function FullTimeline() {
                       </div>
                     )}
                     <button
-                      key={day.date.toISOString()}
                       data-day-index={index}
                       onClick={() => !isEmpty && setSelectedDayIndex(index)}
                       disabled={isEmpty}
@@ -499,7 +507,7 @@ export default function FullTimeline() {
                         )}
                       </div>
                     </button>
-                  </>
+                  </Fragment>
                 );
               })}
             </div>
