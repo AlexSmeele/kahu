@@ -568,7 +568,7 @@ export default function FullTimeline() {
                   >
                     {/* Day Header */}
                     <div className={cn(
-                      "flex items-center gap-3 mb-3 sticky top-0 py-2.5 px-3 -mx-3 z-10 rounded-lg",
+                      "flex items-center gap-3 mb-3 sticky top-0 py-2.5 px-3 -mx-3 z-20 rounded-lg",
                       "bg-background/90 backdrop-blur-xl supports-[backdrop-filter]:bg-background/80",
                       "border-l-4 transition-all duration-200",
                       isSelectedDate 
