@@ -100,7 +100,19 @@ export default function FullTimeline() {
   // Default to today if it exists, otherwise the last date (most recent)
   const defaultIndex = todayIndex >= 0 ? todayIndex : timelineData.length - 1;
   
-  const [selectedDayIndex, setSelectedDayIndex] = useState(defaultIndex);
+  // Initialize selectedDayIndex from sessionStorage if available
+  const getInitialDayIndex = () => {
+    const savedPosition = sessionStorage.getItem(`timeline-position-${dogId}`);
+    if (savedPosition !== null) {
+      const savedIndex = parseInt(savedPosition, 10);
+      if (savedIndex >= 0 && savedIndex < timelineData.length) {
+        return savedIndex;
+      }
+    }
+    return defaultIndex;
+  };
+  
+  const [selectedDayIndex, setSelectedDayIndex] = useState(getInitialDayIndex());
 
   // Re-sync selectedDayIndex when data loads
   useEffect(() => {
@@ -177,6 +189,7 @@ export default function FullTimeline() {
           const dayIndex = parseInt(topEntry.target.getAttribute('data-vertical-day-index') || '-1');
           if (dayIndex >= 0 && dayIndex !== selectedDayIndex) {
             setSelectedDayIndex(dayIndex);
+            sessionStorage.setItem(`timeline-position-${dogId}`, dayIndex.toString());
           }
         }
       },
@@ -209,7 +222,8 @@ export default function FullTimeline() {
   };
 
   const handleBackClick = () => {
-    // Navigate to home with wellness tab selected
+    // Clear saved position when navigating back to home
+    sessionStorage.removeItem(`timeline-position-${dogId}`);
     navigate('/?tab=wellness');
   };
   
@@ -685,8 +699,11 @@ export default function FullTimeline() {
                                   key={event.id} 
                                   event={event}
                                   isLast={eventIdx === events.length - 1 && timeOfDay === timeOrder[timeOrder.length - 1]}
-                                  isToday={originalIndex === todayIndex}
+                                   isToday={originalIndex === todayIndex}
                                    onClick={() => {
+                                     // Save current scroll position before navigating
+                                     sessionStorage.setItem(`timeline-position-${dogId}`, originalIndex.toString());
+                                     
                                      const routeMap: Record<string, string> = {
                                        'activity': `/activity/${event.metadata?.activityId}`,
                                        'meal': `/meal/${event.details?.id}`,
