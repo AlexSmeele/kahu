@@ -60,7 +60,7 @@ export function HealthScreen({ selectedDogId, onDogChange }: HealthScreenProps) 
 
           {/* Timeline Section */}
           <div>
-            <h2 className="text-xl font-semibold mb-4">Activity Timeline</h2>
+            <h2 className="text-xl font-semibold mb-4">Timeline</h2>
             <WellnessTimeline dogId={selectedDogId} />
           </div>
         </div>

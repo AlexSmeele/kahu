@@ -44,9 +44,9 @@ export function WellnessTimeline({ dogId }: WellnessTimelineProps) {
     return (
       <div className="text-center py-12">
         <Calendar className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
-        <h3 className="text-lg font-semibold mb-2">No Activity Yet</h3>
+        <h3 className="text-lg font-semibold mb-2">No Timeline Activity Yet</h3>
         <p className="text-sm text-muted-foreground mb-4">
-          Start tracking your dog's wellness activities to see them here
+          Start tracking your dog's activities, meals, and health records to see them here
         </p>
       </div>
     );
