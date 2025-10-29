@@ -13,6 +13,8 @@ import { EditActivityGoalModal } from "@/components/home/EditActivityGoalModal";
 import { useHomeData } from "@/hooks/useHomeData";
 import { useActivity } from "@/hooks/useActivity";
 import { Skeleton } from "@/components/ui/skeleton";
+import { User } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import type { TabType } from "@/components/layout/BottomNavigation";
 
 interface HomeScreenProps {
@@ -57,6 +59,17 @@ export function HomeScreen({ selectedDogId, onDogChange, onTabChange }: HomeScre
         <div className="pt-16">
           <DogDropdown selectedDogId={selectedDogId} onDogChange={onDogChange} />
           <PageLogo />
+          
+          {/* Profile Icon */}
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => onTabChange('profile')}
+            className="absolute top-4 right-4 rounded-full w-10 h-10"
+            aria-label="Profile"
+          >
+            <User className="w-5 h-5" />
+          </Button>
         </div>
 
           <div className="container py-4 space-y-4">

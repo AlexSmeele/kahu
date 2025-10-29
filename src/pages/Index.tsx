@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { HomeScreen } from "@/components/screens/HomeScreen";
 import { TricksScreen } from "@/components/screens/TricksScreen";
 import { HealthScreen } from "@/components/screens/HealthScreen";
-import { NutritionScreen } from "@/components/screens/NutritionScreen";
 import { ProfileScreen } from "@/components/screens/ProfileScreen";
 import { BottomNavigation, TabType } from "@/components/layout/BottomNavigation";
 import { QuickActionModal } from "@/components/layout/QuickActionModal";
@@ -57,8 +56,6 @@ const Index = () => {
         return <TricksScreen selectedDogId={selectedDogId} onDogChange={setSelectedDogId} />;
       case 'health':
         return <HealthScreen selectedDogId={selectedDogId} onDogChange={setSelectedDogId} />;
-      case 'nutrition':
-        return <NutritionScreen selectedDogId={selectedDogId} onDogChange={setSelectedDogId} />;
       case 'profile':
         return <ProfileScreen />;
       default:
