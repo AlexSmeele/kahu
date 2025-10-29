@@ -42,20 +42,19 @@ export function useMealTracking(dogId?: string, nutritionPlanId?: string) {
       return;
     }
 
-    const targetDate = date || new Date();
-    const dateString = format(targetDate, 'yyyy-MM-dd');
-
-    // Return mock data for dev mode
+    // Return ALL mock data for dev mode (not just today)
     if (isMockDogId(dogId)) {
       const mockRecords = MOCK_MEAL_RECORDS.filter(r => 
         r.dog_id === dogId && 
-        r.nutrition_plan_id === nutritionPlanId &&
-        r.scheduled_date === dateString
+        r.nutrition_plan_id === nutritionPlanId
       );
       setMealRecords(mockRecords);
       setLoading(false);
       return;
     }
+
+    const targetDate = date || new Date();
+    const dateString = format(targetDate, 'yyyy-MM-dd');
 
     try {
       const { data, error } = await supabase

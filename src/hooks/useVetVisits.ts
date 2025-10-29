@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
+import { MOCK_HEALTH_RECORDS, isMockDogId } from '@/lib/mockData';
 
 export interface VetVisit {
   id: string;
@@ -15,6 +16,7 @@ export interface VetVisit {
   notes?: string;
   followUpDate?: Date;
   cost?: number;
+  title?: string;
 }
 
 export function useVetVisits(dogId?: string) {
@@ -25,6 +27,35 @@ export function useVetVisits(dogId?: string) {
 
   const fetchVetVisits = async () => {
     if (!user || !dogId) {
+      setLoading(false);
+      return;
+    }
+
+    // Return mock data for dev mode
+    if (isMockDogId(dogId)) {
+      const mockRecords = MOCK_HEALTH_RECORDS.filter(r => 
+        r.dog_id === dogId && r.record_type === 'visit'
+      );
+      
+      const convertedVisits: VetVisit[] = mockRecords.map(record => {
+        const visitData = (() => { try { return record.notes ? JSON.parse(record.notes) : {}; } catch { return {}; } })();
+        return {
+          id: record.id,
+          date: new Date(record.date),
+          type: visitData.type || 'routine',
+          veterinarian: record.veterinarian || visitData.veterinarian || '',
+          clinic: visitData.clinic || '',
+          reason: visitData.reason || record.title,
+          diagnosis: record.description || visitData.diagnosis,
+          treatment: visitData.treatment,
+          notes: visitData.notes,
+          followUpDate: visitData.followUpDate ? new Date(visitData.followUpDate) : undefined,
+          cost: visitData.cost,
+          title: record.title,
+        };
+      });
+      
+      setVisits(convertedVisits);
       setLoading(false);
       return;
     }
@@ -54,6 +85,7 @@ export function useVetVisits(dogId?: string) {
           notes: visitData.notes,
           followUpDate: visitData.followUpDate ? new Date(visitData.followUpDate) : undefined,
           cost: visitData.cost,
+          title: record.title,
         };
       });
 
