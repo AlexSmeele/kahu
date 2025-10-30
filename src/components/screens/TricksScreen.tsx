@@ -400,21 +400,27 @@ export function TricksScreen({ selectedDogId, onDogChange }: TricksScreenProps) 
 
         {/* Troubleshooting Tab */}
         <TabsContent value="troubleshooting" className="flex-1 overflow-y-auto min-h-0 m-0">
-          <div className="p-4 space-y-4">
-            <div className="bg-card rounded-2xl p-6 border-2 border-orange-500/20">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl flex items-center justify-center">
-                  <AlertCircle className="w-6 h-6 text-white" />
-                </div>
-                <div>
-                  <h2 className="text-xl font-bold">Troubleshooting</h2>
-                  <p className="text-sm text-muted-foreground">Common challenges & solutions</p>
+          <div className="p-4 space-y-3 pb-8">
+            {[
+              'Hyperactivity',
+              'Phobias',
+              'Excessive submission',
+              'Dog-to-dog aggression',
+              'Human-oriented aggression',
+              'Barking',
+              'Separation distress',
+              'House training',
+              'Destructive behaviour and bite inhibition'
+            ].map((lesson, index) => (
+              <div key={index} className="bg-card rounded-xl p-4 border-2 border-border hover:border-orange-500/50 transition-all cursor-pointer">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-orange-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <span className="text-white font-bold">{index + 1}</span>
+                  </div>
+                  <h3 className="font-semibold text-foreground">{lesson}</h3>
                 </div>
               </div>
-              <p className="text-muted-foreground">
-                Find solutions to common training challenges. Get help with specific behaviors and learn how to overcome obstacles in your training journey.
-              </p>
-            </div>
+            ))}
           </div>
         </TabsContent>
       </Tabs>
