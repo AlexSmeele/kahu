@@ -1,6 +1,17 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { MapContainer, TileLayer, Polyline, Marker, Popup } from "react-leaflet";
 import { ArrowLeft, Edit3, Trash2, Clock, MapPin, TrendingUp, Calendar, Navigation, Footprints, Zap, PlayCircle, GraduationCap, Moon, Dog, FileText, LucideIcon } from "lucide-react";
+import "leaflet/dist/leaflet.css";
+import L from "leaflet";
+
+// Fix for default marker icon in react-leaflet
+delete (L.Icon.Default.prototype as any)._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png",
+  iconUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png",
+  shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
+});
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -393,18 +404,43 @@ export default function ActivityDetail() {
           </CardContent>
         </Card>
 
-        {/* GPS Map Placeholder */}
-        {activity.gps_data && (
+        {/* GPS Map */}
+        {activity.gps_data?.route && activity.gps_data.route.length > 0 && (
           <Card>
             <CardHeader>
               <CardTitle>Route Map</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="aspect-video bg-muted rounded-lg flex items-center justify-center">
-                <div className="text-center text-muted-foreground">
-                  <MapPin className="h-12 w-12 mx-auto mb-2 opacity-50" />
-                  <p className="text-sm">Map view coming soon</p>
-                </div>
+              <div className="h-[400px] rounded-lg overflow-hidden">
+                <MapContainer
+                  center={[activity.gps_data.route[0].lat, activity.gps_data.route[0].lng]}
+                  zoom={15}
+                  style={{ height: "100%", width: "100%" }}
+                >
+                  <TileLayer
+                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  />
+                  <Polyline
+                    positions={activity.gps_data.route.map((pos: any) => [pos.lat, pos.lng] as [number, number])}
+                    color="#8b5cf6"
+                    weight={4}
+                    opacity={0.8}
+                  />
+                  <Marker position={[activity.gps_data.route[0].lat, activity.gps_data.route[0].lng]}>
+                    <Popup>Start</Popup>
+                  </Marker>
+                  {activity.gps_data.route.length > 1 && (
+                    <Marker
+                      position={[
+                        activity.gps_data.route[activity.gps_data.route.length - 1].lat,
+                        activity.gps_data.route[activity.gps_data.route.length - 1].lng,
+                      ]}
+                    >
+                      <Popup>End</Popup>
+                    </Marker>
+                  )}
+                </MapContainer>
               </div>
             </CardContent>
           </Card>

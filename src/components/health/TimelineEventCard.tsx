@@ -1,17 +1,22 @@
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, Map } from "lucide-react";
 import { TimelineEvent } from "@/hooks/useWellnessTimeline";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useNavigate } from "react-router-dom";
 
 interface TimelineEventCardProps {
   event: TimelineEvent;
   onClick?: () => void;
+  onMapClick?: () => void;
   isLast?: boolean;
   isToday?: boolean;
+  hasGpsData?: boolean;
 }
 
-export function TimelineEventCard({ event, onClick, isLast = false, isToday = false }: TimelineEventCardProps) {
+export function TimelineEventCard({ event, onClick, onMapClick, isLast = false, isToday = false, hasGpsData = false }: TimelineEventCardProps) {
   const Icon = event.icon;
+  const navigate = useNavigate();
   
   const getIconBgColor = () => {
     switch (event.status) {
@@ -140,6 +145,23 @@ export function TimelineEventCard({ event, onClick, isLast = false, isToday = fa
               </Badge>
             )}
           </div>
+
+          {/* Map button for GPS activities */}
+          {hasGpsData && (
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-8 w-8 p-0 flex-shrink-0"
+              onClick={(e) => {
+                e.stopPropagation();
+                if (onMapClick) {
+                  onMapClick();
+                }
+              }}
+            >
+              <Map className="h-4 w-4 text-primary" />
+            </Button>
+          )}
 
           {/* Chevron - Subtle */}
           <ChevronRight className={cn(

@@ -5,6 +5,7 @@ import { TimelineEventCard } from "./TimelineEventCard";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { VetVisitDetailModal } from "./VetVisitDetailModal";
 import { GroomingDetailModal } from "./GroomingDetailModal";
 import { CheckupDetailModal } from "./CheckupDetailModal";
@@ -12,6 +13,7 @@ import { VaccinationDetailModal } from "./VaccinationDetailModal";
 import { WeightDetailModal } from "./WeightDetailModal";
 import { TreatmentDetailModal } from "./TreatmentDetailModal";
 import { InjuryDetailModal } from "./InjuryDetailModal";
+import { WalkMapViewer } from "./WalkMapViewer";
 
 interface WellnessTimelineProps {
   dogId: string;
@@ -23,6 +25,7 @@ export function WellnessTimeline({ dogId }: WellnessTimelineProps) {
   const location = useLocation();
   const [selectedEvent, setSelectedEvent] = useState<any>(null);
   const [modalType, setModalType] = useState<string | null>(null);
+  const [showMapViewer, setShowMapViewer] = useState(false);
 
   const handleEventClick = (event: any) => {
     if (event.type === 'activity' && event.metadata?.activityId) {
@@ -138,6 +141,8 @@ export function WellnessTimeline({ dogId }: WellnessTimelineProps) {
                       key={event.id} 
                       event={event}
                       onClick={() => handleEventClick(event)}
+                      onMapClick={() => setShowMapViewer(true)}
+                      hasGpsData={event.type === 'activity' && !!event.metadata?.activityId}
                     />
                   ))}
                 </div>
@@ -184,6 +189,8 @@ export function WellnessTimeline({ dogId }: WellnessTimelineProps) {
                       key={event.id} 
                       event={event}
                       onClick={() => handleEventClick(event)}
+                      onMapClick={() => setShowMapViewer(true)}
+                      hasGpsData={event.type === 'activity' && !!event.metadata?.activityId}
                     />
                   ))}
                 </div>
@@ -192,6 +199,16 @@ export function WellnessTimeline({ dogId }: WellnessTimelineProps) {
           </div>
         )}
       </div>
+
+      {/* Walk Map Viewer */}
+      <Dialog open={showMapViewer} onOpenChange={setShowMapViewer}>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Walk Map Viewer</DialogTitle>
+          </DialogHeader>
+          <WalkMapViewer dogId={dogId} />
+        </DialogContent>
+      </Dialog>
 
       {/* Detail Modals */}
       {selectedEvent && modalType === 'vet_visit' && (
