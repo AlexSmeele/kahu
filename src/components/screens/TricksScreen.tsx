@@ -400,27 +400,65 @@ export function TricksScreen({ selectedDogId, onDogChange }: TricksScreenProps) 
 
         {/* Troubleshooting Tab */}
         <TabsContent value="troubleshooting" className="flex-1 overflow-y-auto min-h-0 m-0">
-          <div className="p-4 space-y-3 pb-8">
-            {[
-              'Hyperactivity',
-              'Phobias',
-              'Excessive submission',
-              'Dog-to-dog aggression',
-              'Human-oriented aggression',
-              'Barking',
-              'Separation distress',
-              'House training',
-              'Destructive behaviour and bite inhibition'
-            ].map((lesson, index) => (
-              <div key={index} className="bg-card rounded-xl p-4 border-2 border-border hover:border-orange-500/50 transition-all cursor-pointer">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-orange-600 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <AlertCircle className="w-5 h-5 text-white" />
+          <div className="p-4 space-y-6 pb-8">
+            <div className="space-y-4">
+              {/* Section Header */}
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center">
+                  <span className="text-white text-sm font-bold">B</span>
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center justify-between">
+                    <h2 className="text-xl font-bold text-orange-700">Behavior Issues</h2>
+                    <span className="text-sm text-muted-foreground">
+                      0/9
+                    </span>
                   </div>
-                  <h3 className="font-semibold text-foreground">{lesson}</h3>
+                  <Progress value={0} className="h-2 mt-1" />
                 </div>
               </div>
-            ))}
+
+              {/* Lessons Grid */}
+              <div className="grid gap-4">
+                {[
+                  { name: 'Hyperactivity', description: 'Learn techniques to manage and reduce hyperactive behavior in your dog.' },
+                  { name: 'Phobias', description: 'Address fears and phobias with systematic desensitization methods.' },
+                  { name: 'Excessive submission', description: 'Build confidence in overly submissive dogs through positive reinforcement.' },
+                  { name: 'Dog-to-dog aggression', description: 'Manage and modify aggressive behavior towards other dogs safely.' },
+                  { name: 'Human-oriented aggression', description: 'Address aggression towards people with professional guidance.' },
+                  { name: 'Barking', description: 'Control excessive barking and teach appropriate vocalization.' },
+                  { name: 'Separation distress', description: 'Help your dog feel secure when left alone.' },
+                  { name: 'House training', description: 'Master effective house training techniques for all ages.' },
+                  { name: 'Destructive behaviour and bite inhibition', description: 'Prevent destructive behaviors and teach gentle mouth control.' }
+                ].map((lesson, index) => (
+                  <div
+                    key={index}
+                    className="bg-card rounded-2xl p-4 border-2 border-border hover:border-orange-500/50 transition-all duration-200 hover:scale-105 cursor-pointer"
+                  >
+                    <div className="flex items-center gap-3 mb-3">
+                      <div className="w-12 h-12 bg-orange-500 rounded-xl flex items-center justify-center">
+                        <AlertCircle className="w-6 h-6 text-white" />
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="font-bold text-lg text-foreground">{lesson.name}</h3>
+                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                          <span>Behavioral</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <p className="text-sm text-muted-foreground mb-3 line-clamp-2">{lesson.description}</p>
+
+                    {/* Action Button */}
+                    <Button 
+                      className="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-bold py-3 rounded-xl"
+                    >
+                      Start Lesson
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </TabsContent>
       </Tabs>
