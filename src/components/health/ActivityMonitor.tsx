@@ -111,10 +111,11 @@ export function ActivityMonitor({ dogId }: ActivityMonitorProps) {
               </span>
             </div>
             <Progress value={progressPercentage} className="h-2" />
-            <div className="flex items-center justify-between text-sm text-muted-foreground">
+            <div className="grid grid-cols-3 gap-2 text-sm text-muted-foreground">
               <span>{todayProgress.distance.toFixed(1)} km</span>
-              <Badge variant={progressPercentage >= 100 ? "default" : "secondary"}>
-                {progressPercentage.toFixed(0)}% Complete
+              <span>{todayProgress.calories || 0} cal</span>
+              <Badge variant={progressPercentage >= 100 ? "default" : "secondary"} className="justify-self-end">
+                {progressPercentage.toFixed(0)}%
               </Badge>
             </div>
           </div>

@@ -34,7 +34,7 @@ export interface ActivityRecord {
 export const useActivity = (dogId: string) => {
   const [goal, setGoal] = useState<ActivityGoal | null>(null);
   const [records, setRecords] = useState<ActivityRecord[]>([]);
-  const [todayProgress, setTodayProgress] = useState({ minutes: 0, distance: 0 });
+  const [todayProgress, setTodayProgress] = useState({ minutes: 0, distance: 0, calories: 0 });
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
 
@@ -133,7 +133,7 @@ export const useActivity = (dogId: string) => {
     // Return mock data for dev mode
     if (isMockDogId(dogId)) {
       setRecords(MOCK_ACTIVITY_RECORDS.filter(r => r.dog_id === dogId));
-      setTodayProgress({ minutes: 0, distance: 0 });
+      setTodayProgress({ minutes: 0, distance: 0, calories: 0 });
       return;
     }
     
@@ -157,8 +157,9 @@ export const useActivity = (dogId: string) => {
     // Calculate progress
     const totalMinutes = data?.reduce((sum, record) => sum + (record.duration_minutes || 0), 0) || 0;
     const totalDistance = data?.reduce((sum, record) => sum + (record.distance_km || 0), 0) || 0;
+    const totalCalories = data?.reduce((sum, record) => sum + (record.calories_burned || 0), 0) || 0;
     
-    setTodayProgress({ minutes: totalMinutes, distance: totalDistance });
+    setTodayProgress({ minutes: totalMinutes, distance: totalDistance, calories: totalCalories });
   };
 
   const addActivity = async (activity: Omit<ActivityRecord, 'id' | 'dog_id' | 'created_at' | 'updated_at'>) => {
