@@ -1,8 +1,9 @@
 import { useState, useMemo } from "react";
-import { Award, Star, Clock, CheckCircle2, Lock, Trophy, Target, Zap, Play, BookOpen } from "lucide-react";
+import { Award, Star, Clock, CheckCircle2, Lock, Trophy, Target, Zap, Play, BookOpen, GraduationCap, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { useDogs } from "@/hooks/useDogs";
 import { useTricks, Trick } from "@/hooks/useTricks";
 import { DogDropdown } from "@/components/dogs/DogDropdown";
@@ -287,56 +288,138 @@ export function TricksScreen({ selectedDogId, onDogChange }: TricksScreenProps) 
         </div>
       </div>
 
-      {/* Content */}
-      <div className="flex-1 overflow-y-auto min-h-0">
-        <div className="p-4 space-y-6 pb-8">
-          {tricksByDifficulty.map(({ level, color, textColor, tricks: levelTricks }) => {
-          if (levelTricks.length === 0) return null;
-          
-          const levelCompleted = levelTricks.filter(t => learnedTricksMap.get(t.id)?.status === 'mastered').length;
-          const levelProgress = (levelCompleted / levelTricks.length) * 100;
+      {/* Tabs Navigation */}
+      <Tabs defaultValue="program" className="flex-1 flex flex-col overflow-hidden">
+        <div className="bg-white/80 dark:bg-card/80 backdrop-blur-sm border-b px-4 pt-4 flex-shrink-0">
+          <TabsList className="grid w-full grid-cols-4 mb-4">
+            <TabsTrigger value="program" className="flex items-center gap-1">
+              <Trophy className="w-4 h-4" />
+              <span className="hidden sm:inline">Program</span>
+            </TabsTrigger>
+            <TabsTrigger value="skills" className="flex items-center gap-1">
+              <Award className="w-4 h-4" />
+              <span className="hidden sm:inline">Skills</span>
+            </TabsTrigger>
+            <TabsTrigger value="foundations" className="flex items-center gap-1">
+              <GraduationCap className="w-4 h-4" />
+              <span className="hidden sm:inline">Foundations</span>
+            </TabsTrigger>
+            <TabsTrigger value="troubleshooting" className="flex items-center gap-1">
+              <AlertCircle className="w-4 h-4" />
+              <span className="hidden sm:inline">Troubleshooting</span>
+            </TabsTrigger>
+          </TabsList>
+        </div>
 
-          return (
-            <div key={level} className="space-y-4">
-              {/* Level Header */}
-              <div className="flex items-center gap-3">
-                <div className={`w-8 h-8 ${color} rounded-lg flex items-center justify-center`}>
-                  <span className="text-white text-sm font-bold">{level[0]}</span>
+        {/* Training Program Tab */}
+        <TabsContent value="program" className="flex-1 overflow-y-auto min-h-0 m-0">
+          <div className="p-4 space-y-4">
+            <div className="bg-card rounded-2xl p-6 border-2 border-primary/20">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 bg-gradient-to-br from-primary to-primary-hover rounded-xl flex items-center justify-center">
+                  <Trophy className="w-6 h-6 text-white" />
                 </div>
-                <div className="flex-1">
-                  <div className="flex items-center justify-between">
-                    <h2 className={`text-xl font-bold ${textColor}`}>{level}</h2>
-                    <span className="text-sm text-muted-foreground">
-                      {levelCompleted}/{levelTricks.length}
-                    </span>
-                  </div>
-                  <Progress value={levelProgress} className="h-2 mt-1" />
+                <div>
+                  <h2 className="text-xl font-bold">Training Program</h2>
+                  <p className="text-sm text-muted-foreground">Structured learning path</p>
                 </div>
               </div>
-
-               {/* Tricks Grid */}
-               <div className="grid gap-4">
-                 {levelTricks.map((trick) => (
-                   <TrickCard
-                     key={trick.id}
-                     trick={trick}
-                     dogTrick={learnedTricksMap.get(trick.id)}
-                     onStart={handleStart}
-                     onPractice={handlePractice}
-                     onTrickClick={handleTrickClick}
-                     isLocked={!isUnlocked(trick)}
-                   />
-                 ))}
-               </div>
+              <p className="text-muted-foreground">
+                Your personalized training program will appear here. This section will guide you through a structured curriculum tailored to your dog's level and needs.
+              </p>
             </div>
-          );
-        })}
-        </div>
-      </div>
+          </div>
+        </TabsContent>
 
-      {/* Trick Detail Modal */}
-      <ClickerModal isOpen={isClickerOpen} onClose={() => setIsClickerOpen(false)} />
-      
+        {/* Skills Tab - Current Tricks List */}
+        <TabsContent value="skills" className="flex-1 overflow-y-auto min-h-0 m-0">
+          <div className="p-4 space-y-6 pb-8">
+            {tricksByDifficulty.map(({ level, color, textColor, tricks: levelTricks }) => {
+              if (levelTricks.length === 0) return null;
+              
+              const levelCompleted = levelTricks.filter(t => learnedTricksMap.get(t.id)?.status === 'mastered').length;
+              const levelProgress = (levelCompleted / levelTricks.length) * 100;
+
+              return (
+                <div key={level} className="space-y-4">
+                  {/* Level Header */}
+                  <div className="flex items-center gap-3">
+                    <div className={`w-8 h-8 ${color} rounded-lg flex items-center justify-center`}>
+                      <span className="text-white text-sm font-bold">{level[0]}</span>
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center justify-between">
+                        <h2 className={`text-xl font-bold ${textColor}`}>{level}</h2>
+                        <span className="text-sm text-muted-foreground">
+                          {levelCompleted}/{levelTricks.length}
+                        </span>
+                      </div>
+                      <Progress value={levelProgress} className="h-2 mt-1" />
+                    </div>
+                  </div>
+
+                  {/* Tricks Grid */}
+                  <div className="grid gap-4">
+                    {levelTricks.map((trick) => (
+                      <TrickCard
+                        key={trick.id}
+                        trick={trick}
+                        dogTrick={learnedTricksMap.get(trick.id)}
+                        onStart={handleStart}
+                        onPractice={handlePractice}
+                        onTrickClick={handleTrickClick}
+                        isLocked={!isUnlocked(trick)}
+                      />
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </TabsContent>
+
+        {/* Foundations Tab */}
+        <TabsContent value="foundations" className="flex-1 overflow-y-auto min-h-0 m-0">
+          <div className="p-4 space-y-4">
+            <div className="bg-card rounded-2xl p-6 border-2 border-emerald-500/20">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl flex items-center justify-center">
+                  <GraduationCap className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <h2 className="text-xl font-bold">Foundations</h2>
+                  <p className="text-sm text-muted-foreground">Core training principles</p>
+                </div>
+              </div>
+              <p className="text-muted-foreground">
+                Learn the fundamental principles of dog training. This section covers essential concepts, techniques, and building blocks for successful training.
+              </p>
+            </div>
+          </div>
+        </TabsContent>
+
+        {/* Troubleshooting Tab */}
+        <TabsContent value="troubleshooting" className="flex-1 overflow-y-auto min-h-0 m-0">
+          <div className="p-4 space-y-4">
+            <div className="bg-card rounded-2xl p-6 border-2 border-orange-500/20">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl flex items-center justify-center">
+                  <AlertCircle className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <h2 className="text-xl font-bold">Troubleshooting</h2>
+                  <p className="text-sm text-muted-foreground">Common challenges & solutions</p>
+                </div>
+              </div>
+              <p className="text-muted-foreground">
+                Find solutions to common training challenges. Get help with specific behaviors and learn how to overcome obstacles in your training journey.
+              </p>
+            </div>
+          </div>
+        </TabsContent>
+      </Tabs>
+
+      {/* Modals */}
       <ClickerModal isOpen={isClickerOpen} onClose={() => setIsClickerOpen(false)} />
       
       <TrickDetailModal
