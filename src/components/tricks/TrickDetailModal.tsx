@@ -176,9 +176,9 @@ export function TrickDetailModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-[min(95vw,900px)] max-h-[80vh] flex flex-col overflow-hidden">
+      <DialogContent className="max-w-[min(95vw,900px)] h-[85vh] flex flex-col p-0">
         {/* Header */}
-        <DialogHeader className="p-6 pb-0">
+        <DialogHeader className="p-6 pb-4 flex-shrink-0">
           <div className="flex items-center gap-4">
             <div className={`w-16 h-16 ${categoryColor} rounded-2xl flex items-center justify-center relative`}>
               <Award className="w-8 h-8 text-white" />
@@ -209,7 +209,7 @@ export function TrickDetailModal({
         </DialogHeader>
 
         {/* Tab Navigation */}
-        <div className="px-6">
+        <div className="px-6 pb-4 flex-shrink-0">
           <div className="flex space-x-1 bg-muted p-1 rounded-lg">
             <button
               onClick={() => setActiveTab('overview')}
@@ -245,9 +245,11 @@ export function TrickDetailModal({
         </div>
 
         {/* Content */}
-        <ScrollArea className="flex-1 px-6">
-          {activeTab === 'overview' && (
-            <div className="space-y-6 pb-6">
+        <div className="flex-1 overflow-hidden px-6">
+          <ScrollArea className="h-full">
+            <div className="pr-4">
+              {activeTab === 'overview' && (
+                <div className="space-y-6 pb-6">
               {/* Trick Illustration Placeholder */}
               <div className="bg-gradient-to-br from-primary/10 to-accent/10 rounded-2xl p-8 text-center">
                 <div className="w-24 h-24 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -378,13 +380,13 @@ export function TrickDetailModal({
             <div className="space-y-6 pb-6">
               {dogTrick ? (
                 <>
-                  {/* Overall Progress */}
+                   {/* Overall Progress */}
                   <div className="p-4 bg-card border rounded-xl">
                     <h3 className="font-semibold text-lg mb-4 flex items-center gap-2">
                       <TrendingUp className="w-5 h-5" />
                       Overall Progress
                     </h3>
-                    <div className="space-y-3">
+                    <div className="space-y-4">
                       <div className="flex justify-between items-center">
                         <span className="text-sm text-muted-foreground">Completion</span>
                         <span className={`font-bold ${isCompleted ? 'text-green-600' : 'text-blue-600'}`}>
@@ -393,22 +395,22 @@ export function TrickDetailModal({
                       </div>
                       <Progress value={progress} className="h-3" />
                       
-                      <div className="grid grid-cols-3 gap-4 mt-4">
-                        <div className="text-center">
-                          <div className="text-2xl font-bold text-blue-600">{dogTrick.total_sessions}</div>
-                          <div className="text-xs text-muted-foreground">Sessions</div>
+                      <div className="grid grid-cols-3 gap-3 pt-2">
+                        <div className="text-center p-2 bg-muted/50 rounded-lg">
+                          <div className="text-xl font-bold text-blue-600">{dogTrick.total_sessions}</div>
+                          <div className="text-xs text-muted-foreground mt-1">Sessions</div>
                         </div>
-                        <div className="text-center">
-                          <div className="text-2xl font-bold text-green-600">
+                        <div className="text-center p-2 bg-muted/50 rounded-lg">
+                          <div className="text-xl font-bold text-green-600">
                             {dogTrick.started_at ? Math.ceil((new Date().getTime() - new Date(dogTrick.started_at).getTime()) / (1000 * 60 * 60 * 24)) : 0}
                           </div>
-                          <div className="text-xs text-muted-foreground">Days</div>
+                          <div className="text-xs text-muted-foreground mt-1">Days</div>
                         </div>
-                        <div className="text-center">
-                          <div className="text-2xl font-bold text-purple-600">
+                        <div className="text-center p-2 bg-muted/50 rounded-lg">
+                          <div className="text-xl font-bold text-purple-600">
                             {getDifficultyLabel(trick.difficulty_level)}
                           </div>
-                          <div className="text-xs text-muted-foreground">Level</div>
+                          <div className="text-xs text-muted-foreground mt-1">Level</div>
                         </div>
                       </div>
                     </div>
@@ -457,45 +459,44 @@ export function TrickDetailModal({
               )}
             </div>
           )}
-        </ScrollArea>
+            </div>
+          </ScrollArea>
+        </div>
 
         {/* Action Buttons */}
-        <div className="p-6 pt-0">
-          <Separator className="mb-4" />
-          <div className="flex gap-3">
+        <div className="p-6 pt-4 border-t flex-shrink-0">
+          <div className="flex flex-wrap gap-3">
             {!dogTrick ? (
-              <Button onClick={handleStartTrick} className="flex-1" size="lg">
+              <Button onClick={handleStartTrick} className="flex-1 min-w-[200px]" size="lg">
                 <Play className="w-4 h-4 mr-2" />
                 Start Learning
               </Button>
             ) : isCompleted ? (
-              <Button onClick={handlePracticeSession} variant="outline" className="flex-1" size="lg">
+              <Button onClick={handlePracticeSession} variant="outline" className="flex-1 min-w-[200px]" size="lg">
                 <Trophy className="w-4 h-4 mr-2" />
                 Practice & Perfect
               </Button>
             ) : (
               <>
-                <Button onClick={handlePracticeSession} className="flex-1" size="lg">
+                <Button onClick={handlePracticeSession} className="flex-1 min-w-[160px]" size="lg">
                   <Timer className="w-4 h-4 mr-2" />
                   Practice Session
                 </Button>
-                <div className="flex gap-2">
-                  {dogTrick.total_sessions >= 3 && (
-                    <Button onClick={handleMarkAsCompleted} variant="outline" size="lg">
-                      <CheckCircle2 className="w-4 h-4 mr-2" />
-                      Mark Complete
-                    </Button>
-                  )}
-                  <Button 
-                    onClick={() => onUpdateStatus(dogTrick.id, 'learning')} 
-                    variant="ghost" 
-                    size="lg"
-                    className="text-muted-foreground hover:text-foreground"
-                  >
-                    <RotateCcw className="w-4 h-4 mr-2" />
-                    Reset Progress
+                {dogTrick.total_sessions >= 3 && (
+                  <Button onClick={handleMarkAsCompleted} variant="outline" size="lg" className="min-w-[140px]">
+                    <CheckCircle2 className="w-4 h-4 mr-2" />
+                    Mark Complete
                   </Button>
-                </div>
+                )}
+                <Button 
+                  onClick={() => onUpdateStatus(dogTrick.id, 'learning')} 
+                  variant="ghost" 
+                  size="lg"
+                  className="text-muted-foreground hover:text-foreground min-w-[140px]"
+                >
+                  <RotateCcw className="w-4 h-4 mr-2" />
+                  Reset Progress
+                </Button>
               </>
             )}
           </div>
