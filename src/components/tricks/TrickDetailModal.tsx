@@ -247,7 +247,7 @@ export function TrickDetailModal({
         {/* Content */}
         <div className="flex-1 overflow-hidden px-4">
           <ScrollArea className="h-full">
-            <div className="pr-4">
+            <div className="pr-4 pb-4">
               {activeTab === 'overview' && (
                 <div className="space-y-6 pb-6">
               {/* Trick Illustration Placeholder */}
@@ -407,7 +407,7 @@ export function TrickDetailModal({
                           <div className="text-xs text-muted-foreground mt-1">Days</div>
                         </div>
                         <div className="text-center p-2 bg-muted/50 rounded-lg flex flex-col">
-                          <div className="text-lg font-bold text-purple-600 min-h-[28px] flex items-center justify-center leading-tight">
+                          <div className="text-sm font-bold text-purple-600 min-h-[28px] flex items-center justify-center leading-tight">
                             {getDifficultyLabel(trick.difficulty_level)}
                           </div>
                           <div className="text-xs text-muted-foreground mt-1">Level</div>
