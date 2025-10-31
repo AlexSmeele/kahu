@@ -8,6 +8,7 @@ import { useVetVisits } from "./useVetVisits";
 import { useVaccines } from "./useVaccines";
 import { useHealthCheckups } from "./useHealthCheckups";
 import { useMedicalTreatments } from "./useMedicalTreatments";
+import { useTreatTracking } from "./useTreatTracking";
 import { 
   Activity, 
   Apple, 
@@ -18,12 +19,13 @@ import {
   Pill,
   Droplet,
   Calendar,
+  Cookie,
   LucideIcon
 } from "lucide-react";
 
 export interface TimelineEvent {
   id: string;
-  type: 'activity' | 'meal' | 'weight' | 'grooming' | 'vet_visit' | 'vaccination' | 'checkup' | 'treatment';
+  type: 'activity' | 'meal' | 'weight' | 'grooming' | 'vet_visit' | 'vaccination' | 'checkup' | 'treatment' | 'treat';
   title: string;
   timestamp: Date;
   icon: LucideIcon;
@@ -58,6 +60,7 @@ export function useWellnessTimeline(dogId: string) {
   const { vaccinationRecords } = useVaccines(dogId);
   const { checkups } = useHealthCheckups(dogId);
   const { treatments } = useMedicalTreatments(dogId);
+  const { treatLogs } = useTreatTracking(dogId, nutritionPlan?.id);
 
   useEffect(() => {
     const generateTimeline = () => {
@@ -279,6 +282,23 @@ export function useWellnessTimeline(dogId: string) {
         });
       }
 
+      // Treat logs
+      treatLogs?.forEach((treat: any) => {
+        events.push({
+          id: `treat-${treat.id}`,
+          type: 'treat',
+          title: treat.treat_name,
+          timestamp: new Date(treat.given_at),
+          icon: Cookie,
+          status: 'completed',
+          metrics: [
+            { label: 'Amount', value: `${treat.amount} ${treat.unit}` },
+            ...(treat.calories ? [{ label: 'Calories', value: `${treat.calories} cal` }] : []),
+          ],
+          details: treat,
+        });
+      });
+
       // Sort events by timestamp (newest first for past, earliest first for future)
       const now = new Date();
       const pastEvents = events.filter(e => e.timestamp <= now).sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime());
@@ -372,6 +392,7 @@ export function useWellnessTimeline(dogId: string) {
     vaccinationRecords, 
     checkups, 
     treatments,
+    treatLogs,
     showFullTimeline
   ]);
 

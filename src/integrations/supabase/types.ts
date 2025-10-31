@@ -1435,6 +1435,65 @@ export type Database = {
           },
         ]
       }
+      treat_logs: {
+        Row: {
+          amount: number
+          calories: number | null
+          created_at: string
+          dog_id: string
+          given_at: string
+          given_by: string | null
+          id: string
+          notes: string | null
+          nutrition_plan_id: string | null
+          reason: string | null
+          treat_name: string
+          treat_type: string
+          unit: string
+          updated_at: string
+        }
+        Insert: {
+          amount: number
+          calories?: number | null
+          created_at?: string
+          dog_id: string
+          given_at?: string
+          given_by?: string | null
+          id?: string
+          notes?: string | null
+          nutrition_plan_id?: string | null
+          reason?: string | null
+          treat_name: string
+          treat_type: string
+          unit?: string
+          updated_at?: string
+        }
+        Update: {
+          amount?: number
+          calories?: number | null
+          created_at?: string
+          dog_id?: string
+          given_at?: string
+          given_by?: string | null
+          id?: string
+          notes?: string | null
+          nutrition_plan_id?: string | null
+          reason?: string | null
+          treat_name?: string
+          treat_type?: string
+          unit?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "treat_logs_nutrition_plan_id_fkey"
+            columns: ["nutrition_plan_id"]
+            isOneToOne: false
+            referencedRelation: "nutrition_plans"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       tricks: {
         Row: {
           category: string

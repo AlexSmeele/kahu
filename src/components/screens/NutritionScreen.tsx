@@ -11,6 +11,7 @@ import { MealPlanModal } from "@/components/nutrition/MealPlanModal";
 import { MultiMealPlanModal } from "@/components/nutrition/MultiMealPlanModal";
 import { WeekPlannerModal } from "@/components/nutrition/WeekPlannerModal";
 import { BowlCleaningCard } from "@/components/nutrition/BowlCleaningCard";
+import { TreatTrackerCard } from "@/components/nutrition/TreatTrackerCard";
 
 
 // This function is now handled by useMealTracking hook
@@ -262,6 +263,15 @@ export function NutritionScreen({ selectedDogId, onDogChange }: NutritionScreenP
                 onMarkFoodBowlCleaned={markFoodBowlCleaned}
                 onMarkWaterBowlCleaned={markWaterBowlCleaned}
               />
+
+              {/* Treat Tracker Card */}
+              <div className="mt-6">
+                <TreatTrackerCard 
+                  dogId={selectedDogId}
+                  nutritionPlanId={nutritionPlan.id}
+                  dailyCalorieTarget={nutritionPlan.calorie_target_daily || undefined}
+                />
+              </div>
 
               {/* Diet Tips */}
               <div className="mt-6 card-soft p-4 bg-gradient-to-r from-primary/5 to-primary/10">
