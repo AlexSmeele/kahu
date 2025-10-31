@@ -1,5 +1,6 @@
 import { AlertTriangle, X } from "lucide-react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
 interface UrgentAlertsBannerProps {
@@ -7,23 +8,53 @@ interface UrgentAlertsBannerProps {
     type: string;
     title: string;
     description: string;
+    eventId?: string;
+    metadata?: any;
   }>;
-  onClick: () => void;
+  dogId: string;
 }
 
-export function UrgentAlertsBanner({ alerts, onClick }: UrgentAlertsBannerProps) {
+export function UrgentAlertsBanner({ alerts, dogId }: UrgentAlertsBannerProps) {
+  const navigate = useNavigate();
   const [dismissed, setDismissed] = useState(false);
 
   if (alerts.length === 0 || dismissed) return null;
 
   const alert = alerts[0]; // Show first urgent alert
 
+  const handleAlertClick = () => {
+    const eventId = alert.eventId;
+    
+    if (!eventId) {
+      console.warn('Alert missing event ID:', alert);
+      return;
+    }
+    
+    // Build route based on event type
+    const routeMap: Record<string, string> = {
+      'activity': `/activity/${eventId}`,
+      'meal': `/meal/${eventId}`,
+      'vet_visit': `/vet-visit/${eventId}`,
+      'grooming': `/grooming/${eventId}`,
+      'vaccination': `/vaccination/${eventId}`,
+      'checkup': `/checkup/${eventId}`,
+      'weight': `/weight/${eventId}`,
+      'treatment': `/treatment/${eventId}`,
+      'injury': `/injury/${eventId}`,
+    };
+    
+    const route = routeMap[alert.type];
+    if (route) {
+      navigate(route, { state: { dogId, from: '/' } });
+    }
+  };
+
   return (
     <div className="relative overflow-hidden rounded-lg bg-destructive/10 border border-destructive/30 p-3">
       <div className="flex items-center gap-3">
         <AlertTriangle className="w-4 h-4 text-destructive flex-shrink-0" />
         <button 
-          onClick={onClick}
+          onClick={handleAlertClick}
           className="flex-1 text-left min-w-0"
         >
           <p className="text-sm font-medium text-foreground truncate">

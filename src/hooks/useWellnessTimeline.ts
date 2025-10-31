@@ -397,7 +397,13 @@ export function useWellnessTimeline(dogId: string) {
   ]);
 
   const urgentAlerts = useMemo(() => {
-    const alerts: Array<{ type: string; title: string; description: string }> = [];
+    const alerts: Array<{ 
+      type: string; 
+      title: string; 
+      description: string;
+      eventId?: string;
+      metadata?: any;
+    }> = [];
     const now = new Date();
     
     // Filter only overdue events
@@ -409,10 +415,17 @@ export function useWellnessTimeline(dogId: string) {
     overdueEvents.forEach(event => {
       const daysOverdue = Math.floor((now.getTime() - event.timestamp.getTime()) / (1000 * 60 * 60 * 24));
       
+      // Get the ID based on event type
+      const eventId = event.type === 'activity' 
+        ? event.metadata?.activityId 
+        : event.details?.id;
+      
       alerts.push({
         type: event.type,
         title: event.title,
-        description: daysOverdue === 0 ? 'Due today' : `${daysOverdue} days overdue`
+        description: daysOverdue === 0 ? 'Due today' : `${daysOverdue} days overdue`,
+        eventId,
+        metadata: event.metadata
       });
     });
     

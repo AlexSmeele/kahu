@@ -90,7 +90,7 @@ export function HomeScreen({ selectedDogId, onDogChange, onTabChange }: HomeScre
 
             <div className="container pt-2 space-y-4">
               {urgentAlerts.length > 0 && (
-                <UrgentAlertsBanner alerts={urgentAlerts} onClick={() => onTabChange('wellness')} />
+                <UrgentAlertsBanner alerts={urgentAlerts} dogId={selectedDogId} />
               )}
 
               <div className="grid grid-cols-2 gap-3">
