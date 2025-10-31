@@ -102,9 +102,6 @@ export function HomeScreen({ selectedDogId, onDogChange, onTabChange }: HomeScre
                   onActionClick={() => onTabChange('tricks')}
                   className="animate-fade-in [animation-delay:150ms]"
                 />
-              </div>
-
-              <div className="grid grid-cols-3 gap-3">
                 <GetAdviceCard className="animate-fade-in [animation-delay:200ms]" />
                 <QuickNoteTile 
                   onClick={() => setShowNoteModal(true)} 
