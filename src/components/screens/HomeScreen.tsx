@@ -32,8 +32,6 @@ export function HomeScreen({ selectedDogId, onDogChange, onTabChange }: HomeScre
   
   const {
     loading,
-    activityGoal,
-    activityProgress,
     nextTrick,
     healthAlerts,
     upcomingEvents,
@@ -41,7 +39,7 @@ export function HomeScreen({ selectedDogId, onDogChange, onTabChange }: HomeScre
   } = useHomeData(selectedDogId);
 
   const { updateGoal } = useActivity(selectedDogId);
-  const { urgentAlerts } = useWellnessTimeline(selectedDogId);
+  const { urgentAlerts, todayProgress, activityGoal } = useWellnessTimeline(selectedDogId);
 
   const handleUpdateGoal = async (targetMinutes: number) => {
     return await updateGoal({ target_minutes: targetMinutes });
@@ -85,7 +83,7 @@ export function HomeScreen({ selectedDogId, onDogChange, onTabChange }: HomeScre
 
           <div className="grid grid-cols-2 gap-3">
             <ActivityCircleCard
-              completedMinutes={activityProgress.minutes}
+              completedMinutes={todayProgress?.minutes || 0}
               targetMinutes={activityGoal?.target_minutes || 60}
               onClick={() => setShowActivityModal(true)}
               onEditGoal={() => setShowEditGoalModal(true)}

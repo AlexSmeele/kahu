@@ -51,7 +51,7 @@ export function useWellnessTimeline(dogId: string) {
   const [loading, setLoading] = useState(true);
   const [showFullTimeline, setShowFullTimeline] = useState(false);
 
-  const { records: activityRecords } = useActivity(dogId);
+  const { records: activityRecords, goal } = useActivity(dogId);
   const { nutritionPlan } = useNutrition(dogId);
   const { mealRecords } = useMealTracking(dogId, nutritionPlan?.id);
   const { weightData, recentRecords } = useHealthData(dogId);
@@ -438,11 +438,44 @@ export function useWellnessTimeline(dogId: string) {
     });
   }, [timelineData]);
 
+  // Calculate today's activity progress from the same timeline data
+  const todayProgress = useMemo(() => {
+    // Filter today's completed activity events from timeline
+    const todayActivities = timelineData
+      .filter(day => day.isToday)
+      .flatMap(day => day.events)
+      .filter(event => event.type === 'activity' && event.status === 'completed');
+    
+    // Calculate totals from the same data displayed in timeline
+    const totalMinutes = todayActivities.reduce((sum, event) => {
+      const minutes = event.metrics?.find(m => m.label === 'Duration')?.value;
+      return sum + (minutes ? parseInt(minutes) : 0);
+    }, 0);
+    
+    const totalDistance = todayActivities.reduce((sum, event) => {
+      const distance = event.metrics?.find(m => m.label === 'Distance')?.value;
+      return sum + (distance ? parseFloat(distance) : 0);
+    }, 0);
+    
+    const totalCalories = todayActivities.reduce((sum, event) => {
+      const calories = event.metrics?.find(m => m.label === 'Calories')?.value;
+      return sum + (calories ? parseInt(calories) : 0);
+    }, 0);
+    
+    return {
+      minutes: totalMinutes,
+      distance: totalDistance,
+      calories: totalCalories
+    };
+  }, [timelineData]);
+
   return {
     timelineData,
     loading,
     showFullTimeline,
     setShowFullTimeline,
     urgentAlerts,
+    todayProgress,
+    activityGoal: goal,
   };
 }
