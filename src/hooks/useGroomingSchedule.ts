@@ -15,6 +15,16 @@ export interface GroomingSchedule {
   updated_at: string;
 }
 
+export interface GroomingCompletion {
+  id: string;
+  schedule_id: string;
+  dog_id: string;
+  completed_at: string;
+  notes: string | null;
+  photos: string[] | null;
+  created_at: string;
+}
+
 export const useGroomingSchedule = (dogId: string) => {
   const [schedules, setSchedules] = useState<GroomingSchedule[]>([]);
   const [loading, setLoading] = useState(true);
@@ -88,7 +98,11 @@ export const useGroomingSchedule = (dogId: string) => {
     }
   };
 
-  const completeGrooming = async (scheduleId: string) => {
+  const completeGrooming = async (
+    scheduleId: string,
+    notes?: string,
+    photos?: string[]
+  ) => {
     try {
       const schedule = schedules.find((s) => s.id === scheduleId);
       if (!schedule) return;
@@ -97,6 +111,20 @@ export const useGroomingSchedule = (dogId: string) => {
       const nextDue = new Date(now);
       nextDue.setDate(nextDue.getDate() + schedule.frequency_days);
 
+      // Create completion record
+      const { error: completionError } = await supabase
+        .from("grooming_completions")
+        .insert({
+          schedule_id: scheduleId,
+          dog_id: schedule.dog_id,
+          completed_at: now.toISOString(),
+          notes,
+          photos,
+        });
+
+      if (completionError) throw completionError;
+
+      // Update schedule
       const { data, error } = await supabase
         .from("grooming_schedules")
         .update({
@@ -124,6 +152,23 @@ export const useGroomingSchedule = (dogId: string) => {
         description: "Failed to complete grooming",
         variant: "destructive",
       });
+      throw error;
+    }
+  };
+
+  const fetchCompletions = async (scheduleId: string): Promise<GroomingCompletion[]> => {
+    try {
+      const { data, error } = await supabase
+        .from("grooming_completions")
+        .select("*")
+        .eq("schedule_id", scheduleId)
+        .order("completed_at", { ascending: false });
+
+      if (error) throw error;
+      return data || [];
+    } catch (error: any) {
+      console.error("Error fetching grooming completions:", error);
+      return [];
     }
   };
 
@@ -197,5 +242,6 @@ export const useGroomingSchedule = (dogId: string) => {
     updateSchedule,
     deleteSchedule,
     refetch: fetchSchedules,
+    fetchCompletions,
   };
 };

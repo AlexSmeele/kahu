@@ -774,6 +774,44 @@ export type Database = {
           },
         ]
       }
+      grooming_completions: {
+        Row: {
+          completed_at: string
+          created_at: string
+          dog_id: string
+          id: string
+          notes: string | null
+          photos: string[] | null
+          schedule_id: string
+        }
+        Insert: {
+          completed_at?: string
+          created_at?: string
+          dog_id: string
+          id?: string
+          notes?: string | null
+          photos?: string[] | null
+          schedule_id: string
+        }
+        Update: {
+          completed_at?: string
+          created_at?: string
+          dog_id?: string
+          id?: string
+          notes?: string | null
+          photos?: string[] | null
+          schedule_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "grooming_completions_schedule_id_fkey"
+            columns: ["schedule_id"]
+            isOneToOne: false
+            referencedRelation: "grooming_schedules"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       grooming_schedules: {
         Row: {
           created_at: string

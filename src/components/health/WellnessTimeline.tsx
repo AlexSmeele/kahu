@@ -7,7 +7,6 @@ import { Calendar } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { VetVisitDetailModal } from "./VetVisitDetailModal";
-import { GroomingDetailModal } from "./GroomingDetailModal";
 import { CheckupDetailModal } from "./CheckupDetailModal";
 import { VaccinationDetailModal } from "./VaccinationDetailModal";
 import { WeightDetailModal } from "./WeightDetailModal";
@@ -58,6 +57,24 @@ export function WellnessTimeline({ dogId }: WellnessTimelineProps) {
         sessionStorage.setItem(`wellnessScroll:${dogId}`, String(scrollPosition));
       } catch {}
       navigate(`/meal/${event.details.id}`, { 
+        state: { 
+          dogId, 
+          from: '/?tab=wellness',
+          scrollPosition 
+        } 
+      });
+    } else if (event.type === 'grooming' && event.details?.id) {
+      const scrollableContainer = document.querySelector('.overflow-y-auto');
+      const scrollPosition = scrollableContainer?.scrollTop || 0;
+      try {
+        const h = window.history as any;
+        const prevUsr = h.state?.usr || {};
+        h.replaceState({ ...h.state, usr: { ...prevUsr, scrollPosition } }, document.title, window.location.href);
+      } catch {}
+      try {
+        sessionStorage.setItem(`wellnessScroll:${dogId}`, String(scrollPosition));
+      } catch {}
+      navigate(`/grooming/${event.details.id}`, { 
         state: { 
           dogId, 
           from: '/?tab=wellness',
@@ -221,19 +238,6 @@ export function WellnessTimeline({ dogId }: WellnessTimelineProps) {
             }
           }}
           visit={selectedEvent}
-        />
-      )}
-
-      {selectedEvent && modalType === 'grooming' && (
-        <GroomingDetailModal
-          open={true}
-          onOpenChange={(open) => {
-            if (!open) {
-              setSelectedEvent(null);
-              setModalType(null);
-            }
-          }}
-          grooming={selectedEvent}
         />
       )}
 

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
-import { ArrowLeft, Edit3, Trash2, Scissors, Calendar, AlertCircle } from "lucide-react";
+import { ArrowLeft, Edit3, Trash2, Scissors, Calendar, AlertCircle, Camera, X, Image as ImageIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -8,7 +8,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
-import { useGroomingSchedule } from "@/hooks/useGroomingSchedule";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { useGroomingSchedule, GroomingCompletion } from "@/hooks/useGroomingSchedule";
 import { format, differenceInDays } from "date-fns";
 import { useToast } from "@/hooks/use-toast";
 import { isMockDogId } from "@/lib/mockData";
@@ -26,17 +27,33 @@ export default function GroomingDetail() {
   const [loading, setLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [showCompleteDialog, setShowCompleteDialog] = useState(false);
+  const [completions, setCompletions] = useState<GroomingCompletion[]>([]);
+  const [completionForm, setCompletionForm] = useState({
+    notes: '',
+    photos: [] as File[],
+  });
+  const [uploading, setUploading] = useState(false);
   const [editForm, setEditForm] = useState({
     grooming_type: '',
     frequency_days: '',
     notes: '',
   });
   
-  const { updateSchedule, deleteSchedule, completeGrooming } = useGroomingSchedule(dogId);
+  const { updateSchedule, deleteSchedule, completeGrooming, fetchCompletions } = useGroomingSchedule(dogId);
   
   useEffect(() => {
     fetchGroomingData();
+    if (groomingId && !isMockDogId(dogId)) {
+      fetchCompletionHistory();
+    }
   }, [groomingId, dogId]);
+
+  const fetchCompletionHistory = async () => {
+    if (!groomingId) return;
+    const history = await fetchCompletions(groomingId);
+    setCompletions(history);
+  };
   
   const fetchGroomingData = async () => {
     if (!groomingId || !dogId) return;
@@ -136,7 +153,7 @@ export default function GroomingDetail() {
     }
   };
   
-  const handleMarkComplete = async () => {
+  const handleMarkComplete = () => {
     if (isMockDogId(dogId)) {
       toast({
         title: "Demo Mode",
@@ -144,17 +161,75 @@ export default function GroomingDetail() {
       });
       return;
     }
+    setShowCompleteDialog(true);
+  };
+
+  const handleCompleteSubmit = async () => {
+    if (!groomingId) return;
     
     try {
-      await completeGrooming(groomingId!);
+      setUploading(true);
+      let photoUrls: string[] = [];
+
+      // Upload photos if any
+      if (completionForm.photos.length > 0) {
+        const uploadPromises = completionForm.photos.map(async (file) => {
+          const fileExt = file.name.split('.').pop();
+          const fileName = `${Math.random()}.${fileExt}`;
+          const filePath = `${dogId}/${groomingId}/${fileName}`;
+
+          const { error: uploadError } = await supabase.storage
+            .from('grooming-photos')
+            .upload(filePath, file);
+
+          if (uploadError) throw uploadError;
+
+          const { data } = supabase.storage
+            .from('grooming-photos')
+            .getPublicUrl(filePath);
+
+          return data.publicUrl;
+        });
+
+        photoUrls = await Promise.all(uploadPromises);
+      }
+
+      await completeGrooming(groomingId, completionForm.notes || undefined, photoUrls.length > 0 ? photoUrls : undefined);
+      
+      setShowCompleteDialog(false);
+      setCompletionForm({ notes: '', photos: [] });
       fetchGroomingData();
+      fetchCompletionHistory();
+      
       toast({
         title: "Success",
         description: "Grooming marked as complete",
       });
     } catch (error) {
-      // Error handled in hook
+      console.error('Error completing grooming:', error);
+      toast({
+        title: "Error",
+        description: "Failed to complete grooming",
+        variant: "destructive",
+      });
+    } finally {
+      setUploading(false);
     }
+  };
+
+  const handlePhotoSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    setCompletionForm(prev => ({
+      ...prev,
+      photos: [...prev.photos, ...files].slice(0, 5) // Max 5 photos
+    }));
+  };
+
+  const removePhoto = (index: number) => {
+    setCompletionForm(prev => ({
+      ...prev,
+      photos: prev.photos.filter((_, i) => i !== index)
+    }));
   };
   
   const handleBack = () => {
@@ -361,7 +436,135 @@ export default function GroomingDetail() {
             )}
           </CardContent>
         </Card>
+
+        {/* Completion History */}
+        {completions.length > 0 && (
+          <Card>
+            <CardHeader>
+              <CardTitle>Completion History</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {completions.map((completion) => (
+                <div key={completion.id} className="border-b last:border-0 pb-4 last:pb-0">
+                  <div className="flex items-center justify-between mb-2">
+                    <p className="font-medium">
+                      {format(new Date(completion.completed_at), 'MMMM d, yyyy')}
+                    </p>
+                    <Badge variant="secondary">
+                      {format(new Date(completion.completed_at), 'h:mm a')}
+                    </Badge>
+                  </div>
+                  
+                  {completion.notes && (
+                    <p className="text-sm text-muted-foreground mb-2 whitespace-pre-wrap">
+                      {completion.notes}
+                    </p>
+                  )}
+                  
+                  {completion.photos && completion.photos.length > 0 && (
+                    <div className="grid grid-cols-3 gap-2 mt-2">
+                      {completion.photos.map((photo, index) => (
+                        <img
+                          key={index}
+                          src={photo}
+                          alt={`Grooming photo ${index + 1}`}
+                          className="w-full h-24 object-cover rounded-md"
+                        />
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </CardContent>
+          </Card>
+        )}
       </div>
+
+      {/* Complete Grooming Dialog */}
+      <Dialog open={showCompleteDialog} onOpenChange={setShowCompleteDialog}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>Complete Grooming</DialogTitle>
+          </DialogHeader>
+          
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="completion_notes">Notes (Optional)</Label>
+              <Textarea
+                id="completion_notes"
+                value={completionForm.notes}
+                onChange={(e) => setCompletionForm(prev => ({ ...prev, notes: e.target.value }))}
+                placeholder="Add any observations or notes about this grooming session..."
+                rows={3}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label>Photos (Optional)</Label>
+              <div className="flex flex-col gap-2">
+                {completionForm.photos.length < 5 && (
+                  <label className="cursor-pointer">
+                    <div className="border-2 border-dashed rounded-lg p-4 hover:bg-accent transition-colors flex items-center justify-center gap-2">
+                      <Camera className="w-5 h-5" />
+                      <span className="text-sm">Add Photos ({completionForm.photos.length}/5)</span>
+                    </div>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      multiple
+                      className="hidden"
+                      onChange={handlePhotoSelect}
+                    />
+                  </label>
+                )}
+                
+                {completionForm.photos.length > 0 && (
+                  <div className="grid grid-cols-3 gap-2">
+                    {completionForm.photos.map((photo, index) => (
+                      <div key={index} className="relative">
+                        <img
+                          src={URL.createObjectURL(photo)}
+                          alt={`Preview ${index + 1}`}
+                          className="w-full h-24 object-cover rounded-md"
+                        />
+                        <Button
+                          variant="destructive"
+                          size="icon"
+                          className="absolute top-1 right-1 h-6 w-6"
+                          onClick={() => removePhoto(index)}
+                        >
+                          <X className="h-3 w-3" />
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div className="flex gap-2 pt-2">
+              <Button
+                variant="outline"
+                className="flex-1"
+                onClick={() => {
+                  setShowCompleteDialog(false);
+                  setCompletionForm({ notes: '', photos: [] });
+                }}
+                disabled={uploading}
+              >
+                Cancel
+              </Button>
+              <Button
+                className="flex-1"
+                onClick={handleCompleteSubmit}
+                disabled={uploading}
+              >
+                {uploading ? 'Uploading...' : 'Complete'}
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
       
       {/* Delete Dialog */}
       <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
