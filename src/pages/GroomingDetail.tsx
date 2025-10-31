@@ -294,8 +294,8 @@ export default function GroomingDetail() {
   
   if (loading) {
     return (
-      <div className="min-h-screen bg-background pb-20">
-        <div className="container max-w-2xl mx-auto px-4 py-6 space-y-6">
+      <div className="min-h-screen h-full bg-background overflow-y-auto">
+        <div className="container max-w-2xl mx-auto px-4 py-6 pb-32 space-y-6">
           <div className="h-10 w-32 bg-muted rounded animate-pulse" />
           <div className="h-64 bg-muted rounded animate-pulse" />
         </div>
@@ -308,7 +308,7 @@ export default function GroomingDetail() {
   }
   
   return (
-    <div className="min-h-screen bg-background pb-20">
+    <div className="min-h-screen h-full bg-background overflow-y-auto">
       {/* Header */}
       <div className="sticky top-0 z-10 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b">
         <div className="container max-w-2xl mx-auto px-4 py-4">
@@ -369,7 +369,7 @@ export default function GroomingDetail() {
       </div>
       
       {/* Content */}
-      <div className="container max-w-2xl mx-auto px-4 py-6 pb-24">
+      <div className="container max-w-2xl mx-auto px-4 py-6 pb-32 safe-bottom">
         <Tabs defaultValue="details" className="space-y-6">
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="details" className="flex items-center gap-2">
