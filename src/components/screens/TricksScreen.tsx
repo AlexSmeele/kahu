@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { Award, Star, Clock, CheckCircle2, Lock, Trophy, Target, Zap, Play, BookOpen, GraduationCap, AlertCircle } from "lucide-react";
+import { Award, Star, Clock, CheckCircle2, Lock, Trophy, Target, Zap, Play, BookOpen, GraduationCap, AlertCircle, ChevronDown, ChevronUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
@@ -184,6 +184,12 @@ export function TricksScreen({ selectedDogId, onDogChange }: TricksScreenProps) 
   const [isTrickModalOpen, setIsTrickModalOpen] = useState(false);
   const [isClickerOpen, setIsClickerOpen] = useState(false);
   const [selectedSection, setSelectedSection] = useState<'program' | 'foundations' | 'skills' | 'troubleshooting'>('program');
+  const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({
+    program: false,
+    foundations: false,
+    skills: false,
+    troubleshooting: false
+  });
 
   if (loading) {
     return (
@@ -295,7 +301,7 @@ export function TricksScreen({ selectedDogId, onDogChange }: TricksScreenProps) 
           <Button
             onClick={() => setSelectedSection('program')}
             variant={selectedSection === 'program' ? 'default' : 'outline'}
-            className={`w-full h-20 rounded-2xl flex items-center justify-center gap-3 text-lg font-bold transition-all ${
+            className={`w-full h-14 rounded-2xl flex items-center justify-center gap-3 text-lg font-bold transition-all ${
               selectedSection === 'program' 
                 ? 'bg-gradient-to-r from-primary to-primary-hover shadow-lg scale-105' 
                 : 'hover:bg-accent'
@@ -310,7 +316,7 @@ export function TricksScreen({ selectedDogId, onDogChange }: TricksScreenProps) 
             <Button
               onClick={() => setSelectedSection('foundations')}
               variant={selectedSection === 'foundations' ? 'default' : 'outline'}
-              className={`h-24 rounded-2xl flex flex-col items-center justify-center gap-2 font-semibold transition-all ${
+              className={`h-16 rounded-2xl flex flex-col items-center justify-center gap-2 font-semibold transition-all ${
                 selectedSection === 'foundations'
                   ? 'bg-gradient-to-br from-emerald-500 to-emerald-600 text-white shadow-lg scale-105'
                   : 'hover:bg-accent'
@@ -323,7 +329,7 @@ export function TricksScreen({ selectedDogId, onDogChange }: TricksScreenProps) 
             <Button
               onClick={() => setSelectedSection('skills')}
               variant={selectedSection === 'skills' ? 'default' : 'outline'}
-              className={`h-24 rounded-2xl flex flex-col items-center justify-center gap-2 font-semibold transition-all ${
+              className={`h-16 rounded-2xl flex flex-col items-center justify-center gap-2 font-semibold transition-all ${
                 selectedSection === 'skills'
                   ? 'bg-gradient-to-br from-primary to-primary-hover shadow-lg scale-105'
                   : 'hover:bg-accent'
@@ -336,7 +342,7 @@ export function TricksScreen({ selectedDogId, onDogChange }: TricksScreenProps) 
             <Button
               onClick={() => setSelectedSection('troubleshooting')}
               variant={selectedSection === 'troubleshooting' ? 'default' : 'outline'}
-              className={`h-24 rounded-2xl flex flex-col items-center justify-center gap-2 font-semibold transition-all ${
+              className={`h-16 rounded-2xl flex flex-col items-center justify-center gap-2 font-semibold transition-all ${
                 selectedSection === 'troubleshooting'
                   ? 'bg-gradient-to-br from-orange-500 to-orange-600 text-white shadow-lg scale-105'
                   : 'hover:bg-accent'
@@ -359,14 +365,25 @@ export function TricksScreen({ selectedDogId, onDogChange }: TricksScreenProps) 
                 <div className="w-12 h-12 bg-gradient-to-br from-primary to-primary-hover rounded-xl flex items-center justify-center">
                   <Trophy className="w-6 h-6 text-white" />
                 </div>
-                <div>
+                <div className="flex-1">
                   <h2 className="text-xl font-bold">Training Program</h2>
                   <p className="text-sm text-muted-foreground">Structured learning path</p>
                 </div>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setExpandedSections(prev => ({ ...prev, program: !prev.program }))}
+                  className="flex items-center gap-1"
+                >
+                  <span className="text-sm">{expandedSections.program ? 'See less' : 'See more'}</span>
+                  {expandedSections.program ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                </Button>
               </div>
-              <p className="text-muted-foreground">
-                Your personalized training program will appear here. This section will guide you through a structured curriculum tailored to your dog's level and needs.
-              </p>
+              {expandedSections.program && (
+                <p className="text-muted-foreground">
+                  Your personalized training program will appear here. This section will guide you through a structured curriculum tailored to your dog's level and needs.
+                </p>
+              )}
             </div>
           </div>
         )}
@@ -374,6 +391,33 @@ export function TricksScreen({ selectedDogId, onDogChange }: TricksScreenProps) 
         {/* Skills Content */}
         {selectedSection === 'skills' && (
           <div className="p-4 space-y-6 pb-8">
+            {/* Skills Description Header */}
+            <div className="bg-card rounded-2xl p-6 border-2 border-primary/20">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 bg-gradient-to-br from-primary to-primary-hover rounded-xl flex items-center justify-center">
+                  <Award className="w-6 h-6 text-white" />
+                </div>
+                <div className="flex-1">
+                  <h2 className="text-xl font-bold">Skills Library</h2>
+                  <p className="text-sm text-muted-foreground">Browse all available tricks</p>
+                </div>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setExpandedSections(prev => ({ ...prev, skills: !prev.skills }))}
+                  className="flex items-center gap-1"
+                >
+                  <span className="text-sm">{expandedSections.skills ? 'See less' : 'See more'}</span>
+                  {expandedSections.skills ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                </Button>
+              </div>
+              {expandedSections.skills && (
+                <p className="text-muted-foreground">
+                  Explore our complete collection of tricks organized by difficulty level. Start with beginner tricks to build foundation skills, then progress to more advanced techniques as you and your dog master the basics.
+                </p>
+              )}
+            </div>
+
             {tricksByDifficulty.map(({ level, color, textColor, tricks: levelTricks }) => {
               if (levelTricks.length === 0) return null;
               
@@ -426,14 +470,25 @@ export function TricksScreen({ selectedDogId, onDogChange }: TricksScreenProps) 
                 <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl flex items-center justify-center">
                   <GraduationCap className="w-6 h-6 text-white" />
                 </div>
-                <div>
+                <div className="flex-1">
                   <h2 className="text-xl font-bold">Foundations</h2>
                   <p className="text-sm text-muted-foreground">Core training principles</p>
                 </div>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setExpandedSections(prev => ({ ...prev, foundations: !prev.foundations }))}
+                  className="flex items-center gap-1"
+                >
+                  <span className="text-sm">{expandedSections.foundations ? 'See less' : 'See more'}</span>
+                  {expandedSections.foundations ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                </Button>
               </div>
-              <p className="text-muted-foreground">
-                Learn the fundamental principles of dog training. This section covers essential concepts, techniques, and building blocks for successful training.
-              </p>
+              {expandedSections.foundations && (
+                <p className="text-muted-foreground">
+                  Learn the fundamental principles of dog training. This section covers essential concepts, techniques, and building blocks for successful training.
+                </p>
+              )}
             </div>
           </div>
         )}
@@ -441,6 +496,33 @@ export function TricksScreen({ selectedDogId, onDogChange }: TricksScreenProps) 
         {/* Troubleshooting Content */}
         {selectedSection === 'troubleshooting' && (
           <div className="p-4 space-y-6 pb-8">
+            {/* Troubleshooting Description Header */}
+            <div className="bg-card rounded-2xl p-6 border-2 border-orange-500/20">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl flex items-center justify-center">
+                  <AlertCircle className="w-6 h-6 text-white" />
+                </div>
+                <div className="flex-1">
+                  <h2 className="text-xl font-bold">Troubleshooting</h2>
+                  <p className="text-sm text-muted-foreground">Solve common behavior issues</p>
+                </div>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setExpandedSections(prev => ({ ...prev, troubleshooting: !prev.troubleshooting }))}
+                  className="flex items-center gap-1"
+                >
+                  <span className="text-sm">{expandedSections.troubleshooting ? 'See less' : 'See more'}</span>
+                  {expandedSections.troubleshooting ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                </Button>
+              </div>
+              {expandedSections.troubleshooting && (
+                <p className="text-muted-foreground">
+                  Address common behavioral challenges with proven training techniques. Each lesson provides step-by-step guidance to help you understand and modify problem behaviors effectively and humanely.
+                </p>
+              )}
+            </div>
+
             <div className="space-y-4">
               {/* Section Header */}
               <div className="flex items-center gap-3">
