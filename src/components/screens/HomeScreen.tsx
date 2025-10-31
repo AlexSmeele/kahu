@@ -7,6 +7,7 @@ import { ActivityCircleCard } from "@/components/home/ActivityCircleCard";
 import { TrainingTile } from "@/components/home/TrainingTile";
 import { QuickNoteTile } from "@/components/home/QuickNoteTile";
 import { GetAdviceCard } from "@/components/home/GetAdviceCard";
+import { AnalyticsCard } from "@/components/home/AnalyticsCard";
 import { ActivityRecordModal } from "@/components/home/ActivityRecordModal";
 import { QuickNoteModal } from "@/components/home/QuickNoteModal";
 import { EditActivityGoalModal } from "@/components/home/EditActivityGoalModal";
@@ -95,7 +96,7 @@ export function HomeScreen({ selectedDogId, onDogChange, onTabChange }: HomeScre
               onClick={() => onTabChange('tricks')}
             />
             <QuickNoteTile onClick={() => setShowNoteModal(true)} />
-            <GetAdviceCard />
+            <AnalyticsCard />
           </div>
         </div>
       </div>
