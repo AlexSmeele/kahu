@@ -400,13 +400,103 @@ export function MealPlanVariantC({ dogId, nutritionPlan, onSave, trigger }: Meal
         <Dialog open={!!editingCell} onOpenChange={() => setEditingCell(null)}>
           <DialogContent className="max-w-md">
             <DialogHeader>
-              <DialogTitle>Edit Meal - {editingCell.day}</DialogTitle>
+              <DialogTitle>Edit Meal - {editingCell.day.charAt(0).toUpperCase() + editingCell.day.slice(1)}</DialogTitle>
             </DialogHeader>
             <div className="space-y-4">
-              {/* Quick edit form would go here */}
-              <p className="text-sm text-muted-foreground">
-                Quick edit functionality for individual meals would be implemented here.
-              </p>
+              <div>
+                <Label htmlFor="edit-meal-time">Meal Time</Label>
+                <Input
+                  id="edit-meal-time"
+                  type="time"
+                  value={weekPlan[editingCell.day][editingCell.mealIndex]?.time || '12:00'}
+                  onChange={(e) => {
+                    setWeekPlan(prev => ({
+                      ...prev,
+                      [editingCell.day]: prev[editingCell.day].map((m, idx) =>
+                        idx === editingCell.mealIndex ? { ...m, time: e.target.value } : m
+                      )
+                    }));
+                  }}
+                />
+              </div>
+
+              <div>
+                <Label>Food Items</Label>
+                <div className="space-y-2 mt-2">
+                  {weekPlan[editingCell.day][editingCell.mealIndex]?.components.map((comp, idx) => (
+                    <div key={idx} className="grid grid-cols-3 gap-2 p-2 border rounded">
+                      <Input
+                        value={comp.name}
+                        onChange={(e) => {
+                          setWeekPlan(prev => {
+                            const newPlan = { ...prev };
+                            newPlan[editingCell.day][editingCell.mealIndex].components[idx].name = e.target.value;
+                            return newPlan;
+                          });
+                        }}
+                        placeholder="Food name"
+                        className="text-sm"
+                      />
+                      <Input
+                        type="number"
+                        step="0.25"
+                        value={comp.amount}
+                        onChange={(e) => {
+                          setWeekPlan(prev => {
+                            const newPlan = { ...prev };
+                            newPlan[editingCell.day][editingCell.mealIndex].components[idx].amount = parseFloat(e.target.value) || 0;
+                            return newPlan;
+                          });
+                        }}
+                        className="text-sm"
+                      />
+                      <Select
+                        value={comp.category}
+                        onValueChange={(value: 'kibble' | 'wet' | 'raw' | 'treats' | 'supplements' | 'medication') => {
+                          setWeekPlan(prev => {
+                            const newPlan = { ...prev };
+                            newPlan[editingCell.day][editingCell.mealIndex].components[idx].category = value;
+                            return newPlan;
+                          });
+                        }}
+                      >
+                        <SelectTrigger className="text-sm">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {MEAL_CATEGORIES.map(cat => (
+                            <SelectItem key={cat.value} value={cat.value}>
+                              {cat.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  setWeekPlan(prev => {
+                    const newPlan = { ...prev };
+                    newPlan[editingCell.day][editingCell.mealIndex].components.push({
+                      id: Date.now().toString(),
+                      name: '',
+                      amount: 0,
+                      unit: 'cups',
+                      category: 'kibble' as const
+                    });
+                    return newPlan;
+                  });
+                }}
+                className="w-full"
+              >
+                <Plus className="w-3 h-3 mr-1" />
+                Add Food Item
+              </Button>
             </div>
             <div className="flex gap-2">
               <Button variant="outline" onClick={() => setEditingCell(null)} className="flex-1">

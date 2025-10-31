@@ -10,6 +10,7 @@ import { useMealTracking, TodayMeal } from "@/hooks/useMealTracking";
 import { useSmartNotifications } from "@/hooks/useSmartNotifications";
 import { MealPlanModal } from "@/components/nutrition/MealPlanModal";
 import { MultiMealPlanModal } from "@/components/nutrition/MultiMealPlanModal";
+import { MealPlanVariantSelector } from "@/components/nutrition/MealPlanVariantSelector";
 import { WeekPlannerModal } from "@/components/nutrition/WeekPlannerModal";
 import { BowlCleaningCard } from "@/components/nutrition/BowlCleaningCard";
 import { TreatTrackerCard } from "@/components/nutrition/TreatTrackerCard";
@@ -108,49 +109,19 @@ export function NutritionScreen({ selectedDogId, onDogChange }: NutritionScreenP
             <div className="grid grid-cols-1 gap-4">
               <div className="space-y-2">
                 <h4 className="font-medium text-sm">Choose Your Meal Planning Style</h4>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                  <MultiMealPlanModal
-                    dogId={currentDog?.id || ''}
-                    nutritionPlan={nutritionPlan}
-                    onSave={(plan) => {
-                      // The nutrition hook will automatically update
-                      console.log('Nutrition plan saved:', plan);
-                    }}
-                    trigger={
-                      <Button className="w-full h-20 flex flex-col gap-2">
-                        <Plus className="w-6 h-6" />
-                        <span className="text-sm">Multi-Meal Plan</span>
-                        <span className="text-xs text-muted-foreground">2-4 meals per day</span>
-                      </Button>
-                    }
-                  />
-                  
-                  <MealPlanModal
-                    dogId={currentDog?.id || ''}
-                    nutritionPlan={nutritionPlan}
-                    onSave={(plan) => {
-                      // The nutrition hook will automatically update
-                      console.log('Nutrition plan saved:', plan);
-                    }}
-                    trigger={
-                      <Button className="w-full h-20 flex flex-col gap-2" variant="outline">
-                        <Plus className="w-6 h-6" />
-                        <span className="text-sm">Single Meal</span>
-                        <span className="text-xs text-muted-foreground">One meal setup</span>
-                      </Button>
-                    }
-                  />
-
-                  <Button
-                    onClick={() => setIsWeekPlannerOpen(true)}
-                    className="w-full h-20 flex flex-col gap-2"
-                    variant="outline"
-                  >
-                    <Calendar className="w-6 h-6" />
-                    <span className="text-sm">Plan Week</span>
-                    <span className="text-xs text-muted-foreground">Advanced planner</span>
-                  </Button>
-                </div>
+                <MealPlanVariantSelector
+                  dogId={currentDog?.id || ''}
+                  nutritionPlan={nutritionPlan}
+                  onSave={(plan) => {
+                    console.log('Nutrition plan saved:', plan);
+                  }}
+                  trigger={
+                    <Button variant="outline" className="w-full">
+                      <Plus className="w-4 h-4 mr-2" />
+                      Create Nutrition Plan
+                    </Button>
+                  }
+                />
               </div>
             </div>
           </div>

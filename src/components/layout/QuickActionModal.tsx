@@ -4,7 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { AddWeightModal } from "@/components/health/AddWeightModal";
 import { HealthNotesModal } from "@/components/health/HealthNotesModal";
+import { MealLogModal } from "@/components/nutrition/MealLogModal";
 import { useToast } from "@/hooks/use-toast";
+import { useNutrition } from "@/hooks/useNutrition";
 import type { TabType } from "@/components/layout/BottomNavigation";
 
 interface QuickActionModalProps {
@@ -60,8 +62,10 @@ const quickActions = [
 
 export function QuickActionModal({ isOpen, onClose, selectedDogId, selectedDogName, onNavigateToTab }: QuickActionModalProps) {
   const { toast } = useToast();
+  const { nutritionPlan } = useNutrition(selectedDogId);
   const [isAddWeightOpen, setIsAddWeightOpen] = useState(false);
   const [isHealthNotesOpen, setIsHealthNotesOpen] = useState(false);
+  const [isMealLogOpen, setIsMealLogOpen] = useState(false);
 
   const handleAction = (actionId: string) => {
     switch (actionId) {
@@ -69,10 +73,7 @@ export function QuickActionModal({ isOpen, onClose, selectedDogId, selectedDogNa
         setIsAddWeightOpen(true);
         break;
       case 'meal':
-        toast({
-          title: "Meal logging",
-          description: "Go to Nutrition screen to log meals and update feeding schedules.",
-        });
+        setIsMealLogOpen(true);
         break;
       case 'health':
         setIsHealthNotesOpen(true);
@@ -143,6 +144,14 @@ export function QuickActionModal({ isOpen, onClose, selectedDogId, selectedDogNa
         onClose={() => setIsHealthNotesOpen(false)}
         dogName={selectedDogName || "Your dog"}
         dogId={selectedDogId || ""}
+      />
+
+      <MealLogModal
+        isOpen={isMealLogOpen}
+        onClose={() => setIsMealLogOpen(false)}
+        dogId={selectedDogId}
+        dogName={selectedDogName}
+        nutritionPlanId={nutritionPlan?.id}
       />
     </Dialog>
   );

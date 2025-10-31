@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
-import { ArrowLeft, Calendar, Clock, Check, X, Edit3, Trash2, Utensils, Droplet } from "lucide-react";
+import { ArrowLeft, Calendar, Clock, Check, X, Edit3, Trash2, Utensils, Droplet, Zap, Thermometer, Timer, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -11,6 +11,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { format } from "date-fns";
 import { useMealTracking } from "@/hooks/useMealTracking";
 import { useToast } from "@/hooks/use-toast";
@@ -38,6 +39,14 @@ export default function MealDetail() {
     amount_consumed: 0,
     percentage_eaten: 100,
     eating_behavior: "normal",
+    eating_speed: "normal",
+    food_temperature: "room_temp",
+    energy_level_after: "normal",
+    begged_before: false,
+    begged_after: false,
+    vomited_after: false,
+    vomit_time_minutes: 0,
+    snubbed_items: "",
     bowl_cleaned_before: false,
     notes: "",
   });
@@ -60,6 +69,14 @@ export default function MealDetail() {
             amount_consumed: found.amount_consumed || 0,
             percentage_eaten: found.percentage_eaten || 100,
             eating_behavior: found.eating_behavior || 'normal',
+            eating_speed: String(found.eating_speed || 'normal'),
+            food_temperature: String(found.food_temperature || 'room_temp'),
+            energy_level_after: String(found.energy_level_after || 'normal'),
+            begged_before: found.begged_before || false,
+            begged_after: found.begged_after || false,
+            vomited_after: found.vomited_after || false,
+            vomit_time_minutes: found.vomit_time_minutes || 0,
+            snubbed_items: found.snubbed_items || '',
             bowl_cleaned_before: found.bowl_cleaned_before || false,
             notes: found.notes || '',
           });
@@ -89,6 +106,14 @@ export default function MealDetail() {
             amount_consumed: data.amount_consumed || 0,
             percentage_eaten: data.percentage_eaten || 100,
             eating_behavior: data.eating_behavior || 'normal',
+            eating_speed: String(data.eating_speed || 'normal'),
+            food_temperature: String(data.food_temperature || 'room_temp'),
+            energy_level_after: String(data.energy_level_after || 'normal'),
+            begged_before: data.begged_before || false,
+            begged_after: data.begged_after || false,
+            vomited_after: data.vomited_after || false,
+            vomit_time_minutes: data.vomit_time_minutes || 0,
+            snubbed_items: String(data.snubbed_items || ''),
             bowl_cleaned_before: data.bowl_cleaned_before || false,
             notes: data.notes || '',
           });
@@ -130,6 +155,14 @@ export default function MealDetail() {
       amount_consumed: editForm.amount_consumed || undefined,
       percentage_eaten: editForm.percentage_eaten || undefined,
       eating_behavior: editForm.eating_behavior || undefined,
+      eating_speed: editForm.eating_speed || undefined,
+      food_temperature: editForm.food_temperature || undefined,
+      energy_level_after: editForm.energy_level_after || undefined,
+      begged_before: editForm.begged_before,
+      begged_after: editForm.begged_after,
+      vomited_after: editForm.vomited_after,
+      vomit_time_minutes: editForm.vomited_after ? editForm.vomit_time_minutes : undefined,
+      snubbed_items: editForm.snubbed_items || undefined,
       bowl_cleaned_before: editForm.bowl_cleaned_before,
       notes: editForm.notes || undefined,
     });
@@ -155,6 +188,14 @@ export default function MealDetail() {
         amount_consumed: meal.amount_consumed || 0,
         percentage_eaten: meal.percentage_eaten || 100,
         eating_behavior: meal.eating_behavior || 'normal',
+        eating_speed: String(meal.eating_speed || 'normal'),
+        food_temperature: String(meal.food_temperature || 'room_temp'),
+        energy_level_after: String(meal.energy_level_after || 'normal'),
+        begged_before: meal.begged_before || false,
+        begged_after: meal.begged_after || false,
+        vomited_after: meal.vomited_after || false,
+        vomit_time_minutes: meal.vomit_time_minutes || 0,
+        snubbed_items: meal.snubbed_items || '',
         bowl_cleaned_before: meal.bowl_cleaned_before || false,
         notes: meal.notes || '',
       });
@@ -238,15 +279,17 @@ export default function MealDetail() {
       </div>
 
       {/* Content */}
-      <div className="container max-w-2xl mx-auto px-4 py-6 space-y-6">
-        <Card>
-          <CardHeader>
-            <CardTitle>Meal Information</CardTitle>
-            <p className="text-sm text-muted-foreground">
-              {format(new Date(meal.scheduled_date), 'MMMM d, yyyy')}
-            </p>
-          </CardHeader>
-          <CardContent className="space-y-6">
+      <div className="container max-w-2xl mx-auto px-4 py-6">
+        <ScrollArea className="h-[calc(100vh-12rem)]">
+          <div className="space-y-6 pr-4">
+            <Card>
+              <CardHeader>
+                <CardTitle>Meal Information</CardTitle>
+                <p className="text-sm text-muted-foreground">
+                  {format(new Date(meal.scheduled_date), 'MMMM d, yyyy')}
+                </p>
+              </CardHeader>
+              <CardContent className="space-y-6">
             {isEditing ? (
               <>
                 <div>
@@ -333,7 +376,67 @@ export default function MealDetail() {
                   </RadioGroup>
                 </div>
 
-                <div className="space-y-2">
+                <div>
+                  <Label>Eating Speed</Label>
+                  <Select value={editForm.eating_speed} onValueChange={(value) => setEditForm({ ...editForm, eating_speed: value })}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="fast">Fast - Gulped down</SelectItem>
+                      <SelectItem value="normal">Normal pace</SelectItem>
+                      <SelectItem value="slow">Slow - Took time</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div>
+                  <Label>Food Temperature</Label>
+                  <Select value={editForm.food_temperature} onValueChange={(value) => setEditForm({ ...editForm, food_temperature: value })}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="cold">Cold (from fridge)</SelectItem>
+                      <SelectItem value="room_temp">Room temperature</SelectItem>
+                      <SelectItem value="warm">Warm (heated)</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div>
+                  <Label>Energy Level After Meal</Label>
+                  <Select value={editForm.energy_level_after} onValueChange={(value) => setEditForm({ ...editForm, energy_level_after: value })}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="low">Low - Lethargic</SelectItem>
+                      <SelectItem value="normal">Normal</SelectItem>
+                      <SelectItem value="high">High - Energetic</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-3">
+                  <div className="flex items-center space-x-2">
+                    <Checkbox 
+                      id="begged_before"
+                      checked={editForm.begged_before}
+                      onCheckedChange={(checked) => setEditForm({ ...editForm, begged_before: checked as boolean })}
+                    />
+                    <Label htmlFor="begged_before" className="font-normal">Begged before meal</Label>
+                  </div>
+                  
+                  <div className="flex items-center space-x-2">
+                    <Checkbox 
+                      id="begged_after"
+                      checked={editForm.begged_after}
+                      onCheckedChange={(checked) => setEditForm({ ...editForm, begged_after: checked as boolean })}
+                    />
+                    <Label htmlFor="begged_after" className="font-normal">Begged after meal</Label>
+                  </div>
+
                   <div className="flex items-center space-x-2">
                     <Checkbox 
                       id="bowl_cleaned"
@@ -342,18 +445,51 @@ export default function MealDetail() {
                     />
                     <Label htmlFor="bowl_cleaned" className="font-normal">Bowl cleaned before meal</Label>
                   </div>
-                  <p className="text-xs text-muted-foreground ml-6">
-                    💡 Food bowls should be cleaned after every meal with hot soapy water
-                  </p>
+                </div>
+
+                <div className="space-y-2">
+                  <div className="flex items-center space-x-2">
+                    <Checkbox 
+                      id="vomited"
+                      checked={editForm.vomited_after}
+                      onCheckedChange={(checked) => setEditForm({ ...editForm, vomited_after: checked as boolean, vomit_time_minutes: checked ? editForm.vomit_time_minutes : 0 })}
+                    />
+                    <Label htmlFor="vomited" className="font-normal">Vomited after meal</Label>
+                  </div>
+                  {editForm.vomited_after && (
+                    <div className="ml-6">
+                      <Label htmlFor="vomit_time" className="text-xs">Time after meal (minutes)</Label>
+                      <Input
+                        id="vomit_time"
+                        type="number"
+                        min="0"
+                        value={editForm.vomit_time_minutes}
+                        onChange={(e) => setEditForm({ ...editForm, vomit_time_minutes: parseInt(e.target.value) || 0 })}
+                        className="mt-1"
+                      />
+                    </div>
+                  )}
                 </div>
 
                 <div>
-                  <Label htmlFor="notes">Notes</Label>
+                  <Label htmlFor="snubbed_items">Items Dog Refused</Label>
+                  <Textarea
+                    id="snubbed_items"
+                    value={editForm.snubbed_items}
+                    onChange={(e) => setEditForm({ ...editForm, snubbed_items: e.target.value })}
+                    placeholder="List any food items your dog refused or avoided..."
+                    rows={2}
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="notes">Additional Notes</Label>
                   <Textarea
                     id="notes"
                     value={editForm.notes}
                     onChange={(e) => setEditForm({ ...editForm, notes: e.target.value })}
-                    placeholder="Add any notes about this meal..."
+                    placeholder="Add any other notes about this meal..."
+                    rows={3}
                   />
                 </div>
 
@@ -446,9 +582,67 @@ export default function MealDetail() {
                   </div>
                 )}
 
+                {meal.eating_speed && (
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <Timer className="w-4 h-4" />
+                      <span>Eating Speed</span>
+                    </div>
+                    <p className="font-medium capitalize">{meal.eating_speed}</p>
+                  </div>
+                )}
+
+                {meal.food_temperature && (
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <Thermometer className="w-4 h-4" />
+                      <span>Food Temperature</span>
+                    </div>
+                    <p className="font-medium capitalize">{meal.food_temperature.replace('_', ' ')}</p>
+                  </div>
+                )}
+
+                {meal.energy_level_after && (
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <Zap className="w-4 h-4" />
+                      <span>Energy After Meal</span>
+                    </div>
+                    <p className="font-medium capitalize">{meal.energy_level_after}</p>
+                  </div>
+                )}
+
+                {(meal.begged_before || meal.begged_after) && (
+                  <div className="p-3 bg-warning/5 rounded-lg border border-warning/20">
+                    <p className="text-sm font-medium">
+                      {meal.begged_before && meal.begged_after && "Begged before and after meal"}
+                      {meal.begged_before && !meal.begged_after && "Begged before meal"}
+                      {!meal.begged_before && meal.begged_after && "Begged after meal"}
+                    </p>
+                  </div>
+                )}
+
+                {meal.vomited_after && (
+                  <div className="p-3 bg-destructive/5 rounded-lg border border-destructive/20">
+                    <div className="flex items-center gap-2">
+                      <AlertCircle className="w-4 h-4 text-destructive" />
+                      <p className="text-sm font-medium">
+                        Vomited {meal.vomit_time_minutes} minutes after meal
+                      </p>
+                    </div>
+                  </div>
+                )}
+
+                {meal.snubbed_items && (
+                  <div className="space-y-1">
+                    <p className="text-sm text-muted-foreground">Items Refused</p>
+                    <p className="font-medium">{meal.snubbed_items}</p>
+                  </div>
+                )}
+
                 {meal.notes && (
                   <div className="space-y-1">
-                    <p className="text-sm text-muted-foreground">Notes</p>
+                    <p className="text-sm text-muted-foreground">Additional Notes</p>
                     <p className="font-medium">{meal.notes}</p>
                   </div>
                 )}
@@ -456,6 +650,8 @@ export default function MealDetail() {
             )}
           </CardContent>
         </Card>
+          </div>
+        </ScrollArea>
       </div>
 
       {/* Delete Confirmation Dialog */}
