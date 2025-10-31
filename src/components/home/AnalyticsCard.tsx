@@ -11,22 +11,24 @@ export const AnalyticsCard = ({ className = "" }: AnalyticsCardProps) => {
 
   return (
     <Card 
-      className={`p-4 cursor-pointer hover:shadow-lg transition-all hover:scale-[1.02] bg-gradient-to-br from-primary/10 to-primary/5 ${className}`}
+      className={`p-4 cursor-pointer hover:bg-accent transition-all hover:scale-[1.02] border rounded-2xl ${className}`}
       onClick={() => navigate('/analytics')}
     >
-      <div className="flex items-center justify-between mb-1.5">
-        <div className="flex items-center gap-2">
-          <Brain className="h-4 w-4 text-primary" />
-          <h3 className="font-semibold text-sm">Insights</h3>
+      <div className="flex items-center gap-2 mb-3">
+        <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+          <Brain className="w-4 h-4 text-primary" />
         </div>
-        <Sparkles className="h-4 w-4 text-primary" />
+        <h3 className="font-semibold text-base text-foreground">Insights</h3>
       </div>
-      <p className="text-xs text-muted-foreground mb-2">
-        View analytics and recommendations
-      </p>
-      <div className="flex items-center gap-1.5 text-primary text-xs font-medium">
-        <TrendingUp className="h-3.5 w-3.5" />
-        <span>View →</span>
+      
+      <div className="flex flex-col justify-center min-h-[88px] my-3">
+        <p className="text-sm text-muted-foreground mb-3">
+          View analytics and recommendations
+        </p>
+        
+        <p className="text-xs text-muted-foreground">
+          View →
+        </p>
       </div>
     </Card>
   );

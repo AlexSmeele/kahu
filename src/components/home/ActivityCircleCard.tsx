@@ -30,16 +30,16 @@ export function ActivityCircleCard({
   return (
     <button
       onClick={onClick}
-      className={`rounded-2xl border bg-card p-3 hover:bg-accent transition-all hover:scale-[1.02] text-left w-full ${className}`}
+      className={`rounded-2xl border bg-card p-4 hover:bg-accent transition-all hover:scale-[1.02] text-left w-full ${className}`}
     >
-      <div className="flex items-center gap-2 mb-2">
-        <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+      <div className="flex items-center gap-2 mb-3">
+        <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
           <Activity className="w-4 h-4 text-primary" />
         </div>
-        <h3 className="font-semibold text-foreground">Activity</h3>
+        <h3 className="font-semibold text-base text-foreground">Activity</h3>
       </div>
       
-      <div className="flex items-center justify-center my-2">
+      <div className="flex items-center justify-center my-3">
         <div className="relative w-24 h-24">
           <svg className="transform -rotate-90 w-24 h-24">
             <circle
@@ -80,7 +80,7 @@ export function ActivityCircleCard({
       </div>
       
       {((distance && distance > 0) || (calories && calories > 0)) && (
-        <div className="flex items-center justify-center gap-3 mt-1">
+        <div className="flex items-center justify-center gap-3 mt-2 pt-2 border-t border-border">
           {distance && distance > 0 && (
             <div className="text-xs text-muted-foreground">
               <span className="font-semibold text-foreground">{distance.toFixed(1)}</span> km
