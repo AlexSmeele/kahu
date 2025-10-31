@@ -27,7 +27,8 @@ export function WellnessTimeline({ dogId }: WellnessTimelineProps) {
   const [showMapViewer, setShowMapViewer] = useState(false);
 
   const handleEventClick = (event: any) => {
-    if (event.type === 'activity' && event.metadata?.activityId) {
+    // Helper function to save scroll position
+    const saveScrollPosition = () => {
       const scrollableContainer = document.querySelector('.overflow-y-auto');
       const scrollPosition = scrollableContainer?.scrollTop || 0;
       try {
@@ -38,54 +39,52 @@ export function WellnessTimeline({ dogId }: WellnessTimelineProps) {
       try {
         sessionStorage.setItem(`wellnessScroll:${dogId}`, String(scrollPosition));
       } catch {}
-      navigate(`/activity/${event.metadata.activityId}`, { 
-        state: { 
-          dogId, 
-          from: '/?tab=wellness',
-          scrollPosition 
-        } 
-      });
-    } else if (event.type === 'meal' && event.details?.id) {
-      const scrollableContainer = document.querySelector('.overflow-y-auto');
-      const scrollPosition = scrollableContainer?.scrollTop || 0;
-      try {
-        const h = window.history as any;
-        const prevUsr = h.state?.usr || {};
-        h.replaceState({ ...h.state, usr: { ...prevUsr, scrollPosition } }, document.title, window.location.href);
-      } catch {}
-      try {
-        sessionStorage.setItem(`wellnessScroll:${dogId}`, String(scrollPosition));
-      } catch {}
-      navigate(`/meal/${event.details.id}`, { 
-        state: { 
-          dogId, 
-          from: '/?tab=wellness',
-          scrollPosition 
-        } 
-      });
-    } else if (event.type === 'grooming') {
-      if (!event.details?.id) {
-        console.error('Grooming event missing ID:', event);
+      return scrollPosition;
+    };
+
+    // Get the ID based on event type
+    const getId = () => {
+      if (event.type === 'activity') return event.metadata?.activityId;
+      return event.details?.id;
+    };
+
+    const eventId = getId();
+
+    // Routes that navigate to detail pages
+    const navigableTypes = ['activity', 'meal', 'grooming'];
+    
+    if (navigableTypes.includes(event.type)) {
+      // Validate ID exists before navigating
+      if (!eventId) {
+        console.warn(`Timeline event missing ID:`, {
+          type: event.type,
+          title: event.title,
+          event: event
+        });
         return;
       }
-      const scrollableContainer = document.querySelector('.overflow-y-auto');
-      const scrollPosition = scrollableContainer?.scrollTop || 0;
-      try {
-        const h = window.history as any;
-        const prevUsr = h.state?.usr || {};
-        h.replaceState({ ...h.state, usr: { ...prevUsr, scrollPosition } }, document.title, window.location.href);
-      } catch {}
-      try {
-        sessionStorage.setItem(`wellnessScroll:${dogId}`, String(scrollPosition));
-      } catch {}
-      navigate(`/grooming/${event.details.id}`, { 
-        state: { 
-          dogId, 
-          from: '/?tab=wellness',
-          scrollPosition 
-        } 
-      });
+
+      const scrollPosition = saveScrollPosition();
+      
+      // Build route with validated ID
+      const routeMap: Record<string, string> = {
+        'activity': `/activity/${eventId}`,
+        'meal': `/meal/${eventId}`,
+        'grooming': `/grooming/${eventId}`,
+      };
+
+      const route = routeMap[event.type];
+      if (route) {
+        navigate(route, { 
+          state: { 
+            dogId, 
+            from: '/?tab=wellness',
+            scrollPosition 
+          } 
+        });
+      }
     } else if (event.details) {
+      // For other types, open modal
       setSelectedEvent(event.details);
       setModalType(event.type);
     }

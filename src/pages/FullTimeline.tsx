@@ -681,17 +681,37 @@ export default function FullTimeline() {
                                      // Save current scroll position before navigating
                                      sessionStorage.setItem(`timeline-position-${dogId}`, originalIndex.toString());
                                      
-                                     const routeMap: Record<string, string> = {
-                                       'activity': `/activity/${event.metadata?.activityId}`,
-                                       'meal': `/meal/${event.details?.id}`,
-                                       'vet-visit': `/vet-visit/${event.details?.id}`,
-                                       'grooming': `/grooming/${event.details?.id}`,
-                                       'vaccination': `/vaccination/${event.details?.id}`,
-                                       'checkup': `/checkup/${event.details?.id}`,
-                                       'weight': `/weight/${event.details?.id}`,
-                                       'treatment': `/treatment/${event.details?.id}`,
-                                       'injury': `/injury/${event.details?.id}`,
+                                     // Get the ID based on event type
+                                     const getId = () => {
+                                       if (event.type === 'activity') return event.metadata?.activityId;
+                                       return event.details?.id;
                                      };
+                                     
+                                     const eventId = getId();
+                                     
+                                     // Validate ID exists before building route
+                                     if (!eventId) {
+                                       console.warn(`Timeline event missing ID:`, {
+                                         type: event.type,
+                                         title: event.title,
+                                         event: event
+                                       });
+                                       return;
+                                     }
+                                     
+                                     // Build route with validated ID
+                                     const routeMap: Record<string, string> = {
+                                       'activity': `/activity/${eventId}`,
+                                       'meal': `/meal/${eventId}`,
+                                       'vet-visit': `/vet-visit/${eventId}`,
+                                       'grooming': `/grooming/${eventId}`,
+                                       'vaccination': `/vaccination/${eventId}`,
+                                       'checkup': `/checkup/${eventId}`,
+                                       'weight': `/weight/${eventId}`,
+                                       'treatment': `/treatment/${eventId}`,
+                                       'injury': `/injury/${eventId}`,
+                                     };
+                                     
                                      const route = routeMap[event.type];
                                      if (route) {
                                        navigate(route, { state: { dogId, from: `/full-timeline/${dogId}` } });
