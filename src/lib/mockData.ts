@@ -27,18 +27,18 @@ export const REAL_DOG_IDS = {
 
 // Generate extensive historical data (3 months) for both dogs
 const historicalActivities = [
-  ...generateHistoricalActivityRecords(MOCK_DOG_IDS.SUKI, 12, 3),
-  ...generateHistoricalActivityRecords(MOCK_DOG_IDS.JETT, 19, 3),
+  ...generateHistoricalActivityRecords(MOCK_DOG_IDS.SUKI, 10, 3),
+  ...generateHistoricalActivityRecords(MOCK_DOG_IDS.JETT, 16, 3),
 ];
 
 const historicalMeals = [
-  ...generateHistoricalMealRecords(MOCK_DOG_IDS.SUKI, '00000000-0000-0000-0000-000000000051', 200, 3),
-  ...generateHistoricalMealRecords(MOCK_DOG_IDS.JETT, '00000000-0000-0000-0000-000000000052', 300, 3),
+  ...generateHistoricalMealRecords(MOCK_DOG_IDS.SUKI, '00000000-0000-0000-0000-000000000051', 150, 3),
+  ...generateHistoricalMealRecords(MOCK_DOG_IDS.JETT, '00000000-0000-0000-0000-000000000052', 320, 3),
 ];
 
 const historicalWeights = [
-  ...generateHistoricalWeightRecords(MOCK_DOG_IDS.SUKI, 11.5, 3),
-  ...generateHistoricalWeightRecords(MOCK_DOG_IDS.JETT, 17, 3),
+  ...generateHistoricalWeightRecords(MOCK_DOG_IDS.SUKI, 9.5, 3),
+  ...generateHistoricalWeightRecords(MOCK_DOG_IDS.JETT, 15, 3),
 ];
 
 const historicalCheckups = [
@@ -77,7 +77,7 @@ export const MOCK_WEIGHT_RECORDS = [
   {
     id: '00000000-0000-0000-0000-000000000021',
     dog_id: MOCK_DOG_IDS.SUKI,
-    weight: 12,
+    weight: 10,
     date: '2025-09-05T13:36:00Z',
     notes: null,
     created_at: '2025-09-05T13:36:00Z',
@@ -86,7 +86,7 @@ export const MOCK_WEIGHT_RECORDS = [
   {
     id: '00000000-0000-0000-0000-000000000022',
     dog_id: MOCK_DOG_IDS.SUKI,
-    weight: 12.5,
+    weight: 10.2,
     date: '2025-05-05T13:46:00Z',
     notes: null,
     created_at: '2025-05-05T13:46:00Z',
@@ -95,7 +95,7 @@ export const MOCK_WEIGHT_RECORDS = [
   {
     id: '00000000-0000-0000-0000-000000000023',
     dog_id: MOCK_DOG_IDS.SUKI,
-    weight: 11.5,
+    weight: 9.8,
     date: '2024-09-05T13:46:00Z',
     notes: null,
     created_at: '2024-09-05T13:46:00Z',
@@ -105,7 +105,7 @@ export const MOCK_WEIGHT_RECORDS = [
   {
     id: '00000000-0000-0000-0000-000000000024',
     dog_id: MOCK_DOG_IDS.JETT,
-    weight: 19,
+    weight: 16,
     date: '2025-09-05T14:25:00Z',
     notes: null,
     created_at: '2025-09-05T14:25:00Z',
@@ -116,7 +116,7 @@ export const MOCK_WEIGHT_RECORDS = [
     dog_id: MOCK_DOG_IDS.JETT,
     weight: 11.5,
     date: '2024-02-05T13:35:00Z',
-    notes: null,
+    notes: 'Puppy weight at 2 months old',
     created_at: '2024-02-05T13:35:00Z',
     updated_at: '2024-02-05T13:35:00Z',
   },
@@ -199,57 +199,88 @@ export const MOCK_ACTIVITY_GOALS = [
 ];
 
 export const MOCK_NUTRITION_PLANS = [
-  // Suki's nutrition plan
+  // Suki's nutrition plan (Shiba Inu, 10kg, 10 years old, raw diet)
   {
     id: '00000000-0000-0000-0000-000000000051',
     dog_id: MOCK_DOG_IDS.SUKI,
-    food_type: 'mixed',
+    food_type: 'raw',
+    diet_type: 'raw',
     brand: 'Raw Essentials',
-    daily_amount: 3,
-    feeding_times: 1,
+    daily_amount: 1.5,
+    daily_calories: 450,
+    feeding_times: 2,
+    meal_frequency: 2,
     meal_schedule: [
       {
-        time: '08:30',
-        amount: 3,
+        time: '07:30',
+        amount: 0.75,
         food_type: 'Raw Food',
         reminder_enabled: true,
-        name: 'Breakfast'
+        name: 'Breakfast',
+        components: [
+          { name: 'Premium Beef Raw', amount: 0.5, unit: 'cups', category: 'raw' },
+          { name: 'Green Tripe', amount: 0.15, unit: 'cups', category: 'raw' },
+          { name: 'Vegetables Mix', amount: 0.1, unit: 'cups', category: 'raw' },
+        ]
+      },
+      {
+        time: '17:30',
+        amount: 0.75,
+        food_type: 'Raw Food',
+        reminder_enabled: true,
+        name: 'Dinner',
+        components: [
+          { name: 'Premium Beef Raw', amount: 0.5, unit: 'cups', category: 'raw' },
+          { name: 'Green Tripe', amount: 0.15, unit: 'cups', category: 'raw' },
+          { name: 'Vegetables Mix', amount: 0.1, unit: 'cups', category: 'raw' },
+        ]
       },
     ],
     special_instructions: 'Raw Food: Large meat cube or puck; Raw Food: Small tripe cubes',
-    bowl_last_cleaned: new Date(Date.now() - 5 * 60 * 60 * 1000).toISOString(), // 5 hours ago
-    water_bowl_last_cleaned: new Date(Date.now() - 18 * 60 * 60 * 1000).toISOString(), // 18 hours ago
+    bowl_last_cleaned: new Date(Date.now() - 5 * 60 * 60 * 1000).toISOString(),
+    water_bowl_last_cleaned: new Date(Date.now() - 18 * 60 * 60 * 1000).toISOString(),
     is_active: true,
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),
   },
-  // Jett's nutrition plan
+  // Jett's nutrition plan (Mini Aussie, 16kg, 2 years old, kibble)
   {
     id: '00000000-0000-0000-0000-000000000052',
     dog_id: MOCK_DOG_IDS.JETT,
     food_type: 'dry',
-    brand: 'Puppy Growth Formula',
-    daily_amount: 2.5,
+    diet_type: 'dry',
+    brand: 'Royal Canin',
+    daily_amount: 3,
+    daily_calories: 950,
     feeding_times: 2,
+    meal_frequency: 2,
     meal_schedule: [
       {
         time: '07:30',
-        amount: 1.25,
+        amount: 1.5,
         food_type: 'Dry Kibble',
         reminder_enabled: true,
-        name: 'Breakfast'
+        name: 'Breakfast',
+        components: [
+          { name: 'Royal Canin Puppy Formula', amount: 1.5, unit: 'cups', category: 'kibble' },
+          { name: 'Chicken Broth', amount: 0.25, unit: 'cups', category: 'wet' },
+        ]
       },
       {
         time: '17:30',
-        amount: 1.25,
+        amount: 1.5,
         food_type: 'Dry Kibble',
         reminder_enabled: true,
-        name: 'Dinner'
+        name: 'Dinner',
+        components: [
+          { name: 'Royal Canin Puppy Formula', amount: 1.5, unit: 'cups', category: 'kibble' },
+          { name: 'Chicken Broth', amount: 0.25, unit: 'cups', category: 'wet' },
+        ]
       },
     ],
     special_instructions: 'High-protein puppy formula for growth. Add warm water to soften.',
-    bowl_last_cleaned: new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString(), // 3 hours ago
-    water_bowl_last_cleaned: new Date(Date.now() - 12 * 60 * 60 * 1000).toISOString(), // 12 hours ago
+    bowl_last_cleaned: new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString(),
+    water_bowl_last_cleaned: new Date(Date.now() - 12 * 60 * 60 * 1000).toISOString(),
     is_active: true,
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),
@@ -991,6 +1022,47 @@ export const MOCK_HEALTH_CHECKUPS: any[] = [
   // Add 3 months of historical health checkups
   ...historicalCheckups,
 ];
+
+// Function to generate future scheduled meals (next 7 days)
+function generateFutureMealRecords(
+  dogId: string,
+  nutritionPlanId: string,
+  nutritionPlan: any,
+  days: number = 7
+) {
+  const records: any[] = [];
+  const startDate = new Date();
+  startDate.setDate(startDate.getDate() + 1);
+  
+  for (let i = 0; i < days; i++) {
+    const currentDate = new Date(startDate);
+    currentDate.setDate(currentDate.getDate() + i);
+    const dateStr = currentDate.toISOString().split('T')[0];
+    
+    nutritionPlan.meal_schedule?.forEach((meal: any, idx: number) => {
+      records.push({
+        id: `mock-meal-future-${dateStr}-${idx}-${dogId}`,
+        dog_id: dogId,
+        nutrition_plan_id: nutritionPlanId,
+        meal_name: meal.name || 'Meal',
+        meal_time: meal.time,
+        scheduled_date: dateStr,
+        completed_at: null,
+        amount_given: null,
+        amount_consumed: null,
+        percentage_eaten: null,
+        bowl_cleaned_before: null,
+        eating_behavior: null,
+        notes: null,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      });
+    });
+  }
+  
+  return records;
+}
+
 export const MOCK_MEAL_RECORDS: any[] = [
   {
     id: 'mock-meal-2025-10-31-dinner-00000000-0000-0000-0000-000000000011',
@@ -1000,23 +1072,23 @@ export const MOCK_MEAL_RECORDS: any[] = [
     meal_name: 'Dinner',
     scheduled_date: '2025-10-31',
     completed_at: '2025-10-31T17:45:00Z',
-    amount_given: 3.5,
-    amount_consumed: 3.2,
-    percentage_eaten: 90,
+    amount_given: 0.75,
+    amount_consumed: 0.72,
+    percentage_eaten: 96,
     eating_behavior: 'eager',
-    eating_speed: 'fast',
+    eating_speed: 'normal',
     food_temperature: 'room_temp',
-    energy_level_after: 'high',
+    energy_level_after: 'normal',
     begged_before: true,
     begged_after: false,
     bowl_cleaned_before: true,
     vomited_after: false,
     notes: 'Very eager tonight, finished most of the meal',
     meal_components: [
-      { name: 'Premium Beef Raw', brand: 'K9 Natural', amount: 2, unit: 'cups', category: 'raw' },
-      { name: 'Green Tripe', brand: 'Ziwi Peak', amount: 0.5, unit: 'cups', category: 'raw' },
+      { name: 'Premium Beef Raw', brand: 'K9 Natural', amount: 0.5, unit: 'cups', category: 'raw' },
+      { name: 'Green Tripe', brand: 'Ziwi Peak', amount: 0.15, unit: 'cups', category: 'raw' },
       { name: 'Salmon Oil', amount: 1, unit: 'pieces', category: 'supplements' },
-      { name: 'Vegetables Mix', amount: 1, unit: 'cups', category: 'raw' },
+      { name: 'Vegetables Mix', amount: 0.1, unit: 'cups', category: 'raw' },
     ],
     created_at: '2025-10-31T17:45:00Z',
     updated_at: '2025-10-31T17:45:00Z'
@@ -1025,50 +1097,51 @@ export const MOCK_MEAL_RECORDS: any[] = [
     id: '00000000-0000-0000-0000-000000000121',
     dog_id: MOCK_DOG_IDS.SUKI,
     nutrition_plan_id: '00000000-0000-0000-0000-000000000051',
-    meal_time: '08:30',
+    meal_time: '07:30',
     meal_name: 'Breakfast',
     scheduled_date: '2025-10-22',
-    completed_at: '2025-10-22T08:35:00Z',
-    amount_given: 3,
+    completed_at: '2025-10-22T07:35:00Z',
+    amount_given: 0.75,
     meal_components: [
-      { name: 'Lamb Chunks', brand: 'K9 Natural', amount: 1.5, unit: 'cups', category: 'raw' },
-      { name: 'Beef Heart', amount: 0.5, unit: 'cups', category: 'raw' },
-      { name: 'Bone Broth', amount: 1, unit: 'cups', category: 'wet' },
+      { name: 'Lamb Chunks', brand: 'K9 Natural', amount: 0.5, unit: 'cups', category: 'raw' },
+      { name: 'Beef Heart', amount: 0.15, unit: 'cups', category: 'raw' },
+      { name: 'Vegetables Mix', amount: 0.1, unit: 'cups', category: 'raw' },
     ],
     notes: 'Large meat cube + small tripe cubes',
-    created_at: '2025-10-22T08:35:00Z',
-    updated_at: '2025-10-22T08:35:00Z'
+    created_at: '2025-10-22T07:35:00Z',
+    updated_at: '2025-10-22T07:35:00Z'
   },
   {
     id: '00000000-0000-0000-0000-000000000122',
     dog_id: MOCK_DOG_IDS.SUKI,
     nutrition_plan_id: '00000000-0000-0000-0000-000000000051',
-    meal_time: '08:30',
+    meal_time: '07:30',
     meal_name: 'Breakfast',
     scheduled_date: '2025-10-21',
-    completed_at: '2025-10-21T08:28:00Z',
-    amount_given: 3,
+    completed_at: '2025-10-21T07:28:00Z',
+    amount_given: 0.75,
     meal_components: [
-      { name: 'Chicken Raw', brand: 'Ziwi Peak', amount: 2, unit: 'cups', category: 'raw' },
-      { name: 'Pumpkin', amount: 0.5, unit: 'cups', category: 'wet' },
+      { name: 'Chicken Raw', brand: 'Ziwi Peak', amount: 0.5, unit: 'cups', category: 'raw' },
+      { name: 'Pumpkin', amount: 0.15, unit: 'cups', category: 'wet' },
       { name: 'Fish Oil', amount: 1, unit: 'pieces', category: 'supplements' },
+      { name: 'Vegetables Mix', amount: 0.1, unit: 'cups', category: 'raw' },
     ],
     notes: null,
-    created_at: '2025-10-21T08:28:00Z',
-    updated_at: '2025-10-21T08:28:00Z'
+    created_at: '2025-10-21T07:28:00Z',
+    updated_at: '2025-10-21T07:28:00Z'
   },
   {
     id: '00000000-0000-0000-0000-000000000123',
     dog_id: MOCK_DOG_IDS.SUKI,
     nutrition_plan_id: '00000000-0000-0000-0000-000000000051',
-    meal_time: '08:30',
+    meal_time: '07:30',
     meal_name: 'Breakfast',
     scheduled_date: '2025-10-20',
-    completed_at: '2025-10-20T08:32:00Z',
-    amount_given: 3,
+    completed_at: '2025-10-20T07:32:00Z',
+    amount_given: 0.75,
     notes: null,
-    created_at: '2025-10-20T08:32:00Z',
-    updated_at: '2025-10-20T08:32:00Z'
+    created_at: '2025-10-20T07:32:00Z',
+    updated_at: '2025-10-20T07:32:00Z'
   },
   // Jett's meals
   {
@@ -1079,9 +1152,9 @@ export const MOCK_MEAL_RECORDS: any[] = [
     meal_name: 'Breakfast',
     scheduled_date: '2025-10-22',
     completed_at: '2025-10-22T07:33:00Z',
-    amount_given: 1.25,
+    amount_given: 1.5,
     meal_components: [
-      { name: 'Dry Kibble', brand: 'Royal Canin', amount: 1, unit: 'cups', category: 'kibble' },
+      { name: 'Royal Canin Puppy Formula', brand: 'Royal Canin', amount: 1.5, unit: 'cups', category: 'kibble' },
       { name: 'Chicken Broth', amount: 0.25, unit: 'cups', category: 'wet' },
     ],
     notes: 'Added warm water',
@@ -1096,7 +1169,7 @@ export const MOCK_MEAL_RECORDS: any[] = [
     meal_name: 'Dinner',
     scheduled_date: '2025-10-21',
     completed_at: '2025-10-21T17:28:00Z',
-    amount_given: 1.25,
+    amount_given: 1.5,
     notes: null,
     created_at: '2025-10-21T17:28:00Z',
     updated_at: '2025-10-21T17:28:00Z'
@@ -1109,13 +1182,16 @@ export const MOCK_MEAL_RECORDS: any[] = [
     meal_name: 'Breakfast',
     scheduled_date: '2025-10-21',
     completed_at: '2025-10-21T07:35:00Z',
-    amount_given: 1.25,
+    amount_given: 1.5,
     notes: null,
     created_at: '2025-10-21T07:35:00Z',
     updated_at: '2025-10-21T07:35:00Z'
   },
   // Add 3 months of historical meal records
   ...historicalMeals,
+  // Add future scheduled meals (next 7 days) for timeline visibility
+  ...generateFutureMealRecords(MOCK_DOG_IDS.SUKI, '00000000-0000-0000-0000-000000000051', MOCK_NUTRITION_PLANS[0], 7),
+  ...generateFutureMealRecords(MOCK_DOG_IDS.JETT, '00000000-0000-0000-0000-000000000052', MOCK_NUTRITION_PLANS[1], 7),
 ];
 
 export const MOCK_MEDICAL_TREATMENTS: any[] = [
