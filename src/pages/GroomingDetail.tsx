@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
-import { ArrowLeft, Edit3, Trash2, Scissors, Calendar, AlertCircle, Camera, X, Image as ImageIcon } from "lucide-react";
+import { ArrowLeft, Edit3, Trash2, Scissors, Calendar, AlertCircle, Camera, X, Image as ImageIcon, Clipboard, Video, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useGroomingSchedule, GroomingCompletion } from "@/hooks/useGroomingSchedule";
@@ -38,6 +39,8 @@ export default function GroomingDetail() {
     grooming_type: '',
     frequency_days: '',
     notes: '',
+    how_to_video_url: '',
+    how_to_guide: '',
   });
   
   const { updateSchedule, deleteSchedule, completeGrooming, fetchCompletions } = useGroomingSchedule(dogId);
@@ -71,6 +74,8 @@ export default function GroomingDetail() {
             grooming_type: mockGrooming.grooming_type || mockGrooming.title || '',
             frequency_days: mockGrooming.frequency_days?.toString() || '30',
             notes: mockGrooming.notes || '',
+            how_to_video_url: mockGrooming.how_to_video_url || '',
+            how_to_guide: mockGrooming.how_to_guide || '',
           });
         }
       } else {
@@ -86,6 +91,8 @@ export default function GroomingDetail() {
           grooming_type: data.grooming_type || '',
           frequency_days: data.frequency_days?.toString() || '30',
           notes: data.notes || '',
+          how_to_video_url: data.how_to_video_url || '',
+          how_to_guide: data.how_to_guide || '',
         });
       }
     } catch (error) {
@@ -117,6 +124,8 @@ export default function GroomingDetail() {
         grooming_type: editForm.grooming_type,
         frequency_days: parseInt(editForm.frequency_days),
         notes: editForm.notes,
+        how_to_video_url: editForm.how_to_video_url || null,
+        how_to_guide: editForm.how_to_guide || null,
       });
       setIsEditing(false);
       fetchGroomingData();
@@ -132,6 +141,8 @@ export default function GroomingDetail() {
         grooming_type: grooming.grooming_type || grooming.title || '',
         frequency_days: grooming.frequency_days?.toString() || '30',
         notes: grooming.notes || '',
+        how_to_video_url: grooming.how_to_video_url || '',
+        how_to_guide: grooming.how_to_guide || '',
       });
     }
   };
@@ -328,156 +339,250 @@ export default function GroomingDetail() {
       </div>
       
       {/* Content */}
-      <div className="container max-w-2xl mx-auto px-4 py-6 space-y-6">
-        {/* Status Card */}
-        {grooming.next_due_date && (
-          <Card>
-            <CardContent className="pt-6">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <Calendar className="h-5 w-5 text-muted-foreground" />
-                  <div>
-                    <p className="text-sm text-muted-foreground">Next Due</p>
-                    <p className="font-medium">
-                      {format(new Date(grooming.next_due_date), 'MMMM d, yyyy')}
-                    </p>
-                  </div>
-                </div>
-                {isOverdue() ? (
-                  <Badge variant="destructive" className="flex items-center gap-1">
-                    <AlertCircle className="h-3 w-3" />
-                    Overdue
-                  </Badge>
-                ) : (
-                  <Badge variant="secondary">
-                    {getDaysUntilDue()} days
-                  </Badge>
-                )}
-              </div>
-            </CardContent>
-          </Card>
-        )}
-        
-        {/* Details Card */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Grooming Details</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {isEditing ? (
-              <>
-                <div className="space-y-2">
-                  <Label htmlFor="grooming_type">Grooming Type</Label>
-                  <Input
-                    id="grooming_type"
-                    value={editForm.grooming_type}
-                    onChange={(e) => setEditForm({ ...editForm, grooming_type: e.target.value })}
-                    placeholder="Bath, Nail Trim, Haircut, etc."
-                  />
-                </div>
-                
-                <div className="space-y-2">
-                  <Label htmlFor="frequency_days">Frequency (days)</Label>
-                  <Input
-                    id="frequency_days"
-                    type="number"
-                    value={editForm.frequency_days}
-                    onChange={(e) => setEditForm({ ...editForm, frequency_days: e.target.value })}
-                    placeholder="30"
-                  />
-                </div>
-                
-                <div className="space-y-2">
-                  <Label htmlFor="notes">Notes</Label>
-                  <Textarea
-                    id="notes"
-                    value={editForm.notes}
-                    onChange={(e) => setEditForm({ ...editForm, notes: e.target.value })}
-                    placeholder="Additional notes..."
-                  />
-                </div>
-              </>
-            ) : (
-              <>
-                <div>
-                  <p className="text-sm text-muted-foreground mb-1">Type</p>
-                  <p className="font-medium text-lg">{grooming.grooming_type || grooming.title}</p>
-                </div>
-                
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <p className="text-sm text-muted-foreground mb-1">Frequency</p>
-                    <p className="font-medium">Every {grooming.frequency_days} days</p>
-                  </div>
-                  
-                  {grooming.last_completed_at && (
-                    <div>
-                      <p className="text-sm text-muted-foreground mb-1">Last Completed</p>
-                      <p className="font-medium">
-                        {format(new Date(grooming.last_completed_at), 'MMM d, yyyy')}
-                      </p>
-                    </div>
-                  )}
-                </div>
-                
-                {grooming.notes && (
-                  <div>
-                    <p className="text-sm text-muted-foreground mb-1">Notes</p>
-                    <p className="whitespace-pre-wrap">{grooming.notes}</p>
-                  </div>
-                )}
-                
-                <div className="pt-2">
-                  <Button onClick={handleMarkComplete} className="w-full">
-                    Mark as Complete
-                  </Button>
-                </div>
-              </>
-            )}
-          </CardContent>
-        </Card>
+      <div className="container max-w-2xl mx-auto px-4 py-6 pb-24">
+        <Tabs defaultValue="details" className="space-y-6">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="details" className="flex items-center gap-2">
+              <Clipboard className="w-4 h-4" />
+              Details
+            </TabsTrigger>
+            <TabsTrigger value="howto" className="flex items-center gap-2">
+              <Video className="w-4 h-4" />
+              How-To
+            </TabsTrigger>
+          </TabsList>
 
-        {/* Completion History */}
-        {completions.length > 0 && (
-          <Card>
-            <CardHeader>
-              <CardTitle>Completion History</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              {completions.map((completion) => (
-                <div key={completion.id} className="border-b last:border-0 pb-4 last:pb-0">
-                  <div className="flex items-center justify-between mb-2">
-                    <p className="font-medium">
-                      {format(new Date(completion.completed_at), 'MMMM d, yyyy')}
-                    </p>
-                    <Badge variant="secondary">
-                      {format(new Date(completion.completed_at), 'h:mm a')}
-                    </Badge>
-                  </div>
-                  
-                  {completion.notes && (
-                    <p className="text-sm text-muted-foreground mb-2 whitespace-pre-wrap">
-                      {completion.notes}
-                    </p>
-                  )}
-                  
-                  {completion.photos && completion.photos.length > 0 && (
-                    <div className="grid grid-cols-3 gap-2 mt-2">
-                      {completion.photos.map((photo, index) => (
-                        <img
-                          key={index}
-                          src={photo}
-                          alt={`Grooming photo ${index + 1}`}
-                          className="w-full h-24 object-cover rounded-md"
-                        />
-                      ))}
+          <TabsContent value="details" className="space-y-6">
+            {/* Status Card */}
+            {grooming.next_due_date && (
+              <Card>
+                <CardContent className="pt-6">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <Calendar className="h-5 w-5 text-muted-foreground" />
+                      <div>
+                        <p className="text-sm text-muted-foreground">Next Due</p>
+                        <p className="font-medium">
+                          {format(new Date(grooming.next_due_date), 'MMMM d, yyyy')}
+                        </p>
+                      </div>
                     </div>
-                  )}
-                </div>
-              ))}
-            </CardContent>
-          </Card>
-        )}
+                    {isOverdue() ? (
+                      <Badge variant="destructive" className="flex items-center gap-1">
+                        <AlertCircle className="h-3 w-3" />
+                        Overdue
+                      </Badge>
+                    ) : (
+                      <Badge variant="secondary">
+                        {getDaysUntilDue()} days
+                      </Badge>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+            
+            {/* Details Card */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Grooming Details</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {isEditing ? (
+                  <>
+                    <div className="space-y-2">
+                      <Label htmlFor="grooming_type">Grooming Type</Label>
+                      <Input
+                        id="grooming_type"
+                        value={editForm.grooming_type}
+                        onChange={(e) => setEditForm({ ...editForm, grooming_type: e.target.value })}
+                        placeholder="Bath, Nail Trim, Haircut, etc."
+                      />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="frequency_days">Frequency (days)</Label>
+                      <Input
+                        id="frequency_days"
+                        type="number"
+                        value={editForm.frequency_days}
+                        onChange={(e) => setEditForm({ ...editForm, frequency_days: e.target.value })}
+                        placeholder="30"
+                      />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="notes">Notes</Label>
+                      <Textarea
+                        id="notes"
+                        value={editForm.notes}
+                        onChange={(e) => setEditForm({ ...editForm, notes: e.target.value })}
+                        placeholder="Additional notes..."
+                      />
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div>
+                      <p className="text-sm text-muted-foreground mb-1">Type</p>
+                      <p className="font-medium text-lg">{grooming.grooming_type || grooming.title}</p>
+                    </div>
+                    
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <p className="text-sm text-muted-foreground mb-1">Frequency</p>
+                        <p className="font-medium">Every {grooming.frequency_days} days</p>
+                      </div>
+                      
+                      {grooming.last_completed_at && (
+                        <div>
+                          <p className="text-sm text-muted-foreground mb-1">Last Completed</p>
+                          <p className="font-medium">
+                            {format(new Date(grooming.last_completed_at), 'MMM d, yyyy')}
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                    
+                    {grooming.notes && (
+                      <div>
+                        <p className="text-sm text-muted-foreground mb-1">Notes</p>
+                        <p className="whitespace-pre-wrap">{grooming.notes}</p>
+                      </div>
+                    )}
+                    
+                    <div className="pt-2">
+                      <Button onClick={handleMarkComplete} className="w-full">
+                        <Check className="w-4 h-4 mr-2" />
+                        Mark as Complete
+                      </Button>
+                    </div>
+                  </>
+                )}
+              </CardContent>
+            </Card>
+
+            {/* Completion History */}
+            {completions.length > 0 && (
+              <Card>
+                <CardHeader>
+                  <CardTitle>Completion History</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {completions.map((completion) => (
+                    <div key={completion.id} className="border-b last:border-0 pb-4 last:pb-0">
+                      <div className="flex items-center justify-between mb-2">
+                        <p className="font-medium">
+                          {format(new Date(completion.completed_at), 'MMMM d, yyyy')}
+                        </p>
+                        <Badge variant="secondary">
+                          {format(new Date(completion.completed_at), 'h:mm a')}
+                        </Badge>
+                      </div>
+                      
+                      {completion.notes && (
+                        <p className="text-sm text-muted-foreground mb-2 whitespace-pre-wrap">
+                          {completion.notes}
+                        </p>
+                      )}
+                      
+                      {completion.photos && completion.photos.length > 0 && (
+                        <div className="grid grid-cols-3 gap-2 mt-2">
+                          {completion.photos.map((photo, index) => (
+                            <img
+                              key={index}
+                              src={photo}
+                              alt={`Grooming photo ${index + 1}`}
+                              className="w-full h-24 object-cover rounded-md"
+                            />
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </CardContent>
+              </Card>
+            )}
+          </TabsContent>
+
+          <TabsContent value="howto" className="space-y-6">
+            {/* Video Section */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Video className="w-5 h-5" />
+                  Instructional Video
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                {isEditing ? (
+                  <div className="space-y-2">
+                    <Label htmlFor="video_url">Video URL (YouTube or Vimeo)</Label>
+                    <Input
+                      id="video_url"
+                      type="url"
+                      value={editForm.how_to_video_url}
+                      onChange={(e) => setEditForm({ ...editForm, how_to_video_url: e.target.value })}
+                      placeholder="https://www.youtube.com/watch?v=..."
+                    />
+                  </div>
+                ) : grooming.how_to_video_url ? (
+                  <div className="relative w-full rounded-lg overflow-hidden" style={{ paddingBottom: '56.25%' }}>
+                    <iframe
+                      src={grooming.how_to_video_url.includes('youtube.com') || grooming.how_to_video_url.includes('youtu.be')
+                        ? grooming.how_to_video_url.replace('watch?v=', 'embed/').replace('youtu.be/', 'youtube.com/embed/')
+                        : grooming.how_to_video_url.replace('vimeo.com/', 'player.vimeo.com/video/')}
+                      className="absolute top-0 left-0 w-full h-full"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    />
+                  </div>
+                ) : (
+                  <div className="flex flex-col items-center justify-center py-12 text-muted-foreground">
+                    <Video className="w-12 h-12 mb-2 opacity-50" />
+                    <p>No instructional video available</p>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+
+            {/* Guide Section */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Clipboard className="w-5 h-5" />
+                  Step-by-Step Guide
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                {isEditing ? (
+                  <div className="space-y-2">
+                    <Label htmlFor="guide">Guide Instructions</Label>
+                    <Textarea
+                      id="guide"
+                      value={editForm.how_to_guide}
+                      onChange={(e) => setEditForm({ ...editForm, how_to_guide: e.target.value })}
+                      className="min-h-[300px]"
+                      placeholder="Enter step-by-step instructions for this grooming task..."
+                    />
+                    <p className="text-xs text-muted-foreground">
+                      You can use line breaks to separate steps
+                    </p>
+                  </div>
+                ) : grooming.how_to_guide ? (
+                  <div className="prose prose-sm max-w-none dark:prose-invert">
+                    <p className="whitespace-pre-wrap">{grooming.how_to_guide}</p>
+                  </div>
+                ) : (
+                  <div className="flex flex-col items-center justify-center py-12 text-muted-foreground">
+                    <Clipboard className="w-12 h-12 mb-2 opacity-50" />
+                    <p>No guide available</p>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
       </div>
 
       {/* Complete Grooming Dialog */}

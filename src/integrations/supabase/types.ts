@@ -818,6 +818,8 @@ export type Database = {
           dog_id: string
           frequency_days: number
           grooming_type: string
+          how_to_guide: string | null
+          how_to_video_url: string | null
           id: string
           last_completed_at: string | null
           next_due_date: string | null
@@ -829,6 +831,8 @@ export type Database = {
           dog_id: string
           frequency_days?: number
           grooming_type: string
+          how_to_guide?: string | null
+          how_to_video_url?: string | null
           id?: string
           last_completed_at?: string | null
           next_due_date?: string | null
@@ -840,6 +844,8 @@ export type Database = {
           dog_id?: string
           frequency_days?: number
           grooming_type?: string
+          how_to_guide?: string | null
+          how_to_video_url?: string | null
           id?: string
           last_completed_at?: string | null
           next_due_date?: string | null

@@ -11,6 +11,8 @@ export interface GroomingSchedule {
   last_completed_at: string | null;
   next_due_date: string | null;
   notes: string | null;
+  how_to_video_url: string | null;
+  how_to_guide: string | null;
   created_at: string;
   updated_at: string;
 }

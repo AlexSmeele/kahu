@@ -63,7 +63,11 @@ export function WellnessTimeline({ dogId }: WellnessTimelineProps) {
           scrollPosition 
         } 
       });
-    } else if (event.type === 'grooming' && event.details?.id) {
+    } else if (event.type === 'grooming') {
+      if (!event.details?.id) {
+        console.error('Grooming event missing ID:', event);
+        return;
+      }
       const scrollableContainer = document.querySelector('.overflow-y-auto');
       const scrollPosition = scrollableContainer?.scrollTop || 0;
       try {
