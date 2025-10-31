@@ -703,7 +703,7 @@ export default function FullTimeline() {
                                      const routeMap: Record<string, string> = {
                                        'activity': `/activity/${eventId}`,
                                        'meal': `/meal/${eventId}`,
-                                       'vet-visit': `/vet-visit/${eventId}`,
+                                       'vet_visit': `/vet-visit/${eventId}`,
                                        'grooming': `/grooming/${eventId}`,
                                        'vaccination': `/vaccination/${eventId}`,
                                        'checkup': `/checkup/${eventId}`,
