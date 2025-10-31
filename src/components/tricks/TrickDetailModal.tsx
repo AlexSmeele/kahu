@@ -178,27 +178,27 @@ export function TrickDetailModal({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-[min(95vw,900px)] h-[85vh] flex flex-col p-0">
         {/* Header */}
-        <DialogHeader className="p-6 pb-4 flex-shrink-0">
-          <div className="flex flex-col items-center text-center gap-4">
-            <div className={`w-16 h-16 ${categoryColor} rounded-2xl flex items-center justify-center relative`}>
-              <Award className="w-8 h-8 text-white" />
+        <DialogHeader className="p-4 pb-3 flex-shrink-0">
+          <div className="flex items-center gap-3">
+            <div className={`w-14 h-14 ${categoryColor} rounded-xl flex items-center justify-center relative flex-shrink-0`}>
+              <Award className="w-7 h-7 text-white" />
               {isCompleted && (
-                <div className="absolute -top-2 -right-2 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
-                  <CheckCircle2 className="w-4 h-4 text-white" />
+                <div className="absolute -top-1 -right-1 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center">
+                  <CheckCircle2 className="w-3 h-3 text-white" />
                 </div>
               )}
             </div>
-            <div>
-              <DialogTitle className="text-2xl font-bold text-foreground mb-2">
+            <div className="flex-1 min-w-0">
+              <DialogTitle className="text-xl font-bold text-foreground mb-1.5">
                 {trick.name}
               </DialogTitle>
-              <div className="flex items-center justify-center gap-2 flex-wrap">
-                <Badge variant="secondary" className={`${difficultyColor} text-white`}>
+              <div className="flex items-center gap-2 flex-wrap">
+                <Badge variant="secondary" className={`${difficultyColor} text-white text-xs`}>
                   Level {trick.difficulty_level} • {getDifficultyLabel(trick.difficulty_level)}
                 </Badge>
-                <Badge variant="outline">{trick.category}</Badge>
+                <Badge variant="outline" className="text-xs">{trick.category}</Badge>
                 {trick.estimated_time_weeks && (
-                  <Badge variant="outline" className="flex items-center gap-1">
+                  <Badge variant="outline" className="flex items-center gap-1 text-xs">
                     <Clock className="w-3 h-3" />
                     {trick.estimated_time_weeks} weeks
                   </Badge>
@@ -209,7 +209,7 @@ export function TrickDetailModal({
         </DialogHeader>
 
         {/* Tab Navigation */}
-        <div className="px-6 pb-4 flex-shrink-0">
+        <div className="px-4 pb-3 flex-shrink-0">
           <div className="flex space-x-1 bg-muted p-1 rounded-lg">
             <button
               onClick={() => setActiveTab('overview')}
@@ -245,7 +245,7 @@ export function TrickDetailModal({
         </div>
 
         {/* Content */}
-        <div className="flex-1 overflow-hidden px-6">
+        <div className="flex-1 overflow-hidden px-4">
           <ScrollArea className="h-full">
             <div className="pr-4">
               {activeTab === 'overview' && (
@@ -464,38 +464,37 @@ export function TrickDetailModal({
         </div>
 
         {/* Action Buttons */}
-        <div className="p-6 pt-4 border-t flex-shrink-0">
-          <div className="flex flex-col gap-3">
+        <div className="p-4 pt-3 border-t flex-shrink-0">
+          <div className="flex flex-col gap-2">
             {!dogTrick ? (
-              <Button onClick={handleStartTrick} className="w-full" size="lg">
+              <Button onClick={handleStartTrick} className="w-full">
                 <Play className="w-4 h-4 mr-2" />
                 Start Learning
               </Button>
             ) : isCompleted ? (
-              <Button onClick={handlePracticeSession} variant="outline" className="w-full" size="lg">
+              <Button onClick={handlePracticeSession} variant="outline" className="w-full">
                 <Trophy className="w-4 h-4 mr-2" />
                 Practice & Perfect
               </Button>
             ) : (
               <>
-                <Button onClick={handlePracticeSession} className="w-full" size="lg">
+                <Button onClick={handlePracticeSession} className="w-full">
                   <Timer className="w-4 h-4 mr-2" />
                   Practice Session
                 </Button>
                 {dogTrick.total_sessions >= 3 && (
-                  <div className="flex gap-3">
-                    <Button onClick={handleMarkAsCompleted} variant="outline" size="lg" className="flex-1">
-                      <CheckCircle2 className="w-4 h-4 mr-2" />
+                  <div className="flex gap-2">
+                    <Button onClick={handleMarkAsCompleted} variant="outline" className="flex-1 text-sm">
+                      <CheckCircle2 className="w-4 h-4 mr-1.5" />
                       Mark Complete
                     </Button>
                     <Button 
                       onClick={() => onUpdateStatus(dogTrick.id, 'learning')} 
                       variant="ghost" 
-                      size="lg"
-                      className="flex-1 text-muted-foreground hover:text-foreground"
+                      className="flex-1 text-sm text-muted-foreground hover:text-foreground"
                     >
-                      <RotateCcw className="w-4 h-4 mr-2" />
-                      Reset Progress
+                      <RotateCcw className="w-4 h-4 mr-1.5" />
+                      Reset
                     </Button>
                   </div>
                 )}
