@@ -2,10 +2,9 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { DogDropdown } from "@/components/dogs/DogDropdown";
 import { PageLogo } from "@/components/layout/PageLogo";
-import { TodaysGoalsBanner } from "@/components/home/TodaysGoalsBanner";
+import { TrainingGoalBanner } from "@/components/home/TrainingGoalBanner";
 import { UrgentAlertsBanner } from "@/components/home/UrgentAlertsBanner";
 import { ActivityCircleCard } from "@/components/home/ActivityCircleCard";
-import { TrainingTile } from "@/components/home/TrainingTile";
 import { QuickNoteTile } from "@/components/home/QuickNoteTile";
 import { GetAdviceCard } from "@/components/home/GetAdviceCard";
 import { AnalyticsCard } from "@/components/home/AnalyticsCard";
@@ -31,10 +30,7 @@ export function HomeScreen({ selectedDogId, onDogChange, onTabChange }: HomeScre
   
   const {
     loading,
-    nextTrick,
-    healthAlerts,
-    upcomingEvents,
-    quickStats
+    nextTrick
   } = useHomeData(selectedDogId);
 
   const { urgentAlerts, todayProgress, activityGoal } = useWellnessTimeline(selectedDogId);
@@ -88,38 +84,32 @@ export function HomeScreen({ selectedDogId, onDogChange, onTabChange }: HomeScre
             </div>
 
             <div className="container pt-2 space-y-4">
-          <TodaysGoalsBanner
-            nextTrick={nextTrick ? { name: nextTrick.trick?.name || 'Unknown', total_sessions: nextTrick.total_sessions } : undefined}
-            onActionClick={() => nextTrick ? onTabChange('tricks') : onTabChange('tricks')}
-          />
+              <TrainingGoalBanner
+                nextTrick={nextTrick ? { name: nextTrick.trick?.name || 'Unknown', total_sessions: nextTrick.total_sessions } : undefined}
+                onActionClick={() => onTabChange('tricks')}
+              />
 
-          {urgentAlerts.length > 0 && (
-            <UrgentAlertsBanner alerts={urgentAlerts} onClick={() => onTabChange('wellness')} />
-          )}
+              {urgentAlerts.length > 0 && (
+                <UrgentAlertsBanner alerts={urgentAlerts} onClick={() => onTabChange('wellness')} />
+              )}
 
-          <div className="grid grid-cols-2 gap-3">
-            <ActivityCircleCard
-              completedMinutes={todayProgress?.minutes || 0}
-              targetMinutes={activityGoal?.target_minutes || 60}
-              distance={todayProgress?.distance}
-              calories={todayProgress?.calories}
-              onClick={() => navigate(`/record-activity?dogId=${selectedDogId}`)}
-              className="animate-fade-in [animation-delay:100ms]"
-            />
-            <TrainingTile
-              trickName={nextTrick?.trick?.name}
-              totalSessions={nextTrick?.total_sessions}
-              onClick={() => onTabChange('tricks')}
-              className="animate-fade-in [animation-delay:200ms]"
-            />
-            <QuickNoteTile 
-              onClick={() => setShowNoteModal(true)} 
-              className="animate-fade-in [animation-delay:300ms]"
-            />
-            <AnalyticsCard className="animate-fade-in [animation-delay:400ms]" />
-          </div>
-          
-          <GetAdviceCard />
+              <div className="grid grid-cols-2 gap-3">
+                <ActivityCircleCard
+                  completedMinutes={todayProgress?.minutes || 0}
+                  targetMinutes={activityGoal?.target_minutes || 60}
+                  distance={todayProgress?.distance}
+                  calories={todayProgress?.calories}
+                  onClick={() => navigate(`/record-activity?dogId=${selectedDogId}`)}
+                  className="col-span-2 animate-fade-in [animation-delay:100ms]"
+                />
+                <QuickNoteTile 
+                  onClick={() => setShowNoteModal(true)} 
+                  className="animate-fade-in [animation-delay:200ms]"
+                />
+                <AnalyticsCard className="animate-fade-in [animation-delay:300ms]" />
+              </div>
+              
+              <GetAdviceCard />
             </div>
           </>
         )}
