@@ -1583,6 +1583,7 @@ export type Database = {
           instructions: string
           name: string
           prerequisites: string[] | null
+          priority_order: number | null
         }
         Insert: {
           category: string
@@ -1594,6 +1595,7 @@ export type Database = {
           instructions: string
           name: string
           prerequisites?: string[] | null
+          priority_order?: number | null
         }
         Update: {
           category?: string
@@ -1605,6 +1607,7 @@ export type Database = {
           instructions?: string
           name?: string
           prerequisites?: string[] | null
+          priority_order?: number | null
         }
         Relationships: []
       }

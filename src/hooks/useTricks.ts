@@ -13,6 +13,7 @@ export interface Trick {
   difficulty_level: number;
   estimated_time_weeks?: number;
   prerequisites: string[];
+  priority_order?: number;
   created_at: string;
 }
 
@@ -46,6 +47,7 @@ export function useTricks(dogId?: string) {
       const { data, error } = await supabase
         .from('tricks')
         .select('*')
+        .order('priority_order', { ascending: true, nullsFirst: false })
         .order('difficulty_level', { ascending: true });
 
       if (error) throw error;

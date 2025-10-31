@@ -1258,6 +1258,7 @@ export const MOCK_TRICKS = [
     difficulty_level: 1,
     estimated_time_weeks: 1,
     prerequisites: [],
+    priority_order: 1,
     created_at: new Date().toISOString(),
   },
   {
@@ -1269,6 +1270,7 @@ export const MOCK_TRICKS = [
     difficulty_level: 1,
     estimated_time_weeks: 2,
     prerequisites: ['Sit'],
+    priority_order: 2,
     created_at: new Date().toISOString(),
   },
   {
@@ -1280,6 +1282,7 @@ export const MOCK_TRICKS = [
     difficulty_level: 2,
     estimated_time_weeks: 2,
     prerequisites: ['Sit'],
+    priority_order: 5,
     created_at: new Date().toISOString(),
   },
   {
@@ -1291,6 +1294,7 @@ export const MOCK_TRICKS = [
     difficulty_level: 2,
     estimated_time_weeks: 3,
     prerequisites: [],
+    priority_order: 12,
     created_at: new Date().toISOString(),
   },
   {
