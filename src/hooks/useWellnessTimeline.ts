@@ -96,8 +96,8 @@ export function useWellnessTimeline(dogId: string) {
         // Show completed meals
         if (record.completed_at) {
           const metrics = [];
-          if (record.amount_given) metrics.push({ label: 'Given', value: `${record.amount_given} cups` });
-          if (record.amount_consumed) metrics.push({ label: 'Consumed', value: `${record.amount_consumed} cups` });
+          if (record.amount_given) metrics.push({ label: 'Given', value: `${Number(record.amount_given).toFixed(1)} cups` });
+          if (record.amount_consumed) metrics.push({ label: 'Consumed', value: `${Number(record.amount_consumed).toFixed(1)} cups` });
           if (record.percentage_eaten) metrics.push({ label: 'Eaten', value: `${record.percentage_eaten}%` });
           
           events.push({
@@ -124,7 +124,7 @@ export function useWellnessTimeline(dogId: string) {
                 icon: Apple,
                 status: scheduledDateTime < currentTime ? 'overdue' : 'upcoming',
                 metrics: record.amount_planned 
-                  ? [{ label: 'Planned', value: `${record.amount_planned} cups` }]
+                  ? [{ label: 'Planned', value: `${Number(record.amount_planned).toFixed(1)} cups` }]
                   : undefined,
                 details: record,
               });

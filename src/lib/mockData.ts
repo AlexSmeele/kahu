@@ -12,6 +12,7 @@ import {
   generateHistoricalInjuries,
   generateHistoricalMedicalTreatments,
 } from './generateHistoricalMockData';
+import { calculateCalories } from './mockDataPatterns';
 
 export const MOCK_USER_ID = '00000000-0000-0000-0000-000000000001';
 
@@ -32,8 +33,8 @@ const historicalActivities = [
 ];
 
 const historicalMeals = [
-  ...generateHistoricalMealRecords(MOCK_DOG_IDS.SUKI, '00000000-0000-0000-0000-000000000051', 150, 3),
-  ...generateHistoricalMealRecords(MOCK_DOG_IDS.JETT, '00000000-0000-0000-0000-000000000052', 320, 3),
+  ...generateHistoricalMealRecords(MOCK_DOG_IDS.SUKI, '00000000-0000-0000-0000-000000000051', 1.5, 3), // 1.5 cups daily
+  ...generateHistoricalMealRecords(MOCK_DOG_IDS.JETT, '00000000-0000-0000-0000-000000000052', 3.2, 3), // 3.2 cups daily
 ];
 
 const historicalWeights = [
@@ -296,7 +297,7 @@ export const MOCK_ACTIVITY_RECORDS: any[] = [
     activity_type: 'walk',
     duration_minutes: 30,
     distance_km: 2.5,
-    calories_burned: 85,
+    calories_burned: calculateCalories('walk', 30, 2.5, 10), // 100 cal
     start_time: new Date(new Date().setHours(7, 30, 0, 0)).toISOString(),
     end_time: new Date(new Date().setHours(8, 0, 0, 0)).toISOString(),
     notes: 'Morning walk around the park',
@@ -309,7 +310,7 @@ export const MOCK_ACTIVITY_RECORDS: any[] = [
     dog_id: MOCK_DOG_IDS.SUKI,
     activity_type: 'play',
     duration_minutes: 20,
-    calories_burned: 45,
+    calories_burned: calculateCalories('play', 20, 0, 10), // 80 cal
     start_time: new Date(new Date().setHours(16, 0, 0, 0)).toISOString(),
     end_time: new Date(new Date().setHours(16, 20, 0, 0)).toISOString(),
     notes: 'Fetch in the backyard',
@@ -326,7 +327,7 @@ export const MOCK_ACTIVITY_RECORDS: any[] = [
     activity_type: 'walk',
     duration_minutes: 35,
     distance_km: 3.2,
-    calories_burned: 95,
+    calories_burned: calculateCalories('walk', 35, 3.2, 10), // 117 cal
     start_time: new Date(new Date().setDate(new Date().getDate() - 1)).setHours(7, 15, 0, 0),
     end_time: new Date(new Date().setDate(new Date().getDate() - 1)).setHours(7, 50, 0, 0),
     notes: 'Long morning walk',
@@ -340,7 +341,7 @@ export const MOCK_ACTIVITY_RECORDS: any[] = [
     activity_type: 'run',
     duration_minutes: 15,
     distance_km: 1.8,
-    calories_burned: 72,
+    calories_burned: calculateCalories('run', 15, 1.8, 10), // 80 cal
     start_time: new Date(new Date().setDate(new Date().getDate() - 1)).setHours(12, 30, 0, 0),
     end_time: new Date(new Date().setDate(new Date().getDate() - 1)).setHours(12, 45, 0, 0),
     notes: 'Quick run',
@@ -354,7 +355,7 @@ export const MOCK_ACTIVITY_RECORDS: any[] = [
     activity_type: 'walk',
     duration_minutes: 25,
     distance_km: 2.0,
-    calories_burned: 70,
+    calories_burned: calculateCalories('walk', 25, 2.0, 10), // 83 cal
     start_time: new Date(new Date().setDate(new Date().getDate() - 1)).setHours(18, 0, 0, 0),
     end_time: new Date(new Date().setDate(new Date().getDate() - 1)).setHours(18, 25, 0, 0),
     notes: 'Evening walk',
@@ -369,7 +370,7 @@ export const MOCK_ACTIVITY_RECORDS: any[] = [
     activity_type: 'walk',
     duration_minutes: 40,
     distance_km: 3.5,
-    calories_burned: 110,
+    calories_burned: calculateCalories('walk', 40, 3.5, 10), // 133 cal
     start_time: new Date(new Date().setDate(new Date().getDate() - 2)).setHours(8, 0, 0, 0),
     end_time: new Date(new Date().setDate(new Date().getDate() - 2)).setHours(8, 40, 0, 0),
     notes: 'Park visit',
@@ -382,7 +383,7 @@ export const MOCK_ACTIVITY_RECORDS: any[] = [
     dog_id: MOCK_DOG_IDS.SUKI,
     activity_type: 'play',
     duration_minutes: 30,
-    calories_burned: 65,
+    calories_burned: calculateCalories('play', 30, 0, 10), // 120 cal
     start_time: new Date(new Date().setDate(new Date().getDate() - 2)).setHours(15, 30, 0, 0),
     end_time: new Date(new Date().setDate(new Date().getDate() - 2)).setHours(16, 0, 0, 0),
     notes: 'Dog park playdate',
@@ -397,7 +398,7 @@ export const MOCK_ACTIVITY_RECORDS: any[] = [
     activity_type: 'walk',
     duration_minutes: 28,
     distance_km: 2.3,
-    calories_burned: 75,
+    calories_burned: calculateCalories('walk', 28, 2.3, 10), // 93 cal
     start_time: new Date(new Date().setDate(new Date().getDate() - 3)).setHours(7, 45, 0, 0),
     end_time: new Date(new Date().setDate(new Date().getDate() - 3)).setHours(8, 13, 0, 0),
     notes: 'Morning routine',
@@ -411,7 +412,7 @@ export const MOCK_ACTIVITY_RECORDS: any[] = [
     activity_type: 'walk',
     duration_minutes: 22,
     distance_km: 1.8,
-    calories_burned: 60,
+    calories_burned: calculateCalories('walk', 22, 1.8, 10), // 73 cal
     start_time: new Date(new Date().setDate(new Date().getDate() - 3)).setHours(17, 30, 0, 0),
     end_time: new Date(new Date().setDate(new Date().getDate() - 3)).setHours(17, 52, 0, 0),
     notes: 'Quick evening walk',
@@ -426,7 +427,7 @@ export const MOCK_ACTIVITY_RECORDS: any[] = [
     activity_type: 'walk',
     duration_minutes: 45,
     distance_km: 4.0,
-    calories_burned: 125,
+    calories_burned: calculateCalories('walk', 45, 4.0, 10), // 150 cal
     start_time: new Date(new Date().setDate(new Date().getDate() - 4)).setHours(8, 30, 0, 0),
     end_time: new Date(new Date().setDate(new Date().getDate() - 4)).setHours(9, 15, 0, 0),
     notes: 'Long weekend walk',
@@ -439,7 +440,7 @@ export const MOCK_ACTIVITY_RECORDS: any[] = [
     dog_id: MOCK_DOG_IDS.SUKI,
     activity_type: 'play',
     duration_minutes: 35,
-    calories_burned: 80,
+    calories_burned: calculateCalories('play', 35, 0, 10), // 140 cal
     start_time: new Date(new Date().setDate(new Date().getDate() - 4)).setHours(14, 0, 0, 0),
     end_time: new Date(new Date().setDate(new Date().getDate() - 4)).setHours(14, 35, 0, 0),
     notes: 'Agility training',
@@ -454,7 +455,7 @@ export const MOCK_ACTIVITY_RECORDS: any[] = [
     activity_type: 'walk',
     duration_minutes: 32,
     distance_km: 2.7,
-    calories_burned: 88,
+    calories_burned: calculateCalories('walk', 32, 2.7, 10), // 107 cal
     start_time: new Date(new Date().setDate(new Date().getDate() - 5)).setHours(7, 20, 0, 0),
     end_time: new Date(new Date().setDate(new Date().getDate() - 5)).setHours(7, 52, 0, 0),
     notes: 'Morning walk',
@@ -468,7 +469,7 @@ export const MOCK_ACTIVITY_RECORDS: any[] = [
     activity_type: 'run',
     duration_minutes: 18,
     distance_km: 2.1,
-    calories_burned: 82,
+    calories_burned: calculateCalories('run', 18, 2.1, 10), // 96 cal
     start_time: new Date(new Date().setDate(new Date().getDate() - 5)).setHours(16, 30, 0, 0),
     end_time: new Date(new Date().setDate(new Date().getDate() - 5)).setHours(16, 48, 0, 0),
     notes: 'Jog around neighborhood',
@@ -483,7 +484,7 @@ export const MOCK_ACTIVITY_RECORDS: any[] = [
     activity_type: 'walk',
     duration_minutes: 27,
     distance_km: 2.2,
-    calories_burned: 73,
+    calories_burned: calculateCalories('walk', 27, 2.2, 10), // 90 cal
     start_time: new Date(new Date().setDate(new Date().getDate() - 6)).setHours(8, 10, 0, 0),
     end_time: new Date(new Date().setDate(new Date().getDate() - 6)).setHours(8, 37, 0, 0),
     notes: 'Regular walk',
@@ -495,8 +496,9 @@ export const MOCK_ACTIVITY_RECORDS: any[] = [
     id: '00000000-0000-0000-0000-00000000006F',
     dog_id: MOCK_DOG_IDS.SUKI,
     activity_type: 'walk',
+    duration_minutes: 25,
     distance_km: 1.8,
-    calories_burned: 120,
+    calories_burned: calculateCalories('walk', 25, 1.8, 10), // 83 cal
     start_time: '2025-10-22T08:30:00Z',
     end_time: '2025-10-22T08:55:00Z',
     tracking_method: 'manual',
@@ -510,7 +512,7 @@ export const MOCK_ACTIVITY_RECORDS: any[] = [
     activity_type: 'play',
     duration_minutes: 15,
     distance_km: 0.3,
-    calories_burned: 80,
+    calories_burned: calculateCalories('play', 15, 0.3, 10), // 60 cal
     start_time: '2025-10-22T12:00:00Z',
     end_time: '2025-10-22T12:15:00Z',
     tracking_method: 'manual',
@@ -525,21 +527,21 @@ export const MOCK_ACTIVITY_RECORDS: any[] = [
     activity_type: 'walk',
     duration_minutes: 30,
     distance_km: 2.1,
-    calories_burned: 145,
+    calories_burned: calculateCalories('walk', 30, 2.1, 10), // 100 cal
     start_time: '2025-10-21T09:00:00Z',
     end_time: '2025-10-21T09:30:00Z',
     tracking_method: 'manual',
     created_at: '2025-10-21T09:30:00Z',
     updated_at: '2025-10-21T09:30:00Z',
   },
-  // Jett today
+  // Jett today (16kg dog)
   {
     id: '00000000-0000-0000-0000-000000000063',
     dog_id: MOCK_DOG_IDS.JETT,
     activity_type: 'run',
     duration_minutes: 35,
     distance_km: 3.2,
-    calories_burned: 280,
+    calories_burned: calculateCalories('run', 35, 3.2, 16), // 299 cal
     start_time: '2025-10-22T07:10:00Z',
     end_time: '2025-10-22T07:45:00Z',
     tracking_method: 'manual',
@@ -553,7 +555,7 @@ export const MOCK_ACTIVITY_RECORDS: any[] = [
     activity_type: 'play',
     duration_minutes: 20,
     distance_km: 0.5,
-    calories_burned: 120,
+    calories_burned: calculateCalories('play', 20, 0.5, 16), // 128 cal
     start_time: '2025-10-22T16:30:00Z',
     end_time: '2025-10-22T16:50:00Z',
     tracking_method: 'manual',
@@ -568,7 +570,7 @@ export const MOCK_ACTIVITY_RECORDS: any[] = [
     activity_type: 'walk',
     duration_minutes: 40,
     distance_km: 2.8,
-    calories_burned: 220,
+    calories_burned: calculateCalories('walk', 40, 2.8, 16), // 213 cal
     start_time: '2025-10-21T08:00:00Z',
     end_time: '2025-10-21T08:40:00Z',
     tracking_method: 'manual',
