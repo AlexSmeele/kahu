@@ -349,12 +349,12 @@ export default function FullTimeline() {
         {/* Filter Section */}
         {!loading && timelineData.length > 0 && isFilterOpen && (
           <div className="px-4 pb-3 border-b">
-            <div className="flex flex-wrap gap-2">
+            <div className="grid grid-cols-2 gap-2">
               <Button
                 variant={selectedFilters.has('all') ? 'default' : 'outline'}
                 size="sm"
                 onClick={() => toggleFilter('all')}
-                className="h-8"
+                className="h-8 w-full"
               >
                 All
                 <Badge variant="secondary" className="ml-1.5 px-1.5 min-w-[20px] justify-center">
@@ -366,7 +366,7 @@ export default function FullTimeline() {
                   variant={selectedFilters.has('activity') ? 'default' : 'outline'}
                   size="sm"
                   onClick={() => toggleFilter('activity')}
-                  className="h-8"
+                  className="h-8 w-full"
                 >
                   <Activity className="w-3 h-3 mr-1" />
                   Activity
@@ -380,7 +380,7 @@ export default function FullTimeline() {
                   variant={selectedFilters.has('meal') ? 'default' : 'outline'}
                   size="sm"
                   onClick={() => toggleFilter('meal')}
-                  className="h-8"
+                  className="h-8 w-full"
                 >
                   <Utensils className="w-3 h-3 mr-1" />
                   Meal
@@ -394,7 +394,7 @@ export default function FullTimeline() {
                   variant={selectedFilters.has('weight') ? 'default' : 'outline'}
                   size="sm"
                   onClick={() => toggleFilter('weight')}
-                  className="h-8"
+                  className="h-8 w-full"
                 >
                   <Weight className="w-3 h-3 mr-1" />
                   Weight
@@ -408,7 +408,7 @@ export default function FullTimeline() {
                   variant={selectedFilters.has('grooming') ? 'default' : 'outline'}
                   size="sm"
                   onClick={() => toggleFilter('grooming')}
-                  className="h-8"
+                  className="h-8 w-full"
                 >
                   <Scissors className="w-3 h-3 mr-1" />
                   Grooming
@@ -422,7 +422,7 @@ export default function FullTimeline() {
                   variant={selectedFilters.has('vet-visit') ? 'default' : 'outline'}
                   size="sm"
                   onClick={() => toggleFilter('vet-visit')}
-                  className="h-8"
+                  className="h-8 w-full"
                 >
                   <Stethoscope className="w-3 h-3 mr-1" />
                   Vet Visit
@@ -436,7 +436,7 @@ export default function FullTimeline() {
                   variant={selectedFilters.has('vaccination') ? 'default' : 'outline'}
                   size="sm"
                   onClick={() => toggleFilter('vaccination')}
-                  className="h-8"
+                  className="h-8 w-full"
                 >
                   <Syringe className="w-3 h-3 mr-1" />
                   Vaccination
@@ -450,7 +450,7 @@ export default function FullTimeline() {
                   variant={selectedFilters.has('checkup') ? 'default' : 'outline'}
                   size="sm"
                   onClick={() => toggleFilter('checkup')}
-                  className="h-8"
+                  className="h-8 w-full"
                 >
                   <ClipboardCheck className="w-3 h-3 mr-1" />
                   Checkup
@@ -464,7 +464,7 @@ export default function FullTimeline() {
                   variant={selectedFilters.has('treatment') ? 'default' : 'outline'}
                   size="sm"
                   onClick={() => toggleFilter('treatment')}
-                  className="h-8"
+                  className="h-8 w-full"
                 >
                   <Pill className="w-3 h-3 mr-1" />
                   Treatment
