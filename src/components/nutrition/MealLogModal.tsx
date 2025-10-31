@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Utensils } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -6,8 +6,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { useMealTracking } from "@/hooks/useMealTracking";
+import { useNutrition } from "@/hooks/useNutrition";
+import { isMockDogId } from "@/lib/mockData";
 
 interface MealLogModalProps {
   isOpen: boolean;
@@ -20,15 +23,30 @@ interface MealLogModalProps {
 export function MealLogModal({ isOpen, onClose, dogId, dogName, nutritionPlanId }: MealLogModalProps) {
   const { toast } = useToast();
   const { markMealCompleted } = useMealTracking(dogId, nutritionPlanId);
+  const { nutritionPlan } = useNutrition(dogId);
   const [isSubmitting, setIsSubmitting] = useState(false);
   
   const [formData, setFormData] = useState({
     mealName: "",
-    mealTime: new Date().toTimeString().slice(0, 5), // Current time
+    mealTime: new Date().toTimeString().slice(0, 5),
     amountGiven: 0,
     bowlCleanedBefore: false,
     notes: "",
   });
+
+  const plannedMeals = nutritionPlan?.meal_schedule || [];
+  
+  const handleSelectPlannedMeal = (mealIndex: string) => {
+    const meal = plannedMeals[parseInt(mealIndex)];
+    if (meal) {
+      setFormData(prev => ({
+        ...prev,
+        mealName: meal.name || `Meal ${parseInt(mealIndex) + 1}`,
+        mealTime: meal.time,
+        amountGiven: meal.amount || 0,
+      }));
+    }
+  };
 
   const handleSubmit = async () => {
     if (!formData.mealName || !formData.mealTime) {
@@ -49,13 +67,26 @@ export function MealLogModal({ isOpen, onClose, dogId, dogName, nutritionPlanId 
       return;
     }
 
+    if (isMockDogId(dogId)) {
+      toast({
+        title: "Demo mode",
+        description: "Meal logging is disabled in demo mode",
+      });
+      onClose();
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
       await markMealCompleted(
         formData.mealTime,
         formData.mealName,
-        formData.amountGiven || undefined
+        formData.amountGiven || undefined,
+        {
+          bowl_cleaned_before: formData.bowlCleanedBefore,
+          notes: formData.notes || undefined,
+        }
       );
 
       toast({
@@ -96,6 +127,24 @@ export function MealLogModal({ isOpen, onClose, dogId, dogName, nutritionPlanId 
         </DialogHeader>
 
         <div className="space-y-4">
+          {plannedMeals.length > 0 && (
+            <div>
+              <Label htmlFor="planned-meal">Quick Select (from plan)</Label>
+              <Select onValueChange={handleSelectPlannedMeal}>
+                <SelectTrigger id="planned-meal">
+                  <SelectValue placeholder="Select a planned meal..." />
+                </SelectTrigger>
+                <SelectContent>
+                  {plannedMeals.map((meal: any, index: number) => (
+                    <SelectItem key={index} value={index.toString()}>
+                      {meal.name || `Meal ${index + 1}`} - {meal.time}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          )}
+
           <div>
             <Label htmlFor="meal-name">Meal Name *</Label>
             <Input

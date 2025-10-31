@@ -106,33 +106,35 @@ export function QuickActionModal({ isOpen, onClose, selectedDogId, selectedDogNa
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md">
-        <DialogHeader>
-          <DialogTitle>Quick Actions</DialogTitle>
-        </DialogHeader>
-        
-        <div className="grid grid-cols-2 gap-3 mt-4">
-          {quickActions.map((action) => {
-            const Icon = action.icon;
-            return (
-              <button
-                key={action.id}
-                onClick={() => handleAction(action.id)}
-                className="p-4 rounded-lg border border-border hover:bg-secondary transition-colors text-left"
-              >
-                <div className={`w-10 h-10 rounded-full ${action.bgColor} flex items-center justify-center mb-2`}>
-                  <Icon className={`w-5 h-5 ${action.color}`} />
-                </div>
-                <h3 className="font-medium text-foreground text-sm">{action.title}</h3>
-                <p className="text-xs text-muted-foreground">{action.description}</p>
-              </button>
-            );
-          })}
-        </div>
-      </DialogContent>
+    <>
+      <Dialog open={isOpen} onOpenChange={onClose}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Quick Actions</DialogTitle>
+          </DialogHeader>
+          
+          <div className="grid grid-cols-2 gap-3 mt-4">
+            {quickActions.map((action) => {
+              const Icon = action.icon;
+              return (
+                <button
+                  key={action.id}
+                  onClick={() => handleAction(action.id)}
+                  className="p-4 rounded-lg border border-border hover:bg-secondary transition-colors text-left"
+                >
+                  <div className={`w-10 h-10 rounded-full ${action.bgColor} flex items-center justify-center mb-2`}>
+                    <Icon className={`w-5 h-5 ${action.color}`} />
+                  </div>
+                  <h3 className="font-medium text-foreground text-sm">{action.title}</h3>
+                  <p className="text-xs text-muted-foreground">{action.description}</p>
+                </button>
+              );
+            })}
+          </div>
+        </DialogContent>
+      </Dialog>
 
-      {/* Action Modals */}
+      {/* Action Modals rendered outside Dialog to prevent unmounting */}
       <AddWeightModal
         isOpen={isAddWeightOpen}
         onClose={() => setIsAddWeightOpen(false)}
@@ -153,6 +155,6 @@ export function QuickActionModal({ isOpen, onClose, selectedDogId, selectedDogNa
         dogName={selectedDogName}
         nutritionPlanId={nutritionPlan?.id}
       />
-    </Dialog>
+    </>
   );
 }

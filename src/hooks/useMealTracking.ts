@@ -5,6 +5,14 @@ import { useToast } from '@/hooks/use-toast';
 import { format, startOfDay, endOfDay } from 'date-fns';
 import { MOCK_MEAL_RECORDS, isMockDogId } from '@/lib/mockData';
 
+export interface MealComponent {
+  name: string;
+  brand?: string;
+  amount: number;
+  unit: string;
+  category: string;
+}
+
 export interface MealRecord {
   id: string;
   dog_id: string;
@@ -29,6 +37,7 @@ export interface MealRecord {
   begged_before?: boolean;
   begged_after?: boolean;
   notes?: string;
+  meal_components?: MealComponent[];
   created_at: string;
   updated_at: string;
 }
@@ -79,7 +88,7 @@ export function useMealTracking(dogId?: string, nutritionPlanId?: string) {
         .order('meal_time');
 
       if (error) throw error;
-      setMealRecords(data || []);
+      setMealRecords((data || []) as unknown as MealRecord[]);
     } catch (error) {
       console.error('Error fetching meal records:', error);
       toast({
@@ -164,7 +173,12 @@ export function useMealTracking(dogId?: string, nutritionPlanId?: string) {
     });
   };
 
-  const markMealCompleted = async (mealTime: string, mealName: string, amountGiven?: number) => {
+  const markMealCompleted = async (
+    mealTime: string, 
+    mealName: string, 
+    amountGiven?: number,
+    options?: { bowl_cleaned_before?: boolean; notes?: string; meal_components?: MealComponent[] }
+  ) => {
     if (!dogId || !nutritionPlanId) return null;
 
     const today = format(new Date(), 'yyyy-MM-dd');
@@ -188,6 +202,7 @@ export function useMealTracking(dogId?: string, nutritionPlanId?: string) {
           .update({
             completed_at: new Date().toISOString(),
             amount_given: amountGiven,
+            ...(options as any),
           })
           .eq('id', existingRecord.id)
           .select()
@@ -195,7 +210,7 @@ export function useMealTracking(dogId?: string, nutritionPlanId?: string) {
 
         if (error) throw error;
         
-        const updatedRecord = data as MealRecord;
+        const updatedRecord = data as unknown as MealRecord;
         setMealRecords(prev => prev.map(record => 
           record.id === existingRecord.id ? updatedRecord : record
         ));
@@ -218,13 +233,14 @@ export function useMealTracking(dogId?: string, nutritionPlanId?: string) {
             scheduled_date: today,
             completed_at: new Date().toISOString(),
             amount_given: amountGiven,
-          })
+            ...(options as any),
+          } as any)
           .select()
           .single();
 
         if (error) throw error;
 
-        const newRecord = data as MealRecord;
+        const newRecord = data as unknown as MealRecord;
         setMealRecords(prev => [...prev, newRecord]);
 
         toast({
@@ -280,7 +296,7 @@ export function useMealTracking(dogId?: string, nutritionPlanId?: string) {
     try {
       const { data, error } = await supabase
         .from('meal_records')
-        .update(updates)
+        .update(updates as any)
         .eq('id', mealId)
         .select()
         .single();
@@ -288,7 +304,7 @@ export function useMealTracking(dogId?: string, nutritionPlanId?: string) {
       if (error) throw error;
 
       setMealRecords(prev => prev.map(record => 
-        record.id === mealId ? data : record
+        record.id === mealId ? (data as unknown as MealRecord) : record
       ));
 
       toast({

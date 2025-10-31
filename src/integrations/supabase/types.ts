@@ -1045,6 +1045,7 @@ export type Database = {
           fed_by: string | null
           food_temperature: string | null
           id: string
+          meal_components: Json | null
           meal_name: string
           meal_time: string
           notes: string | null
@@ -1072,6 +1073,7 @@ export type Database = {
           fed_by?: string | null
           food_temperature?: string | null
           id?: string
+          meal_components?: Json | null
           meal_name: string
           meal_time: string
           notes?: string | null
@@ -1099,6 +1101,7 @@ export type Database = {
           fed_by?: string | null
           food_temperature?: string | null
           id?: string
+          meal_components?: Json | null
           meal_name?: string
           meal_time?: string
           notes?: string | null
