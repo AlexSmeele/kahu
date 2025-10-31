@@ -168,7 +168,7 @@ export function useWellnessTimeline(dogId: string) {
           events.push({
             id: `grooming-${schedule.id}-due`,
             type: 'grooming',
-            title: `${schedule.grooming_type} Grooming Due`,
+            title: `${schedule.grooming_type} Grooming`,
             timestamp: dueDate,
             icon: Scissors,
             status: dueDate < now ? 'overdue' : 'upcoming',
@@ -209,7 +209,7 @@ export function useWellnessTimeline(dogId: string) {
             events.push({
               id: `vaccine-${record.id}-due`,
               type: 'vaccination',
-              title: `${record.vaccine?.name || 'Vaccination'} Due`,
+              title: record.vaccine?.name || 'Vaccination',
               timestamp: dueDate,
               icon: Syringe,
               status: 'upcoming',
@@ -250,7 +250,7 @@ export function useWellnessTimeline(dogId: string) {
           events.push({
             id: `treatment-${treatment.id}-due`,
             type: 'treatment',
-            title: `${treatment.treatment_name} Due`,
+            title: treatment.treatment_name,
             timestamp: dueDate,
             icon: Pill,
             status: dueDate < now ? 'overdue' : 'upcoming',
