@@ -154,7 +154,7 @@ export function WellnessTimeline({ dogId }: WellnessTimelineProps) {
         {/* View Full Timeline Button */}
         {hasMoreData && (
           <Button
-            variant="outline"
+            variant="default"
             onClick={() => {
               navigate(`/full-timeline/${dogId}`, { 
                 state: { from: 'wellness' } 
