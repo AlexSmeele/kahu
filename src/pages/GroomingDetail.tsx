@@ -13,7 +13,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { useGroomingSchedule, GroomingCompletion } from "@/hooks/useGroomingSchedule";
 import { format, differenceInDays } from "date-fns";
 import { useToast } from "@/hooks/use-toast";
-import { isMockDogId } from "@/lib/mockData";
+import { isMockDogId, MOCK_GROOMING_SCHEDULES } from "@/lib/mockData";
 import { supabase } from "@/integrations/supabase/client";
 
 export default function GroomingDetail() {
@@ -46,8 +46,9 @@ export default function GroomingDetail() {
   const { updateSchedule, deleteSchedule, completeGrooming, fetchCompletions } = useGroomingSchedule(dogId);
   
   useEffect(() => {
+    console.log('[GroomingDetail] Mount:', { groomingId, dogId });
     fetchGroomingData();
-    if (groomingId && !isMockDogId(dogId)) {
+    if (groomingId) {
       fetchCompletionHistory();
     }
   }, [groomingId, dogId]);
@@ -59,33 +60,36 @@ export default function GroomingDetail() {
   };
   
   const fetchGroomingData = async () => {
-    if (!groomingId || !dogId) return;
+    if (!groomingId) return;
     
     setLoading(true);
     try {
-      if (isMockDogId(dogId)) {
-        const { MOCK_HEALTH_RECORDS } = await import('@/lib/mockData');
-        const mockGrooming = MOCK_HEALTH_RECORDS.find((r: any) => 
-          r.id === groomingId && r.record_type === 'grooming'
-        );
+      // Try loading from mock data first if we have a mock dogId
+      if (dogId && isMockDogId(dogId)) {
+        const mockGrooming = MOCK_GROOMING_SCHEDULES.find((s: any) => s.id === groomingId);
         if (mockGrooming) {
+          console.log('[GroomingDetail] Loaded from mock schedules:', mockGrooming);
           setGrooming(mockGrooming);
           setEditForm({
-            grooming_type: mockGrooming.grooming_type || mockGrooming.title || '',
+            grooming_type: mockGrooming.grooming_type || '',
             frequency_days: mockGrooming.frequency_days?.toString() || '30',
             notes: mockGrooming.notes || '',
             how_to_video_url: mockGrooming.how_to_video_url || '',
             how_to_guide: mockGrooming.how_to_guide || '',
           });
+          return;
         }
-      } else {
-        const { data, error } = await supabase
-          .from('grooming_schedules')
-          .select('*')
-          .eq('id', groomingId)
-          .single();
-          
-        if (error) throw error;
+      }
+      
+      // Try Supabase fetch
+      const { data, error } = await supabase
+        .from('grooming_schedules')
+        .select('*')
+        .eq('id', groomingId)
+        .maybeSingle();
+      
+      if (data) {
+        console.log('[GroomingDetail] Loaded from Supabase:', data);
         setGrooming(data);
         setEditForm({
           grooming_type: data.grooming_type || '',
@@ -94,9 +98,33 @@ export default function GroomingDetail() {
           how_to_video_url: data.how_to_video_url || '',
           how_to_guide: data.how_to_guide || '',
         });
+        
+        // Set dogId if we didn't have one
+        if (!dogId && data.dog_id) {
+          localStorage.setItem('selectedDogId', data.dog_id);
+        }
+        return;
       }
+      
+      // Fallback to mock data if Supabase didn't return anything
+      const mockGrooming = MOCK_GROOMING_SCHEDULES.find((s: any) => s.id === groomingId);
+      if (mockGrooming) {
+        console.warn('[GroomingDetail] Supabase miss, fallback to mock:', mockGrooming);
+        setGrooming(mockGrooming);
+        setEditForm({
+          grooming_type: mockGrooming.grooming_type || '',
+          frequency_days: mockGrooming.frequency_days?.toString() || '30',
+          notes: mockGrooming.notes || '',
+          how_to_video_url: mockGrooming.how_to_video_url || '',
+          how_to_guide: mockGrooming.how_to_guide || '',
+        });
+        return;
+      }
+      
+      // No data found anywhere
+      throw new Error('Grooming schedule not found');
     } catch (error) {
-      console.error('Error fetching grooming:', error);
+      console.error('[GroomingDetail] Error fetching grooming:', error);
       toast({
         title: "Error",
         description: "Failed to load grooming details",
@@ -165,7 +193,7 @@ export default function GroomingDetail() {
   };
   
   const handleMarkComplete = () => {
-    if (isMockDogId(dogId)) {
+    if (!dogId || isMockDogId(dogId)) {
       toast({
         title: "Demo Mode",
         description: "Marking complete is disabled in demo mode",
