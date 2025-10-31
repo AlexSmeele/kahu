@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { ArrowLeft, Edit3, Trash2, Scissors, Calendar, AlertCircle, Camera, X, Image as ImageIcon, Clipboard, Video, Check } from "lucide-react";
+import videoPlaceholder from "@/assets/video-placeholder.jpg";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -566,9 +567,17 @@ export default function GroomingDetail() {
                     />
                   </div>
                 ) : (
-                  <div className="flex flex-col items-center justify-center py-12 text-muted-foreground">
-                    <Video className="w-12 h-12 mb-2 opacity-50" />
-                    <p>No instructional video available</p>
+                  <div className="relative w-full rounded-lg overflow-hidden group cursor-pointer">
+                    <img 
+                      src={videoPlaceholder} 
+                      alt="Video tutorial coming soon"
+                      className="w-full h-auto"
+                    />
+                    <div className="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition-colors flex items-center justify-center">
+                      <p className="text-white text-sm font-medium bg-black/50 px-4 py-2 rounded-lg">
+                        Video tutorial coming soon
+                      </p>
+                    </div>
                   </div>
                 )}
               </CardContent>
@@ -598,8 +607,30 @@ export default function GroomingDetail() {
                     </p>
                   </div>
                 ) : grooming.how_to_guide ? (
-                  <div className="prose prose-sm max-w-none dark:prose-invert">
-                    <p className="whitespace-pre-wrap">{grooming.how_to_guide}</p>
+                  <div className="space-y-3">
+                    {grooming.how_to_guide.split('\n\n').map((section: string, index: number) => {
+                      if (section.startsWith('**') && section.endsWith('**')) {
+                        return (
+                          <h4 key={index} className="font-semibold text-base mt-4 first:mt-0">
+                            {section.replace(/\*\*/g, '')}
+                          </h4>
+                        );
+                      }
+                      if (section.startsWith('- ')) {
+                        return (
+                          <ul key={index} className="list-disc list-inside space-y-1 text-sm ml-2">
+                            {section.split('\n').map((item: string, i: number) => (
+                              <li key={i}>{item.replace('- ', '')}</li>
+                            ))}
+                          </ul>
+                        );
+                      }
+                      return (
+                        <p key={index} className="text-sm leading-relaxed">
+                          {section}
+                        </p>
+                      );
+                    })}
                   </div>
                 ) : (
                   <div className="flex flex-col items-center justify-center py-12 text-muted-foreground">

@@ -677,6 +677,35 @@ export const MOCK_GROOMING_SCHEDULES: any[] = [
     last_completed_at: '2025-10-01T14:00:00Z',
     next_due_date: '2025-10-31',
     notes: 'Use ear cleaning solution',
+    how_to_video_url: '',
+    how_to_guide: `**What You'll Need:**
+- Dog-specific ear cleaning solution
+- Cotton balls or gauze pads
+- Treats for positive reinforcement
+- Towel (optional, to catch drips)
+
+**Step 1: Prepare Your Dog**
+Find a calm, quiet space and have your dog sit or lie down comfortably. Give them a treat to create a positive association.
+
+**Step 2: Inspect the Ears**
+Gently lift the ear flap and look inside. Check for redness, swelling, discharge, or unusual odor. If you notice any of these signs, consult your vet before cleaning.
+
+**Step 3: Apply Cleaning Solution**
+Fill the ear canal with the cleaning solution (don't worry, you can't overfill it). Hold the ear flap up and gently massage the base of the ear for 20-30 seconds. You should hear a squishing sound.
+
+**Step 4: Let Your Dog Shake**
+Step back and let your dog shake their head. This helps bring debris and wax up to the outer ear where it's easier to wipe away.
+
+**Step 5: Wipe Clean**
+Use cotton balls or gauze pads to gently wipe out the ear canal and inner ear flap. Never push deep into the ear canal—only clean what you can see.
+
+**Step 6: Reward**
+Give your dog lots of praise and treats! Repeat on the other ear if needed.
+
+**Important Tips:**
+- Never use cotton swabs (Q-tips) deep in the ear canal
+- If ears are very dirty or your dog seems uncomfortable, see your vet
+- Some dogs need weekly cleaning, others monthly—follow your vet's advice`,
     created_at: '2025-09-01T14:00:00Z',
     updated_at: '2025-10-01T14:00:00Z'
   },
