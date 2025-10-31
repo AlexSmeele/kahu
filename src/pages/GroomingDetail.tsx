@@ -615,7 +615,7 @@ export default function GroomingDetail() {
                         h2: ({node, ...props}) => <h2 className="text-base font-semibold mt-4 mb-2 first:mt-0" {...props} />,
                         h3: ({node, ...props}) => <h3 className="text-sm font-semibold mt-3 mb-1 first:mt-0" {...props} />,
                         p: ({node, ...props}) => <p className="text-sm leading-relaxed mb-3" {...props} />,
-                        strong: ({node, ...props}) => <strong className="font-semibold" {...props} />,
+                        strong: ({node, ...props}) => <strong className="block font-semibold mt-3 mb-1 first:mt-0" {...props} />,
                         ul: ({node, ...props}) => <ul className="list-disc list-inside space-y-1 text-sm ml-2 mb-3" {...props} />,
                         ol: ({node, ...props}) => <ol className="list-decimal list-inside space-y-1 text-sm ml-2 mb-3" {...props} />,
                         li: ({node, ...props}) => <li className="ml-2" {...props} />,
