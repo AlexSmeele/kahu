@@ -3,7 +3,6 @@ import { Award, Star, Clock, CheckCircle2, Lock, Trophy, Target, Zap, Play, Book
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { useDogs } from "@/hooks/useDogs";
 import { useTricks, Trick } from "@/hooks/useTricks";
 import { DogDropdown } from "@/components/dogs/DogDropdown";
@@ -184,6 +183,7 @@ export function TricksScreen({ selectedDogId, onDogChange }: TricksScreenProps) 
   const [selectedTrick, setSelectedTrick] = useState<Trick | null>(null);
   const [isTrickModalOpen, setIsTrickModalOpen] = useState(false);
   const [isClickerOpen, setIsClickerOpen] = useState(false);
+  const [selectedSection, setSelectedSection] = useState<'program' | 'foundations' | 'skills' | 'troubleshooting'>('program');
 
   if (loading) {
     return (
@@ -288,31 +288,71 @@ export function TricksScreen({ selectedDogId, onDogChange }: TricksScreenProps) 
         </div>
       </div>
 
-      {/* Tabs Navigation */}
-      <Tabs defaultValue="program" className="flex-1 flex flex-col overflow-hidden">
-        <div className="bg-white/80 dark:bg-card/80 backdrop-blur-sm border-b px-4 pt-4 flex-shrink-0">
-          <TabsList className="grid w-full grid-cols-4 mb-4">
-            <TabsTrigger value="program" className="flex items-center gap-1">
-              <Trophy className="w-4 h-4" />
-              <span className="hidden sm:inline">Program</span>
-            </TabsTrigger>
-            <TabsTrigger value="skills" className="flex items-center gap-1">
-              <Award className="w-4 h-4" />
-              <span className="hidden sm:inline">Skills</span>
-            </TabsTrigger>
-            <TabsTrigger value="foundations" className="flex items-center gap-1">
-              <GraduationCap className="w-4 h-4" />
-              <span className="hidden sm:inline">Foundations</span>
-            </TabsTrigger>
-            <TabsTrigger value="troubleshooting" className="flex items-center gap-1">
-              <AlertCircle className="w-4 h-4" />
-              <span className="hidden sm:inline">Troubleshooting</span>
-            </TabsTrigger>
-          </TabsList>
-        </div>
+      {/* Button Navigation */}
+      <div className="bg-white/80 dark:bg-card/80 backdrop-blur-sm border-b px-4 py-6 flex-shrink-0">
+        <div className="space-y-3">
+          {/* Main Button - Training Program */}
+          <Button
+            onClick={() => setSelectedSection('program')}
+            variant={selectedSection === 'program' ? 'default' : 'outline'}
+            className={`w-full h-20 rounded-2xl flex items-center justify-center gap-3 text-lg font-bold transition-all ${
+              selectedSection === 'program' 
+                ? 'bg-gradient-to-r from-primary to-primary-hover shadow-lg scale-105' 
+                : 'hover:bg-accent'
+            }`}
+          >
+            <Trophy className="w-7 h-7" />
+            <span>Training Program</span>
+          </Button>
 
-        {/* Training Program Tab */}
-        <TabsContent value="program" className="flex-1 overflow-y-auto min-h-0 m-0">
+          {/* Three Buttons Row */}
+          <div className="grid grid-cols-3 gap-3">
+            <Button
+              onClick={() => setSelectedSection('foundations')}
+              variant={selectedSection === 'foundations' ? 'default' : 'outline'}
+              className={`h-24 rounded-2xl flex flex-col items-center justify-center gap-2 font-semibold transition-all ${
+                selectedSection === 'foundations'
+                  ? 'bg-gradient-to-br from-emerald-500 to-emerald-600 text-white shadow-lg scale-105'
+                  : 'hover:bg-accent'
+              }`}
+            >
+              <GraduationCap className="w-6 h-6" />
+              <span className="text-sm">Foundations</span>
+            </Button>
+
+            <Button
+              onClick={() => setSelectedSection('skills')}
+              variant={selectedSection === 'skills' ? 'default' : 'outline'}
+              className={`h-24 rounded-2xl flex flex-col items-center justify-center gap-2 font-semibold transition-all ${
+                selectedSection === 'skills'
+                  ? 'bg-gradient-to-br from-primary to-primary-hover shadow-lg scale-105'
+                  : 'hover:bg-accent'
+              }`}
+            >
+              <Award className="w-6 h-6" />
+              <span className="text-sm">Skills</span>
+            </Button>
+
+            <Button
+              onClick={() => setSelectedSection('troubleshooting')}
+              variant={selectedSection === 'troubleshooting' ? 'default' : 'outline'}
+              className={`h-24 rounded-2xl flex flex-col items-center justify-center gap-2 font-semibold transition-all ${
+                selectedSection === 'troubleshooting'
+                  ? 'bg-gradient-to-br from-orange-500 to-orange-600 text-white shadow-lg scale-105'
+                  : 'hover:bg-accent'
+              }`}
+            >
+              <AlertCircle className="w-6 h-6" />
+              <span className="text-sm">Troubleshooting</span>
+            </Button>
+          </div>
+        </div>
+      </div>
+
+      {/* Content Area */}
+      <div className="flex-1 overflow-y-auto min-h-0">
+        {/* Training Program Content */}
+        {selectedSection === 'program' && (
           <div className="p-4 space-y-4">
             <div className="bg-card rounded-2xl p-6 border-2 border-primary/20">
               <div className="flex items-center gap-3 mb-4">
@@ -329,10 +369,10 @@ export function TricksScreen({ selectedDogId, onDogChange }: TricksScreenProps) 
               </p>
             </div>
           </div>
-        </TabsContent>
+        )}
 
-        {/* Skills Tab - Current Tricks List */}
-        <TabsContent value="skills" className="flex-1 overflow-y-auto min-h-0 m-0">
+        {/* Skills Content */}
+        {selectedSection === 'skills' && (
           <div className="p-4 space-y-6 pb-8">
             {tricksByDifficulty.map(({ level, color, textColor, tricks: levelTricks }) => {
               if (levelTricks.length === 0) return null;
@@ -376,10 +416,10 @@ export function TricksScreen({ selectedDogId, onDogChange }: TricksScreenProps) 
               );
             })}
           </div>
-        </TabsContent>
+        )}
 
-        {/* Foundations Tab */}
-        <TabsContent value="foundations" className="flex-1 overflow-y-auto min-h-0 m-0">
+        {/* Foundations Content */}
+        {selectedSection === 'foundations' && (
           <div className="p-4 space-y-4">
             <div className="bg-card rounded-2xl p-6 border-2 border-emerald-500/20">
               <div className="flex items-center gap-3 mb-4">
@@ -396,10 +436,10 @@ export function TricksScreen({ selectedDogId, onDogChange }: TricksScreenProps) 
               </p>
             </div>
           </div>
-        </TabsContent>
+        )}
 
-        {/* Troubleshooting Tab */}
-        <TabsContent value="troubleshooting" className="flex-1 overflow-y-auto min-h-0 m-0">
+        {/* Troubleshooting Content */}
+        {selectedSection === 'troubleshooting' && (
           <div className="p-4 space-y-6 pb-8">
             <div className="space-y-4">
               {/* Section Header */}
@@ -460,8 +500,8 @@ export function TricksScreen({ selectedDogId, onDogChange }: TricksScreenProps) 
               </div>
             </div>
           </div>
-        </TabsContent>
-      </Tabs>
+        )}
+      </div>
 
       {/* Modals */}
       <ClickerModal isOpen={isClickerOpen} onClose={() => setIsClickerOpen(false)} />
