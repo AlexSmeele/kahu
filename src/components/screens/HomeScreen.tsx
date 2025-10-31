@@ -55,7 +55,7 @@ export function HomeScreen({ selectedDogId, onDogChange, onTabChange }: HomeScre
 
   return (
     <>
-      <div className="min-h-screen bg-background pb-20 pt-4 safe-top relative">
+      <div className="bg-background pb-20 pt-4 safe-top relative">
         <div className="pt-16">
           <DogDropdown selectedDogId={selectedDogId} onDogChange={onDogChange} />
           <PageLogo />
