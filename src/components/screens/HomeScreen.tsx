@@ -8,6 +8,11 @@ import { ActivityCircleCard } from "@/components/home/ActivityCircleCard";
 import { QuickNoteTile } from "@/components/home/QuickNoteTile";
 import { GetAdviceCard } from "@/components/home/GetAdviceCard";
 import { AnalyticsCard } from "@/components/home/AnalyticsCard";
+import { NutritionOverviewCard } from "@/components/home/NutritionOverviewCard";
+import { HealthStatusCard } from "@/components/home/HealthStatusCard";
+import { UpcomingEventsCard } from "@/components/home/UpcomingEventsCard";
+import { TreatBudgetCard } from "@/components/home/TreatBudgetCard";
+import { TrainingStreakCard } from "@/components/home/TrainingStreakCard";
 import { QuickNoteModal } from "@/components/home/QuickNoteModal";
 import { useHomeData } from "@/hooks/useHomeData";
 import { useWellnessTimeline } from "@/hooks/useWellnessTimeline";
@@ -89,6 +94,7 @@ export function HomeScreen({ selectedDogId, onDogChange, onTabChange }: HomeScre
               )}
 
               <div className="grid grid-cols-2 gap-3">
+                {/* Row 1 */}
                 <ActivityCircleCard
                   completedMinutes={todayProgress?.minutes || 0}
                   targetMinutes={activityGoal?.target_minutes || 60}
@@ -102,12 +108,44 @@ export function HomeScreen({ selectedDogId, onDogChange, onTabChange }: HomeScre
                   onActionClick={() => onTabChange('tricks')}
                   className="animate-fade-in [animation-delay:150ms]"
                 />
+                
+                {/* Row 2 */}
                 <GetAdviceCard className="animate-fade-in [animation-delay:200ms]" />
                 <QuickNoteTile 
                   onClick={() => setShowNoteModal(true)} 
                   className="animate-fade-in [animation-delay:250ms]"
                 />
+                
+                {/* Row 3 */}
                 <AnalyticsCard className="animate-fade-in [animation-delay:300ms]" />
+                <NutritionOverviewCard 
+                  dogId={selectedDogId}
+                  onTabChange={onTabChange}
+                  className="animate-fade-in [animation-delay:350ms]"
+                />
+                
+                {/* Row 4 */}
+                <HealthStatusCard 
+                  dogId={selectedDogId}
+                  onTabChange={onTabChange}
+                  className="animate-fade-in [animation-delay:400ms]"
+                />
+                <UpcomingEventsCard 
+                  dogId={selectedDogId}
+                  className="animate-fade-in [animation-delay:450ms]"
+                />
+                
+                {/* Row 5 */}
+                <TreatBudgetCard 
+                  dogId={selectedDogId}
+                  onTabChange={onTabChange}
+                  className="animate-fade-in [animation-delay:500ms]"
+                />
+                <TrainingStreakCard 
+                  dogId={selectedDogId}
+                  onTabChange={onTabChange}
+                  className="animate-fade-in [animation-delay:550ms]"
+                />
               </div>
             </div>
           </>
