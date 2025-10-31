@@ -970,43 +970,85 @@ export type Database = {
       }
       meal_records: {
         Row: {
+          amount_consumed: number | null
           amount_given: number | null
+          amount_planned: number | null
+          begged_after: boolean | null
+          begged_before: boolean | null
+          bowl_cleaned_before: boolean | null
           completed_at: string | null
           created_at: string
           dog_id: string
+          eating_behavior: string | null
+          eating_speed: string | null
+          energy_level_after: string | null
+          fed_by: string | null
+          food_temperature: string | null
           id: string
           meal_name: string
           meal_time: string
           notes: string | null
           nutrition_plan_id: string
+          percentage_eaten: number | null
           scheduled_date: string
+          snubbed_items: Json | null
           updated_at: string
+          vomit_time_minutes: number | null
+          vomited_after: boolean | null
         }
         Insert: {
+          amount_consumed?: number | null
           amount_given?: number | null
+          amount_planned?: number | null
+          begged_after?: boolean | null
+          begged_before?: boolean | null
+          bowl_cleaned_before?: boolean | null
           completed_at?: string | null
           created_at?: string
           dog_id: string
+          eating_behavior?: string | null
+          eating_speed?: string | null
+          energy_level_after?: string | null
+          fed_by?: string | null
+          food_temperature?: string | null
           id?: string
           meal_name: string
           meal_time: string
           notes?: string | null
           nutrition_plan_id: string
+          percentage_eaten?: number | null
           scheduled_date: string
+          snubbed_items?: Json | null
           updated_at?: string
+          vomit_time_minutes?: number | null
+          vomited_after?: boolean | null
         }
         Update: {
+          amount_consumed?: number | null
           amount_given?: number | null
+          amount_planned?: number | null
+          begged_after?: boolean | null
+          begged_before?: boolean | null
+          bowl_cleaned_before?: boolean | null
           completed_at?: string | null
           created_at?: string
           dog_id?: string
+          eating_behavior?: string | null
+          eating_speed?: string | null
+          energy_level_after?: string | null
+          fed_by?: string | null
+          food_temperature?: string | null
           id?: string
           meal_name?: string
           meal_time?: string
           notes?: string | null
           nutrition_plan_id?: string
+          percentage_eaten?: number | null
           scheduled_date?: string
+          snubbed_items?: Json | null
           updated_at?: string
+          vomit_time_minutes?: number | null
+          vomited_after?: boolean | null
         }
         Relationships: [
           {
@@ -1175,11 +1217,19 @@ export type Database = {
       }
       nutrition_plans: {
         Row: {
+          batch_lot_number: string | null
+          bowl_last_cleaned: string | null
+          bowl_type: string | null
           brand: string | null
+          calorie_target_daily: number | null
           created_at: string
           daily_amount: number | null
+          diet_type: string | null
           dog_id: string
+          feeding_method: string | null
           feeding_times: number | null
+          food_bag_opened_date: string | null
+          food_expiration_date: string | null
           food_type: string
           id: string
           is_active: boolean | null
@@ -1188,11 +1238,19 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          batch_lot_number?: string | null
+          bowl_last_cleaned?: string | null
+          bowl_type?: string | null
           brand?: string | null
+          calorie_target_daily?: number | null
           created_at?: string
           daily_amount?: number | null
+          diet_type?: string | null
           dog_id: string
+          feeding_method?: string | null
           feeding_times?: number | null
+          food_bag_opened_date?: string | null
+          food_expiration_date?: string | null
           food_type: string
           id?: string
           is_active?: boolean | null
@@ -1201,11 +1259,19 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          batch_lot_number?: string | null
+          bowl_last_cleaned?: string | null
+          bowl_type?: string | null
           brand?: string | null
+          calorie_target_daily?: number | null
           created_at?: string
           daily_amount?: number | null
+          diet_type?: string | null
           dog_id?: string
+          feeding_method?: string | null
           feeding_times?: number | null
+          food_bag_opened_date?: string | null
+          food_expiration_date?: string | null
           food_type?: string
           id?: string
           is_active?: boolean | null

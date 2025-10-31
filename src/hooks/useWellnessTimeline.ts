@@ -84,9 +84,18 @@ export function useWellnessTimeline(dogId: string) {
         });
       });
 
-      // Meal records
+      // Meal records - show completed and upcoming (next 24 hours)
+      const currentTime = new Date();
+      const twentyFourHoursFromNow = new Date(currentTime.getTime() + 24 * 60 * 60 * 1000);
+      
       mealRecords?.forEach((record: any) => {
+        // Show completed meals
         if (record.completed_at) {
+          const metrics = [];
+          if (record.amount_given) metrics.push({ label: 'Given', value: `${record.amount_given} cups` });
+          if (record.amount_consumed) metrics.push({ label: 'Consumed', value: `${record.amount_consumed} cups` });
+          if (record.percentage_eaten) metrics.push({ label: 'Eaten', value: `${record.percentage_eaten}%` });
+          
           events.push({
             id: `meal-${record.id}`,
             type: 'meal',
@@ -94,9 +103,31 @@ export function useWellnessTimeline(dogId: string) {
             timestamp: new Date(record.completed_at),
             icon: Apple,
             status: 'completed',
-            metrics: record.amount_given ? [{ label: 'Amount', value: `${record.amount_given} cups` }] : undefined,
+            metrics: metrics.length > 0 ? metrics : undefined,
             details: record,
           });
+        } else {
+          // Show scheduled meals in next 24 hours
+          try {
+            const scheduledDateTime = new Date(`${record.scheduled_date}T${record.meal_time}`);
+            
+            if (scheduledDateTime >= currentTime && scheduledDateTime <= twentyFourHoursFromNow) {
+              events.push({
+                id: `meal-${record.id}-scheduled`,
+                type: 'meal',
+                title: `${record.meal_name} (Scheduled)`,
+                timestamp: scheduledDateTime,
+                icon: Apple,
+                status: scheduledDateTime < currentTime ? 'overdue' : 'upcoming',
+                metrics: record.amount_planned 
+                  ? [{ label: 'Planned', value: `${record.amount_planned} cups` }]
+                  : undefined,
+                details: record,
+              });
+            }
+          } catch (e) {
+            console.error('Error parsing meal schedule:', e);
+          }
         }
       });
 

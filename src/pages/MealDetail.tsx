@@ -1,11 +1,15 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
-import { ArrowLeft, Calendar, Clock, Check, X, Edit3, Trash2, Utensils } from "lucide-react";
+import { ArrowLeft, Calendar, Clock, Check, X, Edit3, Trash2, Utensils, Droplet } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Slider } from "@/components/ui/slider";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { format } from "date-fns";
 import { useMealTracking } from "@/hooks/useMealTracking";
@@ -31,6 +35,10 @@ export default function MealDetail() {
     meal_name: "",
     meal_time: "",
     amount_given: 0,
+    amount_consumed: 0,
+    percentage_eaten: 100,
+    eating_behavior: "normal",
+    bowl_cleaned_before: false,
     notes: "",
   });
 
@@ -49,6 +57,10 @@ export default function MealDetail() {
             meal_name: found.meal_name || '',
             meal_time: found.meal_time || '',
             amount_given: found.amount_given || 0,
+            amount_consumed: found.amount_consumed || 0,
+            percentage_eaten: found.percentage_eaten || 100,
+            eating_behavior: found.eating_behavior || 'normal',
+            bowl_cleaned_before: found.bowl_cleaned_before || false,
             notes: found.notes || '',
           });
         } else {
@@ -74,6 +86,10 @@ export default function MealDetail() {
             meal_name: data.meal_name || '',
             meal_time: data.meal_time || '',
             amount_given: data.amount_given || 0,
+            amount_consumed: data.amount_consumed || 0,
+            percentage_eaten: data.percentage_eaten || 100,
+            eating_behavior: data.eating_behavior || 'normal',
+            bowl_cleaned_before: data.bowl_cleaned_before || false,
             notes: data.notes || '',
           });
         } else {
@@ -111,6 +127,10 @@ export default function MealDetail() {
       meal_name: editForm.meal_name,
       meal_time: editForm.meal_time,
       amount_given: editForm.amount_given || undefined,
+      amount_consumed: editForm.amount_consumed || undefined,
+      percentage_eaten: editForm.percentage_eaten || undefined,
+      eating_behavior: editForm.eating_behavior || undefined,
+      bowl_cleaned_before: editForm.bowl_cleaned_before,
       notes: editForm.notes || undefined,
     });
 
@@ -132,6 +152,10 @@ export default function MealDetail() {
         meal_name: meal.meal_name || '',
         meal_time: meal.meal_time || '',
         amount_given: meal.amount_given || 0,
+        amount_consumed: meal.amount_consumed || 0,
+        percentage_eaten: meal.percentage_eaten || 100,
+        eating_behavior: meal.eating_behavior || 'normal',
+        bowl_cleaned_before: meal.bowl_cleaned_before || false,
         notes: meal.notes || '',
       });
     }
@@ -245,15 +269,77 @@ export default function MealDetail() {
                   />
                 </div>
 
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="amount_given">Amount Given (cups)</Label>
+                    <Input
+                      id="amount_given"
+                      type="number"
+                      step="0.1"
+                      value={editForm.amount_given}
+                      onChange={(e) => setEditForm({ ...editForm, amount_given: parseFloat(e.target.value) || 0 })}
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="amount_consumed">Amount Consumed</Label>
+                    <Input
+                      id="amount_consumed"
+                      type="number"
+                      step="0.1"
+                      value={editForm.amount_consumed}
+                      onChange={(e) => setEditForm({ ...editForm, amount_consumed: parseFloat(e.target.value) || 0 })}
+                    />
+                  </div>
+                </div>
+
                 <div>
-                  <Label htmlFor="amount_given">Amount Given (cups)</Label>
-                  <Input
-                    id="amount_given"
-                    type="number"
-                    step="0.1"
-                    value={editForm.amount_given}
-                    onChange={(e) => setEditForm({ ...editForm, amount_given: parseFloat(e.target.value) || 0 })}
+                  <Label>Percentage Eaten: {editForm.percentage_eaten}%</Label>
+                  <Slider 
+                    value={[editForm.percentage_eaten]} 
+                    onValueChange={(value) => setEditForm({ ...editForm, percentage_eaten: value[0] })}
+                    max={100} 
+                    step={5}
+                    className="mt-2"
                   />
+                </div>
+
+                <div>
+                  <Label>Eating Behavior</Label>
+                  <RadioGroup 
+                    value={editForm.eating_behavior}
+                    onValueChange={(value) => setEditForm({ ...editForm, eating_behavior: value })}
+                    className="mt-2"
+                  >
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="eager" id="eager" />
+                      <Label htmlFor="eager" className="font-normal">Eager - Ate quickly</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="normal" id="normal" />
+                      <Label htmlFor="normal" className="font-normal">Normal pace</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="reluctant" id="reluctant" />
+                      <Label htmlFor="reluctant" className="font-normal">Reluctant - Took time</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="sniffed_only" id="sniffed" />
+                      <Label htmlFor="sniffed" className="font-normal">Sniffed but didn't eat</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="refused" id="refused" />
+                      <Label htmlFor="refused" className="font-normal">Completely refused</Label>
+                    </div>
+                  </RadioGroup>
+                </div>
+
+                <div className="flex items-center space-x-2">
+                  <Checkbox 
+                    id="bowl_cleaned"
+                    checked={editForm.bowl_cleaned_before}
+                    onCheckedChange={(checked) => setEditForm({ ...editForm, bowl_cleaned_before: checked as boolean })}
+                  />
+                  <Label htmlFor="bowl_cleaned" className="font-normal">Bowl cleaned before meal</Label>
                 </div>
 
                 <div>
@@ -311,10 +397,47 @@ export default function MealDetail() {
                   </div>
                 )}
 
-                {meal.amount_given && (
+                <div className="grid grid-cols-2 gap-4">
+                  {meal.amount_given && (
+                    <div className="space-y-1">
+                      <p className="text-sm text-muted-foreground">Amount Given</p>
+                      <p className="font-medium">{meal.amount_given} cups</p>
+                    </div>
+                  )}
+                  {meal.amount_consumed && (
+                    <div className="space-y-1">
+                      <p className="text-sm text-muted-foreground">Amount Consumed</p>
+                      <p className="font-medium">{meal.amount_consumed} cups</p>
+                    </div>
+                  )}
+                </div>
+
+                {meal.percentage_eaten !== null && meal.percentage_eaten !== undefined && (
                   <div className="space-y-1">
-                    <p className="text-sm text-muted-foreground">Amount Given</p>
-                    <p className="font-medium">{meal.amount_given} cups</p>
+                    <p className="text-sm text-muted-foreground">Percentage Eaten</p>
+                    <div className="flex items-center gap-2">
+                      <div className="flex-1 bg-secondary rounded-full h-2">
+                        <div 
+                          className="bg-primary h-2 rounded-full transition-all"
+                          style={{ width: `${meal.percentage_eaten}%` }}
+                        />
+                      </div>
+                      <span className="font-medium">{meal.percentage_eaten}%</span>
+                    </div>
+                  </div>
+                )}
+
+                {meal.eating_behavior && (
+                  <div className="space-y-1">
+                    <p className="text-sm text-muted-foreground">Eating Behavior</p>
+                    <p className="font-medium capitalize">{meal.eating_behavior.replace('_', ' ')}</p>
+                  </div>
+                )}
+
+                {meal.bowl_cleaned_before && (
+                  <div className="flex items-center gap-2 p-3 bg-primary/5 rounded-lg">
+                    <Droplet className="w-4 h-4 text-primary" />
+                    <p className="text-sm font-medium">Bowl was cleaned before this meal</p>
                   </div>
                 )}
 
