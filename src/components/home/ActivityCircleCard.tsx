@@ -81,10 +81,6 @@ export function ActivityCircleCard({
           </div>
         </div>
       </div>
-      
-      <p className="text-xs text-center text-muted-foreground">
-        {percentage >= 100 ? "Goal achieved! 🎉" : `${Math.round(percentage)}% complete`}
-      </p>
     </button>
   );
 }
