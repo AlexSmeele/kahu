@@ -16,13 +16,13 @@ export default function Analytics() {
   const currentDog = dogs.find(dog => dog.id === selectedDogId) || dogs[0];
 
   return (
-    <div className="flex flex-col h-full safe-top relative">
-      <div className="pt-16 border-b">
+    <div className="flex flex-col h-full safe-top">
+      <div className="pt-16 border-b relative">
         <Button
           variant="ghost"
           size="icon"
           onClick={() => navigate(-1)}
-          className="absolute left-4 top-4"
+          className="absolute left-4 top-4 z-10"
         >
           <ChevronLeft className="h-5 w-5" />
         </Button>
