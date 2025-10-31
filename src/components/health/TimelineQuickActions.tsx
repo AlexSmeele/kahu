@@ -45,7 +45,7 @@ export function TimelineQuickActions({
             key={action.label}
             variant="outline"
             onClick={action.onClick}
-            className="flex items-center gap-2 px-3 py-2 h-auto rounded-full hover:bg-accent"
+            className="flex items-center gap-2 px-3 py-2 h-auto rounded-full hover:bg-accent border-2 border-primary/20"
           >
             <action.icon className={`w-4 h-4 ${action.color}`} />
             <span className="text-sm font-medium">{action.label}</span>
