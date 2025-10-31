@@ -7,6 +7,7 @@ import { DogDropdown } from "@/components/dogs/DogDropdown";
 import { PageLogo } from "@/components/layout/PageLogo";
 import { useNutrition, MealTime } from "@/hooks/useNutrition";
 import { useMealTracking, TodayMeal } from "@/hooks/useMealTracking";
+import { useSmartNotifications } from "@/hooks/useSmartNotifications";
 import { MealPlanModal } from "@/components/nutrition/MealPlanModal";
 import { MultiMealPlanModal } from "@/components/nutrition/MultiMealPlanModal";
 import { WeekPlannerModal } from "@/components/nutrition/WeekPlannerModal";
@@ -53,6 +54,9 @@ export function NutritionScreen({ selectedDogId, onDogChange }: NutritionScreenP
   const mealSchedule = nutritionPlan?.meal_schedule || [];
   const todayMeals = generateTodayMeals(mealSchedule, mealRecords);
   const todayProgress = getTodayProgress(mealSchedule, mealRecords, nutritionPlan?.daily_amount);
+
+  // Enable smart notifications for this dog
+  useSmartNotifications(selectedDogId);
 
   // Automatically create meal records for today when nutrition plan loads
   useEffect(() => {

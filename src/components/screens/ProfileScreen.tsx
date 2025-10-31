@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { User, Dog, Settings, CreditCard, Share, Download, HelpCircle, LogOut, Plus, Edit, Trash2, Package, MessageSquare, ChevronUp, ChevronDown, Stethoscope } from "lucide-react";
+import { User, Dog, Settings, CreditCard, Share, Download, HelpCircle, LogOut, Plus, Edit, Trash2, Package, MessageSquare, ChevronUp, ChevronDown, Stethoscope, Bell } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -19,10 +19,12 @@ import { BillingModal } from "@/components/profile/BillingModal";
 import { ExportDataModal } from "@/components/profile/ExportDataModal";
 import { FeedbackModal } from "@/components/profile/FeedbackModal";
 import { VetClinicsModal } from "@/components/health/VetClinicsModal";
+import { NotificationPreferencesModal } from "@/components/profile/NotificationPreferencesModal";
 import type { Dog as DogType } from "@/hooks/useDogs";
 
 const menuItems = [
   { icon: Settings, label: "Account Settings", action: "settings" },
+  { icon: Bell, label: "Notification Settings", action: "notifications" },
   { icon: Stethoscope, label: "Veterinary Clinics", action: "vet-clinics" },
   { icon: CreditCard, label: "Billing & Payments", action: "billing" },
   { icon: Package, label: "Order History", action: "orders" },
@@ -48,6 +50,7 @@ export function ProfileScreen() {
   const [isExportDataOpen, setIsExportDataOpen] = useState(false);
   const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
   const [isVetClinicsOpen, setIsVetClinicsOpen] = useState(false);
+  const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
   const [isReordering, setIsReordering] = useState(false);
 
   const handleAddDog = () => {
@@ -104,6 +107,9 @@ export function ProfileScreen() {
         break;
       case "vet-clinics":
         setIsVetClinicsOpen(true);
+        break;
+      case "notifications":
+        setIsNotificationsOpen(true);
         break;
       case "billing":
         setIsBillingOpen(true);
@@ -394,6 +400,11 @@ export function ProfileScreen() {
         onClose={() => setIsVetClinicsOpen(false)}
         dogId={dogs[0]?.id || ''}
         dogName={dogs[0]?.name || 'Your dog'}
+      />
+
+      <NotificationPreferencesModal
+        open={isNotificationsOpen}
+        onOpenChange={setIsNotificationsOpen}
       />
     </div>
   );
