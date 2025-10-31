@@ -92,6 +92,55 @@ export function useMealTracking(dogId?: string, nutritionPlanId?: string) {
     }
   };
 
+  // Automatically create meal records for today based on meal schedule
+  const ensureTodayMealRecords = async (mealSchedule: any[]) => {
+    if (!dogId || !nutritionPlanId || !mealSchedule || mealSchedule.length === 0) return;
+    if (isMockDogId(dogId)) return; // Skip for mock data
+
+    const today = format(new Date(), 'yyyy-MM-dd');
+
+    try {
+      // Get existing meal records for today
+      const { data: existingRecords } = await supabase
+        .from('meal_records')
+        .select('meal_time, meal_name')
+        .eq('dog_id', dogId)
+        .eq('nutrition_plan_id', nutritionPlanId)
+        .eq('scheduled_date', today);
+
+      // Find meals that don't have records yet
+      const missingMeals = mealSchedule.filter(meal => {
+        return !existingRecords?.some(record => 
+          record.meal_time === meal.time && record.meal_name === meal.name
+        );
+      });
+
+      // Create records for missing meals
+      if (missingMeals.length > 0) {
+        const newRecords = missingMeals.map(meal => ({
+          dog_id: dogId,
+          nutrition_plan_id: nutritionPlanId,
+          meal_time: meal.time,
+          meal_name: meal.name,
+          scheduled_date: today,
+          amount_planned: meal.amount || null,
+        }));
+
+        const { error } = await supabase
+          .from('meal_records')
+          .insert(newRecords);
+
+        if (error) throw error;
+
+        // Refresh meal records
+        await fetchMealRecords();
+      }
+    } catch (error) {
+      console.error('Error ensuring meal records:', error);
+      // Silent fail - not critical enough to show toast
+    }
+  };
+
   const generateTodayMeals = (mealSchedule: any[], mealRecords: MealRecord[]) => {
     if (!mealSchedule || mealSchedule.length === 0) return [];
 
@@ -319,6 +368,7 @@ export function useMealTracking(dogId?: string, nutritionPlanId?: string) {
     deleteMealRecord,
     getTodayProgress,
     generateTodayMeals,
+    ensureTodayMealRecords,
     refetch: fetchMealRecords,
   };
 }

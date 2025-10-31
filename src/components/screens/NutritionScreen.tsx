@@ -37,12 +37,20 @@ export function NutritionScreen({ selectedDogId, onDogChange }: NutritionScreenP
     undoMealCompletion,
     getTodayProgress,
     generateTodayMeals,
+    ensureTodayMealRecords,
     loading: mealLoading 
   } = useMealTracking(selectedDogId, nutritionPlan?.id);
 
   const mealSchedule = nutritionPlan?.meal_schedule || [];
   const todayMeals = generateTodayMeals(mealSchedule, mealRecords);
   const todayProgress = getTodayProgress(mealSchedule, mealRecords, nutritionPlan?.daily_amount);
+
+  // Automatically create meal records for today when nutrition plan loads
+  useEffect(() => {
+    if (nutritionPlan?.meal_schedule && selectedDogId && nutritionPlan?.id) {
+      ensureTodayMealRecords(nutritionPlan.meal_schedule);
+    }
+  }, [nutritionPlan?.id, nutritionPlan?.meal_schedule, selectedDogId]);
   
   const handleMarkMealFed = async (meal: TodayMeal) => {
     if (meal.completed && meal.meal_record) {
