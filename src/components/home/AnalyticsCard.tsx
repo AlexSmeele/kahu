@@ -2,12 +2,16 @@ import { Card } from '@/components/ui/card';
 import { TrendingUp, Brain, Sparkles } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
-export const AnalyticsCard = () => {
+interface AnalyticsCardProps {
+  className?: string;
+}
+
+export const AnalyticsCard = ({ className = "" }: AnalyticsCardProps) => {
   const navigate = useNavigate();
 
   return (
     <Card 
-      className="p-4 cursor-pointer hover:shadow-lg transition-shadow bg-gradient-to-br from-primary/10 to-primary/5"
+      className={`p-4 cursor-pointer hover:shadow-lg transition-all hover:scale-[1.02] bg-gradient-to-br from-primary/10 to-primary/5 ${className}`}
       onClick={() => navigate('/analytics')}
     >
       <div className="flex items-center justify-between mb-1.5">

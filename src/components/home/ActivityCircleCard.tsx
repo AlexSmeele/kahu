@@ -3,13 +3,19 @@ import { Activity } from "lucide-react";
 interface ActivityCircleCardProps {
   completedMinutes: number;
   targetMinutes: number;
+  distance?: number;
+  calories?: number;
   onClick: () => void;
+  className?: string;
 }
 
 export function ActivityCircleCard({ 
   completedMinutes, 
   targetMinutes, 
-  onClick
+  distance,
+  calories,
+  onClick,
+  className = ""
 }: ActivityCircleCardProps) {
   const percentage = Math.min((completedMinutes / targetMinutes) * 100, 100);
   const circumference = 2 * Math.PI * 40; // radius = 40
@@ -24,7 +30,7 @@ export function ActivityCircleCard({
   return (
     <button
       onClick={onClick}
-      className="rounded-2xl border bg-card p-3 hover:bg-accent transition-all hover:scale-[1.02] text-left w-full"
+      className={`rounded-2xl border bg-card p-3 hover:bg-accent transition-all hover:scale-[1.02] text-left w-full ${className}`}
     >
       <div className="flex items-center gap-2 mb-2">
         <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
@@ -58,11 +64,35 @@ export function ActivityCircleCard({
             />
           </svg>
           <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <span className="text-2xl font-bold text-foreground">{completedMinutes}</span>
-            <span className="text-xs text-muted-foreground">/ {targetMinutes} min</span>
+            {completedMinutes === 0 ? (
+              <>
+                <span className="text-lg font-bold text-muted-foreground">Start</span>
+                <span className="text-xs text-muted-foreground">today</span>
+              </>
+            ) : (
+              <>
+                <span className="text-2xl font-bold text-foreground">{completedMinutes}</span>
+                <span className="text-xs text-muted-foreground">/ {targetMinutes} min</span>
+              </>
+            )}
           </div>
         </div>
       </div>
+      
+      {((distance && distance > 0) || (calories && calories > 0)) && (
+        <div className="flex items-center justify-center gap-3 mt-1">
+          {distance && distance > 0 && (
+            <div className="text-xs text-muted-foreground">
+              <span className="font-semibold text-foreground">{distance.toFixed(1)}</span> km
+            </div>
+          )}
+          {calories && calories > 0 && (
+            <div className="text-xs text-muted-foreground">
+              <span className="font-semibold text-foreground">{calories}</span> kcal
+            </div>
+          )}
+        </div>
+      )}
     </button>
   );
 }

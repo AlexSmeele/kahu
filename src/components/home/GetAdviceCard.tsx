@@ -6,7 +6,7 @@ export const GetAdviceCard = () => {
   return (
     <button
       onClick={() => navigate('/ai-chat')}
-      className="rounded-2xl border bg-card p-3 hover:bg-accent transition-all hover:scale-[1.02] text-left w-full"
+      className="rounded-2xl border bg-card p-3 hover:bg-accent transition-all hover:scale-[1.02] text-left w-full animate-fade-in [animation-delay:500ms]"
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">

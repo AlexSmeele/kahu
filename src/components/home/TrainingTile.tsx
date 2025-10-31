@@ -4,13 +4,14 @@ interface TrainingTileProps {
   trickName?: string;
   totalSessions?: number;
   onClick: () => void;
+  className?: string;
 }
 
-export function TrainingTile({ trickName, totalSessions, onClick }: TrainingTileProps) {
+export function TrainingTile({ trickName, totalSessions, onClick, className = "" }: TrainingTileProps) {
   return (
     <button
       onClick={onClick}
-      className="rounded-2xl border bg-card p-3 hover:bg-accent transition-all hover:scale-[1.02] text-left w-full"
+      className={`rounded-2xl border bg-card p-3 hover:bg-accent transition-all hover:scale-[1.02] text-left w-full ${className}`}
     >
       <div className="flex items-center gap-2 mb-2">
         <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
@@ -31,9 +32,14 @@ export function TrainingTile({ trickName, totalSessions, onClick }: TrainingTile
               </p>
             </>
           ) : (
-            <p className="text-sm text-muted-foreground">
-              Start your first training session
-            </p>
+            <>
+              <p className="text-sm font-semibold text-foreground mb-1">
+                No tricks in progress
+              </p>
+              <p className="text-xs text-muted-foreground">
+                Tap to choose a trick to learn
+              </p>
+            </>
           )}
         </div>
       </div>
