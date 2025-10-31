@@ -179,8 +179,8 @@ export function TrickDetailModal({
       <DialogContent className="max-w-[min(95vw,900px)] h-[85vh] flex flex-col p-0">
         {/* Header */}
         <DialogHeader className="p-4 pb-3 flex-shrink-0">
-          <div className="flex items-center gap-3">
-            <div className={`w-14 h-14 ${categoryColor} rounded-xl flex items-center justify-center relative flex-shrink-0`}>
+          <div className="flex flex-col items-center text-center">
+            <div className={`w-14 h-14 ${categoryColor} rounded-xl flex items-center justify-center relative flex-shrink-0 mb-3`}>
               <Award className="w-7 h-7 text-white" />
               {isCompleted && (
                 <div className="absolute -top-1 -right-1 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center">
@@ -188,11 +188,11 @@ export function TrickDetailModal({
                 </div>
               )}
             </div>
-            <div className="flex-1 min-w-0">
-              <DialogTitle className="text-xl font-bold text-foreground mb-1.5">
+            <div className="w-full">
+              <DialogTitle className="text-xl font-bold text-foreground mb-2">
                 {trick.name}
               </DialogTitle>
-              <div className="flex items-center gap-2 flex-wrap">
+              <div className="flex items-center gap-2 flex-wrap justify-center">
                 <Badge variant="secondary" className={`${difficultyColor} text-white text-xs`}>
                   Level {trick.difficulty_level} • {getDifficultyLabel(trick.difficulty_level)}
                 </Badge>
@@ -407,7 +407,7 @@ export function TrickDetailModal({
                           <div className="text-xs text-muted-foreground mt-1">Days</div>
                         </div>
                         <div className="text-center p-2 bg-muted/50 rounded-lg">
-                          <div className="text-xl font-bold text-purple-600">
+                          <div className="text-base font-bold text-purple-600">
                             {getDifficultyLabel(trick.difficulty_level)}
                           </div>
                           <div className="text-xs text-muted-foreground mt-1">Level</div>
