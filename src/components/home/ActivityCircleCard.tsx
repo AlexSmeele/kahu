@@ -15,7 +15,7 @@ export function ActivityCircleCard({
   onEditGoal
 }: ActivityCircleCardProps) {
   const percentage = Math.min((completedMinutes / targetMinutes) * 100, 100);
-  const circumference = 2 * Math.PI * 45; // radius = 45
+  const circumference = 2 * Math.PI * 40; // radius = 40
   const strokeDashoffset = circumference - (percentage / 100) * circumference;
 
   const getColor = () => {
@@ -27,9 +27,9 @@ export function ActivityCircleCard({
   return (
     <button
       onClick={onClick}
-      className="rounded-2xl border bg-card p-4 hover:bg-accent transition-all hover:scale-[1.02] text-left w-full"
+      className="rounded-2xl border bg-card p-3 hover:bg-accent transition-all hover:scale-[1.02] text-left w-full"
     >
-      <div className="flex items-center justify-between mb-3">
+      <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
             <Activity className="w-4 h-4 text-primary" />
@@ -51,23 +51,23 @@ export function ActivityCircleCard({
         )}
       </div>
       
-      <div className="flex items-center justify-center my-4">
-        <div className="relative w-28 h-28">
-          <svg className="transform -rotate-90 w-28 h-28">
+      <div className="flex items-center justify-center my-2">
+        <div className="relative w-24 h-24">
+          <svg className="transform -rotate-90 w-24 h-24">
             <circle
-              cx="56"
-              cy="56"
-              r="45"
+              cx="48"
+              cy="48"
+              r="40"
               stroke="hsl(var(--muted))"
-              strokeWidth="8"
+              strokeWidth="7"
               fill="none"
             />
             <circle
-              cx="56"
-              cy="56"
-              r="45"
+              cx="48"
+              cy="48"
+              r="40"
               stroke={getColor()}
-              strokeWidth="8"
+              strokeWidth="7"
               fill="none"
               strokeDasharray={circumference}
               strokeDashoffset={strokeDashoffset}
