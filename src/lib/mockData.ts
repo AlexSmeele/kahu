@@ -655,6 +655,35 @@ export const MOCK_GROOMING_SCHEDULES: any[] = [
     last_completed_at: '2025-10-10T10:00:00Z',
     next_due_date: '2025-10-24',
     notes: 'Use sensitive-skin oatmeal shampoo',
+    how_to_video_url: '',
+    how_to_guide: `**Preparation**
+Gather all necessary supplies: dog shampoo, towels, brush, and treats. Choose a warm, comfortable space for grooming.
+
+**Step 1: Brush First**
+Before bathing, thoroughly brush your dog's coat to remove tangles and loose fur. This makes washing easier and more effective.
+
+**Step 2: Water Temperature**
+Use lukewarm water - not too hot or cold. Test the water on your wrist first to ensure it's comfortable.
+
+**Step 3: Wet the Coat**
+Thoroughly wet your dog's coat, starting from the neck and working backwards. Avoid getting water in their ears and eyes.
+
+**Step 4: Apply Shampoo**
+Apply dog-specific shampoo and work into a lather. Massage gently from head to tail, getting down to the skin.
+
+**Step 5: Rinse Thoroughly**
+Rinse completely until water runs clear. Leftover shampoo can cause skin irritation.
+
+**Step 6: Dry Your Dog**
+Use towels to remove excess water. You can use a pet-safe blow dryer on low heat, keeping it moving and at a safe distance.
+
+**Step 7: Final Brush**
+Once dry, brush again to prevent matting and distribute natural oils through the coat.
+
+**Tips**
+- Use positive reinforcement throughout
+- Keep sessions calm and relaxed
+- Check for any skin issues while grooming`,
     created_at: '2025-09-01T10:00:00Z',
     updated_at: '2025-10-10T10:00:00Z'
   },
@@ -666,6 +695,36 @@ export const MOCK_GROOMING_SCHEDULES: any[] = [
     last_completed_at: '2025-10-05T09:00:00Z',
     next_due_date: '2025-10-26',
     notes: 'Use Dremel tool, she tolerates it better',
+    how_to_video_url: '',
+    how_to_guide: `**Preparation**
+Use proper dog nail clippers (guillotine or scissor style) and have styptic powder ready in case of bleeding.
+
+**Step 1: Get Your Dog Relaxed**
+Choose a calm time when your dog is relaxed. Have treats ready for positive reinforcement.
+
+**Step 2: Handle the Paws**
+Gently hold your dog's paw and massage it. Get them comfortable with you touching their feet.
+
+**Step 3: Identify the Quick**
+On light-colored nails, you can see the pink quick inside. On dark nails, look for a small dark circle in the center of the nail as you trim.
+
+**Step 4: Position the Clipper**
+Hold the clipper at a 45-degree angle to the nail, cutting from top to bottom in a single smooth motion.
+
+**Step 5: Trim Small Amounts**
+Cut just the tip of the nail at first. It's better to trim less and do it more frequently.
+
+**Step 6: Check Your Progress**
+Look at the cut surface. If you see a dark spot in the center, you're getting close to the quick - stop there.
+
+**Step 7: Smooth Sharp Edges**
+Use a nail file or emery board to smooth any sharp edges after trimming.
+
+**Tips**
+- Trim nails every 3-4 weeks
+- If you do cut the quick, apply styptic powder and apply pressure
+- Consider doing one paw at a time if your dog gets anxious
+- Always end with treats and praise`,
     created_at: '2025-09-01T09:00:00Z',
     updated_at: '2025-10-05T09:00:00Z'
   },
@@ -678,34 +737,35 @@ export const MOCK_GROOMING_SCHEDULES: any[] = [
     next_due_date: '2025-10-31',
     notes: 'Use ear cleaning solution',
     how_to_video_url: '',
-    how_to_guide: `**What You'll Need:**
-- Dog-specific ear cleaning solution
-- Cotton balls or gauze pads
-- Treats for positive reinforcement
-- Towel (optional, to catch drips)
+    how_to_guide: `**Preparation**
+Use a vet-approved ear cleaning solution and cotton balls or gauze. Never use cotton swabs inside the ear canal.
 
-**Step 1: Prepare Your Dog**
-Find a calm, quiet space and have your dog sit or lie down comfortably. Give them a treat to create a positive association.
+**Step 1: Inspect the Ears**
+Check for redness, swelling, discharge, or foul odor. If present, consult your vet before cleaning.
 
-**Step 2: Inspect the Ears**
-Gently lift the ear flap and look inside. Check for redness, swelling, discharge, or unusual odor. If you notice any of these signs, consult your vet before cleaning.
+**Step 2: Position Your Dog**
+Have your dog sit or lie in a comfortable position where you can easily access their ears.
 
-**Step 3: Apply Cleaning Solution**
-Fill the ear canal with the cleaning solution (don't worry, you can't overfill it). Hold the ear flap up and gently massage the base of the ear for 20-30 seconds. You should hear a squishing sound.
+**Step 3: Apply Ear Cleaner**
+Fill the ear canal with the cleaning solution as directed on the bottle. Don't be shy - it's designed to be used generously.
 
-**Step 4: Let Your Dog Shake**
-Step back and let your dog shake their head. This helps bring debris and wax up to the outer ear where it's easier to wipe away.
+**Step 4: Massage the Base**
+Gently massage the base of the ear for 20-30 seconds. You should hear a squishing sound.
 
-**Step 5: Wipe Clean**
-Use cotton balls or gauze pads to gently wipe out the ear canal and inner ear flap. Never push deep into the ear canal—only clean what you can see.
+**Step 5: Let Your Dog Shake**
+Step back and let your dog shake their head. This helps bring debris up and out of the ear canal.
 
-**Step 6: Reward**
-Give your dog lots of praise and treats! Repeat on the other ear if needed.
+**Step 6: Wipe Away Debris**
+Use cotton balls or gauze to gently wipe away the loosened debris from the outer ear and ear flap. Never push into the ear canal.
 
-**Important Tips:**
-- Never use cotton swabs (Q-tips) deep in the ear canal
-- If ears are very dirty or your dog seems uncomfortable, see your vet
-- Some dogs need weekly cleaning, others monthly—follow your vet's advice`,
+**Step 7: Dry the Outer Ear**
+Gently dry the visible part of the ear with a clean, dry cotton ball.
+
+**Tips**
+- Clean ears after swimming or bathing
+- Don't over-clean - once a week is usually sufficient for most dogs
+- Watch for signs of ear infections between cleanings
+- Some breeds with floppy ears may need more frequent cleaning`,
     created_at: '2025-09-01T14:00:00Z',
     updated_at: '2025-10-01T14:00:00Z'
   },
@@ -717,6 +777,36 @@ Give your dog lots of praise and treats! Repeat on the other ear if needed.
     last_completed_at: '2025-10-20T08:00:00Z',
     next_due_date: '2025-10-23',
     notes: 'Soft bristle brush, he loves it!',
+    how_to_video_url: '',
+    how_to_guide: `**Preparation**
+Choose the right brush for your dog's coat type (slicker, bristle, or pin brush). Have treats ready for positive reinforcement.
+
+**Step 1: Start When Relaxed**
+Choose a time when your dog is calm and relaxed. Create a comfortable space for grooming.
+
+**Step 2: Begin Gently**
+Start with gentle strokes in the direction of hair growth. Begin at areas your dog enjoys being touched.
+
+**Step 3: Work Systematically**
+Brush in sections, starting from the head and working towards the tail. Don't forget the legs, chest, and belly.
+
+**Step 4: Check for Tangles**
+Feel for mats or tangles with your fingers. Work through them gently with the brush or a detangling comb.
+
+**Step 5: Pay Attention to Problem Areas**
+Focus on areas prone to matting: behind ears, under legs, and around the collar area.
+
+**Step 6: Brush Against the Grain**
+For thick coats, occasionally brush against hair growth to remove loose undercoat, then smooth down again.
+
+**Step 7: Finish Smoothly**
+End with smooth, long strokes in the direction of hair growth to give a polished look.
+
+**Tips**
+- Brush before bathing to prevent mats from tightening
+- Regular brushing reduces shedding and distributes natural oils
+- Make it a bonding experience with praise and treats
+- Check for skin issues, ticks, or lumps while brushing`,
     created_at: '2025-10-01T08:00:00Z',
     updated_at: '2025-10-20T08:00:00Z'
   },
@@ -728,6 +818,35 @@ Give your dog lots of praise and treats! Repeat on the other ear if needed.
     last_completed_at: '2025-10-15T13:00:00Z',
     next_due_date: '2025-10-25',
     notes: 'Puppy shampoo, warm water',
+    how_to_video_url: '',
+    how_to_guide: `**Preparation**
+Gather all necessary supplies: dog shampoo, towels, brush, and treats. Choose a warm, comfortable space for grooming.
+
+**Step 1: Brush First**
+Before bathing, thoroughly brush your dog's coat to remove tangles and loose fur. This makes washing easier and more effective.
+
+**Step 2: Water Temperature**
+Use lukewarm water - not too hot or cold. Test the water on your wrist first to ensure it's comfortable.
+
+**Step 3: Wet the Coat**
+Thoroughly wet your dog's coat, starting from the neck and working backwards. Avoid getting water in their ears and eyes.
+
+**Step 4: Apply Shampoo**
+Apply dog-specific shampoo and work into a lather. Massage gently from head to tail, getting down to the skin.
+
+**Step 5: Rinse Thoroughly**
+Rinse completely until water runs clear. Leftover shampoo can cause skin irritation.
+
+**Step 6: Dry Your Dog**
+Use towels to remove excess water. You can use a pet-safe blow dryer on low heat, keeping it moving and at a safe distance.
+
+**Step 7: Final Brush**
+Once dry, brush again to prevent matting and distribute natural oils through the coat.
+
+**Tips**
+- Use positive reinforcement throughout
+- Keep sessions calm and relaxed
+- Check for any skin issues while grooming`,
     created_at: '2025-10-01T13:00:00Z',
     updated_at: '2025-10-15T13:00:00Z'
   },
@@ -739,6 +858,36 @@ Give your dog lots of praise and treats! Repeat on the other ear if needed.
     last_completed_at: '2025-10-12T10:00:00Z',
     next_due_date: '2025-10-26',
     notes: 'Getting better with patience',
+    how_to_video_url: '',
+    how_to_guide: `**Preparation**
+Use proper dog nail clippers (guillotine or scissor style) and have styptic powder ready in case of bleeding.
+
+**Step 1: Get Your Dog Relaxed**
+Choose a calm time when your dog is relaxed. Have treats ready for positive reinforcement.
+
+**Step 2: Handle the Paws**
+Gently hold your dog's paw and massage it. Get them comfortable with you touching their feet.
+
+**Step 3: Identify the Quick**
+On light-colored nails, you can see the pink quick inside. On dark nails, look for a small dark circle in the center of the nail as you trim.
+
+**Step 4: Position the Clipper**
+Hold the clipper at a 45-degree angle to the nail, cutting from top to bottom in a single smooth motion.
+
+**Step 5: Trim Small Amounts**
+Cut just the tip of the nail at first. It's better to trim less and do it more frequently.
+
+**Step 6: Check Your Progress**
+Look at the cut surface. If you see a dark spot in the center, you're getting close to the quick - stop there.
+
+**Step 7: Smooth Sharp Edges**
+Use a nail file or emery board to smooth any sharp edges after trimming.
+
+**Tips**
+- Trim nails every 3-4 weeks
+- If you do cut the quick, apply styptic powder and apply pressure
+- Consider doing one paw at a time if your dog gets anxious
+- Always end with treats and praise`,
     created_at: '2025-10-01T10:00:00Z',
     updated_at: '2025-10-12T10:00:00Z'
   }
