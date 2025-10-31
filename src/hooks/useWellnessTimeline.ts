@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useHealthData } from "./useHealthData";
 import { useActivity } from "./useActivity";
 import { useMealTracking } from "./useMealTracking";
@@ -396,10 +396,53 @@ export function useWellnessTimeline(dogId: string) {
     showFullTimeline
   ]);
 
+  const urgentAlerts = useMemo(() => {
+    const alerts: Array<{ type: string; title: string; description: string }> = [];
+    const now = new Date();
+    
+    // Filter only overdue events
+    const overdueEvents = timelineData
+      .flatMap(day => day.events)
+      .filter(event => event.status === 'overdue');
+    
+    // Transform to alert format
+    overdueEvents.forEach(event => {
+      const daysOverdue = Math.floor((now.getTime() - event.timestamp.getTime()) / (1000 * 60 * 60 * 24));
+      
+      alerts.push({
+        type: event.type,
+        title: event.title,
+        description: daysOverdue === 0 ? 'Due today' : `${daysOverdue} days overdue`
+      });
+    });
+    
+    // Sort by priority (vaccination/treatment > grooming > checkup > meal)
+    const priorityOrder: Record<string, number> = {
+      vaccination: 0,
+      treatment: 1,
+      grooming: 2,
+      checkup: 3,
+      meal: 4
+    };
+    
+    return alerts.sort((a, b) => {
+      const priorityDiff = (priorityOrder[a.type] || 99) - (priorityOrder[b.type] || 99);
+      if (priorityDiff !== 0) return priorityDiff;
+      
+      // If same priority, sort by days overdue (most overdue first)
+      const aMatch = a.description.match(/(\d+) days overdue/);
+      const bMatch = b.description.match(/(\d+) days overdue/);
+      const aDays = aMatch ? parseInt(aMatch[1]) : 0;
+      const bDays = bMatch ? parseInt(bMatch[1]) : 0;
+      return bDays - aDays;
+    });
+  }, [timelineData]);
+
   return {
     timelineData,
     loading,
     showFullTimeline,
     setShowFullTimeline,
+    urgentAlerts,
   };
 }

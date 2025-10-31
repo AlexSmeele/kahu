@@ -13,6 +13,7 @@ import { QuickNoteModal } from "@/components/home/QuickNoteModal";
 import { EditActivityGoalModal } from "@/components/home/EditActivityGoalModal";
 import { useHomeData } from "@/hooks/useHomeData";
 import { useActivity } from "@/hooks/useActivity";
+import { useWellnessTimeline } from "@/hooks/useWellnessTimeline";
 import { Skeleton } from "@/components/ui/skeleton";
 import { User } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -40,6 +41,7 @@ export function HomeScreen({ selectedDogId, onDogChange, onTabChange }: HomeScre
   } = useHomeData(selectedDogId);
 
   const { updateGoal } = useActivity(selectedDogId);
+  const { urgentAlerts } = useWellnessTimeline(selectedDogId);
 
   const handleUpdateGoal = async (targetMinutes: number) => {
     return await updateGoal({ target_minutes: targetMinutes });
@@ -51,8 +53,6 @@ export function HomeScreen({ selectedDogId, onDogChange, onTabChange }: HomeScre
     if (hour < 18) return 'Good afternoon';
     return 'Good evening';
   };
-
-  const urgentAlerts = healthAlerts.filter(a => a.priority === 'high').slice(0, 1);
 
   return (
     <>
