@@ -774,6 +774,66 @@ export type Database = {
           },
         ]
       }
+      food_inventory: {
+        Row: {
+          alert_enabled: boolean | null
+          batch_lot_number: string | null
+          brand: string | null
+          created_at: string
+          dog_id: string
+          expiration_date: string | null
+          food_name: string
+          food_type: string
+          id: string
+          low_stock_alert_threshold: number | null
+          opened_date: string | null
+          purchase_cost: number | null
+          purchase_date: string | null
+          quantity_remaining: number
+          storage_location: string | null
+          unit: string
+          updated_at: string
+        }
+        Insert: {
+          alert_enabled?: boolean | null
+          batch_lot_number?: string | null
+          brand?: string | null
+          created_at?: string
+          dog_id: string
+          expiration_date?: string | null
+          food_name: string
+          food_type: string
+          id?: string
+          low_stock_alert_threshold?: number | null
+          opened_date?: string | null
+          purchase_cost?: number | null
+          purchase_date?: string | null
+          quantity_remaining?: number
+          storage_location?: string | null
+          unit?: string
+          updated_at?: string
+        }
+        Update: {
+          alert_enabled?: boolean | null
+          batch_lot_number?: string | null
+          brand?: string | null
+          created_at?: string
+          dog_id?: string
+          expiration_date?: string | null
+          food_name?: string
+          food_type?: string
+          id?: string
+          low_stock_alert_threshold?: number | null
+          opened_date?: string | null
+          purchase_cost?: number | null
+          purchase_date?: string | null
+          quantity_remaining?: number
+          storage_location?: string | null
+          unit?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       grooming_completions: {
         Row: {
           completed_at: string

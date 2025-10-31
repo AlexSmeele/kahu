@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Apple, Calendar, TrendingUp, Clock, Edit2, Plus, Bell } from "lucide-react";
+import { Apple, Calendar, TrendingUp, Clock, Edit2, Plus, Bell, Package } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useDogs, calculateAge } from "@/hooks/useDogs";
@@ -12,6 +12,8 @@ import { MultiMealPlanModal } from "@/components/nutrition/MultiMealPlanModal";
 import { WeekPlannerModal } from "@/components/nutrition/WeekPlannerModal";
 import { BowlCleaningCard } from "@/components/nutrition/BowlCleaningCard";
 import { TreatTrackerCard } from "@/components/nutrition/TreatTrackerCard";
+import { FoodInventoryDrawer } from "@/components/nutrition/FoodInventoryDrawer";
+import { Card } from "@/components/ui/card";
 
 
 // This function is now handled by useMealTracking hook
@@ -23,6 +25,7 @@ interface NutritionScreenProps {
 
 export function NutritionScreen({ selectedDogId, onDogChange }: NutritionScreenProps) {
   const [isWeekPlannerOpen, setIsWeekPlannerOpen] = useState(false);
+  const [isInventoryOpen, setIsInventoryOpen] = useState(false);
   const { dogs } = useDogs();
   const currentDog = dogs.find(dog => dog.id === selectedDogId) || dogs[0];
   const { 
@@ -273,6 +276,22 @@ export function NutritionScreen({ selectedDogId, onDogChange }: NutritionScreenP
                 />
               </div>
 
+              {/* Food Inventory Card */}
+              <Card className="mt-6 p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-2">
+                    <Package className="h-5 w-5 text-primary" />
+                    <h3 className="font-semibold">Food Inventory</h3>
+                  </div>
+                  <Button onClick={() => setIsInventoryOpen(true)} variant="outline" size="sm">
+                    Manage Inventory
+                  </Button>
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  Track food quantities, expiration dates, and get alerts when running low.
+                </p>
+              </Card>
+
               {/* Diet Tips */}
               <div className="mt-6 card-soft p-4 bg-gradient-to-r from-primary/5 to-primary/10">
                 <h4 className="font-semibold text-foreground mb-2 flex items-center gap-2">
@@ -301,6 +320,12 @@ export function NutritionScreen({ selectedDogId, onDogChange }: NutritionScreenP
         isOpen={isWeekPlannerOpen}
         onClose={() => setIsWeekPlannerOpen(false)}
         dogName={currentDog?.name || 'Your Dog'}
+      />
+
+      <FoodInventoryDrawer
+        open={isInventoryOpen}
+        onOpenChange={setIsInventoryOpen}
+        dogId={selectedDogId}
       />
     </div>
   );
