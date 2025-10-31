@@ -397,17 +397,17 @@ export function TrickDetailModal({
                       
                       <div className="grid grid-cols-3 gap-3 pt-2">
                         <div className="text-center p-2 bg-muted/50 rounded-lg">
-                          <div className="text-xl font-bold text-blue-600">{dogTrick.total_sessions}</div>
+                          <div className="text-lg font-bold text-blue-600">{dogTrick.total_sessions}</div>
                           <div className="text-xs text-muted-foreground mt-1">Sessions</div>
                         </div>
                         <div className="text-center p-2 bg-muted/50 rounded-lg">
-                          <div className="text-xl font-bold text-green-600">
+                          <div className="text-lg font-bold text-green-600">
                             {dogTrick.started_at ? Math.ceil((new Date().getTime() - new Date(dogTrick.started_at).getTime()) / (1000 * 60 * 60 * 24)) : 0}
                           </div>
                           <div className="text-xs text-muted-foreground mt-1">Days</div>
                         </div>
                         <div className="text-center p-2 bg-muted/50 rounded-lg">
-                          <div className="text-xs font-bold text-purple-600">
+                          <div className="text-lg font-bold text-purple-600 leading-tight">
                             {getDifficultyLabel(trick.difficulty_level)}
                           </div>
                           <div className="text-xs text-muted-foreground mt-1">Level</div>
