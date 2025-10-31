@@ -250,7 +250,7 @@ export function ProfileScreen() {
                         <h4 className="font-medium text-foreground">{dog.name}</h4>
                         <p className="text-sm text-muted-foreground">
                           {[
-                            dog.breed,
+                            dog.breed?.breed,
                             dog.birthday && calculateAge(dog.birthday),
                             dog.weight && `${dog.weight}kg`
                           ].filter(Boolean).join(' • ')}
