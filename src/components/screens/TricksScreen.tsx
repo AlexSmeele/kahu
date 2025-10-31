@@ -360,27 +360,27 @@ export function TricksScreen({ selectedDogId, onDogChange }: TricksScreenProps) 
         {/* Training Program Content */}
         {selectedSection === 'program' && (
           <div className="p-4 space-y-4">
-            <div className="bg-card rounded-2xl p-6 border-2 border-primary/20">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-primary to-primary-hover rounded-xl flex items-center justify-center">
-                  <Trophy className="w-6 h-6 text-white" />
+            <div className="bg-card rounded-xl p-3 border border-primary/20">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 bg-gradient-to-br from-primary to-primary-hover rounded-lg flex items-center justify-center flex-shrink-0">
+                  <Trophy className="w-4 h-4 text-white" />
                 </div>
-                <div className="flex-1">
-                  <h2 className="text-xl font-bold">Training Program</h2>
-                  <p className="text-sm text-muted-foreground">Structured learning path</p>
+                <div className="flex-1 min-w-0">
+                  <h2 className="text-base font-bold leading-tight">Training Program</h2>
+                  <p className="text-xs text-muted-foreground">Structured learning path</p>
                 </div>
                 <Button
                   variant="ghost"
                   size="sm"
                   onClick={() => setExpandedSections(prev => ({ ...prev, program: !prev.program }))}
-                  className="flex items-center gap-1"
+                  className="flex items-center gap-0.5 h-auto py-1 px-2 flex-shrink-0"
                 >
-                  <span className="text-sm">{expandedSections.program ? 'See less' : 'See more'}</span>
-                  {expandedSections.program ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                  <span className="text-xs">{expandedSections.program ? 'Less' : 'More'}</span>
+                  {expandedSections.program ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
                 </Button>
               </div>
               {expandedSections.program && (
-                <p className="text-muted-foreground">
+                <p className="text-xs text-muted-foreground mt-2 pl-10">
                   Your personalized training program will appear here. This section will guide you through a structured curriculum tailored to your dog's level and needs.
                 </p>
               )}
@@ -392,27 +392,27 @@ export function TricksScreen({ selectedDogId, onDogChange }: TricksScreenProps) 
         {selectedSection === 'skills' && (
           <div className="p-4 space-y-6 pb-8">
             {/* Skills Description Header */}
-            <div className="bg-card rounded-2xl p-6 border-2 border-primary/20">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-primary to-primary-hover rounded-xl flex items-center justify-center">
-                  <Award className="w-6 h-6 text-white" />
+            <div className="bg-card rounded-xl p-3 border border-primary/20">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 bg-gradient-to-br from-primary to-primary-hover rounded-lg flex items-center justify-center flex-shrink-0">
+                  <Award className="w-4 h-4 text-white" />
                 </div>
-                <div className="flex-1">
-                  <h2 className="text-xl font-bold">Skills Library</h2>
-                  <p className="text-sm text-muted-foreground">Browse all available tricks</p>
+                <div className="flex-1 min-w-0">
+                  <h2 className="text-base font-bold leading-tight">Skills Library</h2>
+                  <p className="text-xs text-muted-foreground">Browse all available tricks</p>
                 </div>
                 <Button
                   variant="ghost"
                   size="sm"
                   onClick={() => setExpandedSections(prev => ({ ...prev, skills: !prev.skills }))}
-                  className="flex items-center gap-1"
+                  className="flex items-center gap-0.5 h-auto py-1 px-2 flex-shrink-0"
                 >
-                  <span className="text-sm">{expandedSections.skills ? 'See less' : 'See more'}</span>
-                  {expandedSections.skills ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                  <span className="text-xs">{expandedSections.skills ? 'Less' : 'More'}</span>
+                  {expandedSections.skills ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
                 </Button>
               </div>
               {expandedSections.skills && (
-                <p className="text-muted-foreground">
+                <p className="text-xs text-muted-foreground mt-2 pl-10">
                   Explore our complete collection of tricks organized by difficulty level. Start with beginner tricks to build foundation skills, then progress to more advanced techniques as you and your dog master the basics.
                 </p>
               )}
@@ -465,27 +465,27 @@ export function TricksScreen({ selectedDogId, onDogChange }: TricksScreenProps) 
         {/* Foundations Content */}
         {selectedSection === 'foundations' && (
           <div className="p-4 space-y-4">
-            <div className="bg-card rounded-2xl p-6 border-2 border-emerald-500/20">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl flex items-center justify-center">
-                  <GraduationCap className="w-6 h-6 text-white" />
+            <div className="bg-card rounded-xl p-3 border border-emerald-500/30">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <GraduationCap className="w-4 h-4 text-white" />
                 </div>
-                <div className="flex-1">
-                  <h2 className="text-xl font-bold">Foundations</h2>
-                  <p className="text-sm text-muted-foreground">Core training principles</p>
+                <div className="flex-1 min-w-0">
+                  <h2 className="text-base font-bold leading-tight">Foundations</h2>
+                  <p className="text-xs text-muted-foreground">Core training principles</p>
                 </div>
                 <Button
                   variant="ghost"
                   size="sm"
                   onClick={() => setExpandedSections(prev => ({ ...prev, foundations: !prev.foundations }))}
-                  className="flex items-center gap-1"
+                  className="flex items-center gap-0.5 h-auto py-1 px-2 flex-shrink-0"
                 >
-                  <span className="text-sm">{expandedSections.foundations ? 'See less' : 'See more'}</span>
-                  {expandedSections.foundations ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                  <span className="text-xs">{expandedSections.foundations ? 'Less' : 'More'}</span>
+                  {expandedSections.foundations ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
                 </Button>
               </div>
               {expandedSections.foundations && (
-                <p className="text-muted-foreground">
+                <p className="text-xs text-muted-foreground mt-2 pl-10">
                   Learn the fundamental principles of dog training. This section covers essential concepts, techniques, and building blocks for successful training.
                 </p>
               )}
@@ -497,27 +497,27 @@ export function TricksScreen({ selectedDogId, onDogChange }: TricksScreenProps) 
         {selectedSection === 'troubleshooting' && (
           <div className="p-4 space-y-6 pb-8">
             {/* Troubleshooting Description Header */}
-            <div className="bg-card rounded-2xl p-6 border-2 border-orange-500/20">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl flex items-center justify-center">
-                  <AlertCircle className="w-6 h-6 text-white" />
+            <div className="bg-card rounded-xl p-3 border border-orange-500/30">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 bg-gradient-to-br from-orange-500 to-orange-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <AlertCircle className="w-4 h-4 text-white" />
                 </div>
-                <div className="flex-1">
-                  <h2 className="text-xl font-bold">Troubleshooting</h2>
-                  <p className="text-sm text-muted-foreground">Solve common behavior issues</p>
+                <div className="flex-1 min-w-0">
+                  <h2 className="text-base font-bold leading-tight">Troubleshooting</h2>
+                  <p className="text-xs text-muted-foreground">Solve common behavior issues</p>
                 </div>
                 <Button
                   variant="ghost"
                   size="sm"
                   onClick={() => setExpandedSections(prev => ({ ...prev, troubleshooting: !prev.troubleshooting }))}
-                  className="flex items-center gap-1"
+                  className="flex items-center gap-0.5 h-auto py-1 px-2 flex-shrink-0"
                 >
-                  <span className="text-sm">{expandedSections.troubleshooting ? 'See less' : 'See more'}</span>
-                  {expandedSections.troubleshooting ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                  <span className="text-xs">{expandedSections.troubleshooting ? 'Less' : 'More'}</span>
+                  {expandedSections.troubleshooting ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
                 </Button>
               </div>
               {expandedSections.troubleshooting && (
-                <p className="text-muted-foreground">
+                <p className="text-xs text-muted-foreground mt-2 pl-10">
                   Address common behavioral challenges with proven training techniques. Each lesson provides step-by-step guidance to help you understand and modify problem behaviors effectively and humanely.
                 </p>
               )}
