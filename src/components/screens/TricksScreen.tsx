@@ -40,37 +40,13 @@ const difficultyRanges = {
   'Expert': { min: 7, max: 10, color: 'bg-red-500', textColor: 'text-red-700' }
 };
 
-function TrickCard({ trick, dogTrick, onStart, onPractice, onTrickClick, isLocked }: any) {
+function TrickCard({ trick, dogTrick, onStart, onPractice, onTrickClick, hasUnmetPrerequisites, unmetPrerequisites }: any) {
   const isCompleted = dogTrick?.status === 'mastered';
   const isInProgress = dogTrick && dogTrick.status !== 'not_started' && !isCompleted;
   const progress = isCompleted ? 100 : isInProgress ? Math.min((dogTrick.total_sessions / 10) * 100, 80) : 0;
   
   const CategoryIcon = categoryIcons[trick.category as keyof typeof categoryIcons] || Award;
   const categoryColor = categoryColors[trick.category as keyof typeof categoryColors] || 'bg-gray-500';
-
-  if (isLocked) {
-    return (
-      <div className="relative bg-muted/50 rounded-2xl p-4 border-2 border-muted">
-        <div className="absolute inset-0 bg-background/80 rounded-2xl flex items-center justify-center">
-          <div className="text-center">
-            <Lock className="w-8 h-8 mx-auto mb-2 text-muted-foreground" />
-            <p className="text-sm text-muted-foreground font-medium">Locked</p>
-          </div>
-        </div>
-        <div className="opacity-30">
-          <div className="flex items-center gap-3 mb-3">
-            <div className={`w-12 h-12 ${categoryColor} rounded-xl flex items-center justify-center`}>
-              <CategoryIcon className="w-6 h-6 text-white" />
-            </div>
-            <div className="flex-1">
-              <h3 className="font-bold text-lg text-foreground">{trick.name}</h3>
-              <p className="text-sm text-muted-foreground">Level {trick.difficulty_level} • {trick.category}</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div 
@@ -108,6 +84,21 @@ function TrickCard({ trick, dogTrick, onStart, onPractice, onTrickClick, isLocke
       </div>
 
       <p className="text-sm text-muted-foreground mb-3 line-clamp-2">{trick.description}</p>
+
+      {/* Prerequisites Warning */}
+      {hasUnmetPrerequisites && (
+        <div className="mb-3 p-3 bg-amber-50 dark:bg-amber-950/20 border border-amber-300 dark:border-amber-700 rounded-lg">
+          <div className="flex items-start gap-2">
+            <AlertCircle className="w-4 h-4 text-amber-600 dark:text-amber-400 mt-0.5 flex-shrink-0" />
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-medium text-amber-800 dark:text-amber-300 mb-1">Prerequisites Required</p>
+              <p className="text-xs text-amber-700 dark:text-amber-400">
+                Master these skills first: {unmetPrerequisites.join(', ')}
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Progress Bar */}
       {(isInProgress || isCompleted) && (
@@ -222,14 +213,14 @@ export function TricksScreen({ selectedDogId, onDogChange }: TricksScreenProps) 
     tricks: tricks.filter(t => t.difficulty_level >= range.min && t.difficulty_level <= range.max)
   }));
 
-  // Check if prerequisites are met
-  const isUnlocked = (trick: any) => {
-    if (!trick.prerequisites || trick.prerequisites.length === 0) return true;
-    return trick.prerequisites.every((prereq: string) => {
+  // Check for unmet prerequisites
+  const getUnmetPrerequisites = (trick: any) => {
+    if (!trick.prerequisites || trick.prerequisites.length === 0) return [];
+    return trick.prerequisites.filter((prereq: string) => {
       const prereqTrick = tricks.find(t => t.name === prereq);
       if (!prereqTrick) return false;
       const prereqDogTrick = learnedTricksMap.get(prereqTrick.id);
-      return prereqDogTrick?.status === 'mastered';
+      return prereqDogTrick?.status !== 'mastered';
     });
   };
 
@@ -444,17 +435,21 @@ export function TricksScreen({ selectedDogId, onDogChange }: TricksScreenProps) 
 
                   {/* Tricks Grid */}
                   <div className="grid gap-4">
-                    {levelTricks.map((trick) => (
-                      <TrickCard
-                        key={trick.id}
-                        trick={trick}
-                        dogTrick={learnedTricksMap.get(trick.id)}
-                        onStart={handleStart}
-                        onPractice={handlePractice}
-                        onTrickClick={handleTrickClick}
-                        isLocked={!isUnlocked(trick)}
-                      />
-                    ))}
+                  {levelTricks.map((trick) => {
+                      const unmetPrereqs = getUnmetPrerequisites(trick);
+                      return (
+                        <TrickCard
+                          key={trick.id}
+                          trick={trick}
+                          dogTrick={learnedTricksMap.get(trick.id)}
+                          onStart={handleStart}
+                          onPractice={handlePractice}
+                          onTrickClick={handleTrickClick}
+                          hasUnmetPrerequisites={unmetPrereqs.length > 0}
+                          unmetPrerequisites={unmetPrereqs}
+                        />
+                      );
+                    })}
                   </div>
                 </div>
               );
