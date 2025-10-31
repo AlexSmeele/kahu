@@ -10,6 +10,7 @@ import { useMealTracking, TodayMeal } from "@/hooks/useMealTracking";
 import { MealPlanModal } from "@/components/nutrition/MealPlanModal";
 import { MultiMealPlanModal } from "@/components/nutrition/MultiMealPlanModal";
 import { WeekPlannerModal } from "@/components/nutrition/WeekPlannerModal";
+import { BowlCleaningCard } from "@/components/nutrition/BowlCleaningCard";
 
 
 // This function is now handled by useMealTracking hook
@@ -23,7 +24,12 @@ export function NutritionScreen({ selectedDogId, onDogChange }: NutritionScreenP
   const [isWeekPlannerOpen, setIsWeekPlannerOpen] = useState(false);
   const { dogs } = useDogs();
   const currentDog = dogs.find(dog => dog.id === selectedDogId) || dogs[0];
-  const { nutritionPlan, loading } = useNutrition(selectedDogId);
+  const { 
+    nutritionPlan, 
+    loading, 
+    markFoodBowlCleaned, 
+    markWaterBowlCleaned 
+  } = useNutrition(selectedDogId);
   
   const { 
     mealRecords, 
@@ -241,6 +247,13 @@ export function NutritionScreen({ selectedDogId, onDogChange }: NutritionScreenP
                   </div>
                 ))}
               </div>
+
+              {/* Bowl Cleaning Card */}
+              <BowlCleaningCard 
+                nutritionPlan={nutritionPlan}
+                onMarkFoodBowlCleaned={markFoodBowlCleaned}
+                onMarkWaterBowlCleaned={markWaterBowlCleaned}
+              />
 
               {/* Diet Tips */}
               <div className="mt-6 card-soft p-4 bg-gradient-to-r from-primary/5 to-primary/10">

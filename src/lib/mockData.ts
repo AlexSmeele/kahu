@@ -217,6 +217,8 @@ export const MOCK_NUTRITION_PLANS = [
       },
     ],
     special_instructions: 'Raw Food: Large meat cube or puck; Raw Food: Small tripe cubes',
+    bowl_last_cleaned: new Date(Date.now() - 5 * 60 * 60 * 1000).toISOString(), // 5 hours ago
+    water_bowl_last_cleaned: new Date(Date.now() - 18 * 60 * 60 * 1000).toISOString(), // 18 hours ago
     is_active: true,
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),
@@ -246,6 +248,8 @@ export const MOCK_NUTRITION_PLANS = [
       },
     ],
     special_instructions: 'High-protein puppy formula for growth. Add warm water to soften.',
+    bowl_last_cleaned: new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString(), // 3 hours ago
+    water_bowl_last_cleaned: new Date(Date.now() - 12 * 60 * 60 * 1000).toISOString(), // 12 hours ago
     is_active: true,
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),

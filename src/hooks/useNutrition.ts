@@ -14,6 +14,8 @@ export interface NutritionPlan {
   meal_schedule?: any;
   is_active: boolean;
   special_instructions?: string;
+  bowl_last_cleaned?: string;
+  water_bowl_last_cleaned?: string;
   created_at: string;
   updated_at: string;
 }
@@ -135,6 +137,64 @@ export function useNutrition(dogId?: string) {
     }
   };
 
+  const markFoodBowlCleaned = async () => {
+    if (!nutritionPlan?.id) return null;
+
+    try {
+      const { data, error } = await supabase
+        .from('nutrition_plans')
+        .update({ bowl_last_cleaned: new Date().toISOString() })
+        .eq('id', nutritionPlan.id)
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      setNutritionPlan(data as NutritionPlan);
+      toast({
+        title: 'Food bowl marked as cleaned!',
+      });
+
+      return data;
+    } catch (error) {
+      console.error('Error marking food bowl cleaned:', error);
+      toast({
+        title: 'Error updating bowl status',
+        variant: 'destructive',
+      });
+      return null;
+    }
+  };
+
+  const markWaterBowlCleaned = async () => {
+    if (!nutritionPlan?.id) return null;
+
+    try {
+      const { data, error } = await supabase
+        .from('nutrition_plans')
+        .update({ water_bowl_last_cleaned: new Date().toISOString() })
+        .eq('id', nutritionPlan.id)
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      setNutritionPlan(data as NutritionPlan);
+      toast({
+        title: 'Water bowl marked as cleaned!',
+      });
+
+      return data;
+    } catch (error) {
+      console.error('Error marking water bowl cleaned:', error);
+      toast({
+        title: 'Error updating bowl status',
+        variant: 'destructive',
+      });
+      return null;
+    }
+  };
+
   useEffect(() => {
     fetchNutritionPlan();
   }, [user, dogId]);
@@ -144,6 +204,8 @@ export function useNutrition(dogId?: string) {
     loading,
     createNutritionPlan,
     updateNutritionPlan,
+    markFoodBowlCleaned,
+    markWaterBowlCleaned,
     refetch: fetchNutritionPlan,
   };
 }

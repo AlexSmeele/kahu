@@ -1236,6 +1236,7 @@ export type Database = {
           meal_schedule: Json | null
           special_instructions: string | null
           updated_at: string
+          water_bowl_last_cleaned: string | null
         }
         Insert: {
           batch_lot_number?: string | null
@@ -1257,6 +1258,7 @@ export type Database = {
           meal_schedule?: Json | null
           special_instructions?: string | null
           updated_at?: string
+          water_bowl_last_cleaned?: string | null
         }
         Update: {
           batch_lot_number?: string | null
@@ -1278,6 +1280,7 @@ export type Database = {
           meal_schedule?: Json | null
           special_instructions?: string | null
           updated_at?: string
+          water_bowl_last_cleaned?: string | null
         }
         Relationships: [
           {

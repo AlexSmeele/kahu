@@ -6,6 +6,7 @@ import { useGroomingSchedule } from './useGroomingSchedule';
 import { useHealthCheckups } from './useHealthCheckups';
 import { useVaccines } from './useVaccines';
 import { useMedicalTreatments } from './useMedicalTreatments';
+import { useNutrition } from './useNutrition';
 
 export interface HealthAlert {
   id: string;
@@ -32,8 +33,9 @@ export const useHomeData = (dogId: string) => {
   const { checkups, loading: checkupsLoading } = useHealthCheckups(dogId);
   const { vaccinationRecords, loading: vaccinesLoading } = useVaccines(dogId);
   const { treatments, loading: treatmentsLoading } = useMedicalTreatments(dogId);
+  const { nutritionPlan, loading: nutritionLoading } = useNutrition(dogId);
 
-  const loading = healthLoading || activityLoading || tricksLoading || groomingLoading || checkupsLoading || vaccinesLoading || treatmentsLoading;
+  const loading = healthLoading || activityLoading || tricksLoading || groomingLoading || checkupsLoading || vaccinesLoading || treatmentsLoading || nutritionLoading;
 
   // Get next trick to practice
   const nextTrick = useMemo(() => {
@@ -152,6 +154,51 @@ export const useHomeData = (dogId: string) => {
       }
     });
 
+    // Check bowl cleaning status
+    if (nutritionPlan) {
+      const now = new Date();
+      
+      // Water bowl check
+      if (nutritionPlan.water_bowl_last_cleaned) {
+        const waterBowlLastCleaned = new Date(nutritionPlan.water_bowl_last_cleaned);
+        const hoursSince = (now.getTime() - waterBowlLastCleaned.getTime()) / (1000 * 60 * 60);
+        
+        if (hoursSince > 48) {
+          alerts.push({
+            id: 'water-bowl-overdue',
+            type: 'grooming',
+            title: 'Water Bowl Needs Cleaning',
+            description: `Last cleaned ${Math.floor(hoursSince / 24)} days ago`,
+            priority: 'high',
+          });
+        }
+      } else {
+        alerts.push({
+          id: 'water-bowl-never',
+          type: 'grooming',
+          title: 'Water Bowl Never Cleaned',
+          description: 'Mark when you clean the water bowl',
+          priority: 'medium',
+        });
+      }
+      
+      // Food bowl check
+      if (nutritionPlan.bowl_last_cleaned) {
+        const foodBowlLastCleaned = new Date(nutritionPlan.bowl_last_cleaned);
+        const hoursSince = (now.getTime() - foodBowlLastCleaned.getTime()) / (1000 * 60 * 60);
+        
+        if (hoursSince > 24) {
+          alerts.push({
+            id: 'food-bowl-overdue',
+            type: 'grooming',
+            title: 'Food Bowl Needs Cleaning',
+            description: `Last cleaned ${Math.floor(hoursSince)} hours ago`,
+            priority: 'medium',
+          });
+        }
+      }
+    }
+
     console.log('Total health alerts generated:', alerts);
 
     // Sort by priority
@@ -159,7 +206,7 @@ export const useHomeData = (dogId: string) => {
       const priorityOrder = { high: 0, medium: 1, low: 2 };
       return priorityOrder[a.priority] - priorityOrder[b.priority];
     });
-  }, [groomingSchedules, checkups, vaccinationRecords, treatments]);
+  }, [groomingSchedules, checkups, vaccinationRecords, treatments, nutritionPlan]);
 
   // Get upcoming events
   const upcomingEvents = useMemo((): UpcomingEvent[] => {

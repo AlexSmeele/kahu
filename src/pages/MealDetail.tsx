@@ -333,13 +333,18 @@ export default function MealDetail() {
                   </RadioGroup>
                 </div>
 
-                <div className="flex items-center space-x-2">
-                  <Checkbox 
-                    id="bowl_cleaned"
-                    checked={editForm.bowl_cleaned_before}
-                    onCheckedChange={(checked) => setEditForm({ ...editForm, bowl_cleaned_before: checked as boolean })}
-                  />
-                  <Label htmlFor="bowl_cleaned" className="font-normal">Bowl cleaned before meal</Label>
+                <div className="space-y-2">
+                  <div className="flex items-center space-x-2">
+                    <Checkbox 
+                      id="bowl_cleaned"
+                      checked={editForm.bowl_cleaned_before}
+                      onCheckedChange={(checked) => setEditForm({ ...editForm, bowl_cleaned_before: checked as boolean })}
+                    />
+                    <Label htmlFor="bowl_cleaned" className="font-normal">Bowl cleaned before meal</Label>
+                  </div>
+                  <p className="text-xs text-muted-foreground ml-6">
+                    💡 Food bowls should be cleaned after every meal with hot soapy water
+                  </p>
                 </div>
 
                 <div>

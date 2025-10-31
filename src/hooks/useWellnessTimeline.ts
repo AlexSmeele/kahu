@@ -16,6 +16,7 @@ import {
   Stethoscope, 
   Syringe, 
   Pill,
+  Droplet,
   Calendar,
   LucideIcon
 } from "lucide-react";
@@ -254,6 +255,29 @@ export function useWellnessTimeline(dogId: string) {
           });
         }
       });
+
+      // Bowl cleaning events
+      if (nutritionPlan?.bowl_last_cleaned) {
+        events.push({
+          id: `food-bowl-cleaned-${nutritionPlan.bowl_last_cleaned}`,
+          type: 'meal',
+          title: 'Food Bowl Cleaned',
+          timestamp: new Date(nutritionPlan.bowl_last_cleaned),
+          icon: Droplet,
+          status: 'completed',
+        });
+      }
+
+      if (nutritionPlan?.water_bowl_last_cleaned) {
+        events.push({
+          id: `water-bowl-cleaned-${nutritionPlan.water_bowl_last_cleaned}`,
+          type: 'meal',
+          title: 'Water Bowl Cleaned',
+          timestamp: new Date(nutritionPlan.water_bowl_last_cleaned),
+          icon: Droplet,
+          status: 'completed',
+        });
+      }
 
       // Sort events by timestamp (newest first for past, earliest first for future)
       const now = new Date();
