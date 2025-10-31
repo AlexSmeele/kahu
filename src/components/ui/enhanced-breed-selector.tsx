@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
@@ -37,6 +37,7 @@ export function EnhancedBreedSelector({
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedTab, setSelectedTab] = useState(defaultTab);
+  const [displayName, setDisplayName] = useState<string>(placeholder);
   
   // Custom breed creation state
   const [customBreedName, setCustomBreedName] = useState('');
@@ -191,23 +192,42 @@ export function EnhancedBreedSelector({
     });
   };
 
-  const getCurrentBreedName = () => {
-    if (!value) return placeholder;
-    
-    // Try to find in standard breeds first
-    const standardBreed = standardBreeds.find(breed => {
-      // This is a simplified check - in a real implementation, you'd want to match by ID
-      return breed.toLowerCase() === value.toLowerCase();
-    });
-    
-    if (standardBreed) return standardBreed;
-    
-    // Try to find in custom breeds
-    const customBreed = customBreeds.find(breed => breed.id === value);
-    if (customBreed) return customBreed.name;
-    
-    return placeholder;
-  };
+  // Resolve breed ID to display name
+  useEffect(() => {
+    if (!value) {
+      setDisplayName(placeholder);
+      return;
+    }
+
+    const resolveBreedName = async () => {
+      // Check custom breeds first
+      const customBreed = customBreeds.find(breed => breed.id === value);
+      if (customBreed) {
+        setDisplayName(customBreed.name);
+        return;
+      }
+
+      // Check standard breeds by ID - query database if needed
+      try {
+        const { data: breedData } = await supabase
+          .from('dog_breeds')
+          .select('breed')
+          .eq('id', value)
+          .single();
+
+        if (breedData) {
+          setDisplayName(breedData.breed);
+          return;
+        }
+      } catch (error) {
+        console.error('Error resolving breed name:', error);
+      }
+
+      setDisplayName(placeholder);
+    };
+
+    resolveBreedName();
+  }, [value, customBreeds, placeholder]);
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => {
@@ -218,7 +238,7 @@ export function EnhancedBreedSelector({
     }}>
       <DialogTrigger asChild>
         <Button variant="outline" className={`justify-start ${className}`}>
-          {getCurrentBreedName()}
+          {displayName}
         </Button>
       </DialogTrigger>
       

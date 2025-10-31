@@ -105,11 +105,25 @@ export function useDogs() {
     // Dev mode bypass - return mock dogs
     if (user.id === '00000000-0000-0000-0000-000000000001') {
       logger.info('useDogs: Dev mode detected, using mock dogs');
+      
+      // Fetch actual breed IDs for Shiba Inu and Miniature Australian Shepherd
+      const { data: shibaBreed } = await supabase
+        .from('dog_breeds')
+        .select('id')
+        .ilike('breed', 'Shiba Inu')
+        .single();
+
+      const { data: miniAussieBreed } = await supabase
+        .from('dog_breeds')
+        .select('id')
+        .or('breed.ilike.%Miniature Australian Shepherd%,breed.ilike.%Mini Australian Shepherd%')
+        .single();
+
       const mockDogs: Dog[] = [
         {
           id: '00000000-0000-0000-0000-000000000011',
           name: 'Suki',
-          breed_id: '4106b76f-4caa-49a7-b058-bddf343e3c91',
+          breed_id: shibaBreed?.id || '4106b76f-4caa-49a7-b058-bddf343e3c91',
           breed: { breed: 'Shiba Inu' },
           birthday: '2015-02-23',
           weight: 10,
@@ -127,7 +141,7 @@ export function useDogs() {
         {
           id: '00000000-0000-0000-0000-000000000012',
           name: 'Jett',
-          breed_id: '4106b76f-4caa-49a7-b058-bddf343e3c91',
+          breed_id: miniAussieBreed?.id || '4106b76f-4caa-49a7-b058-bddf343e3c91',
           breed: { breed: 'Miniature Australian Shepherd' },
           birthday: '2023-12-18',
           weight: 16,
