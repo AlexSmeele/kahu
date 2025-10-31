@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { ArrowLeft, Edit3, Trash2, Scissors, Calendar, AlertCircle, Camera, X, Image as ImageIcon, Clipboard, Video, Check } from "lucide-react";
 import videoPlaceholder from "@/assets/video-placeholder.jpg";
+import ReactMarkdown from "react-markdown";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -607,30 +608,21 @@ export default function GroomingDetail() {
                     </p>
                   </div>
                 ) : grooming.how_to_guide ? (
-                  <div className="space-y-3">
-                    {grooming.how_to_guide.split('\n\n').map((section: string, index: number) => {
-                      if (section.startsWith('**') && section.endsWith('**')) {
-                        return (
-                          <h4 key={index} className="font-semibold text-base mt-4 first:mt-0">
-                            {section.replace(/\*\*/g, '')}
-                          </h4>
-                        );
-                      }
-                      if (section.startsWith('- ')) {
-                        return (
-                          <ul key={index} className="list-disc list-inside space-y-1 text-sm ml-2">
-                            {section.split('\n').map((item: string, i: number) => (
-                              <li key={i}>{item.replace('- ', '')}</li>
-                            ))}
-                          </ul>
-                        );
-                      }
-                      return (
-                        <p key={index} className="text-sm leading-relaxed">
-                          {section}
-                        </p>
-                      );
-                    })}
+                  <div className="prose prose-sm max-w-none dark:prose-invert">
+                    <ReactMarkdown
+                      components={{
+                        h1: ({node, ...props}) => <h1 className="text-lg font-bold mt-4 mb-2 first:mt-0" {...props} />,
+                        h2: ({node, ...props}) => <h2 className="text-base font-semibold mt-4 mb-2 first:mt-0" {...props} />,
+                        h3: ({node, ...props}) => <h3 className="text-sm font-semibold mt-3 mb-1 first:mt-0" {...props} />,
+                        p: ({node, ...props}) => <p className="text-sm leading-relaxed mb-3" {...props} />,
+                        strong: ({node, ...props}) => <strong className="font-semibold" {...props} />,
+                        ul: ({node, ...props}) => <ul className="list-disc list-inside space-y-1 text-sm ml-2 mb-3" {...props} />,
+                        ol: ({node, ...props}) => <ol className="list-decimal list-inside space-y-1 text-sm ml-2 mb-3" {...props} />,
+                        li: ({node, ...props}) => <li className="ml-2" {...props} />,
+                      }}
+                    >
+                      {grooming.how_to_guide}
+                    </ReactMarkdown>
                   </div>
                 ) : (
                   <div className="flex flex-col items-center justify-center py-12 text-muted-foreground">
