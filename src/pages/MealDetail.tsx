@@ -98,7 +98,7 @@ export default function MealDetail() {
             bowl_cleaned_before: found.bowl_cleaned_before || false,
             notes: found.notes || '',
           });
-          setMealComponents(((found as any).meal_components as MealComponent[]) || []);
+          setMealComponents((found as any).meal_components || []);
         } else {
           navigate(-1);
         }
@@ -136,7 +136,7 @@ export default function MealDetail() {
             bowl_cleaned_before: data.bowl_cleaned_before || false,
             notes: data.notes || '',
           });
-          setMealComponents(data.meal_components as MealComponent[] || []);
+          setMealComponents((data.meal_components as any) || []);
         } else {
           navigate(-1);
         }
@@ -196,7 +196,7 @@ export default function MealDetail() {
         .single();
       if (data) {
         setMeal(data);
-        setMealComponents((data.meal_components as unknown as MealComponent[]) || []);
+        setMealComponents((data.meal_components as any) || []);
       }
     }
   };
@@ -347,11 +347,11 @@ export default function MealDetail() {
 
       {/* Content */}
       <ScrollArea className="h-[calc(100vh-10rem)]">
-        <div className="container max-w-2xl mx-auto px-4 py-6 pb-28 space-y-6">
+        <div className="container max-w-2xl mx-auto px-4 py-6 space-y-6">
           {/* Basic Info Card */}
           <Card>
             <CardHeader>
-              <CardTitle>Meal Information</CardTitle>
+              <CardTitle className="text-2xl">{meal.meal_name}</CardTitle>
               <p className="text-sm text-muted-foreground">
                 {format(new Date(meal.scheduled_date), 'MMMM d, yyyy')}
               </p>
@@ -379,14 +379,16 @@ export default function MealDetail() {
                   </div>
                 </>
               ) : (
-                <div className="space-y-2">
-                  <div className="flex justify-between">
-                    <span className="text-sm text-muted-foreground">Meal</span>
-                    <span className="font-medium">{meal.meal_name}</span>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <span className="text-sm text-muted-foreground">Time Scheduled</span>
+                    <p className="font-medium text-lg">{meal.meal_time}</p>
                   </div>
-                  <div className="flex justify-between">
-                    <span className="text-sm text-muted-foreground">Time</span>
-                    <span className="font-medium">{meal.meal_time}</span>
+                  <div>
+                    <span className="text-sm text-muted-foreground">Time Served</span>
+                    <p className="font-medium text-lg">
+                      {meal.completed_at ? format(new Date(meal.completed_at), 'HH:mm') : 'Not served yet'}
+                    </p>
                   </div>
                 </div>
               )}
@@ -791,17 +793,15 @@ export default function MealDetail() {
         </div>
       </ScrollArea>
 
-      {/* Fixed Action Buttons */}
+      {/* Fixed Action Buttons - Within Viewport */}
       {isEditing && (
-        <div className="fixed bottom-0 left-0 right-0 bg-background border-t p-4 z-20">
-          <div className="container max-w-2xl mx-auto flex gap-2">
-            <Button onClick={handleSave} className="flex-1">
-              Save Changes
-            </Button>
-            <Button variant="outline" onClick={handleCancel} className="flex-1">
-              Cancel
-            </Button>
-          </div>
+        <div className="container max-w-2xl mx-auto px-4 py-4 flex gap-2">
+          <Button onClick={handleSave} className="flex-1">
+            Save Changes
+          </Button>
+          <Button variant="outline" onClick={handleCancel} className="flex-1">
+            Cancel
+          </Button>
         </div>
       )}
 

@@ -993,6 +993,35 @@ export const MOCK_HEALTH_CHECKUPS: any[] = [
 ];
 export const MOCK_MEAL_RECORDS: any[] = [
   {
+    id: 'mock-meal-2025-10-31-dinner-00000000-0000-0000-0000-000000000011',
+    dog_id: MOCK_DOG_IDS.SUKI,
+    nutrition_plan_id: '00000000-0000-0000-0000-000000000051',
+    meal_time: '17:30',
+    meal_name: 'Dinner',
+    scheduled_date: '2025-10-31',
+    completed_at: '2025-10-31T17:45:00Z',
+    amount_given: 3.5,
+    amount_consumed: 3.2,
+    percentage_eaten: 90,
+    eating_behavior: 'eager',
+    eating_speed: 'fast',
+    food_temperature: 'room_temp',
+    energy_level_after: 'high',
+    begged_before: true,
+    begged_after: false,
+    bowl_cleaned_before: true,
+    vomited_after: false,
+    notes: 'Very eager tonight, finished most of the meal',
+    meal_components: [
+      { name: 'Premium Beef Raw', brand: 'K9 Natural', amount: 2, unit: 'cups', category: 'raw' },
+      { name: 'Green Tripe', brand: 'Ziwi Peak', amount: 0.5, unit: 'cups', category: 'raw' },
+      { name: 'Salmon Oil', amount: 1, unit: 'pieces', category: 'supplements' },
+      { name: 'Vegetables Mix', amount: 1, unit: 'cups', category: 'raw' },
+    ],
+    created_at: '2025-10-31T17:45:00Z',
+    updated_at: '2025-10-31T17:45:00Z'
+  },
+  {
     id: '00000000-0000-0000-0000-000000000121',
     dog_id: MOCK_DOG_IDS.SUKI,
     nutrition_plan_id: '00000000-0000-0000-0000-000000000051',
@@ -1001,6 +1030,11 @@ export const MOCK_MEAL_RECORDS: any[] = [
     scheduled_date: '2025-10-22',
     completed_at: '2025-10-22T08:35:00Z',
     amount_given: 3,
+    meal_components: [
+      { name: 'Lamb Chunks', brand: 'K9 Natural', amount: 1.5, unit: 'cups', category: 'raw' },
+      { name: 'Beef Heart', amount: 0.5, unit: 'cups', category: 'raw' },
+      { name: 'Bone Broth', amount: 1, unit: 'cups', category: 'wet' },
+    ],
     notes: 'Large meat cube + small tripe cubes',
     created_at: '2025-10-22T08:35:00Z',
     updated_at: '2025-10-22T08:35:00Z'
@@ -1014,6 +1048,11 @@ export const MOCK_MEAL_RECORDS: any[] = [
     scheduled_date: '2025-10-21',
     completed_at: '2025-10-21T08:28:00Z',
     amount_given: 3,
+    meal_components: [
+      { name: 'Chicken Raw', brand: 'Ziwi Peak', amount: 2, unit: 'cups', category: 'raw' },
+      { name: 'Pumpkin', amount: 0.5, unit: 'cups', category: 'wet' },
+      { name: 'Fish Oil', amount: 1, unit: 'pieces', category: 'supplements' },
+    ],
     notes: null,
     created_at: '2025-10-21T08:28:00Z',
     updated_at: '2025-10-21T08:28:00Z'
@@ -1041,6 +1080,10 @@ export const MOCK_MEAL_RECORDS: any[] = [
     scheduled_date: '2025-10-22',
     completed_at: '2025-10-22T07:33:00Z',
     amount_given: 1.25,
+    meal_components: [
+      { name: 'Dry Kibble', brand: 'Royal Canin', amount: 1, unit: 'cups', category: 'kibble' },
+      { name: 'Chicken Broth', amount: 0.25, unit: 'cups', category: 'wet' },
+    ],
     notes: 'Added warm water',
     created_at: '2025-10-22T07:33:00Z',
     updated_at: '2025-10-22T07:33:00Z'
