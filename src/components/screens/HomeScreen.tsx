@@ -72,7 +72,7 @@ export function HomeScreen({ selectedDogId, onDogChange, onTabChange }: HomeScre
           </Button>
         </div>
 
-          <div className="container py-4 space-y-4">
+          <div className="container pt-4 space-y-4">
           <TodaysGoalsBanner
             nextTrick={nextTrick ? { name: nextTrick.trick?.name || 'Unknown', total_sessions: nextTrick.total_sessions } : undefined}
             onActionClick={() => nextTrick ? onTabChange('tricks') : onTabChange('tricks')}
