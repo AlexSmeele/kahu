@@ -248,9 +248,13 @@ export function ProfileScreen() {
                       </Avatar>
                       <div className="flex-1">
                         <h4 className="font-medium text-foreground">{dog.name}</h4>
-                        <p className="text-sm text-muted-foreground">
+                        {dog.breed?.breed && (
+                          <p className="text-sm text-muted-foreground">
+                            {dog.breed.breed}
+                          </p>
+                        )}
+                        <p className="text-xs text-muted-foreground">
                           {[
-                            dog.breed?.breed,
                             dog.birthday && calculateAge(dog.birthday),
                             dog.weight && `${dog.weight}kg`
                           ].filter(Boolean).join(' • ')}
