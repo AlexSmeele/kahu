@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { DogDropdown } from "@/components/dogs/DogDropdown";
 import { PageLogo } from "@/components/layout/PageLogo";
-import { TrainingGoalBanner } from "@/components/home/TrainingGoalBanner";
+import { TrainingGoalCard } from "@/components/home/TrainingGoalCard";
 import { UrgentAlertsBanner } from "@/components/home/UrgentAlertsBanner";
 import { ActivityCircleCard } from "@/components/home/ActivityCircleCard";
 import { QuickNoteTile } from "@/components/home/QuickNoteTile";
@@ -84,11 +84,6 @@ export function HomeScreen({ selectedDogId, onDogChange, onTabChange }: HomeScre
             </div>
 
             <div className="container pt-2 space-y-4">
-              <TrainingGoalBanner
-                nextTrick={nextTrick ? { name: nextTrick.trick?.name || 'Unknown', total_sessions: nextTrick.total_sessions } : undefined}
-                onActionClick={() => onTabChange('tricks')}
-              />
-
               {urgentAlerts.length > 0 && (
                 <UrgentAlertsBanner alerts={urgentAlerts} onClick={() => onTabChange('wellness')} />
               )}
@@ -102,12 +97,20 @@ export function HomeScreen({ selectedDogId, onDogChange, onTabChange }: HomeScre
                   onClick={() => navigate(`/record-activity?dogId=${selectedDogId}`)}
                   className="animate-fade-in [animation-delay:100ms]"
                 />
-                <GetAdviceCard className="animate-fade-in [animation-delay:150ms]" />
+                <TrainingGoalCard
+                  nextTrick={nextTrick ? { name: nextTrick.trick?.name || 'Unknown', total_sessions: nextTrick.total_sessions } : undefined}
+                  onActionClick={() => onTabChange('tricks')}
+                  className="animate-fade-in [animation-delay:150ms]"
+                />
+              </div>
+
+              <div className="grid grid-cols-3 gap-3">
+                <GetAdviceCard className="animate-fade-in [animation-delay:200ms]" />
                 <QuickNoteTile 
                   onClick={() => setShowNoteModal(true)} 
-                  className="animate-fade-in [animation-delay:200ms]"
+                  className="animate-fade-in [animation-delay:250ms]"
                 />
-                <AnalyticsCard className="animate-fade-in [animation-delay:250ms]" />
+                <AnalyticsCard className="animate-fade-in [animation-delay:300ms]" />
               </div>
             </div>
           </>
