@@ -196,10 +196,10 @@ const TRICK_STAY = {
   name: 'Stay',
   category: 'Obedience',
   description: 'Dog remains in position until released',
-  instructions: 'Start with sit. Use hand signal. Step back. Return and reward. Gradually increase distance and duration.',
+  instructions: 'Start with down. Use hand signal. Step back. Return and reward. Gradually increase distance and duration.',
   difficulty_level: 2,
   estimated_time_weeks: 2,
-  prerequisites: ['Sit'],
+  prerequisites: ['Down (Lie Down)'],
   priority_order: 6,
   created_at: new Date().toISOString(),
 };
