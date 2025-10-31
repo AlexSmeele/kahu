@@ -17,6 +17,10 @@ export interface NutritionPlan {
   bowl_last_cleaned?: string;
   water_bowl_last_cleaned?: string;
   calorie_target_daily?: number;
+  protein_percentage?: number;
+  fat_percentage?: number;
+  fiber_percentage?: number;
+  carbs_percentage?: number;
   created_at: string;
   updated_at: string;
 }

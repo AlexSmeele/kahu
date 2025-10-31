@@ -1282,18 +1282,22 @@ export type Database = {
           bowl_type: string | null
           brand: string | null
           calorie_target_daily: number | null
+          carbs_percentage: number | null
           created_at: string
           daily_amount: number | null
           diet_type: string | null
           dog_id: string
+          fat_percentage: number | null
           feeding_method: string | null
           feeding_times: number | null
+          fiber_percentage: number | null
           food_bag_opened_date: string | null
           food_expiration_date: string | null
           food_type: string
           id: string
           is_active: boolean | null
           meal_schedule: Json | null
+          protein_percentage: number | null
           special_instructions: string | null
           updated_at: string
           water_bowl_last_cleaned: string | null
@@ -1304,18 +1308,22 @@ export type Database = {
           bowl_type?: string | null
           brand?: string | null
           calorie_target_daily?: number | null
+          carbs_percentage?: number | null
           created_at?: string
           daily_amount?: number | null
           diet_type?: string | null
           dog_id: string
+          fat_percentage?: number | null
           feeding_method?: string | null
           feeding_times?: number | null
+          fiber_percentage?: number | null
           food_bag_opened_date?: string | null
           food_expiration_date?: string | null
           food_type: string
           id?: string
           is_active?: boolean | null
           meal_schedule?: Json | null
+          protein_percentage?: number | null
           special_instructions?: string | null
           updated_at?: string
           water_bowl_last_cleaned?: string | null
@@ -1326,18 +1334,22 @@ export type Database = {
           bowl_type?: string | null
           brand?: string | null
           calorie_target_daily?: number | null
+          carbs_percentage?: number | null
           created_at?: string
           daily_amount?: number | null
           diet_type?: string | null
           dog_id?: string
+          fat_percentage?: number | null
           feeding_method?: string | null
           feeding_times?: number | null
+          fiber_percentage?: number | null
           food_bag_opened_date?: string | null
           food_expiration_date?: string | null
           food_type?: string
           id?: string
           is_active?: boolean | null
           meal_schedule?: Json | null
+          protein_percentage?: number | null
           special_instructions?: string | null
           updated_at?: string
           water_bowl_last_cleaned?: string | null

@@ -13,6 +13,9 @@ import { WeekPlannerModal } from "@/components/nutrition/WeekPlannerModal";
 import { BowlCleaningCard } from "@/components/nutrition/BowlCleaningCard";
 import { TreatTrackerCard } from "@/components/nutrition/TreatTrackerCard";
 import { FoodInventoryDrawer } from "@/components/nutrition/FoodInventoryDrawer";
+import { CalorieCalculatorModal } from "@/components/nutrition/CalorieCalculatorModal";
+import { CalorieProgressCard } from "@/components/nutrition/CalorieProgressCard";
+import { MacronutrientCard } from "@/components/nutrition/MacronutrientCard";
 import { Card } from "@/components/ui/card";
 
 
@@ -26,11 +29,13 @@ interface NutritionScreenProps {
 export function NutritionScreen({ selectedDogId, onDogChange }: NutritionScreenProps) {
   const [isWeekPlannerOpen, setIsWeekPlannerOpen] = useState(false);
   const [isInventoryOpen, setIsInventoryOpen] = useState(false);
+  const [isCalcModalOpen, setIsCalcModalOpen] = useState(false);
   const { dogs } = useDogs();
   const currentDog = dogs.find(dog => dog.id === selectedDogId) || dogs[0];
   const { 
     nutritionPlan, 
-    loading, 
+    loading,
+    updateNutritionPlan,
     markFoodBowlCleaned, 
     markWaterBowlCleaned 
   } = useNutrition(selectedDogId);
@@ -66,6 +71,18 @@ export function NutritionScreen({ selectedDogId, onDogChange }: NutritionScreenP
       if (originalMeal) {
         await markMealCompleted(originalMeal.time, meal.name, meal.amount);
       }
+    }
+  };
+
+  const handleCalculateCalories = async (calories: number, macros: { protein: number; fat: number; fiber: number; carbs: number }) => {
+    if (nutritionPlan?.id) {
+      await updateNutritionPlan(nutritionPlan.id, {
+        calorie_target_daily: calories,
+        protein_percentage: macros.protein,
+        fat_percentage: macros.fat,
+        fiber_percentage: macros.fiber,
+        carbs_percentage: macros.carbs,
+      });
     }
   };
   return (
@@ -267,6 +284,23 @@ export function NutritionScreen({ selectedDogId, onDogChange }: NutritionScreenP
                 onMarkWaterBowlCleaned={markWaterBowlCleaned}
               />
 
+              {/* Calorie & Macro Tracking */}
+              <div className="mt-6 space-y-4">
+                <CalorieProgressCard
+                  dogId={selectedDogId}
+                  nutritionPlanId={nutritionPlan.id}
+                  dailyCalorieTarget={nutritionPlan.calorie_target_daily}
+                  onOpenCalculator={() => setIsCalcModalOpen(true)}
+                />
+
+                <MacronutrientCard
+                  protein={nutritionPlan.protein_percentage}
+                  fat={nutritionPlan.fat_percentage}
+                  fiber={nutritionPlan.fiber_percentage}
+                  carbs={nutritionPlan.carbs_percentage}
+                />
+              </div>
+
               {/* Treat Tracker Card */}
               <div className="mt-6">
                 <TreatTrackerCard 
@@ -326,6 +360,13 @@ export function NutritionScreen({ selectedDogId, onDogChange }: NutritionScreenP
         open={isInventoryOpen}
         onOpenChange={setIsInventoryOpen}
         dogId={selectedDogId}
+      />
+
+      <CalorieCalculatorModal
+        open={isCalcModalOpen}
+        onOpenChange={setIsCalcModalOpen}
+        dogWeight={currentDog?.weight}
+        onCalculate={handleCalculateCalories}
       />
     </div>
   );
