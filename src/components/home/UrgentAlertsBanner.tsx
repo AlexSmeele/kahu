@@ -20,17 +20,14 @@ export function UrgentAlertsBanner({ alerts, onClick }: UrgentAlertsBannerProps)
 
   return (
     <div className="relative overflow-hidden rounded-lg bg-destructive/10 border border-destructive/30 p-3">
-      <div className="flex items-start gap-3">
-        <AlertTriangle className="w-5 h-5 text-destructive flex-shrink-0 mt-0.5" />
+      <div className="flex items-center gap-3">
+        <AlertTriangle className="w-4 h-4 text-destructive flex-shrink-0" />
         <button 
           onClick={onClick}
           className="flex-1 text-left min-w-0"
         >
-          <p className="text-sm font-medium text-foreground">
-            {alert.title}
-          </p>
-          <p className="text-xs text-muted-foreground truncate">
-            {alert.description}
+          <p className="text-sm font-medium text-foreground truncate">
+            {alert.title} • {alert.description}
           </p>
         </button>
         <Button
