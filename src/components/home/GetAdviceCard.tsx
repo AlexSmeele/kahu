@@ -6,22 +6,19 @@ export const GetAdviceCard = () => {
   return (
     <button
       onClick={() => navigate('/ai-chat')}
-      className="rounded-2xl border bg-card p-4 hover:bg-accent transition-all hover:scale-[1.02] text-left w-full h-full"
+      className="rounded-2xl border bg-card p-3 hover:bg-accent transition-all hover:scale-[1.02] text-left w-full"
     >
-      <div className="flex items-center gap-2 mb-3">
-        <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
-          <MessageCircle className="w-4 h-4 text-primary" />
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <div className="w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center">
+            <MessageCircle className="w-3.5 h-3.5 text-primary" />
+          </div>
+          <div>
+            <h3 className="font-semibold text-sm text-foreground">Get Advice</h3>
+            <p className="text-xs text-muted-foreground">Ask our AI care adviser</p>
+          </div>
         </div>
-        <h3 className="font-semibold text-foreground">Get Advice</h3>
-      </div>
-      
-      <p className="text-sm text-muted-foreground">
-        Ask our AI care adviser anything
-      </p>
-      
-      <div className="mt-4 flex items-center gap-2 text-xs text-muted-foreground">
-        <div className="w-1.5 h-1.5 rounded-full bg-current"></div>
-        <span>Tap to chat</span>
+        <div className="text-xs text-muted-foreground">→</div>
       </div>
     </button>
   );

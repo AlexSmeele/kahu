@@ -83,7 +83,7 @@ export function HomeScreen({ selectedDogId, onDogChange, onTabChange }: HomeScre
             <UrgentAlertsBanner alerts={urgentAlerts} onClick={() => onTabChange('wellness')} />
           )}
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-3">
             <ActivityCircleCard
               completedMinutes={activityProgress.minutes}
               targetMinutes={activityGoal?.target_minutes || 60}
@@ -98,6 +98,8 @@ export function HomeScreen({ selectedDogId, onDogChange, onTabChange }: HomeScre
             <QuickNoteTile onClick={() => setShowNoteModal(true)} />
             <AnalyticsCard />
           </div>
+          
+          <GetAdviceCard />
         </div>
       </div>
 

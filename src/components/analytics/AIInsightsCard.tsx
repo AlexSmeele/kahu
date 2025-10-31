@@ -35,7 +35,7 @@ export const AIInsightsCard = ({ dogId, dogName }: AIInsightsCardProps) => {
     <Card className="p-6">
       <div className="flex items-center gap-2 mb-4">
         <Brain className="h-5 w-5 text-primary" />
-        <h3 className="font-semibold">AI-Powered Insights</h3>
+        <h3 className="font-semibold">Insights</h3>
         <Sparkles className="h-4 w-4 text-primary ml-auto" />
       </div>
 
