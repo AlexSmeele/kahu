@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { DogDropdown } from "@/components/dogs/DogDropdown";
 import { PageLogo } from "@/components/layout/PageLogo";
 import { TodaysGoalsBanner } from "@/components/home/TodaysGoalsBanner";
@@ -8,11 +9,8 @@ import { TrainingTile } from "@/components/home/TrainingTile";
 import { QuickNoteTile } from "@/components/home/QuickNoteTile";
 import { GetAdviceCard } from "@/components/home/GetAdviceCard";
 import { AnalyticsCard } from "@/components/home/AnalyticsCard";
-import { ActivityRecordModal } from "@/components/home/ActivityRecordModal";
 import { QuickNoteModal } from "@/components/home/QuickNoteModal";
-import { EditActivityGoalModal } from "@/components/home/EditActivityGoalModal";
 import { useHomeData } from "@/hooks/useHomeData";
-import { useActivity } from "@/hooks/useActivity";
 import { useWellnessTimeline } from "@/hooks/useWellnessTimeline";
 import { Skeleton } from "@/components/ui/skeleton";
 import { User } from "lucide-react";
@@ -26,9 +24,8 @@ interface HomeScreenProps {
 }
 
 export function HomeScreen({ selectedDogId, onDogChange, onTabChange }: HomeScreenProps) {
-  const [showActivityModal, setShowActivityModal] = useState(false);
+  const navigate = useNavigate();
   const [showNoteModal, setShowNoteModal] = useState(false);
-  const [showEditGoalModal, setShowEditGoalModal] = useState(false);
   
   const {
     loading,
@@ -38,12 +35,7 @@ export function HomeScreen({ selectedDogId, onDogChange, onTabChange }: HomeScre
     quickStats
   } = useHomeData(selectedDogId);
 
-  const { updateGoal } = useActivity(selectedDogId);
   const { urgentAlerts, todayProgress, activityGoal } = useWellnessTimeline(selectedDogId);
-
-  const handleUpdateGoal = async (targetMinutes: number) => {
-    return await updateGoal({ target_minutes: targetMinutes });
-  };
 
   const getGreeting = () => {
     const hour = new Date().getHours();
@@ -85,8 +77,7 @@ export function HomeScreen({ selectedDogId, onDogChange, onTabChange }: HomeScre
             <ActivityCircleCard
               completedMinutes={todayProgress?.minutes || 0}
               targetMinutes={activityGoal?.target_minutes || 60}
-              onClick={() => setShowActivityModal(true)}
-              onEditGoal={() => setShowEditGoalModal(true)}
+              onClick={() => navigate(`/record-activity?dogId=${selectedDogId}`)}
             />
             <TrainingTile
               trickName={nextTrick?.trick?.name}
@@ -101,15 +92,7 @@ export function HomeScreen({ selectedDogId, onDogChange, onTabChange }: HomeScre
         </div>
       </div>
 
-      <ActivityRecordModal dogId={selectedDogId} isOpen={showActivityModal} onClose={() => setShowActivityModal(false)} />
       <QuickNoteModal dogId={selectedDogId} isOpen={showNoteModal} onClose={() => setShowNoteModal(false)} />
-      <EditActivityGoalModal 
-        dogId={selectedDogId}
-        isOpen={showEditGoalModal}
-        onClose={() => setShowEditGoalModal(false)}
-        currentGoal={activityGoal}
-        onSave={handleUpdateGoal}
-      />
     </>
   );
 }

@@ -23,6 +23,7 @@ import WeightDetail from "./pages/WeightDetail";
 import TreatmentDetail from "./pages/TreatmentDetail";
 import InjuryDetail from "./pages/InjuryDetail";
 import Analytics from "./pages/Analytics";
+import RecordActivity from "./pages/RecordActivity";
 import NotFound from "./pages/NotFound";
 import { PasswordGate } from "@/components/PasswordGate";
 import { logger } from "@/lib/logger";
@@ -111,6 +112,7 @@ const App = () => {
                     <Route path="/treatment/:treatmentId" element={<ProtectedRoute><TreatmentDetail /></ProtectedRoute>} />
                     <Route path="/injury/:injuryId" element={<ProtectedRoute><InjuryDetail /></ProtectedRoute>} />
                     <Route path="/analytics" element={<ProtectedRoute><Analytics /></ProtectedRoute>} />
+                    <Route path="/record-activity" element={<ProtectedRoute><RecordActivity /></ProtectedRoute>} />
                     {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                     <Route path="*" element={<NotFound />} />
                   </Routes>
