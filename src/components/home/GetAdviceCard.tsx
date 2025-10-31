@@ -1,24 +1,30 @@
 import { MessageCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-export const GetAdviceCard = () => {
+interface GetAdviceCardProps {
+  className?: string;
+}
+
+export const GetAdviceCard = ({ className = "" }: GetAdviceCardProps) => {
   const navigate = useNavigate();
   return (
     <button
       onClick={() => navigate('/ai-chat')}
-      className="rounded-2xl border bg-card p-3 hover:bg-accent transition-all hover:scale-[1.02] text-left w-full animate-fade-in [animation-delay:500ms]"
+      className={`rounded-2xl border bg-card p-4 hover:bg-accent transition-all hover:scale-[1.02] text-left w-full ${className}`}
     >
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <div className="w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center">
-            <MessageCircle className="w-3.5 h-3.5 text-primary" />
+      <div className="flex flex-col justify-center min-h-[88px]">
+        <div className="flex items-center gap-2 mb-3">
+          <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+            <MessageCircle className="w-4 h-4 text-primary" />
           </div>
-          <div>
-            <h3 className="font-semibold text-sm text-foreground">Get Advice</h3>
-            <p className="text-xs text-muted-foreground">Ask our AI care adviser</p>
-          </div>
+          <h3 className="font-semibold text-base text-foreground">Get Advice</h3>
         </div>
-        <div className="text-xs text-muted-foreground">→</div>
+        <p className="text-sm text-muted-foreground mb-3">
+          Ask our AI care adviser
+        </p>
+        <p className="text-xs text-muted-foreground">
+          Chat now →
+        </p>
       </div>
     </button>
   );

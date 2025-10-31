@@ -100,16 +100,15 @@ export function HomeScreen({ selectedDogId, onDogChange, onTabChange }: HomeScre
                   distance={todayProgress?.distance}
                   calories={todayProgress?.calories}
                   onClick={() => navigate(`/record-activity?dogId=${selectedDogId}`)}
-                  className="col-span-2 animate-fade-in [animation-delay:100ms]"
+                  className="animate-fade-in [animation-delay:100ms]"
                 />
+                <GetAdviceCard className="animate-fade-in [animation-delay:150ms]" />
                 <QuickNoteTile 
                   onClick={() => setShowNoteModal(true)} 
                   className="animate-fade-in [animation-delay:200ms]"
                 />
-                <AnalyticsCard className="animate-fade-in [animation-delay:300ms]" />
+                <AnalyticsCard className="animate-fade-in [animation-delay:250ms]" />
               </div>
-              
-              <GetAdviceCard />
             </div>
           </>
         )}
