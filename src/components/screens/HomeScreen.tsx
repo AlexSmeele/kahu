@@ -83,7 +83,7 @@ export function HomeScreen({ selectedDogId, onDogChange, onTabChange }: HomeScre
           <>
             <div className="px-4 pt-4 mb-2">
               <h2 className="text-2xl font-semibold text-foreground">
-                {getGreeting()}{profile?.display_name ? `, ${profile.display_name}` : ''}!
+                {getGreeting()}{profile?.display_name ? `, ${profile.display_name.split(' ')[0]}` : ''}!
               </h2>
             </div>
 
