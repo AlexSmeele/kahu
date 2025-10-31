@@ -407,7 +407,7 @@ export function TrickDetailModal({
                           <div className="text-xs text-muted-foreground mt-1">Days</div>
                         </div>
                         <div className="text-center p-2 bg-muted/50 rounded-lg">
-                          <div className="text-base font-bold text-purple-600">
+                          <div className="text-xs font-bold text-purple-600">
                             {getDifficultyLabel(trick.difficulty_level)}
                           </div>
                           <div className="text-xs text-muted-foreground mt-1">Level</div>
