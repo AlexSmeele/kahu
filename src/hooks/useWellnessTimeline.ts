@@ -240,6 +240,11 @@ export function useWellnessTimeline(dogId: string) {
         groupedEvents.get(dateKey)!.push(event);
       });
 
+      // Sort events within each day (newest to oldest)
+      groupedEvents.forEach((events) => {
+        events.sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime());
+      });
+
       // Create timeline days
       const timelineDays: TimelineDay[] = [];
       const today = new Date();
