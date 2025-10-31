@@ -27,7 +27,7 @@ export function TrainingGoalCard({
           <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
             <Target className="w-4 h-4 text-primary" />
           </div>
-          <h3 className="font-semibold text-base text-foreground">Training Goal</h3>
+          <h3 className="font-semibold text-base text-foreground">Training</h3>
         </div>
         
         {hasActiveTrick ? (
