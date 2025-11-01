@@ -186,7 +186,12 @@ export default function TreatmentDetail() {
       <div className="sticky top-0 z-10 bg-background/95 backdrop-blur border-b">
         <div className="container max-w-2xl mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <Button variant="ghost" size="icon" onClick={() => navigate(-1)}><ArrowLeft className="h-5 w-5" /></Button>
+            <Button variant="ghost" size="icon" onClick={() => {
+              const from = location.state?.from || '/?tab=wellness';
+              navigate(from);
+            }}>
+              <ArrowLeft className="h-5 w-5" />
+            </Button>
             <Pill className="h-6 w-6 text-primary" />
             <h1 className="text-xl font-semibold">Treatment Details</h1>
           </div>
@@ -206,29 +211,7 @@ export default function TreatmentDetail() {
         </div>
       </div>
       
-      <div className="container max-w-2xl mx-auto px-4 py-6 space-y-6">
-        {!isEditing && (
-          <div className="flex gap-3">
-            <Button 
-              onClick={() => setShowCompleteModal(true)} 
-              className="flex-1"
-              size="lg"
-            >
-              <Check className="h-4 w-4 mr-2" />
-              Complete Treatment
-            </Button>
-            <Button 
-              onClick={() => setShowCancelDialog(true)} 
-              variant="outline" 
-              className="flex-1"
-              size="lg"
-            >
-              <X className="h-4 w-4 mr-2" />
-              Cancel Schedule
-            </Button>
-          </div>
-        )}
-
+      <div className="container max-w-2xl mx-auto px-4 py-6 space-y-6 pb-32">
         <Card>
           <CardContent className="pt-6">
             <div className="flex items-center gap-3">
@@ -275,6 +258,33 @@ export default function TreatmentDetail() {
         </Card>
       </div>
       
+      {/* Sticky Bottom Action Buttons */}
+      {!isEditing && (
+        <div className="fixed bottom-0 left-0 right-0 z-10 bg-background border-t pb-safe">
+          <div className="container max-w-2xl mx-auto px-4 py-4">
+            <div className="flex gap-3">
+              <Button 
+                onClick={() => setShowCancelDialog(true)} 
+                variant="outline" 
+                className="flex-1"
+                size="lg"
+              >
+                <X className="h-4 w-4 mr-2" />
+                Cancel
+              </Button>
+              <Button 
+                onClick={() => setShowCompleteModal(true)} 
+                className="flex-1"
+                size="lg"
+              >
+                <Check className="h-4 w-4 mr-2" />
+                Complete
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <CompleteTreatmentModal
         open={showCompleteModal}
         onOpenChange={setShowCompleteModal}
