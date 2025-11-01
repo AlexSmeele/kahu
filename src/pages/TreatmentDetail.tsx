@@ -182,7 +182,7 @@ export default function TreatmentDetail() {
   if (!treatment) return null;
   
   return (
-    <div className="min-h-screen bg-background pb-20">
+    <div className="min-h-screen bg-background flex flex-col">
       <div className="sticky top-0 z-10 bg-background/95 backdrop-blur border-b">
         <div className="container max-w-2xl mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -211,7 +211,8 @@ export default function TreatmentDetail() {
         </div>
       </div>
       
-      <div className="container max-w-2xl mx-auto px-4 py-6 space-y-6 pb-32">
+      <div className="flex-1 overflow-y-auto">
+        <div className="container max-w-2xl mx-auto px-4 py-6 space-y-6 pb-32">
         <Card>
           <CardContent className="pt-6">
             <div className="flex items-center gap-3">
@@ -257,11 +258,12 @@ export default function TreatmentDetail() {
           </CardContent>
         </Card>
       </div>
+      </div>
       
       {/* Sticky Bottom Action Buttons */}
       {!isEditing && (
-        <div className="fixed bottom-0 left-0 right-0 z-10 bg-background border-t pb-safe">
-          <div className="container max-w-2xl mx-auto px-4 py-4">
+        <div className="sticky bottom-0 left-0 right-0 z-10 bg-background border-t">
+          <div className="container max-w-2xl mx-auto px-4 py-4 safe-bottom">
             <div className="flex gap-3">
               <Button 
                 onClick={() => setShowCancelDialog(true)} 
