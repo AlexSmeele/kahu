@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Calendar } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { toast } from "sonner";
 import { VetVisitDetailModal } from "./VetVisitDetailModal";
 import { CheckupDetailModal } from "./CheckupDetailModal";
 import { VaccinationDetailModal } from "./VaccinationDetailModal";
@@ -29,7 +30,8 @@ export function WellnessTimeline({ dogId }: WellnessTimelineProps) {
   const handleEventClick = (event: any) => {
     // Skip navigation for informational-only events
     if (event.type === 'bowl_cleaning' || event.type === 'treat') {
-      return; // These events are informational-only
+      toast.info("This is an informational event - all details are shown in the timeline card");
+      return;
     }
     
     // Helper function to save scroll position

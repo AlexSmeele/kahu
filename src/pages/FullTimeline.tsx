@@ -7,6 +7,7 @@ import { useWellnessTimeline } from "@/hooks/useWellnessTimeline";
 import { TimelineEventCard } from "@/components/health/TimelineEventCard";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
+import { toast } from "sonner";
 
 import { cn } from "@/lib/utils";
 
@@ -705,7 +706,8 @@ export default function FullTimeline() {
                                    onClick={() => {
                                       // Skip navigation for informational-only events
                                       if (event.type === 'bowl_cleaning' || event.type === 'treat') {
-                                        return; // These events are informational-only
+                                        toast.info("This is an informational event - all details are shown in the timeline card");
+                                        return;
                                       }
                                       
                                       // Save current scroll position before navigating
