@@ -26,9 +26,6 @@ export const AnalyticsCard = ({ className = "" }: AnalyticsCardProps) => {
             View analytics and recommendations
           </p>
         </div>
-        <p className="text-xs text-muted-foreground">
-          View →
-        </p>
       </div>
     </Card>
   );

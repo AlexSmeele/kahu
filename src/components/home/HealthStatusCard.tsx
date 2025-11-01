@@ -81,11 +81,6 @@ export function HealthStatusCard({ dogId, onTabChange, className = "" }: HealthS
             </>
           )}
         </div>
-        
-        {/* Footer */}
-        <div className="text-xs text-muted-foreground text-center">
-          View timeline →
-        </div>
       </div>
     </button>
   );

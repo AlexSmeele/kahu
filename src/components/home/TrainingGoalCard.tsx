@@ -42,11 +42,6 @@ export function TrainingGoalCard({
                 Session {(nextTrick.total_sessions || 0) + 1}
               </Badge>
             </div>
-            
-            {/* Footer */}
-            <div className="text-xs text-muted-foreground text-center">
-              Start training →
-            </div>
           </>
         ) : (
           <>
@@ -55,11 +50,6 @@ export function TrainingGoalCard({
               <p className="text-base text-muted-foreground text-center">
                 Choose a trick to start training
               </p>
-            </div>
-            
-            {/* Footer */}
-            <div className="text-xs text-muted-foreground text-center">
-              Browse tricks →
             </div>
           </>
         )}

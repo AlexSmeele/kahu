@@ -23,9 +23,6 @@ export function QuickNoteTile({ onClick, className = "" }: QuickNoteTileProps) {
             Quick health notes with photos or videos
           </p>
         </div>
-        <p className="text-xs text-muted-foreground">
-          Tap to add
-        </p>
       </div>
     </button>
   );

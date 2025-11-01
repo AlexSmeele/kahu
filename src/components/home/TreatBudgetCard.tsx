@@ -75,11 +75,6 @@ export function TreatBudgetCard({ dogId, onTabChange, className = "" }: TreatBud
             </>
           )}
         </div>
-        
-        {/* Footer */}
-        <div className="text-xs text-muted-foreground text-center">
-          {hasNoPlan ? 'Set up plan →' : 'Log treat →'}
-        </div>
       </div>
     </button>
   );

@@ -107,11 +107,6 @@ export function TrainingStreakCard({ dogId, onTabChange, className = "" }: Train
             Last: {lastTraining}
           </p>
         </div>
-        
-        {/* Footer */}
-        <div className="text-xs text-muted-foreground text-center">
-          Train now →
-        </div>
       </div>
     </button>
   );

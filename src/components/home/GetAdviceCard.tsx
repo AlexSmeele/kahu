@@ -24,9 +24,6 @@ export const GetAdviceCard = ({ className = "" }: GetAdviceCardProps) => {
             Ask our AI care adviser
           </p>
         </div>
-        <p className="text-xs text-muted-foreground">
-          Chat now →
-        </p>
       </div>
     </button>
   );

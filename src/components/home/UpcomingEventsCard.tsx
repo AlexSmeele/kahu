@@ -74,11 +74,6 @@ export function UpcomingEventsCard({ dogId, className = "" }: UpcomingEventsCard
             </>
           )}
         </div>
-        
-        {/* Footer */}
-        <div className="text-xs text-muted-foreground text-center">
-          View all →
-        </div>
       </div>
     </button>
   );

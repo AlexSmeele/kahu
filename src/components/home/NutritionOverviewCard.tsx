@@ -82,11 +82,6 @@ export function NutritionOverviewCard({ dogId, onTabChange, className = "" }: Nu
             </>
           )}
         </div>
-        
-        {/* Footer */}
-        <div className="text-xs text-muted-foreground text-center">
-          {hasNoPlan ? 'Set up plan →' : 'View plan →'}
-        </div>
       </div>
     </button>
   );
