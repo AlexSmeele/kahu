@@ -51,31 +51,31 @@ function TrickCard({ trick, dogTrick, onStart, onPractice, onTrickClick, hasUnme
   return (
     <div 
       onClick={() => onTrickClick(trick)}
-      className={`bg-card rounded-2xl p-4 border-2 transition-all duration-200 hover:scale-105 cursor-pointer ${
+      className={`bg-card rounded-xl p-2.5 border-2 transition-all duration-200 hover:scale-105 cursor-pointer ${
         isCompleted ? 'border-green-400 bg-green-50 dark:bg-green-950/20' : 
         isInProgress ? 'border-blue-400 bg-blue-50 dark:bg-blue-950/20' : 
         'border-border hover:border-primary/50'
       }`}
     >
-      <div className="flex items-center gap-3 mb-3">
-        <div className={`w-12 h-12 ${categoryColor} rounded-xl flex items-center justify-center relative`}>
-          <CategoryIcon className="w-6 h-6 text-white" />
+      <div className="flex items-center gap-2 mb-1.5">
+        <div className={`w-9 h-9 ${categoryColor} rounded-lg flex items-center justify-center relative flex-shrink-0`}>
+          <CategoryIcon className="w-4.5 h-4.5 text-white" />
           {isCompleted && (
-            <div className="absolute -top-1 -right-1 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center">
-              <CheckCircle2 className="w-3 h-3 text-white" />
+            <div className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-green-500 rounded-full flex items-center justify-center">
+              <CheckCircle2 className="w-2.5 h-2.5 text-white" />
             </div>
           )}
         </div>
-        <div className="flex-1">
-          <h3 className="font-bold text-lg text-foreground">{trick.name}</h3>
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+        <div className="flex-1 min-w-0">
+          <h3 className="font-bold text-sm text-foreground leading-tight">{trick.name}</h3>
+          <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground">
             <span>Level {trick.difficulty_level}</span>
             <span>•</span>
             <span>{trick.category}</span>
             {trick.estimated_time_weeks && (
               <>
                 <span>•</span>
-                <Clock className="w-3 h-3" />
+                <Clock className="w-2.5 h-2.5" />
                 <span>{trick.estimated_time_weeks}w</span>
               </>
             )}
@@ -83,17 +83,17 @@ function TrickCard({ trick, dogTrick, onStart, onPractice, onTrickClick, hasUnme
         </div>
       </div>
 
-      <p className="text-sm text-muted-foreground mb-3 line-clamp-2">{trick.description}</p>
+      <p className="text-xs text-muted-foreground mb-2 line-clamp-2">{trick.description}</p>
 
       {/* Prerequisites Warning */}
       {hasUnmetPrerequisites && (
-        <div className="mb-3 p-3 bg-amber-50 dark:bg-amber-950/20 border border-amber-300 dark:border-amber-700 rounded-lg">
-          <div className="flex items-start gap-2">
-            <AlertCircle className="w-4 h-4 text-amber-600 dark:text-amber-400 mt-0.5 flex-shrink-0" />
+        <div className="mb-2 p-2 bg-amber-50 dark:bg-amber-950/20 border border-amber-300 dark:border-amber-700 rounded-lg">
+          <div className="flex items-start gap-1.5">
+            <AlertCircle className="w-3 h-3 text-amber-600 dark:text-amber-400 mt-0.5 flex-shrink-0" />
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-amber-800 dark:text-amber-300 mb-1">Prerequisites Required</p>
-              <p className="text-xs text-amber-700 dark:text-amber-400">
-                Master these skills first: {unmetPrerequisites.join(', ')}
+              <p className="text-[10px] font-medium text-amber-800 dark:text-amber-300 mb-0.5">Prerequisites Required</p>
+              <p className="text-[9px] text-amber-700 dark:text-amber-400">
+                Master: {unmetPrerequisites.join(', ')}
               </p>
             </div>
           </div>
@@ -102,31 +102,31 @@ function TrickCard({ trick, dogTrick, onStart, onPractice, onTrickClick, hasUnme
 
       {/* Progress Bar */}
       {(isInProgress || isCompleted) && (
-        <div className="mb-3">
-          <div className="flex justify-between text-xs mb-1">
+        <div className="mb-2">
+          <div className="flex justify-between text-[10px] mb-0.5">
             <span className="text-muted-foreground">Progress</span>
             <span className={isCompleted ? 'text-green-600 font-bold' : 'text-blue-600'}>
               {isCompleted ? "Mastered!" : `${Math.round(progress)}%`}
             </span>
           </div>
-          <Progress value={progress} className="h-2" />
+          <Progress value={progress} className="h-1.5" />
           {dogTrick && dogTrick.total_sessions > 0 && (
-            <p className="text-xs text-muted-foreground mt-1">
-              {dogTrick.total_sessions} practice sessions
+            <p className="text-[9px] text-muted-foreground mt-0.5">
+              {dogTrick.total_sessions} sessions
             </p>
           )}
         </div>
       )}
 
       {/* Action Button */}
-      <div className="space-y-2">
+      <div>
         {!dogTrick && (
           <Button 
             onClick={(e) => {
               e.stopPropagation();
               onStart(trick.id);
             }}
-            className="w-full bg-gradient-to-r from-primary to-primary-hover hover:from-primary-hover hover:to-primary text-white font-bold py-3 rounded-xl"
+            className="w-full bg-gradient-to-r from-primary to-primary-hover hover:from-primary-hover hover:to-primary text-white font-semibold py-2 rounded-lg h-8 text-xs"
           >
             Start Learning
           </Button>
@@ -138,7 +138,7 @@ function TrickCard({ trick, dogTrick, onStart, onPractice, onTrickClick, hasUnme
               e.stopPropagation();
               onPractice(trick.id);
             }}
-            className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold py-3 rounded-xl"
+            className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold py-2 rounded-lg h-8 text-xs"
           >
             Continue Practice 🚀
           </Button>
@@ -151,7 +151,7 @@ function TrickCard({ trick, dogTrick, onStart, onPractice, onTrickClick, hasUnme
               onPractice(trick.id);
             }}
             variant="outline"
-            className="w-full border-2 border-green-400 text-green-700 hover:bg-green-50 dark:hover:bg-green-950/20 font-bold py-3 rounded-xl"
+            className="w-full border-2 border-green-400 text-green-700 hover:bg-green-50 dark:hover:bg-green-950/20 font-semibold py-2 rounded-lg h-8 text-xs"
           >
             Review & Perfect ⭐
           </Button>
