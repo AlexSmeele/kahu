@@ -101,23 +101,28 @@ export function useWellnessTimeline(dogId: string) {
       const twentyFourHoursFromNow = new Date(currentTime.getTime() + 24 * 60 * 60 * 1000);
       
       mealRecords?.forEach((record: any) => {
-        // Show completed meals
+        // Show completed meals (only if completed_at is in the past)
         if (record.completed_at) {
-          const metrics = [];
-          if (record.amount_given) metrics.push({ label: 'Given', value: `${Number(record.amount_given).toFixed(1)} cups` });
-          if (record.amount_consumed) metrics.push({ label: 'Consumed', value: `${Number(record.amount_consumed).toFixed(1)} cups` });
-          if (record.percentage_eaten) metrics.push({ label: 'Eaten', value: `${record.percentage_eaten}%` });
+          const completedTime = new Date(record.completed_at);
           
-          events.push({
-            id: `meal-${record.id}`,
-            type: 'meal',
-            title: record.meal_name,
-            timestamp: new Date(record.completed_at),
-            icon: Apple,
-            status: 'completed',
-            metrics: metrics.length > 0 ? metrics : undefined,
-            details: record,
-          });
+          // Only show as completed if the time has actually passed
+          if (completedTime <= currentTime) {
+            const metrics = [];
+            if (record.amount_given) metrics.push({ label: 'Given', value: `${Number(record.amount_given).toFixed(1)} cups` });
+            if (record.amount_consumed) metrics.push({ label: 'Consumed', value: `${Number(record.amount_consumed).toFixed(1)} cups` });
+            if (record.percentage_eaten) metrics.push({ label: 'Eaten', value: `${record.percentage_eaten}%` });
+            
+            events.push({
+              id: `meal-${record.id}`,
+              type: 'meal',
+              title: record.meal_name,
+              timestamp: completedTime,
+              icon: Apple,
+              status: 'completed',
+              metrics: metrics.length > 0 ? metrics : undefined,
+              details: record,
+            });
+          }
         } else {
           // Show scheduled meals in next 24 hours
           try {

@@ -215,6 +215,8 @@ function generateMealsForDay(date: Date, dogId: string, nutritionPlan: any): any
   const meals: any[] = [];
   const config = MOCK_DATA_CONFIG.meals;
   
+  const now = new Date();
+  
   config.times.forEach((mealTime, index) => {
     // 5% chance of missed meal
     if (random.boolean(config.missedProbability)) return;
@@ -227,13 +229,16 @@ function generateMealsForDay(date: Date, dogId: string, nutritionPlan: any): any
     const amountGiven = nutritionPlan.daily_amount ? 
       Number((nutritionPlan.daily_amount / 2).toFixed(1)) : null;
     
+    // Only set completed_at if the meal is in the past
+    const completed_at = mealDate <= now ? mealDate.toISOString() : null;
+    
     meals.push({
       dog_id: dogId,
       nutrition_plan_id: nutritionPlan.id,
       meal_name: mealName,
       meal_time: `${String(mealTime.hour).padStart(2, '0')}:${String(mealTime.minute).padStart(2, '0')}`,
       scheduled_date: date.toISOString().split('T')[0],
-      completed_at: mealDate.toISOString(),
+      completed_at: completed_at,
       amount_given: amountGiven,
       notes: generateMealNotes(random),
     });
