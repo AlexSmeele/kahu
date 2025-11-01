@@ -202,19 +202,12 @@ export default function TreatmentDetail() {
             <Pill className="h-6 w-6 text-primary" />
             <h1 className="text-xl font-semibold">Treatment Details</h1>
           </div>
-          <div className="flex gap-2">
-            {!isEditing ? (
-              <>
-                <Button variant="outline" size="icon" onClick={() => setIsEditing(true)}><Edit3 className="h-4 w-4" /></Button>
-                <Button variant="outline" size="icon" onClick={() => setShowDeleteDialog(true)}><Trash2 className="h-4 w-4" /></Button>
-              </>
-            ) : (
-              <>
-                <Button variant="outline" onClick={() => setIsEditing(false)}>Cancel</Button>
-                <Button onClick={handleSave}>Save</Button>
-              </>
-            )}
-          </div>
+          {!isEditing && (
+            <div className="flex gap-2">
+              <Button variant="outline" size="icon" onClick={() => setIsEditing(true)}><Edit3 className="h-4 w-4" /></Button>
+              <Button variant="outline" size="icon" onClick={() => setShowDeleteDialog(true)}><Trash2 className="h-4 w-4" /></Button>
+            </div>
+          )}
         </div>
       </div>
       
@@ -291,31 +284,51 @@ export default function TreatmentDetail() {
       </div>
       
       {/* Sticky Bottom Action Buttons */}
-      {!isEditing && (
-        <div className="sticky bottom-0 left-0 right-0 z-10 bg-background border-t">
-          <div className="container max-w-2xl mx-auto px-4 py-4 safe-bottom">
-            <div className="flex gap-3">
-              <Button 
-                onClick={() => setShowCancelDialog(true)} 
-                variant="outline" 
-                className="flex-1"
-                size="lg"
-              >
-                <X className="h-4 w-4 mr-2" />
-                Cancel
-              </Button>
-              <Button 
-                onClick={() => setShowCompleteModal(true)} 
-                className="flex-1"
-                size="lg"
-              >
-                <Check className="h-4 w-4 mr-2" />
-                Complete
-              </Button>
-            </div>
+      <div className="sticky bottom-0 left-0 right-0 z-10 bg-background border-t">
+        <div className="container max-w-2xl mx-auto px-4 py-4 safe-bottom">
+          <div className="flex gap-3">
+            {isEditing ? (
+              <>
+                <Button 
+                  onClick={() => setIsEditing(false)} 
+                  variant="outline" 
+                  className="flex-1"
+                  size="lg"
+                >
+                  Cancel
+                </Button>
+                <Button 
+                  onClick={handleSave} 
+                  className="flex-1"
+                  size="lg"
+                >
+                  Save
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button 
+                  onClick={() => setShowCancelDialog(true)} 
+                  variant="outline" 
+                  className="flex-1"
+                  size="lg"
+                >
+                  <X className="h-4 w-4 mr-2" />
+                  Cancel
+                </Button>
+                <Button 
+                  onClick={() => setShowCompleteModal(true)} 
+                  className="flex-1"
+                  size="lg"
+                >
+                  <Check className="h-4 w-4 mr-2" />
+                  Complete
+                </Button>
+              </>
+            )}
           </div>
         </div>
-      )}
+      </div>
 
       <CompleteTreatmentModal
         open={showCompleteModal}
