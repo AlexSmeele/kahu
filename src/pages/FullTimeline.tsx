@@ -18,6 +18,7 @@ export default function FullTimeline() {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const verticalScrollRef = useRef<HTMLDivElement>(null);
   const isScrollingRef = useRef(false);
+  const suppressObserverRef = useRef(true); // Suppress observer during initial scroll
   const observerRef = useRef<IntersectionObserver | null>(null);
   const { timelineData: rawTimelineData, loading, setShowFullTimeline } = useWellnessTimeline(dogId || '');
   
@@ -157,6 +158,11 @@ export default function FullTimeline() {
         ) as HTMLElement;
         if (selectedDateElement) {
           selectedDateElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          
+          // Re-enable observer after scroll completes
+          setTimeout(() => {
+            suppressObserverRef.current = false;
+          }, 600);
         }
       }, 100);
       
@@ -178,7 +184,7 @@ export default function FullTimeline() {
     
     const observer = new IntersectionObserver(
       (entries) => {
-        if (isScrollingRef.current) return; // Ignore during horizontal pill clicks
+        if (isScrollingRef.current || suppressObserverRef.current) return; // Ignore during horizontal pill clicks or initial scroll
         
         // Find the most visible day header in the top threshold
         const visibleEntries = entries
