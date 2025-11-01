@@ -33,13 +33,19 @@ export default function TreatmentDetail() {
     notes: "",
   });
   
-  const { treatments, updateTreatment, deleteTreatment } = useMedicalTreatments(dogId);
+  const { treatments, loading: treatmentsLoading, updateTreatment, deleteTreatment } = useMedicalTreatments(dogId);
   
   useEffect(() => {
     fetchTreatmentData();
   }, [treatmentId, dogId, treatments]);
   
   const fetchTreatmentData = async () => {
+    // Wait for treatments to finish loading before checking
+    if (treatmentsLoading) {
+      setLoading(true);
+      return;
+    }
+    
     setLoading(true);
     try {
       const found = treatments.find((t) => t.id === treatmentId);
@@ -52,7 +58,8 @@ export default function TreatmentDetail() {
           next_due_date: found.next_due_date || "",
           notes: found.notes || "",
         });
-      } else {
+      } else if (!treatmentsLoading) {
+        // Only show error if data has finished loading and still not found
         toast({
           title: "Treatment not found",
           description: "The requested treatment could not be found.",

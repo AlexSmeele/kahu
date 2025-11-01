@@ -96,11 +96,12 @@ export function useHealthData(dogId: string) {
         const change = previous ? latest.weight - previous.weight : 0;
         const trend = change > 0 ? `+${change.toFixed(1)}` : change < 0 ? change.toFixed(1) : '0';
         
+        const latestDate = new Date(latest.date);
         setWeightData({
           current: latest.weight,
           change,
           trend: `${trend} kg`,
-          lastUpdated: formatDistanceToNow(new Date(latest.date), { addSuffix: true }),
+          lastUpdated: isNaN(latestDate.getTime()) ? 'Unknown' : formatDistanceToNow(latestDate, { addSuffix: true }),
         });
       }
       return;
@@ -123,11 +124,12 @@ export function useHealthData(dogId: string) {
         const change = previous ? latest.weight - previous.weight : 0;
         const trend = change > 0 ? `+${change.toFixed(1)}` : change < 0 ? change.toFixed(1) : '0';
         
+        const latestDate = new Date(latest.date);
         setWeightData({
           current: latest.weight,
           change,
           trend: `${trend} kg`,
-          lastUpdated: formatDistanceToNow(new Date(latest.date), { addSuffix: true }),
+          lastUpdated: isNaN(latestDate.getTime()) ? 'Unknown' : formatDistanceToNow(latestDate, { addSuffix: true }),
         });
       } else {
         setWeightData(null);
@@ -147,19 +149,21 @@ export function useHealthData(dogId: string) {
       const healthRecords = MOCK_HEALTH_RECORDS.filter(r => r.dog_id === dogId).slice(0, 3);
       
       weightRecords.forEach((record) => {
+        const recordDate = new Date(record.date);
         records.push({
           id: record.id,
           type: 'weight',
           title: 'Weight Check',
           value: `${record.weight} kg`,
           date: record.date,
-          formattedDate: formatDistanceToNow(new Date(record.date), { addSuffix: true }),
+          formattedDate: isNaN(recordDate.getTime()) ? 'Unknown' : formatDistanceToNow(recordDate, { addSuffix: true }),
           icon: 'TrendingUp',
           color: 'text-success',
         });
       });
       
       healthRecords.forEach((record) => {
+        const recordDate = new Date(record.date);
         records.push({
           id: record.id,
           type: 'health',
@@ -167,7 +171,7 @@ export function useHealthData(dogId: string) {
           value: record.record_type === 'vaccination' ? 'Completed' : 
                  record.record_type === 'vet_visit' ? 'Visit' : 'Note',
           date: record.date,
-          formattedDate: formatDistanceToNow(new Date(record.date), { addSuffix: true }),
+          formattedDate: isNaN(recordDate.getTime()) ? 'Unknown' : formatDistanceToNow(recordDate, { addSuffix: true }),
           icon: record.record_type === 'vaccination' ? 'Calendar' : 
                 record.record_type === 'vet_visit' ? 'Heart' : 'AlertCircle',
           color: record.record_type === 'vaccination' ? 'text-primary' : 
@@ -193,13 +197,14 @@ export function useHealthData(dogId: string) {
 
       if (weightRecords) {
         weightRecords.forEach((record) => {
+          const recordDate = new Date(record.date);
           records.push({
             id: record.id,
             type: 'weight',
             title: 'Weight Check',
             value: `${record.weight} kg`,
             date: record.date,
-            formattedDate: formatDistanceToNow(new Date(record.date), { addSuffix: true }),
+            formattedDate: isNaN(recordDate.getTime()) ? 'Unknown' : formatDistanceToNow(recordDate, { addSuffix: true }),
             icon: 'TrendingUp',
             color: 'text-success',
           });
@@ -216,6 +221,7 @@ export function useHealthData(dogId: string) {
 
       if (healthRecords) {
         healthRecords.forEach((record) => {
+          const recordDate = new Date(record.date);
           records.push({
             id: record.id,
             type: 'health',
@@ -223,7 +229,7 @@ export function useHealthData(dogId: string) {
             value: record.record_type === 'vaccination' ? 'Completed' : 
                    record.record_type === 'vet_visit' ? 'Visit' : 'Note',
             date: record.date,
-            formattedDate: formatDistanceToNow(new Date(record.date), { addSuffix: true }),
+            formattedDate: isNaN(recordDate.getTime()) ? 'Unknown' : formatDistanceToNow(recordDate, { addSuffix: true }),
             icon: record.record_type === 'vaccination' ? 'Calendar' : 
                   record.record_type === 'vet_visit' ? 'Heart' : 'AlertCircle',
             color: record.record_type === 'vaccination' ? 'text-primary' : 
@@ -244,13 +250,14 @@ export function useHealthData(dogId: string) {
 
       if (trainingSessions) {
         trainingSessions.forEach((session) => {
+          const sessionDate = new Date(session.session_date);
           records.push({
             id: session.id,
             type: 'training',
             title: 'Training Session',
             value: session.progress_status || 'Practiced',
             date: session.session_date,
-            formattedDate: formatDistanceToNow(new Date(session.session_date), { addSuffix: true }),
+            formattedDate: isNaN(sessionDate.getTime()) ? 'Unknown' : formatDistanceToNow(sessionDate, { addSuffix: true }),
             icon: 'Award',
             color: 'text-primary',
           });
@@ -398,8 +405,9 @@ export function useHealthData(dogId: string) {
       const vetVisits = MOCK_HEALTH_RECORDS.filter(r => r.dog_id === dogId && r.record_type === 'vet_visit');
       if (vetVisits && vetVisits.length > 0) {
         const lastVisit = vetVisits[0];
+        const visitDate = new Date(lastVisit.date);
         setVetVisitData({
-          lastVisit: formatDistanceToNow(new Date(lastVisit.date), { addSuffix: true }),
+          lastVisit: isNaN(visitDate.getTime()) ? 'Unknown' : formatDistanceToNow(visitDate, { addSuffix: true }),
           total: vetVisits.length
         });
       } else {
@@ -421,8 +429,9 @@ export function useHealthData(dogId: string) {
 
       if (vetVisits && vetVisits.length > 0) {
         const lastVisit = vetVisits[0];
+        const visitDate = new Date(lastVisit.date);
         setVetVisitData({
-          lastVisit: formatDistanceToNow(new Date(lastVisit.date), { addSuffix: true }),
+          lastVisit: isNaN(visitDate.getTime()) ? 'Unknown' : formatDistanceToNow(visitDate, { addSuffix: true }),
           total: 1 // We'd count all visits in a real implementation
         });
       } else {
@@ -459,7 +468,7 @@ export function useHealthData(dogId: string) {
 
         setGroomingData({
           overdue: overdueCount,
-          nextDue: nextDue ? formatDistanceToNow(nextDue, { addSuffix: true }) : undefined,
+          nextDue: nextDue && !isNaN(nextDue.getTime()) ? formatDistanceToNow(nextDue, { addSuffix: true }) : undefined,
           total: schedules.length
         });
       } else {
@@ -494,7 +503,7 @@ export function useHealthData(dogId: string) {
 
         setGroomingData({
           overdue: overdueCount,
-          nextDue: nextDue ? formatDistanceToNow(nextDue, { addSuffix: true }) : undefined,
+          nextDue: nextDue && !isNaN(nextDue.getTime()) ? formatDistanceToNow(nextDue, { addSuffix: true }) : undefined,
           total: schedules.length
         });
       } else {
@@ -521,7 +530,7 @@ export function useHealthData(dogId: string) {
         const weeksSince = Math.floor((now.getTime() - lastDate.getTime()) / (7 * 24 * 60 * 60 * 1000));
 
         setCheckupData({
-          lastCheckup: formatDistanceToNow(lastDate, { addSuffix: true }),
+          lastCheckup: isNaN(lastDate.getTime()) ? 'Unknown' : formatDistanceToNow(lastDate, { addSuffix: true }),
           weeksSinceCheckup: weeksSince,
           total: checkups.length
         });
@@ -551,7 +560,7 @@ export function useHealthData(dogId: string) {
         const weeksSince = Math.floor((now.getTime() - lastDate.getTime()) / (7 * 24 * 60 * 60 * 1000));
 
         setCheckupData({
-          lastCheckup: formatDistanceToNow(lastDate, { addSuffix: true }),
+          lastCheckup: isNaN(lastDate.getTime()) ? 'Unknown' : formatDistanceToNow(lastDate, { addSuffix: true }),
           weeksSinceCheckup: weeksSince,
           total: checkups.length
         });
