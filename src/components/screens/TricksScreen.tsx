@@ -410,10 +410,12 @@ export function TricksScreen({ selectedDogId, onDogChange }: TricksScreenProps) 
             </div>
 
             {tricksByDifficulty.map(({ level, color, textColor, tricks: levelTricks }) => {
-              if (levelTricks.length === 0) return null;
+              // Filter out Foundation category tricks from Skills section
+              const skillsTricks = levelTricks.filter(t => t.category !== 'Foundation');
+              if (skillsTricks.length === 0) return null;
               
-              const levelCompleted = levelTricks.filter(t => learnedTricksMap.get(t.id)?.status === 'mastered').length;
-              const levelProgress = (levelCompleted / levelTricks.length) * 100;
+              const levelCompleted = skillsTricks.filter(t => learnedTricksMap.get(t.id)?.status === 'mastered').length;
+              const levelProgress = (levelCompleted / skillsTricks.length) * 100;
 
               return (
                 <div key={level} className="space-y-4">
@@ -426,7 +428,7 @@ export function TricksScreen({ selectedDogId, onDogChange }: TricksScreenProps) 
                       <div className="flex items-center justify-between">
                         <h2 className={`text-xl font-bold ${textColor}`}>{level}</h2>
                         <span className="text-sm text-muted-foreground">
-                          {levelCompleted}/{levelTricks.length}
+                          {levelCompleted}/{skillsTricks.length}
                         </span>
                       </div>
                       <Progress value={levelProgress} className="h-2 mt-1" />
@@ -435,7 +437,7 @@ export function TricksScreen({ selectedDogId, onDogChange }: TricksScreenProps) 
 
                   {/* Tricks Grid */}
                   <div className="grid gap-4">
-                  {levelTricks.map((trick) => {
+                  {skillsTricks.map((trick) => {
                       const unmetPrereqs = getUnmetPrerequisites(trick);
                       return (
                         <TrickCard
@@ -459,7 +461,7 @@ export function TricksScreen({ selectedDogId, onDogChange }: TricksScreenProps) 
 
         {/* Foundations Content */}
         {selectedSection === 'foundations' && (
-          <div className="p-4 space-y-4">
+          <div className="p-4 space-y-4 pb-8">
             <div className="bg-card rounded-xl p-3 border border-emerald-500/30">
               <div className="flex items-center gap-2">
                 <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-lg flex items-center justify-center flex-shrink-0">
@@ -484,6 +486,28 @@ export function TricksScreen({ selectedDogId, onDogChange }: TricksScreenProps) 
                   Learn the fundamental principles of dog training. This section covers essential concepts, techniques, and building blocks for successful training.
                 </p>
               )}
+            </div>
+
+            {/* Foundation Tricks Grid */}
+            <div className="grid gap-4">
+              {tricks
+                .filter(t => t.category === 'Foundation')
+                .sort((a, b) => (a.priority_order || 0) - (b.priority_order || 0))
+                .map((trick) => {
+                  const unmetPrereqs = getUnmetPrerequisites(trick);
+                  return (
+                    <TrickCard
+                      key={trick.id}
+                      trick={trick}
+                      dogTrick={learnedTricksMap.get(trick.id)}
+                      onStart={handleStart}
+                      onPractice={handlePractice}
+                      onTrickClick={handleTrickClick}
+                      hasUnmetPrerequisites={unmetPrereqs.length > 0}
+                      unmetPrerequisites={unmetPrereqs}
+                    />
+                  );
+                })}
             </div>
           </div>
         )}
