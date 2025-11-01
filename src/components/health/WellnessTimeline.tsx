@@ -6,12 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Calendar } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { VetVisitDetailModal } from "./VetVisitDetailModal";
-import { CheckupDetailModal } from "./CheckupDetailModal";
-import { VaccinationDetailModal } from "./VaccinationDetailModal";
-import { WeightDetailModal } from "./WeightDetailModal";
-import { TreatmentDetailModal } from "./TreatmentDetailModal";
-import { InjuryDetailModal } from "./InjuryDetailModal";
 import { WalkMapViewer } from "./WalkMapViewer";
 
 interface WellnessTimelineProps {
@@ -22,8 +16,6 @@ export function WellnessTimeline({ dogId }: WellnessTimelineProps) {
   const { timelineData, loading, showFullTimeline, setShowFullTimeline } = useWellnessTimeline(dogId);
   const navigate = useNavigate();
   const location = useLocation();
-  const [selectedEvent, setSelectedEvent] = useState<any>(null);
-  const [modalType, setModalType] = useState<string | null>(null);
   const [showMapViewer, setShowMapViewer] = useState(false);
 
   const handleEventClick = (event: any) => {
@@ -56,7 +48,7 @@ export function WellnessTimeline({ dogId }: WellnessTimelineProps) {
     const eventId = getId();
 
     // Routes that navigate to detail pages
-    const navigableTypes = ['activity', 'meal', 'grooming', 'treatment', 'injury'];
+    const navigableTypes = ['activity', 'meal', 'grooming', 'treatment', 'injury', 'vet_visit', 'vaccination', 'checkup', 'weight'];
     
     if (navigableTypes.includes(event.type)) {
       // Validate ID exists before navigating
@@ -78,6 +70,10 @@ export function WellnessTimeline({ dogId }: WellnessTimelineProps) {
         'grooming': `/grooming/${eventId}`,
         'treatment': `/treatment/${eventId}`,
         'injury': `/injury/${eventId}`,
+        'vet_visit': `/vet-visit/${eventId}`,
+        'vaccination': `/vaccination/${eventId}`,
+        'checkup': `/checkup/${eventId}`,
+        'weight': `/weight/${eventId}`,
       };
 
       const route = routeMap[event.type];
@@ -90,10 +86,6 @@ export function WellnessTimeline({ dogId }: WellnessTimelineProps) {
           } 
         });
       }
-    } else if (event.details) {
-      // For other types, open modal
-      setSelectedEvent(event.details);
-      setModalType(event.type);
     }
   };
   
@@ -236,85 +228,6 @@ export function WellnessTimeline({ dogId }: WellnessTimelineProps) {
           <WalkMapViewer dogId={dogId} />
         </DialogContent>
       </Dialog>
-
-      {/* Detail Modals */}
-      {selectedEvent && modalType === 'vet_visit' && (
-        <VetVisitDetailModal
-          open={true}
-          onOpenChange={(open) => {
-            if (!open) {
-              setSelectedEvent(null);
-              setModalType(null);
-            }
-          }}
-          visit={selectedEvent}
-        />
-      )}
-
-      {selectedEvent && modalType === 'checkup' && (
-        <CheckupDetailModal
-          open={true}
-          onOpenChange={(open) => {
-            if (!open) {
-              setSelectedEvent(null);
-              setModalType(null);
-            }
-          }}
-          checkup={selectedEvent}
-        />
-      )}
-
-      {selectedEvent && modalType === 'vaccination' && (
-        <VaccinationDetailModal
-          open={true}
-          onOpenChange={(open) => {
-            if (!open) {
-              setSelectedEvent(null);
-              setModalType(null);
-            }
-          }}
-          vaccination={selectedEvent}
-        />
-      )}
-
-      {selectedEvent && modalType === 'weight' && (
-        <WeightDetailModal
-          open={true}
-          onOpenChange={(open) => {
-            if (!open) {
-              setSelectedEvent(null);
-              setModalType(null);
-            }
-          }}
-          weight={selectedEvent}
-        />
-      )}
-
-      {selectedEvent && modalType === 'treatment' && (
-        <TreatmentDetailModal
-          open={true}
-          onOpenChange={(open) => {
-            if (!open) {
-              setSelectedEvent(null);
-              setModalType(null);
-            }
-          }}
-          treatment={selectedEvent}
-        />
-      )}
-
-      {selectedEvent && modalType === 'injury' && (
-        <InjuryDetailModal
-          open={true}
-          onOpenChange={(open) => {
-            if (!open) {
-              setSelectedEvent(null);
-              setModalType(null);
-            }
-          }}
-          injury={selectedEvent}
-        />
-      )}
     </>
   );
 }
