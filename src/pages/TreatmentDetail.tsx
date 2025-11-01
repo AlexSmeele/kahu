@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
-import { ArrowLeft, Edit3, Trash2, Pill, Calendar, Check, X } from "lucide-react";
+import { ArrowLeft, Edit3, Trash2, Pill, Calendar, Check, X, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -13,6 +13,7 @@ import { format, addWeeks } from "date-fns";
 import { useToast } from "@/hooks/use-toast";
 import { isMockDogId } from "@/lib/mockData";
 import { CompleteTreatmentModal } from "@/components/health/CompleteTreatmentModal";
+import { VetClinicAutocomplete } from "@/components/ui/vet-clinic-autocomplete";
 
 export default function TreatmentDetail() {
   const { treatmentId } = useParams();
@@ -28,12 +29,14 @@ export default function TreatmentDetail() {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [showCompleteModal, setShowCompleteModal] = useState(false);
   const [showCancelDialog, setShowCancelDialog] = useState(false);
+  const [selectedVetClinic, setSelectedVetClinic] = useState<any>(null);
   const [editForm, setEditForm] = useState({
     treatment_name: "",
     last_administered_date: "",
     frequency_weeks: "",
     next_due_date: "",
     notes: "",
+    vet_clinic_id: "",
   });
   
   const { treatments, loading: treatmentsLoading, updateTreatment, deleteTreatment } = useMedicalTreatments(dogId);
@@ -54,12 +57,14 @@ export default function TreatmentDetail() {
       const found = treatments.find((t) => t.id === treatmentId);
       if (found) {
         setTreatment(found);
+        setSelectedVetClinic((found as any).vet_clinic || null);
         setEditForm({
           treatment_name: found.treatment_name,
           last_administered_date: found.last_administered_date,
           frequency_weeks: found.frequency_weeks?.toString() || "",
           next_due_date: found.next_due_date || "",
           notes: found.notes || "",
+          vet_clinic_id: found.vet_clinic_id || "",
         });
       } else if (!treatmentsLoading) {
         // Only show error if data has finished loading and still not found
@@ -99,8 +104,9 @@ export default function TreatmentDetail() {
         frequency_weeks: editForm.frequency_weeks ? parseInt(editForm.frequency_weeks) : undefined,
         next_due_date: editForm.next_due_date || undefined,
         notes: editForm.notes,
+        vet_clinic_id: selectedVetClinic?.id || null,
       });
-      setTreatment({ ...treatment, ...editForm });
+      setTreatment({ ...treatment, ...editForm, vet_clinic: selectedVetClinic });
       setIsEditing(false);
       toast({ title: "Success", description: "Treatment updated successfully." });
     } catch (error) {
@@ -141,6 +147,7 @@ export default function TreatmentDetail() {
           frequency_weeks: updated.frequency_weeks?.toString() || "",
           next_due_date: updated.next_due_date || "",
           notes: updated.notes || "",
+          vet_clinic_id: updated.vet_clinic_id || "",
         });
       }
     } catch (error) {
@@ -246,12 +253,35 @@ export default function TreatmentDetail() {
                 <div className="space-y-2"><Label>Treatment Name *</Label><Input value={editForm.treatment_name} onChange={(e) => setEditForm({ ...editForm, treatment_name: e.target.value })} /></div>
                 <div className="space-y-2"><Label>Frequency (weeks)</Label><Input type="number" value={editForm.frequency_weeks} onChange={(e) => setEditForm({ ...editForm, frequency_weeks: e.target.value })} /></div>
                 <div className="space-y-2"><Label>Next Due Date</Label><Input type="date" value={editForm.next_due_date} onChange={(e) => setEditForm({ ...editForm, next_due_date: e.target.value })} /></div>
+                <div className="space-y-2">
+                  <Label>Veterinary Clinic</Label>
+                  <VetClinicAutocomplete
+                    value={selectedVetClinic}
+                    onChange={setSelectedVetClinic}
+                    placeholder="Search for clinic..."
+                  />
+                </div>
                 <div className="space-y-2"><Label>Notes</Label><Textarea value={editForm.notes} onChange={(e) => setEditForm({ ...editForm, notes: e.target.value })} /></div>
               </>
             ) : (
               <>
                 <div><p className="text-sm text-muted-foreground">Treatment</p><p className="text-lg font-semibold">{treatment.treatment_name}</p></div>
                 {treatment.frequency_weeks && <div><p className="text-sm text-muted-foreground">Frequency</p><p className="font-medium">Every {treatment.frequency_weeks} weeks</p></div>}
+                {treatment.vet_clinic && (
+                  <div>
+                    <p className="text-sm text-muted-foreground">Veterinary Clinic</p>
+                    <div className="flex items-start gap-2 mt-1">
+                      <MapPin className="h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0" />
+                      <div>
+                        <p className="font-medium">{treatment.vet_clinic.name}</p>
+                        <p className="text-sm text-muted-foreground">{treatment.vet_clinic.address}</p>
+                        {treatment.vet_clinic.phone && (
+                          <p className="text-sm text-muted-foreground">{treatment.vet_clinic.phone}</p>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                )}
                 {treatment.notes && <div><p className="text-sm text-muted-foreground">Notes</p><p className="text-sm">{treatment.notes}</p></div>}
               </>
             )}

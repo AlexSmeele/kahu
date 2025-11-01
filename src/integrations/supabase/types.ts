@@ -1134,6 +1134,7 @@ export type Database = {
           notes: string | null
           treatment_name: string
           updated_at: string
+          vet_clinic_id: string | null
         }
         Insert: {
           created_at?: string
@@ -1145,6 +1146,7 @@ export type Database = {
           notes?: string | null
           treatment_name: string
           updated_at?: string
+          vet_clinic_id?: string | null
         }
         Update: {
           created_at?: string
@@ -1156,8 +1158,17 @@ export type Database = {
           notes?: string | null
           treatment_name?: string
           updated_at?: string
+          vet_clinic_id?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "medical_treatments_vet_clinic_id_fkey"
+            columns: ["vet_clinic_id"]
+            isOneToOne: false
+            referencedRelation: "vet_clinics"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       message_reports: {
         Row: {

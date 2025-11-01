@@ -11,6 +11,7 @@ export interface MedicalTreatment {
   frequency_weeks: number;
   next_due_date: string | null;
   notes: string | null;
+  vet_clinic_id: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -41,6 +42,7 @@ export const useMedicalTreatments = (dogId: string) => {
           frequency_weeks: 8,
           next_due_date: nextDue.toISOString(),
           notes: 'Allergy treatment - administered every 8 weeks',
+          vet_clinic_id: null,
           created_at: now.toISOString(),
           updated_at: now.toISOString(),
         },
@@ -55,7 +57,10 @@ export const useMedicalTreatments = (dogId: string) => {
       console.log('Fetching medical treatments for dog:', dogId);
       const { data, error } = await supabase
         .from('medical_treatments')
-        .select('*')
+        .select(`
+          *,
+          vet_clinic:vet_clinics(id, name, address, phone)
+        `)
         .eq('dog_id', dogId)
         .order('next_due_date', { ascending: true });
 
