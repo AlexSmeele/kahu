@@ -258,89 +258,89 @@ export function TricksScreen({ selectedDogId, onDogChange }: TricksScreenProps) 
       </div>
       
       {/* Stats Header */}
-      <div className="bg-white/80 dark:bg-card/80 backdrop-blur-sm border-b p-4 flex-shrink-0">
+      <div className="bg-white/80 dark:bg-card/80 backdrop-blur-sm border-b p-2.5 flex-shrink-0">
         {/* Overall Progress */}
-        <div className="space-y-2">
-          <div className="flex justify-between text-sm">
+        <div className="space-y-1">
+          <div className="flex justify-between text-xs">
             <span className="font-medium">Overall Progress</span>
             <span className="text-primary font-bold">{Math.round(overallProgress)}%</span>
           </div>
-          <Progress value={overallProgress} className="h-3" />
+          <Progress value={overallProgress} className="h-2" />
         </div>
 
         {/* Quick Stats */}
-        <div className="flex justify-between mt-4 text-center">
+        <div className="flex justify-between mt-2 text-center">
           <div className="flex-1">
-            <div className="text-lg font-bold text-green-600">{completedCount}</div>
-            <div className="text-xs text-muted-foreground">Completed</div>
+            <div className="text-base font-bold text-green-600">{completedCount}</div>
+            <div className="text-[10px] text-muted-foreground">Completed</div>
           </div>
           <div className="flex-1">
-            <div className="text-lg font-bold text-blue-600">{inProgressCount}</div>
-            <div className="text-xs text-muted-foreground">In Progress</div>
+            <div className="text-base font-bold text-blue-600">{inProgressCount}</div>
+            <div className="text-[10px] text-muted-foreground">In Progress</div>
           </div>
           <div className="flex-1">
-            <div className="text-lg font-bold text-gray-600">{totalTricks - completedCount - inProgressCount}</div>
-            <div className="text-xs text-muted-foreground">Remaining</div>
+            <div className="text-base font-bold text-gray-600">{totalTricks - completedCount - inProgressCount}</div>
+            <div className="text-[10px] text-muted-foreground">Remaining</div>
           </div>
         </div>
       </div>
 
       {/* Button Navigation */}
-      <div className="bg-white/80 dark:bg-card/80 backdrop-blur-sm border-b px-4 py-6 flex-shrink-0">
-        <div className="space-y-3">
+      <div className="bg-white/80 dark:bg-card/80 backdrop-blur-sm border-b px-4 py-3 flex-shrink-0">
+        <div className="space-y-2">
           {/* Main Button - Training Program */}
           <Button
             onClick={() => setSelectedSection('program')}
             variant={selectedSection === 'program' ? 'default' : 'outline'}
-            className={`w-full h-14 rounded-2xl flex items-center justify-center gap-3 text-lg font-bold transition-all ${
+            className={`w-full h-11 rounded-2xl flex items-center justify-center gap-2.5 text-base font-bold transition-all ${
               selectedSection === 'program' 
                 ? 'bg-gradient-to-r from-primary to-primary-hover shadow-lg scale-105' 
                 : 'hover:bg-accent'
             }`}
           >
-            <Trophy className="w-7 h-7" />
+            <Trophy className="w-5 h-5" />
             <span>Training Program</span>
           </Button>
 
           {/* Three Buttons Row */}
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-3 gap-2">
             <Button
               onClick={() => setSelectedSection('foundations')}
               variant={selectedSection === 'foundations' ? 'default' : 'outline'}
-              className={`h-16 rounded-2xl flex flex-col items-center justify-center gap-2 font-semibold transition-all ${
+              className={`h-14 rounded-2xl flex flex-col items-center justify-center gap-1.5 font-semibold transition-all ${
                 selectedSection === 'foundations'
                   ? 'bg-gradient-to-br from-emerald-500 to-emerald-600 text-white shadow-lg scale-105'
                   : 'hover:bg-accent'
               }`}
             >
-              <GraduationCap className="w-6 h-6" />
-              <span className="text-sm">Foundations</span>
+              <GraduationCap className="w-5 h-5" />
+              <span className="text-xs">Foundations</span>
             </Button>
 
             <Button
               onClick={() => setSelectedSection('skills')}
               variant={selectedSection === 'skills' ? 'default' : 'outline'}
-              className={`h-16 rounded-2xl flex flex-col items-center justify-center gap-2 font-semibold transition-all ${
+              className={`h-14 rounded-2xl flex flex-col items-center justify-center gap-1.5 font-semibold transition-all ${
                 selectedSection === 'skills'
                   ? 'bg-gradient-to-br from-primary to-primary-hover shadow-lg scale-105'
                   : 'hover:bg-accent'
               }`}
             >
-              <Award className="w-6 h-6" />
-              <span className="text-sm">Skills</span>
+              <Award className="w-5 h-5" />
+              <span className="text-xs">Skills</span>
             </Button>
 
             <Button
               onClick={() => setSelectedSection('troubleshooting')}
               variant={selectedSection === 'troubleshooting' ? 'default' : 'outline'}
-              className={`h-16 rounded-2xl flex flex-col items-center justify-center gap-2 font-semibold transition-all ${
+              className={`h-14 rounded-2xl flex flex-col items-center justify-center gap-1.5 font-semibold transition-all ${
                 selectedSection === 'troubleshooting'
                   ? 'bg-gradient-to-br from-orange-500 to-orange-600 text-white shadow-lg scale-105'
                   : 'hover:bg-accent'
               }`}
             >
-              <AlertCircle className="w-6 h-6" />
-              <span className="text-sm">Troubleshooting</span>
+              <AlertCircle className="w-5 h-5" />
+              <span className="text-xs">Troubleshooting</span>
             </Button>
           </div>
         </div>
