@@ -192,22 +192,24 @@ export default function TreatmentDetail() {
     <div className="min-h-screen bg-background flex flex-col">
       <div className="sticky top-0 z-10 bg-background/95 backdrop-blur border-b">
         <div className="container max-w-2xl mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <Button variant="ghost" size="icon" onClick={() => {
-              const from = location.state?.from || '/?tab=wellness';
-              navigate(from);
-            }}>
-              <ArrowLeft className="h-5 w-5" />
-            </Button>
-            <Pill className="h-6 w-6 text-primary" />
-            <h1 className="text-xl font-semibold">Treatment Details</h1>
-          </div>
-          {!isEditing && (
-            <div className="flex gap-2">
-              <Button variant="outline" size="icon" onClick={() => setIsEditing(true)}><Edit3 className="h-4 w-4" /></Button>
-              <Button variant="outline" size="icon" onClick={() => setShowDeleteDialog(true)}><Trash2 className="h-4 w-4" /></Button>
+          <div className="flex items-center justify-between w-full">
+            <div className="flex items-center gap-3">
+              <Button variant="ghost" size="icon" onClick={() => {
+                const from = location.state?.from || '/?tab=wellness';
+                navigate(from);
+              }}>
+                <ArrowLeft className="h-5 w-5" />
+              </Button>
+              <Pill className="h-6 w-6 text-primary" />
+              <h1 className="text-xl font-semibold">Treatment Details</h1>
             </div>
-          )}
+            {!isEditing && (
+              <div className="flex gap-2">
+                <Button variant="outline" size="icon" onClick={() => setIsEditing(true)}><Edit3 className="h-4 w-4" /></Button>
+                <Button variant="outline" size="icon" onClick={() => setShowDeleteDialog(true)}><Trash2 className="h-4 w-4" /></Button>
+              </div>
+            )}
+          </div>
         </div>
       </div>
       
