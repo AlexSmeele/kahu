@@ -27,6 +27,11 @@ export function WellnessTimeline({ dogId }: WellnessTimelineProps) {
   const [showMapViewer, setShowMapViewer] = useState(false);
 
   const handleEventClick = (event: any) => {
+    // Skip navigation for informational-only events
+    if (event.type === 'bowl_cleaning' || event.type === 'treat') {
+      return; // These events are informational-only
+    }
+    
     // Helper function to save scroll position
     const saveScrollPosition = () => {
       const scrollableContainer = document.querySelector('.overflow-y-auto');
@@ -51,7 +56,7 @@ export function WellnessTimeline({ dogId }: WellnessTimelineProps) {
     const eventId = getId();
 
     // Routes that navigate to detail pages
-    const navigableTypes = ['activity', 'meal', 'grooming'];
+    const navigableTypes = ['activity', 'meal', 'grooming', 'treatment', 'injury'];
     
     if (navigableTypes.includes(event.type)) {
       // Validate ID exists before navigating
@@ -71,6 +76,8 @@ export function WellnessTimeline({ dogId }: WellnessTimelineProps) {
         'activity': `/activity/${eventId}`,
         'meal': `/meal/${eventId}`,
         'grooming': `/grooming/${eventId}`,
+        'treatment': `/treatment/${eventId}`,
+        'injury': `/injury/${eventId}`,
       };
 
       const route = routeMap[event.type];

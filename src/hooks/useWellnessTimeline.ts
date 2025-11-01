@@ -25,7 +25,7 @@ import {
 
 export interface TimelineEvent {
   id: string;
-  type: 'activity' | 'meal' | 'weight' | 'grooming' | 'vet_visit' | 'vaccination' | 'checkup' | 'treatment' | 'treat';
+  type: 'activity' | 'meal' | 'weight' | 'grooming' | 'vet_visit' | 'vaccination' | 'checkup' | 'treatment' | 'treat' | 'bowl_cleaning' | 'injury';
   title: string;
   timestamp: Date;
   icon: LucideIcon;
@@ -281,7 +281,7 @@ export function useWellnessTimeline(dogId: string) {
       if (nutritionPlan?.bowl_last_cleaned) {
         events.push({
           id: `food-bowl-cleaned-${nutritionPlan.bowl_last_cleaned}`,
-          type: 'meal',
+          type: 'bowl_cleaning',
           title: 'Food Bowl Cleaned',
           timestamp: new Date(nutritionPlan.bowl_last_cleaned),
           icon: Droplet,
@@ -292,7 +292,7 @@ export function useWellnessTimeline(dogId: string) {
       if (nutritionPlan?.water_bowl_last_cleaned) {
         events.push({
           id: `water-bowl-cleaned-${nutritionPlan.water_bowl_last_cleaned}`,
-          type: 'meal',
+          type: 'bowl_cleaning',
           title: 'Water Bowl Cleaned',
           timestamp: new Date(nutritionPlan.water_bowl_last_cleaned),
           icon: Droplet,
