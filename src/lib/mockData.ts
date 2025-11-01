@@ -126,6 +126,58 @@ export const MOCK_WEIGHT_RECORDS = [
 ];
 
 // Define trick objects first
+const TRICK_PREPARE = {
+  id: 'f1a2b3c4-5d6e-7f8a-9b0c-1d2e3f4a5b6c',
+  name: 'Prepare for your dog',
+  category: 'Foundation',
+  description: 'Essential preparation before bringing your dog home.',
+  instructions: 'Get your home ready: puppy-proof spaces, set up a designated area with bed, crate, food/water bowls. Purchase essentials: food, collar, leash, ID tag, toys, grooming supplies. Research veterinarians and trainers in your area. Plan your schedule for the first few weeks to ensure you can dedicate time to your new companion.',
+  difficulty_level: 1,
+  estimated_time_weeks: 1,
+  prerequisites: [],
+  priority_order: 1,
+  created_at: new Date().toISOString(),
+};
+
+const TRICK_FIRST_DAYS = {
+  id: 'a2b3c4d5-6e7f-8a9b-0c1d-2e3f4a5b6c7d',
+  name: 'First days at home',
+  category: 'Foundation',
+  description: 'Making your dog comfortable in their new environment.',
+  instructions: 'Keep the first few days calm and quiet. Establish a routine for feeding, potty breaks, and sleep. Let your dog explore at their own pace. Introduce family members gradually. Start building trust through gentle interaction, play, and positive reinforcement. Avoid overwhelming your dog with too many new experiences at once.',
+  difficulty_level: 1,
+  estimated_time_weeks: 1,
+  prerequisites: ['Prepare for your dog'],
+  priority_order: 2,
+  created_at: new Date().toISOString(),
+};
+
+const TRICK_CRATE_TRAINING = {
+  id: 'b3c4d5e6-7f8a-9b0c-1d2e-3f4a5b6c7d8e',
+  name: 'Crate training',
+  category: 'Foundation',
+  description: 'Teaching your dog to be comfortable in their crate.',
+  instructions: 'Make the crate inviting with comfortable bedding and toys. Start with short periods, gradually increasing duration. Never use the crate as punishment. Feed meals in the crate. Reward calm behavior inside. The crate becomes a safe den where your dog can relax. This is essential for house training, travel, and providing your dog with their own space.',
+  difficulty_level: 1,
+  estimated_time_weeks: 2,
+  prerequisites: ['First days at home'],
+  priority_order: 3,
+  created_at: new Date().toISOString(),
+};
+
+const TRICK_POTTY_TRAINING = {
+  id: 'c4d5e6f7-8a9b-0c1d-2e3f-4a5b6c7d8e9f',
+  name: 'Potty training',
+  category: 'Foundation',
+  description: 'Teaching your dog where and when to eliminate.',
+  instructions: 'Take your dog out frequently: after waking, eating, playing, and every 2-3 hours. Choose a specific potty spot and use a cue word. Reward immediately after elimination. Watch for signs like sniffing or circling. Clean accidents with enzymatic cleaner. Be patient and consistent - it typically takes 4-6 months for full house training.',
+  difficulty_level: 1,
+  estimated_time_weeks: 8,
+  prerequisites: ['First days at home'],
+  priority_order: 4,
+  created_at: new Date().toISOString(),
+};
+
 const TRICK_SIT = {
   id: 'bbc0357d-2d9e-4ae1-8ac8-e9af77a82852',
   name: 'Sit',
@@ -135,7 +187,7 @@ const TRICK_SIT = {
   difficulty_level: 1,
   estimated_time_weeks: 1,
   prerequisites: [],
-  priority_order: 1,
+  priority_order: 5,
   created_at: new Date().toISOString(),
 };
 
@@ -148,7 +200,7 @@ const TRICK_BOND_GAZE = {
   difficulty_level: 1,
   estimated_time_weeks: 1,
   prerequisites: ['Sit'],
-  priority_order: 2,
+  priority_order: 6,
   created_at: new Date().toISOString(),
 };
 
@@ -161,7 +213,7 @@ const TRICK_ZEN_SIT = {
   difficulty_level: 1,
   estimated_time_weeks: 1,
   prerequisites: ['Sit'],
-  priority_order: 3,
+  priority_order: 7,
   created_at: new Date().toISOString(),
 };
 
@@ -174,7 +226,7 @@ const TRICK_DOWN = {
   difficulty_level: 1,
   estimated_time_weeks: 2,
   prerequisites: ['Sit'],
-  priority_order: 4,
+  priority_order: 8,
   created_at: new Date().toISOString(),
 };
 
@@ -187,7 +239,7 @@ const TRICK_ZEN_DOWN = {
   difficulty_level: 1,
   estimated_time_weeks: 1,
   prerequisites: ['Down (Lie Down)'],
-  priority_order: 5,
+  priority_order: 9,
   created_at: new Date().toISOString(),
 };
 
@@ -200,7 +252,7 @@ const TRICK_WAIT = {
   difficulty_level: 1,
   estimated_time_weeks: 1,
   prerequisites: ['Sit'],
-  priority_order: 6,
+  priority_order: 10,
   created_at: new Date().toISOString(),
 };
 
@@ -213,7 +265,7 @@ const TRICK_STAY = {
   difficulty_level: 2,
   estimated_time_weeks: 2,
   prerequisites: ['Down (Lie Down)'],
-  priority_order: 7,
+  priority_order: 11,
   created_at: new Date().toISOString(),
 };
 
@@ -226,7 +278,7 @@ const TRICK_WRONG = {
   difficulty_level: 1,
   estimated_time_weeks: 1,
   prerequisites: [],
-  priority_order: 8,
+  priority_order: 12,
   created_at: new Date().toISOString(),
 };
 
@@ -239,7 +291,7 @@ const TRICK_NO = {
   difficulty_level: 2,
   estimated_time_weeks: 2,
   prerequisites: ['Wrong'],
-  priority_order: 9,
+  priority_order: 13,
   created_at: new Date().toISOString(),
 };
 
@@ -252,7 +304,7 @@ const TRICK_LEAVE_IT = {
   difficulty_level: 2,
   estimated_time_weeks: 2,
   prerequisites: ['Wait'],
-  priority_order: 10,
+  priority_order: 14,
   created_at: new Date().toISOString(),
 };
 
@@ -265,7 +317,7 @@ const TRICK_OFF = {
   difficulty_level: 1,
   estimated_time_weeks: 1,
   prerequisites: [],
-  priority_order: 11,
+  priority_order: 15,
   created_at: new Date().toISOString(),
 };
 
@@ -278,7 +330,7 @@ const TRICK_MAT = {
   difficulty_level: 2,
   estimated_time_weeks: 2,
   prerequisites: ['Down (Lie Down)'],
-  priority_order: 12,
+  priority_order: 16,
   created_at: new Date().toISOString(),
 };
 
@@ -291,7 +343,7 @@ const TRICK_HEEL = {
   difficulty_level: 3,
   estimated_time_weeks: 3,
   prerequisites: ['Come / Recall'],
-  priority_order: 13,
+  priority_order: 17,
   created_at: new Date().toISOString(),
 };
 
@@ -304,7 +356,7 @@ const TRICK_COME = {
   difficulty_level: 1,
   estimated_time_weeks: 3,
   prerequisites: [],
-  priority_order: 14,
+  priority_order: 18,
   created_at: new Date().toISOString(),
 };
 
@@ -317,11 +369,60 @@ const TRICK_NICELY = {
   difficulty_level: 2,
   estimated_time_weeks: 2,
   prerequisites: ['Zen Sit', 'Wait'],
-  priority_order: 15,
+  priority_order: 19,
   created_at: new Date().toISOString(),
 };
 
 export const MOCK_DOG_TRICKS = [
+  // Foundation training for Suki
+  {
+    id: '00000000-0000-0000-0000-000000000031A',
+    dog_id: MOCK_DOG_IDS.SUKI,
+    trick_id: TRICK_PREPARE.id,
+    status: 'mastered' as const,
+    total_sessions: 1,
+    started_at: '2025-01-01T10:00:00Z',
+    mastered_at: '2025-01-01T12:00:00Z',
+    created_at: '2025-01-01T10:00:00Z',
+    updated_at: new Date().toISOString(),
+    trick: TRICK_PREPARE,
+  },
+  {
+    id: '00000000-0000-0000-0000-000000000031C',
+    dog_id: MOCK_DOG_IDS.SUKI,
+    trick_id: TRICK_FIRST_DAYS.id,
+    status: 'mastered' as const,
+    total_sessions: 3,
+    started_at: '2025-01-02T10:00:00Z',
+    mastered_at: '2025-01-05T10:00:00Z',
+    created_at: '2025-01-02T10:00:00Z',
+    updated_at: new Date().toISOString(),
+    trick: TRICK_FIRST_DAYS,
+  },
+  {
+    id: '00000000-0000-0000-0000-000000000031D',
+    dog_id: MOCK_DOG_IDS.SUKI,
+    trick_id: TRICK_CRATE_TRAINING.id,
+    status: 'learning' as const,
+    total_sessions: 8,
+    started_at: '2025-01-03T10:00:00Z',
+    mastered_at: null,
+    created_at: '2025-01-03T10:00:00Z',
+    updated_at: new Date().toISOString(),
+    trick: TRICK_CRATE_TRAINING,
+  },
+  {
+    id: '00000000-0000-0000-0000-000000000031E',
+    dog_id: MOCK_DOG_IDS.SUKI,
+    trick_id: TRICK_POTTY_TRAINING.id,
+    status: 'learning' as const,
+    total_sessions: 12,
+    started_at: '2025-01-03T11:00:00Z',
+    mastered_at: null,
+    created_at: '2025-01-03T11:00:00Z',
+    updated_at: new Date().toISOString(),
+    trick: TRICK_POTTY_TRAINING,
+  },
   // All 14 priority tricks for Suki (prerequisites mastered, rest learning)
   {
     id: '00000000-0000-0000-0000-000000000031',
@@ -502,6 +603,55 @@ export const MOCK_DOG_TRICKS = [
     created_at: '2025-01-28T10:00:00Z',
     updated_at: new Date().toISOString(),
     trick: TRICK_NICELY,
+  },
+  // Foundation training for Jett
+  {
+    id: '00000000-0000-0000-0000-000000000041A',
+    dog_id: MOCK_DOG_IDS.JETT,
+    trick_id: TRICK_PREPARE.id,
+    status: 'mastered' as const,
+    total_sessions: 1,
+    started_at: '2025-01-05T11:00:00Z',
+    mastered_at: '2025-01-05T13:00:00Z',
+    created_at: '2025-01-05T11:00:00Z',
+    updated_at: new Date().toISOString(),
+    trick: TRICK_PREPARE,
+  },
+  {
+    id: '00000000-0000-0000-0000-000000000041C',
+    dog_id: MOCK_DOG_IDS.JETT,
+    trick_id: TRICK_FIRST_DAYS.id,
+    status: 'mastered' as const,
+    total_sessions: 3,
+    started_at: '2025-01-06T11:00:00Z',
+    mastered_at: '2025-01-09T11:00:00Z',
+    created_at: '2025-01-06T11:00:00Z',
+    updated_at: new Date().toISOString(),
+    trick: TRICK_FIRST_DAYS,
+  },
+  {
+    id: '00000000-0000-0000-0000-000000000041D',
+    dog_id: MOCK_DOG_IDS.JETT,
+    trick_id: TRICK_CRATE_TRAINING.id,
+    status: 'learning' as const,
+    total_sessions: 7,
+    started_at: '2025-01-07T11:00:00Z',
+    mastered_at: null,
+    created_at: '2025-01-07T11:00:00Z',
+    updated_at: new Date().toISOString(),
+    trick: TRICK_CRATE_TRAINING,
+  },
+  {
+    id: '00000000-0000-0000-0000-000000000041E',
+    dog_id: MOCK_DOG_IDS.JETT,
+    trick_id: TRICK_POTTY_TRAINING.id,
+    status: 'learning' as const,
+    total_sessions: 10,
+    started_at: '2025-01-07T12:00:00Z',
+    mastered_at: null,
+    created_at: '2025-01-07T12:00:00Z',
+    updated_at: new Date().toISOString(),
+    trick: TRICK_POTTY_TRAINING,
   },
   // All 14 priority tricks for Jett (prerequisites mastered, rest learning)
   {
@@ -1761,6 +1911,10 @@ export const MOCK_TRAINING_SESSIONS: any[] = [
 ];
 
 export const MOCK_TRICKS = [
+  TRICK_PREPARE,
+  TRICK_FIRST_DAYS,
+  TRICK_CRATE_TRAINING,
+  TRICK_POTTY_TRAINING,
   TRICK_SIT,
   TRICK_BOND_GAZE,
   TRICK_ZEN_SIT,
