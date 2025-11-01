@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
-import { ArrowLeft, Edit3, Trash2, Pill, Calendar } from "lucide-react";
+import { ArrowLeft, Edit3, Trash2, Pill, Calendar, Check, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -9,9 +9,10 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { useMedicalTreatments } from "@/hooks/useMedicalTreatments";
-import { format } from "date-fns";
+import { format, addWeeks } from "date-fns";
 import { useToast } from "@/hooks/use-toast";
 import { isMockDogId } from "@/lib/mockData";
+import { CompleteTreatmentModal } from "@/components/health/CompleteTreatmentModal";
 
 export default function TreatmentDetail() {
   const { treatmentId } = useParams();
@@ -25,6 +26,8 @@ export default function TreatmentDetail() {
   const [loading, setLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [showCompleteModal, setShowCompleteModal] = useState(false);
+  const [showCancelDialog, setShowCancelDialog] = useState(false);
   const [editForm, setEditForm] = useState({
     treatment_name: "",
     last_administered_date: "",
@@ -105,6 +108,61 @@ export default function TreatmentDetail() {
     }
   };
   
+  const handleComplete = async (completionDateTime: Date) => {
+    if (isMockDogId(dogId)) {
+      toast({ title: "Demo Mode", description: "Completing treatments is disabled for demo dogs." });
+      return;
+    }
+
+    try {
+      // Calculate next due date if frequency is set
+      let nextDueDate = null;
+      if (treatment.frequency_weeks) {
+        nextDueDate = addWeeks(completionDateTime, treatment.frequency_weeks).toISOString();
+      }
+
+      await updateTreatment(treatmentId!, {
+        last_administered_date: completionDateTime.toISOString(),
+        next_due_date: nextDueDate,
+      });
+
+      toast({
+        title: "Treatment Completed",
+        description: `${treatment.treatment_name} marked as completed on ${format(completionDateTime, "PPP 'at' p")}`,
+      });
+
+      // Refresh treatment data
+      const updated = treatments.find((t) => t.id === treatmentId);
+      if (updated) {
+        setTreatment(updated);
+        setEditForm({
+          treatment_name: updated.treatment_name,
+          last_administered_date: updated.last_administered_date,
+          frequency_weeks: updated.frequency_weeks?.toString() || "",
+          next_due_date: updated.next_due_date || "",
+          notes: updated.notes || "",
+        });
+      }
+    } catch (error) {
+      toast({ title: "Error", description: "Failed to complete treatment.", variant: "destructive" });
+    }
+  };
+
+  const handleCancel = async () => {
+    if (isMockDogId(dogId)) {
+      toast({ title: "Demo Mode", description: "Canceling treatments is disabled for demo dogs." });
+      setShowCancelDialog(false);
+      return;
+    }
+    try {
+      await deleteTreatment(treatmentId!);
+      toast({ title: "Success", description: "Treatment schedule canceled." });
+      navigate(-1);
+    } catch (error) {
+      toast({ title: "Error", description: "Failed to cancel treatment.", variant: "destructive" });
+    }
+  };
+  
   const handleDelete = async () => {
     if (isMockDogId(dogId)) {
       toast({ title: "Demo Mode", description: "Deleting is disabled for demo dogs." });
@@ -149,11 +207,33 @@ export default function TreatmentDetail() {
       </div>
       
       <div className="container max-w-2xl mx-auto px-4 py-6 space-y-6">
+        {!isEditing && (
+          <div className="flex gap-3">
+            <Button 
+              onClick={() => setShowCompleteModal(true)} 
+              className="flex-1"
+              size="lg"
+            >
+              <Check className="h-4 w-4 mr-2" />
+              Complete Treatment
+            </Button>
+            <Button 
+              onClick={() => setShowCancelDialog(true)} 
+              variant="outline" 
+              className="flex-1"
+              size="lg"
+            >
+              <X className="h-4 w-4 mr-2" />
+              Cancel Schedule
+            </Button>
+          </div>
+        )}
+
         <Card>
           <CardContent className="pt-6">
             <div className="flex items-center gap-3">
               <Calendar className="h-5 w-5 text-muted-foreground" />
-              <div>
+              <div className="flex-1">
                 <p className="text-sm text-muted-foreground">Last Administered</p>
                 {isEditing ? (
                   <Input type="date" value={editForm.last_administered_date} onChange={(e) => setEditForm({ ...editForm, last_administered_date: e.target.value })} />
@@ -162,6 +242,15 @@ export default function TreatmentDetail() {
                 )}
               </div>
             </div>
+            {treatment.next_due_date && !isEditing && (
+              <div className="mt-4 pt-4 border-t flex items-center gap-3">
+                <Calendar className="h-5 w-5 text-muted-foreground" />
+                <div>
+                  <p className="text-sm text-muted-foreground">Next Due</p>
+                  <p className="font-medium">{format(new Date(treatment.next_due_date), "MMMM d, yyyy")}</p>
+                </div>
+              </div>
+            )}
           </CardContent>
         </Card>
         
@@ -186,6 +275,28 @@ export default function TreatmentDetail() {
         </Card>
       </div>
       
+      <CompleteTreatmentModal
+        open={showCompleteModal}
+        onOpenChange={setShowCompleteModal}
+        treatmentName={treatment?.treatment_name || ""}
+        onComplete={handleComplete}
+      />
+
+      <AlertDialog open={showCancelDialog} onOpenChange={setShowCancelDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Cancel Treatment Schedule</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to cancel this treatment schedule? This will remove the treatment from your records.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Keep Schedule</AlertDialogCancel>
+            <AlertDialogAction onClick={handleCancel}>Cancel Schedule</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
       <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
         <AlertDialogContent>
           <AlertDialogHeader><AlertDialogTitle>Delete Treatment</AlertDialogTitle><AlertDialogDescription>Are you sure? This cannot be undone.</AlertDialogDescription></AlertDialogHeader>
