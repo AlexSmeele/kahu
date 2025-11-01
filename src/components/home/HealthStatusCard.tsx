@@ -1,4 +1,5 @@
 import { Heart, AlertTriangle } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { useWellnessTimeline } from "@/hooks/useWellnessTimeline";
 import { Badge } from "@/components/ui/badge";
 import type { TabType } from "@/components/layout/BottomNavigation";
@@ -10,6 +11,7 @@ interface HealthStatusCardProps {
 }
 
 export function HealthStatusCard({ dogId, onTabChange, className = "" }: HealthStatusCardProps) {
+  const navigate = useNavigate();
   const { timelineData, urgentAlerts } = useWellnessTimeline(dogId);
   
   // Get next upcoming health event
@@ -35,9 +37,19 @@ export function HealthStatusCard({ dogId, onTabChange, className = "" }: HealthS
     return `In ${days} days`;
   };
   
+  const handleClick = () => {
+    if (hasAlerts) {
+      // Navigate to timeline with overdue filter
+      navigate(`/timeline/${dogId}?filter=overdue`);
+    } else {
+      // Navigate to wellness tab
+      onTabChange('wellness');
+    }
+  };
+  
   return (
     <button
-      onClick={() => onTabChange('wellness')}
+      onClick={handleClick}
       className={`rounded-2xl border bg-card p-4 hover:bg-accent transition-all hover:scale-[1.02] text-left w-full ${className}`}
     >
       <div className="flex flex-col justify-between h-full">

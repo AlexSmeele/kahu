@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, Fragment } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { ArrowLeft, ChevronLeft, ChevronRight, Activity, Heart, Utensils, Weight, Scissors, Stethoscope, Syringe, ClipboardCheck, Pill, Filter } from "lucide-react";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { ArrowLeft, ChevronLeft, ChevronRight, Activity, Heart, Utensils, Weight, Scissors, Stethoscope, Syringe, ClipboardCheck, Pill, Filter, AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useWellnessTimeline } from "@/hooks/useWellnessTimeline";
@@ -13,6 +13,7 @@ import { cn } from "@/lib/utils";
 export default function FullTimeline() {
   const navigate = useNavigate();
   const { dogId } = useParams<{ dogId: string }>();
+  const [searchParams] = useSearchParams();
   const location = window.location;
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const verticalScrollRef = useRef<HTMLDivElement>(null);
@@ -20,9 +21,13 @@ export default function FullTimeline() {
   const observerRef = useRef<IntersectionObserver | null>(null);
   const { timelineData: rawTimelineData, loading, setShowFullTimeline } = useWellnessTimeline(dogId || '');
   
+  // Initialize filter from URL param
+  const filterParam = searchParams.get('filter');
+  const initialFilter = filterParam === 'overdue' ? new Set(['overdue']) : new Set(['all']);
+  
   // Filter state
-  const [selectedFilters, setSelectedFilters] = useState<Set<string>>(new Set(['all']));
-  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [selectedFilters, setSelectedFilters] = useState<Set<string>>(initialFilter);
+  const [isFilterOpen, setIsFilterOpen] = useState(filterParam === 'overdue');
   
   // Enable full timeline view (no 12-entry cap)
   useEffect(() => {
@@ -250,9 +255,14 @@ export default function FullTimeline() {
   const filteredTimelineData = timelineData.map(day => {
     if (selectedFilters.has('all')) return day;
     
-    const filteredEvents = day.events.filter(event => 
-      selectedFilters.has(event.type)
-    );
+    const filteredEvents = day.events.filter(event => {
+      // Handle overdue filter
+      if (selectedFilters.has('overdue')) {
+        return event.status === 'overdue';
+      }
+      // Handle type filters
+      return selectedFilters.has(event.type);
+    });
     
     return {
       ...day,
@@ -263,6 +273,7 @@ export default function FullTimeline() {
   // Count events by type
   const eventCounts = {
     all: timelineData.reduce((sum, day) => sum + day.events.length, 0),
+    overdue: timelineData.reduce((sum, day) => sum + day.events.filter(e => e.status === 'overdue').length, 0),
     activity: timelineData.reduce((sum, day) => sum + day.events.filter(e => e.type === 'activity').length, 0),
     meal: timelineData.reduce((sum, day) => sum + day.events.filter(e => e.type === 'meal').length, 0),
     weight: timelineData.reduce((sum, day) => sum + day.events.filter(e => e.type === 'weight').length, 0),
@@ -361,6 +372,20 @@ export default function FullTimeline() {
                   {eventCounts.all}
                 </Badge>
               </Button>
+              {eventCounts.overdue > 0 && (
+                <Button
+                  variant={selectedFilters.has('overdue') ? 'destructive' : 'outline'}
+                  size="sm"
+                  onClick={() => toggleFilter('overdue')}
+                  className="h-8 w-full"
+                >
+                  <AlertTriangle className="w-3 h-3 mr-1" />
+                  Overdue
+                  <Badge variant="secondary" className="ml-1.5 px-1.5 min-w-[20px] justify-center">
+                    {eventCounts.overdue}
+                  </Badge>
+                </Button>
+              )}
               {eventCounts.activity > 0 && (
                 <Button
                   variant={selectedFilters.has('activity') ? 'default' : 'outline'}
