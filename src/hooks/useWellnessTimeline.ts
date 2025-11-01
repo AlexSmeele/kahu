@@ -55,6 +55,7 @@ const normalizeToStartOfDay = (date: Date): Date => {
 
 export function useWellnessTimeline(dogId: string) {
   const [timelineData, setTimelineData] = useState<TimelineDay[]>([]);
+  const [allEvents, setAllEvents] = useState<TimelineEvent[]>([]);
   const [loading, setLoading] = useState(true);
   const [showFullTimeline, setShowFullTimeline] = useState(false);
 
@@ -316,6 +317,9 @@ export function useWellnessTimeline(dogId: string) {
         });
       });
 
+      // Store all events before applying any limits (for urgent alerts)
+      setAllEvents(events);
+
       // Sort events by timestamp (newest first for past, earliest first for future)
       const now = new Date();
       const pastEvents = events.filter(e => e.timestamp <= now).sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime());
@@ -423,10 +427,8 @@ export function useWellnessTimeline(dogId: string) {
     }> = [];
     const now = new Date();
     
-    // Filter only overdue events
-    const overdueEvents = timelineData
-      .flatMap(day => day.events)
-      .filter(event => event.status === 'overdue');
+    // Filter only overdue events from ALL events (not just the limited timeline display)
+    const overdueEvents = allEvents.filter(event => event.status === 'overdue');
     
     // Transform to alert format
     overdueEvents.forEach(event => {
@@ -466,7 +468,7 @@ export function useWellnessTimeline(dogId: string) {
       const bDays = bMatch ? parseInt(bMatch[1]) : 0;
       return bDays - aDays;
     });
-  }, [timelineData]);
+  }, [allEvents]);
 
   // Calculate today's activity progress from the same timeline data
   const todayProgress = useMemo(() => {
