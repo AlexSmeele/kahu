@@ -107,19 +107,13 @@ export default function FullTimeline() {
   // Default to today if it exists, otherwise the last date (most recent)
   const defaultIndex = todayIndex >= 0 ? todayIndex : timelineData.length - 1;
   
-  // Initialize selectedDayIndex from sessionStorage if available
-  const getInitialDayIndex = () => {
-    const savedPosition = sessionStorage.getItem(`timeline-position-${dogId}`);
-    if (savedPosition !== null) {
-      const savedIndex = parseInt(savedPosition, 10);
-      if (savedIndex >= 0 && savedIndex < timelineData.length) {
-        return savedIndex;
-      }
-    }
-    return defaultIndex;
-  };
+  // Always initialize to today
+  const [selectedDayIndex, setSelectedDayIndex] = useState(defaultIndex);
   
-  const [selectedDayIndex, setSelectedDayIndex] = useState(getInitialDayIndex());
+  // Clear sessionStorage on mount to always start fresh
+  useEffect(() => {
+    sessionStorage.removeItem(`timeline-position-${dogId}`);
+  }, []);
 
   // Re-sync selectedDayIndex when data loads
   useEffect(() => {
