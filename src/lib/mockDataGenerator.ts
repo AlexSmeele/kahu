@@ -131,17 +131,21 @@ function generateActivitiesForDay(date: Date, dogId: string, dogWeight: number):
     const duration = random.int(config.duration[type].min, config.duration[type].max);
     const distance = random.range(config.distance[type].min, config.distance[type].max);
     
-    activities.push({
-      dog_id: dogId,
-      activity_type: type,
-      start_time: startTime.toISOString(),
-      end_time: new Date(startTime.getTime() + duration * 60000).toISOString(),
-      duration_minutes: duration,
-      distance_km: Number(distance.toFixed(2)),
-      calories_burned: calculateCalories(type, duration, distance, dogWeight),
-      notes: generateActivityNotes(type, duration, distance, random),
-      tracking_method: 'manual',
-    });
+    const endTime = new Date(startTime.getTime() + duration * 60000);
+    const now = new Date();
+    if (startTime <= now) {
+      activities.push({
+        dog_id: dogId,
+        activity_type: type,
+        start_time: startTime.toISOString(),
+        end_time: endTime.toISOString(),
+        duration_minutes: duration,
+        distance_km: Number(distance.toFixed(2)),
+        calories_burned: calculateCalories(type, duration, distance, dogWeight),
+        notes: generateActivityNotes(type, duration, distance, random),
+        tracking_method: 'manual',
+      });
+    }
   }
   
   // Midday activity (40% probability)
@@ -151,17 +155,21 @@ function generateActivitiesForDay(date: Date, dogId: string, dogWeight: number):
     const duration = random.int(config.duration[type].min, config.duration[type].max);
     const distance = random.range(config.distance[type].min, config.distance[type].max);
     
-    activities.push({
-      dog_id: dogId,
-      activity_type: type,
-      start_time: startTime.toISOString(),
-      end_time: new Date(startTime.getTime() + duration * 60000).toISOString(),
-      duration_minutes: duration,
-      distance_km: Number(distance.toFixed(2)),
-      calories_burned: calculateCalories(type, duration, distance, dogWeight),
-      notes: generateActivityNotes(type, duration, distance, random),
-      tracking_method: 'manual',
-    });
+    const endTime = new Date(startTime.getTime() + duration * 60000);
+    const now = new Date();
+    if (startTime <= now) {
+      activities.push({
+        dog_id: dogId,
+        activity_type: type,
+        start_time: startTime.toISOString(),
+        end_time: endTime.toISOString(),
+        duration_minutes: duration,
+        distance_km: Number(distance.toFixed(2)),
+        calories_burned: calculateCalories(type, duration, distance, dogWeight),
+        notes: generateActivityNotes(type, duration, distance, random),
+        tracking_method: 'manual',
+      });
+    }
   }
   
   // Afternoon play (60% probability)
@@ -171,17 +179,21 @@ function generateActivitiesForDay(date: Date, dogId: string, dogWeight: number):
     const duration = random.int(config.duration[type].min, config.duration[type].max);
     const distance = random.range(config.distance[type].min, config.distance[type].max);
     
-    activities.push({
-      dog_id: dogId,
-      activity_type: type,
-      start_time: startTime.toISOString(),
-      end_time: new Date(startTime.getTime() + duration * 60000).toISOString(),
-      duration_minutes: duration,
-      distance_km: Number(distance.toFixed(2)),
-      calories_burned: calculateCalories(type, duration, distance, dogWeight),
-      notes: generateActivityNotes(type, duration, distance, random),
-      tracking_method: 'manual',
-    });
+    const endTime = new Date(startTime.getTime() + duration * 60000);
+    const now = new Date();
+    if (startTime <= now) {
+      activities.push({
+        dog_id: dogId,
+        activity_type: type,
+        start_time: startTime.toISOString(),
+        end_time: endTime.toISOString(),
+        duration_minutes: duration,
+        distance_km: Number(distance.toFixed(2)),
+        calories_burned: calculateCalories(type, duration, distance, dogWeight),
+        notes: generateActivityNotes(type, duration, distance, random),
+        tracking_method: 'manual',
+      });
+    }
   }
   
   // Evening walk (90% probability)
@@ -191,17 +203,21 @@ function generateActivitiesForDay(date: Date, dogId: string, dogWeight: number):
     const duration = random.int(config.duration[type].min, config.duration[type].max);
     const distance = random.range(config.distance[type].min, config.distance[type].max);
     
-    activities.push({
-      dog_id: dogId,
-      activity_type: type,
-      start_time: startTime.toISOString(),
-      end_time: new Date(startTime.getTime() + duration * 60000).toISOString(),
-      duration_minutes: duration,
-      distance_km: Number(distance.toFixed(2)),
-      calories_burned: calculateCalories(type, duration, distance, dogWeight),
-      notes: generateActivityNotes(type, duration, distance, random),
-      tracking_method: 'manual',
-    });
+    const endTime = new Date(startTime.getTime() + duration * 60000);
+    const now = new Date();
+    if (startTime <= now) {
+      activities.push({
+        dog_id: dogId,
+        activity_type: type,
+        start_time: startTime.toISOString(),
+        end_time: endTime.toISOString(),
+        duration_minutes: duration,
+        distance_km: Number(distance.toFixed(2)),
+        calories_burned: calculateCalories(type, duration, distance, dogWeight),
+        notes: generateActivityNotes(type, duration, distance, random),
+        tracking_method: 'manual',
+      });
+    }
   }
   
   return activities;

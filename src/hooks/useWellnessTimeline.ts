@@ -77,11 +77,14 @@ export function useWellnessTimeline(dogId: string) {
 
       // Activity records
       activityRecords?.forEach((record: any) => {
+        const start = new Date(record.start_time);
+        // Skip future-dated activities; only past activities are considered completed
+        if (start > new Date()) return;
         events.push({
           id: `activity-${record.id}`,
           type: 'activity',
           title: record.activity_type?.replace('_', ' ').replace(/\b\w/g, (l: string) => l.toUpperCase()) || 'Activity',
-          timestamp: new Date(record.start_time),
+          timestamp: start,
           icon: Activity,
           status: 'completed',
           metrics: [
