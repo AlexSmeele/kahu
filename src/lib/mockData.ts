@@ -139,6 +139,19 @@ const TRICK_SIT = {
   created_at: new Date().toISOString(),
 };
 
+const TRICK_BOND_GAZE = {
+  id: 'a1b2c3d4-5e6f-7a8b-9c0d-1e2f3a4b5c6d',
+  name: 'Bond Gaze / Look',
+  category: 'Foundation',
+  description: 'Building the bond between pup and person through eye contact.',
+  instructions: 'This skill builds trust and teaches your dog to look to you for instructions, reassurance, or what to do next. Start by rewarding any eye contact. Say "Look" or "Watch me" when your dog makes eye contact. Gradually increase the duration of eye contact before rewarding. Practice in different environments to strengthen the behavior.',
+  difficulty_level: 1,
+  estimated_time_weeks: 1,
+  prerequisites: ['Sit'],
+  priority_order: 2,
+  created_at: new Date().toISOString(),
+};
+
 const TRICK_ZEN_SIT = {
   id: '93083768-8422-425d-9433-814151d08262',
   name: 'Zen Sit',
@@ -148,7 +161,7 @@ const TRICK_ZEN_SIT = {
   difficulty_level: 1,
   estimated_time_weeks: 1,
   prerequisites: ['Sit'],
-  priority_order: 2,
+  priority_order: 3,
   created_at: new Date().toISOString(),
 };
 
@@ -161,7 +174,7 @@ const TRICK_DOWN = {
   difficulty_level: 1,
   estimated_time_weeks: 2,
   prerequisites: ['Sit'],
-  priority_order: 3,
+  priority_order: 4,
   created_at: new Date().toISOString(),
 };
 
@@ -174,7 +187,7 @@ const TRICK_ZEN_DOWN = {
   difficulty_level: 1,
   estimated_time_weeks: 1,
   prerequisites: ['Down (Lie Down)'],
-  priority_order: 4,
+  priority_order: 5,
   created_at: new Date().toISOString(),
 };
 
@@ -187,7 +200,7 @@ const TRICK_WAIT = {
   difficulty_level: 1,
   estimated_time_weeks: 1,
   prerequisites: ['Sit'],
-  priority_order: 5,
+  priority_order: 6,
   created_at: new Date().toISOString(),
 };
 
@@ -200,7 +213,7 @@ const TRICK_STAY = {
   difficulty_level: 2,
   estimated_time_weeks: 2,
   prerequisites: ['Down (Lie Down)'],
-  priority_order: 6,
+  priority_order: 7,
   created_at: new Date().toISOString(),
 };
 
@@ -213,7 +226,7 @@ const TRICK_WRONG = {
   difficulty_level: 1,
   estimated_time_weeks: 1,
   prerequisites: [],
-  priority_order: 7,
+  priority_order: 8,
   created_at: new Date().toISOString(),
 };
 
@@ -226,7 +239,7 @@ const TRICK_NO = {
   difficulty_level: 2,
   estimated_time_weeks: 2,
   prerequisites: ['Wrong'],
-  priority_order: 8,
+  priority_order: 9,
   created_at: new Date().toISOString(),
 };
 
@@ -239,7 +252,7 @@ const TRICK_LEAVE_IT = {
   difficulty_level: 2,
   estimated_time_weeks: 2,
   prerequisites: ['Wait'],
-  priority_order: 9,
+  priority_order: 10,
   created_at: new Date().toISOString(),
 };
 
@@ -252,7 +265,7 @@ const TRICK_OFF = {
   difficulty_level: 1,
   estimated_time_weeks: 1,
   prerequisites: [],
-  priority_order: 10,
+  priority_order: 11,
   created_at: new Date().toISOString(),
 };
 
@@ -265,7 +278,7 @@ const TRICK_MAT = {
   difficulty_level: 2,
   estimated_time_weeks: 2,
   prerequisites: ['Down (Lie Down)'],
-  priority_order: 11,
+  priority_order: 12,
   created_at: new Date().toISOString(),
 };
 
@@ -278,7 +291,7 @@ const TRICK_HEEL = {
   difficulty_level: 3,
   estimated_time_weeks: 3,
   prerequisites: ['Come / Recall'],
-  priority_order: 12,
+  priority_order: 13,
   created_at: new Date().toISOString(),
 };
 
@@ -291,7 +304,7 @@ const TRICK_COME = {
   difficulty_level: 1,
   estimated_time_weeks: 3,
   prerequisites: [],
-  priority_order: 13,
+  priority_order: 14,
   created_at: new Date().toISOString(),
 };
 
@@ -304,7 +317,7 @@ const TRICK_NICELY = {
   difficulty_level: 2,
   estimated_time_weeks: 2,
   prerequisites: ['Zen Sit', 'Wait'],
-  priority_order: 14,
+  priority_order: 15,
   created_at: new Date().toISOString(),
 };
 
@@ -321,6 +334,18 @@ export const MOCK_DOG_TRICKS = [
     created_at: '2025-01-10T10:00:00Z',
     updated_at: new Date().toISOString(),
     trick: TRICK_SIT,
+  },
+  {
+    id: '00000000-0000-0000-0000-000000000031B',
+    dog_id: MOCK_DOG_IDS.SUKI,
+    trick_id: TRICK_BOND_GAZE.id,
+    status: 'learning' as const,
+    total_sessions: 6,
+    started_at: '2025-01-12T10:00:00Z',
+    mastered_at: null,
+    created_at: '2025-01-12T10:00:00Z',
+    updated_at: new Date().toISOString(),
+    trick: TRICK_BOND_GAZE,
   },
   {
     id: '00000000-0000-0000-0000-000000000032',
@@ -490,6 +515,18 @@ export const MOCK_DOG_TRICKS = [
     created_at: '2025-01-12T11:00:00Z',
     updated_at: new Date().toISOString(),
     trick: TRICK_SIT,
+  },
+  {
+    id: '00000000-0000-0000-0000-000000000041B',
+    dog_id: MOCK_DOG_IDS.JETT,
+    trick_id: TRICK_BOND_GAZE.id,
+    status: 'learning' as const,
+    total_sessions: 5,
+    started_at: '2025-01-14T11:00:00Z',
+    mastered_at: null,
+    created_at: '2025-01-14T11:00:00Z',
+    updated_at: new Date().toISOString(),
+    trick: TRICK_BOND_GAZE,
   },
   {
     id: '00000000-0000-0000-0000-000000000042',
@@ -1725,6 +1762,7 @@ export const MOCK_TRAINING_SESSIONS: any[] = [
 
 export const MOCK_TRICKS = [
   TRICK_SIT,
+  TRICK_BOND_GAZE,
   TRICK_ZEN_SIT,
   TRICK_DOWN,
   TRICK_ZEN_DOWN,
