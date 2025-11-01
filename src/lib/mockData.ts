@@ -1433,7 +1433,7 @@ Use a nail file or emery board to smooth any sharp edges after trimming.
     grooming_type: 'Ear Cleaning',
     frequency_days: 30,
     last_completed_at: '2025-10-01T14:00:00Z',
-    next_due_date: '2025-10-31',
+    next_due_date: '2025-10-30',
     notes: 'Use ear cleaning solution',
     how_to_video_url: '',
     how_to_guide: `**Preparation**

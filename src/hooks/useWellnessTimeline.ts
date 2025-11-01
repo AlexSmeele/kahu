@@ -46,6 +46,13 @@ export interface TimelineDay {
   isYesterday: boolean;
 }
 
+// Helper function to normalize dates to start of day for accurate comparison
+const normalizeToStartOfDay = (date: Date): Date => {
+  const normalized = new Date(date);
+  normalized.setHours(0, 0, 0, 0);
+  return normalized;
+};
+
 export function useWellnessTimeline(dogId: string) {
   const [timelineData, setTimelineData] = useState<TimelineDay[]>([]);
   const [loading, setLoading] = useState(true);
@@ -165,13 +172,15 @@ export function useWellnessTimeline(dogId: string) {
         if (schedule.next_due_date) {
           const dueDate = new Date(schedule.next_due_date);
           const now = new Date();
+          const normalizedDue = normalizeToStartOfDay(dueDate);
+          const normalizedNow = normalizeToStartOfDay(now);
           events.push({
             id: `grooming-${schedule.id}-due`,
             type: 'grooming',
             title: `${schedule.grooming_type} Grooming`,
             timestamp: dueDate,
             icon: Scissors,
-            status: dueDate < now ? 'overdue' : 'upcoming',
+            status: normalizedDue < normalizedNow ? 'overdue' : 'upcoming',
             details: schedule,
           });
         }
@@ -179,13 +188,17 @@ export function useWellnessTimeline(dogId: string) {
 
       // Vet visits
       vetVisits?.forEach((visit: any) => {
+        const visitDate = new Date(visit.date);
+        const now = new Date();
+        const normalizedVisit = normalizeToStartOfDay(visitDate);
+        const normalizedNow = normalizeToStartOfDay(now);
         events.push({
           id: `vet-${visit.id}`,
           type: 'vet_visit',
           title: visit.title || 'Vet Visit',
-          timestamp: new Date(visit.date),
+          timestamp: visitDate,
           icon: Stethoscope,
-          status: new Date(visit.date) > new Date() ? 'upcoming' : 'completed',
+          status: normalizedVisit > normalizedNow ? 'upcoming' : 'completed',
           metrics: visit.veterinarian ? [{ label: 'Vet', value: visit.veterinarian }] : undefined,
           details: visit,
         });
@@ -205,7 +218,9 @@ export function useWellnessTimeline(dogId: string) {
         if (record.due_date) {
           const dueDate = new Date(record.due_date);
           const now = new Date();
-          if (dueDate >= now) {
+          const normalizedDue = normalizeToStartOfDay(dueDate);
+          const normalizedNow = normalizeToStartOfDay(now);
+          if (normalizedDue >= normalizedNow) {
             events.push({
               id: `vaccine-${record.id}-due`,
               type: 'vaccination',
@@ -247,13 +262,15 @@ export function useWellnessTimeline(dogId: string) {
         if (treatment.next_due_date) {
           const dueDate = new Date(treatment.next_due_date);
           const now = new Date();
+          const normalizedDue = normalizeToStartOfDay(dueDate);
+          const normalizedNow = normalizeToStartOfDay(now);
           events.push({
             id: `treatment-${treatment.id}-due`,
             type: 'treatment',
             title: treatment.treatment_name,
             timestamp: dueDate,
             icon: Pill,
-            status: dueDate < now ? 'overdue' : 'upcoming',
+            status: normalizedDue < normalizedNow ? 'overdue' : 'upcoming',
             details: treatment,
           });
         }
