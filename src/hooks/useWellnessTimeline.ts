@@ -127,7 +127,7 @@ export function useWellnessTimeline(dogId: string) {
               events.push({
                 id: `meal-${record.id}-scheduled`,
                 type: 'meal',
-                title: `${record.meal_name} (Scheduled)`,
+                title: record.meal_name,
                 timestamp: scheduledDateTime,
                 icon: Apple,
                 status: scheduledDateTime < currentTime ? 'overdue' : 'upcoming',
@@ -163,7 +163,7 @@ export function useWellnessTimeline(dogId: string) {
           events.push({
             id: `grooming-${schedule.id}-completed`,
             type: 'grooming',
-            title: `${schedule.grooming_type} Grooming`,
+            title: schedule.grooming_type,
             timestamp: new Date(schedule.last_completed_at),
             icon: Scissors,
             status: 'completed',
@@ -178,7 +178,7 @@ export function useWellnessTimeline(dogId: string) {
           events.push({
             id: `grooming-${schedule.id}-due`,
             type: 'grooming',
-            title: `${schedule.grooming_type} Grooming`,
+            title: schedule.grooming_type,
             timestamp: dueDate,
             icon: Scissors,
             status: normalizedDue < normalizedNow ? 'overdue' : 'upcoming',
