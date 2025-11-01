@@ -183,7 +183,7 @@ const TRICK_WAIT = {
   name: 'Wait',
   category: 'Obedience',
   description: 'Dog pauses and holds position briefly, different from Stay.',
-  instructions: 'Similar to Stay but shorter duration. Dog waits at doors, before crossing streets, and before eating. Release with "Okay". Progress to using at meal times - have your dog wait before their food bowl until you give the release cue.',
+  instructions: 'Similar to Stay but shorter duration. Dog waits at doors, before crossing streets, and before eating. Release with "Okay". Progress to: 1) Wait for food - have your dog wait before their food bowl until you give the release cue. 2) Wait to exit door - practice having your dog wait at doorways and exits until released, preventing door dashing.',
   difficulty_level: 1,
   estimated_time_weeks: 1,
   prerequisites: ['Sit'],
