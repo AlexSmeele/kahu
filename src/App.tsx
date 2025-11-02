@@ -26,6 +26,8 @@ import Analytics from "./pages/Analytics";
 import RecordActivity from "./pages/RecordActivity";
 import NotFound from "./pages/NotFound";
 import Nutrition from "./pages/Nutrition";
+import Social from "./pages/Social";
+import Marketplace from "./pages/Marketplace";
 import { PasswordGate } from "@/components/PasswordGate";
 import { logger } from "@/lib/logger";
 
@@ -117,6 +119,16 @@ const App = () => {
                     <Route path="/nutrition/:dogId" element={
                       <ProtectedRoute>
                         <Nutrition />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="/social" element={
+                      <ProtectedRoute>
+                        <Social />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="/marketplace" element={
+                      <ProtectedRoute>
+                        <Marketplace />
                       </ProtectedRoute>
                     } />
                     {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

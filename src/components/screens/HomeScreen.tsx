@@ -12,7 +12,8 @@ import { NutritionOverviewCard } from "@/components/home/NutritionOverviewCard";
 import { HealthStatusCard } from "@/components/home/HealthStatusCard";
 import { UpcomingEventsCard } from "@/components/home/UpcomingEventsCard";
 import { TreatBudgetCard } from "@/components/home/TreatBudgetCard";
-import { TrainingStreakCard } from "@/components/home/TrainingStreakCard";
+import { SocialCard } from "@/components/home/SocialCard";
+import { MarketplaceCard } from "@/components/home/MarketplaceCard";
 import { QuickNoteModal } from "@/components/home/QuickNoteModal";
 import { useHomeData } from "@/hooks/useHomeData";
 import { useWellnessTimeline } from "@/hooks/useWellnessTimeline";
@@ -117,33 +118,36 @@ export function HomeScreen({ selectedDogId, onDogChange, onTabChange }: HomeScre
                 />
                 
                 {/* Row 3 */}
-                <AnalyticsCard className="animate-fade-in [animation-delay:300ms]" />
                 <NutritionOverviewCard 
                   dogId={selectedDogId}
+                  className="animate-fade-in [animation-delay:300ms]"
+                />
+                <HealthStatusCard 
+                  dogId={selectedDogId}
+                  onTabChange={onTabChange}
                   className="animate-fade-in [animation-delay:350ms]"
                 />
                 
                 {/* Row 4 */}
-                <HealthStatusCard 
+                <UpcomingEventsCard 
                   dogId={selectedDogId}
-                  onTabChange={onTabChange}
                   className="animate-fade-in [animation-delay:400ms]"
                 />
-                <UpcomingEventsCard 
+                <TreatBudgetCard 
                   dogId={selectedDogId}
                   className="animate-fade-in [animation-delay:450ms]"
                 />
-                
-                {/* Row 5 */}
-                <TreatBudgetCard 
-                  dogId={selectedDogId}
-                  className="animate-fade-in [animation-delay:500ms]"
-                />
-                <TrainingStreakCard 
-                  dogId={selectedDogId}
-                  onTabChange={onTabChange}
-                  className="animate-fade-in [animation-delay:550ms]"
-                />
+              </div>
+
+              {/* Future Features Section */}
+              <div className="px-4 pt-6 pb-2">
+                <h3 className="text-lg font-semibold text-muted-foreground">Future Features</h3>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <AnalyticsCard className="animate-fade-in [animation-delay:500ms]" />
+                <SocialCard className="animate-fade-in [animation-delay:550ms]" />
+                <MarketplaceCard className="animate-fade-in [animation-delay:600ms]" />
               </div>
             </div>
           </>
