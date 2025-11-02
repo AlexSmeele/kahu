@@ -370,13 +370,28 @@ export function useMealTracking(dogId?: string, nutritionPlanId?: string) {
       return { consumed: 0, target: 480, percentage: 0 };
     }
 
-    // Filter to today's records only
     const todayStr = format(new Date(), 'yyyy-MM-dd');
-    const todayRecords = mealRecords.filter(record => record.scheduled_date === todayStr);
-    const completedMeals = todayRecords.filter(record => record.completed_at);
+
+    let completedCount = 0;
     const totalMeals = mealSchedule.length;
-    const completedCount = completedMeals.length;
-    
+
+    for (const meal of mealSchedule) {
+      const record = mealRecords.find(r =>
+        r.scheduled_date === todayStr &&
+        r.meal_time === meal.time &&
+        r.meal_name === meal.name
+      );
+
+      // Determine if the scheduled time has passed
+      const [h, m] = (meal.time || '00:00').split(':').map((n: string) => parseInt(n, 10));
+      const scheduledDT = new Date();
+      scheduledDT.setHours(isNaN(h) ? 0 : h, isNaN(m) ? 0 : m, 0, 0);
+      const scheduledHasPassed = new Date() >= scheduledDT;
+
+      const isCompleted = !!record?.completed_at && scheduledHasPassed;
+      if (isCompleted) completedCount += 1;
+    }
+
     // Clamp percentage between 0 and 100
     const percentage = totalMeals > 0 
       ? Math.min(100, Math.max(0, Math.round((completedCount / totalMeals) * 100)))
