@@ -194,7 +194,7 @@ const TRICK_SIT = {
 const TRICK_BOND_GAZE = {
   id: 'a1b2c3d4-5e6f-7a8b-9c0d-1e2f3a4b5c6d',
   name: 'Bond Gaze / Look',
-  category: 'Foundation',
+  category: 'Skill',
   description: 'Building the bond between pup and person through eye contact.',
   instructions: 'This skill builds trust and teaches your dog to look to you for instructions, reassurance, or what to do next. Start by rewarding any eye contact. Say "Look" or "Watch me" when your dog makes eye contact. Gradually increase the duration of eye contact before rewarding. Practice in different environments to strengthen the behavior.',
   difficulty_level: 1,
@@ -272,7 +272,7 @@ const TRICK_STAY = {
 const TRICK_WRONG = {
   id: 'cd29e911-266e-4c43-a2d3-d92443827a86',
   name: 'Wrong',
-  category: 'Foundation',
+  category: 'Skill',
   description: 'Non-reward marker - indicates dog made wrong choice without punishment.',
   instructions: 'When dog makes wrong choice, say "Wrong" in neutral tone and withhold reward. Then redirect to correct behavior.',
   difficulty_level: 1,
