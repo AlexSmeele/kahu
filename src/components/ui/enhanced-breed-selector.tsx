@@ -194,10 +194,7 @@ export function EnhancedBreedSelector({
 
   // Resolve breed ID to display name
   useEffect(() => {
-    console.log('EnhancedBreedSelector: Resolving breed with value:', value);
-    
     if (!value) {
-      console.log('EnhancedBreedSelector: No value, using placeholder');
       setDisplayName(placeholder);
       return;
     }

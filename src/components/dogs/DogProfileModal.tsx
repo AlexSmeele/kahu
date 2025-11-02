@@ -44,18 +44,17 @@ export function DogProfileModal({ isOpen, onClose, dog, mode }: DogProfileModalP
   useEffect(() => {
     if (isOpen) {
       if (mode === 'edit' && dog) {
-        console.log('DogProfileModal: Initializing edit mode with dog data:', {
-          name: dog.name,
-          breed_id: dog.breed_id,
-          custom_breed_id: dog.custom_breed_id,
-          dog_breeds: dog.dog_breeds,
-          custom_breeds: dog.custom_breeds,
-          fullDog: dog
-        });
+        // Determine breed name from various possible sources
+        let breedName = '';
+        if (dog.custom_breed_id && (dog as any).custom_breeds) {
+          breedName = (dog as any).custom_breeds.name;
+        } else if (dog.breed_id && (dog as any).dog_breeds) {
+          breedName = (dog as any).dog_breeds.breed;
+        }
         
         setFormData({
           name: dog.name,
-          breed: dog.dog_breeds?.breed || dog.custom_breeds?.name || '',
+          breed: breedName,
           breedId: dog.breed_id || '',
           customBreedId: dog.custom_breed_id || '',
           isCustomBreed: !!dog.custom_breed_id,
