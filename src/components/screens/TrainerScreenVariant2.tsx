@@ -105,9 +105,9 @@ export function TrainerScreenVariant2({ onTypingChange }: { onTypingChange?: (ty
   ];
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col min-h-full">
       {/* Content */}
-      <div className="flex-1 overflow-y-auto pb-24">
+      <div className="flex-1 pb-24">
         {messages.length === 0 ? (
           /* Clean Welcome State */
           <div className="flex flex-col items-center justify-center p-6 text-center min-h-[60vh]">
@@ -217,7 +217,7 @@ export function TrainerScreenVariant2({ onTypingChange }: { onTypingChange?: (ty
 
       {/* Floating Input (when in conversation) */}
       {messages.length > 0 && (
-        <div className="sticky bottom-0 p-4 bg-card/95 backdrop-blur-sm border-t border-border safe-bottom">
+        <div className="fixed bottom-0 left-0 right-0 p-4 bg-card/95 backdrop-blur-sm border-t border-border safe-bottom">
           <div className="max-w-2xl mx-auto flex gap-2 items-end">
             <div className="flex-1">
               <Input
