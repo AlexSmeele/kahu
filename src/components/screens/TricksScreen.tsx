@@ -183,11 +183,13 @@ export function TricksScreen({ selectedDogId, onDogChange }: TricksScreenProps) 
     troubleshooting: false
   });
   const [expandedFoundations, setExpandedFoundations] = useState<Record<string, boolean>>({});
+  const [expandedTroubleshooting, setExpandedTroubleshooting] = useState<Record<string, boolean>>({});
   const [selectedSubSession, setSelectedSubSession] = useState<FoundationSubSession | null>(null);
   const [isSubSessionModalOpen, setIsSubSessionModalOpen] = useState(false);
 
   // Load foundation topics for mock dogs
   const foundationTopics = isMockDogId(currentDog?.id || '') ? MOCK_FOUNDATION_TOPICS : [];
+  const troubleshootingTopics = isMockDogId(currentDog?.id || '') ? MOCK_TROUBLESHOOTING_TOPICS : [];
 
   if (loading) {
     return (
@@ -593,8 +595,7 @@ export function TricksScreen({ selectedDogId, onDogChange }: TricksScreenProps) 
 
         {/* Troubleshooting Content */}
         {selectedSection === 'troubleshooting' && (
-          <div className="p-4 space-y-6 pb-8">
-            {/* Troubleshooting Description Header */}
+          <div className="p-4 space-y-4 pb-8">
             <div className="bg-card rounded-xl p-3 border border-orange-500/30">
               <div className="flex items-center gap-2">
                 <div className="w-8 h-8 bg-gradient-to-br from-orange-500 to-orange-600 rounded-lg flex items-center justify-center flex-shrink-0">
@@ -621,64 +622,99 @@ export function TricksScreen({ selectedDogId, onDogChange }: TricksScreenProps) 
               )}
             </div>
 
+            {/* Troubleshooting Topics with Sub-Sessions */}
             <div className="space-y-4">
-              {/* Section Header */}
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center">
-                  <span className="text-white text-sm font-bold">B</span>
-                </div>
-                <div className="flex-1">
-                  <div className="flex items-center justify-between">
-                    <h2 className="text-xl font-bold text-orange-700">Behavior Issues</h2>
-                    <span className="text-sm text-muted-foreground">
-                      0/9
-                    </span>
-                  </div>
-                  <Progress value={0} className="h-2 mt-1" />
-                </div>
-              </div>
+              {troubleshootingTopics.map((topic) => {
+                const isExpanded = expandedTroubleshooting[topic.id];
+                const completedSessions = 0; // TODO: Track completed sub-sessions
+                const totalSessions = topic.subSessions.length;
+                const progress = (completedSessions / totalSessions) * 100;
 
-              {/* Lessons Grid */}
-              <div className="grid gap-4">
-                {[
-                  { name: 'Hyperactivity', description: 'Learn techniques to manage and reduce hyperactive behavior in your dog.' },
-                  { name: 'Phobias', description: 'Address fears and phobias with systematic desensitization methods.' },
-                  { name: 'Excessive submission', description: 'Build confidence in overly submissive dogs through positive reinforcement.' },
-                  { name: 'Dog-to-dog aggression', description: 'Manage and modify aggressive behavior towards other dogs safely.' },
-                  { name: 'Human-oriented aggression', description: 'Address aggression towards people with professional guidance.' },
-                  { name: 'Barking', description: 'Control excessive barking and teach appropriate vocalization.' },
-                  { name: 'Separation distress', description: 'Help your dog feel secure when left alone.' },
-                  { name: 'House training', description: 'Master effective house training techniques for all ages.' },
-                  { name: 'Destructive behaviour and bite inhibition', description: 'Prevent destructive behaviors and teach gentle mouth control.' }
-                ].map((lesson, index) => (
-                  <div
-                    key={index}
-                    className="bg-card rounded-2xl p-4 border-2 border-border hover:border-orange-500/50 transition-all duration-200 hover:scale-105 cursor-pointer"
-                  >
-                    <div className="flex items-center gap-3 mb-3">
-                      <div className="w-12 h-12 bg-orange-500 rounded-xl flex items-center justify-center">
+                return (
+                  <div key={topic.id} className="bg-card rounded-xl border-2 border-border overflow-hidden">
+                    {/* Topic Header */}
+                    <button
+                      onClick={() => setExpandedTroubleshooting(prev => ({ ...prev, [topic.id]: !prev[topic.id] }))}
+                      className="w-full p-4 flex items-center gap-3 hover:bg-accent/50 transition-colors"
+                    >
+                      <div className={`w-12 h-12 bg-gradient-to-br ${topic.color} rounded-xl flex items-center justify-center flex-shrink-0`}>
                         <AlertCircle className="w-6 h-6 text-white" />
                       </div>
-                      <div className="flex-1">
-                        <h3 className="font-bold text-lg text-foreground">{lesson.name}</h3>
-                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                          <span>Behavioral</span>
+                      <div className="flex-1 text-left min-w-0">
+                        <h3 className="font-bold text-lg text-foreground">{topic.name}</h3>
+                        <p className="text-xs text-muted-foreground line-clamp-1">{topic.description}</p>
+                        <div className="flex items-center gap-2 mt-1">
+                          <Progress value={progress} className="h-1.5 flex-1" />
+                          <span className="text-xs text-muted-foreground whitespace-nowrap">
+                            {completedSessions}/{totalSessions}
+                          </span>
                         </div>
                       </div>
-                    </div>
+                      <div className="flex-shrink-0">
+                        {isExpanded ? (
+                          <ChevronUp className="w-5 h-5 text-muted-foreground" />
+                        ) : (
+                          <ChevronDown className="w-5 h-5 text-muted-foreground" />
+                        )}
+                      </div>
+                    </button>
 
-                    <p className="text-sm text-muted-foreground mb-3 line-clamp-2">{lesson.description}</p>
-
-                    {/* Action Button */}
-                    <Button 
-                      className="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-bold py-3 rounded-xl"
-                    >
-                      Start Lesson
-                    </Button>
+                    {/* Sub-Sessions */}
+                    {isExpanded && (
+                      <div className="border-t border-border bg-accent/20">
+                        <div className="p-3 space-y-2">
+                          {topic.subSessions
+                            .sort((a, b) => a.order - b.order)
+                            .map((subSession, index) => {
+                              const isCompleted = false; // TODO: Track completed state
+                              
+                              return (
+                                <div
+                                  key={subSession.id}
+                                  onClick={() => {
+                                    setSelectedSubSession(subSession);
+                                    setIsSubSessionModalOpen(true);
+                                  }}
+                                  className={`p-3 rounded-lg border-2 transition-all cursor-pointer ${
+                                    isCompleted
+                                      ? 'border-green-400 bg-green-50 dark:bg-green-950/20'
+                                      : 'border-border bg-card hover:border-primary/50 hover:scale-[1.02]'
+                                  }`}
+                                >
+                                  <div className="flex items-start gap-3">
+                                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${
+                                      isCompleted ? 'bg-green-500' : 'bg-orange-500'
+                                    }`}>
+                                      {isCompleted ? (
+                                        <CheckCircle2 className="w-4 h-4 text-white" />
+                                      ) : (
+                                        <span className="text-sm font-bold text-white">{index + 1}</span>
+                                      )}
+                                    </div>
+                                    <div className="flex-1 min-w-0">
+                                      <h4 className="font-semibold text-sm text-foreground">{subSession.name}</h4>
+                                      <p className="text-xs text-muted-foreground line-clamp-2 mt-0.5">
+                                        {subSession.description}
+                                      </p>
+                                      {subSession.estimated_time_weeks && (
+                                        <div className="flex items-center gap-1 mt-1 text-[10px] text-muted-foreground">
+                                          <Clock className="w-3 h-3" />
+                                          <span>{subSession.estimated_time_weeks} weeks</span>
+                                        </div>
+                                      )}
+                                    </div>
+                                  </div>
+                                </div>
+                              );
+                            })}
+                        </div>
+                      </div>
+                    )}
                   </div>
-                ))}
-              </div>
+                );
+              })}
             </div>
+
           </div>
         )}
       </div>
