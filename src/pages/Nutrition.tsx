@@ -63,9 +63,6 @@ export default function NutritionScreen() {
   const todayMeals = generateTodayMeals(mealSchedule, mealRecords);
   const todayProgress = getTodayProgress(mealSchedule, mealRecords, nutritionPlan?.daily_amount);
 
-  // Enable smart notifications for this dog
-  useSmartNotifications(selectedDogId);
-
   // Automatically create meal records for today when nutrition plan loads
   useEffect(() => {
     if (nutritionPlan?.meal_schedule && selectedDogId && nutritionPlan?.id) {
@@ -99,15 +96,15 @@ export default function NutritionScreen() {
   };
   return (
     <div className="flex flex-col h-full safe-top relative">
+      <Button
+        variant="ghost"
+        size="sm"
+        onClick={handleBackClick}
+        className="absolute top-4 left-4 z-50"
+      >
+        <ArrowLeft className="w-5 h-5" />
+      </Button>
       <div className="pt-16">
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={handleBackClick}
-          className="absolute top-4 left-4 z-10"
-        >
-          <ArrowLeft className="w-5 h-5" />
-        </Button>
         <DogDropdown selectedDogId={selectedDogId} onDogChange={handleDogChange} />
         <PageLogo />
       </div>
