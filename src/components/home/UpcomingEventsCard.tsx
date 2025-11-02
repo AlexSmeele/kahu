@@ -14,10 +14,15 @@ export function UpcomingEventsCard({ dogId, className = "" }: UpcomingEventsCard
   const now = new Date();
   const oneWeekFromNow = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
   
-  // Get all upcoming events in next 7 days
+  // Get all upcoming events in next 7 days, excluding meals (covered in Nutrition card)
   const upcomingEvents = timelineData
     .flatMap(day => day.events)
-    .filter(e => e.status === 'upcoming' && e.timestamp > now && e.timestamp <= oneWeekFromNow)
+    .filter(e => 
+      e.status === 'upcoming' && 
+      e.type !== 'meal' && 
+      e.timestamp > now && 
+      e.timestamp <= oneWeekFromNow
+    )
     .sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime());
   
   const nextEvent = upcomingEvents[0];
