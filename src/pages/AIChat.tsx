@@ -18,7 +18,7 @@ export default function AIChat() {
           <ArrowLeft className="h-5 w-5" />
         </Button>
         <div className="text-center flex-1">
-          <h1 className="text-lg font-semibold">Kahu</h1>
+          <h1 className="text-lg font-semibold">Adviser</h1>
           <p className="text-xs text-muted-foreground">Your AI dog care adviser</p>
         </div>
         <div className="w-10" /> {/* Spacer for center alignment */}
