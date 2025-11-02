@@ -11,7 +11,11 @@ interface NutritionOverviewCardProps {
 export function NutritionOverviewCard({ dogId, className = "" }: NutritionOverviewCardProps) {
   const navigate = useNavigate();
   const { nutritionPlan } = useNutrition(dogId);
-  const { todayMeals } = useMealTracking(dogId, nutritionPlan?.id);
+  const { generateTodayMeals, mealRecords } = useMealTracking(dogId, nutritionPlan?.id);
+  
+  // Generate today's meals from the meal schedule
+  const mealSchedule = nutritionPlan?.meal_schedule || [];
+  const todayMeals = generateTodayMeals(mealSchedule, mealRecords);
   
   // Calculate progress
   const completedMeals = todayMeals?.filter(m => m.completed).length || 0;
@@ -24,7 +28,7 @@ export function NutritionOverviewCard({ dogId, className = "" }: NutritionOvervi
     .sort((a, b) => a.time.localeCompare(b.time))[0];
   
   const allComplete = totalMeals > 0 && completedMeals === totalMeals;
-  const hasNoPlan = !nutritionPlan || totalMeals === 0;
+  const hasNoPlan = !nutritionPlan || !mealSchedule || mealSchedule.length === 0;
   
   return (
     <button
