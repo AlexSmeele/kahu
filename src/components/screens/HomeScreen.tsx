@@ -12,6 +12,7 @@ import { NutritionOverviewCard } from "@/components/home/NutritionOverviewCard";
 import { HealthStatusCard } from "@/components/home/HealthStatusCard";
 import { UpcomingEventsCard } from "@/components/home/UpcomingEventsCard";
 import { TreatBudgetCard } from "@/components/home/TreatBudgetCard";
+import { CareTipsCard } from "@/components/home/CareTipsCard";
 import { SocialCard } from "@/components/home/SocialCard";
 import { MarketplaceCard } from "@/components/home/MarketplaceCard";
 import { InsuranceCard } from "@/components/home/InsuranceCard";
@@ -136,8 +137,7 @@ export function HomeScreen({ selectedDogId, onDogChange, onTabChange }: HomeScre
                   dogId={selectedDogId}
                   className="animate-fade-in [animation-delay:400ms]"
                 />
-                <TreatBudgetCard 
-                  dogId={selectedDogId}
+                <CareTipsCard 
                   className="animate-fade-in [animation-delay:450ms]"
                 />
               </div>
@@ -154,6 +154,10 @@ export function HomeScreen({ selectedDogId, onDogChange, onTabChange }: HomeScre
                 <InsuranceCard className="animate-fade-in [animation-delay:650ms]" />
                 <ServicesCard className="animate-fade-in [animation-delay:700ms]" />
                 <RelaxationCard className="animate-fade-in [animation-delay:750ms]" />
+                <TreatBudgetCard 
+                  dogId={selectedDogId}
+                  className="animate-fade-in [animation-delay:800ms]"
+                />
               </div>
             </div>
           </>
