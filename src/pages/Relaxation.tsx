@@ -95,8 +95,8 @@ export default function Relaxation() {
   };
 
   return (
-    <div className="min-h-screen bg-background pb-20">
-      <div className="sticky top-0 z-10 bg-background border-b">
+    <div className="min-h-screen bg-background pb-20 overflow-y-auto safe-top">
+      <div className="sticky top-0 z-10 bg-background border-b safe-top">
         <div className="container py-4 flex items-center gap-4">
           <Button
             variant="ghost"
