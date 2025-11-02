@@ -25,9 +25,9 @@ import InjuryDetail from "./pages/InjuryDetail";
 import Analytics from "./pages/Analytics";
 import RecordActivity from "./pages/RecordActivity";
 import NotFound from "./pages/NotFound";
+import Nutrition from "./pages/Nutrition";
 import { PasswordGate } from "@/components/PasswordGate";
 import { logger } from "@/lib/logger";
-import NutritionScreen from "./components/screens/NutritionScreen";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -116,7 +116,7 @@ const App = () => {
                     <Route path="/record-activity" element={<ProtectedRoute><RecordActivity /></ProtectedRoute>} />
                     <Route path="/nutrition/:dogId" element={
                       <ProtectedRoute>
-                        <NutritionScreen />
+                        <Nutrition />
                       </ProtectedRoute>
                     } />
                     {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
