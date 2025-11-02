@@ -6,6 +6,7 @@ import { Card } from "@/components/ui/card";
 import { useDogs } from "@/hooks/useDogs";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import ReactMarkdown from "react-markdown";
 
 interface Message {
   id: string;
@@ -177,9 +178,15 @@ export function TrainerScreenVariant2({ onTypingChange }: { onTypingChange?: (ty
                       ? 'bg-primary text-primary-foreground' 
                       : 'bg-muted'
                   }`}>
-                    <p className="text-sm leading-relaxed whitespace-pre-wrap">
-                      {message.content}
-                    </p>
+                    {message.role === 'assistant' ? (
+                      <div className="text-sm leading-relaxed prose prose-sm dark:prose-invert max-w-none prose-p:my-2 prose-ul:my-2 prose-ol:my-2 prose-li:my-1">
+                        <ReactMarkdown>{message.content}</ReactMarkdown>
+                      </div>
+                    ) : (
+                      <p className="text-sm leading-relaxed whitespace-pre-wrap">
+                        {message.content}
+                      </p>
+                    )}
                   </div>
                 </div>
               </div>
