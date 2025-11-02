@@ -1,6 +1,7 @@
 import { Calendar } from "lucide-react";
 import { useWellnessTimeline } from "@/hooks/useWellnessTimeline";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 interface UpcomingEventsCardProps {
   dogId: string;
@@ -9,9 +10,16 @@ interface UpcomingEventsCardProps {
 
 export function UpcomingEventsCard({ dogId, className = "" }: UpcomingEventsCardProps) {
   const navigate = useNavigate();
-  const { timelineData } = useWellnessTimeline(dogId);
+  const { timelineData, setShowFullTimeline } = useWellnessTimeline(dogId);
+  
+  // Show full timeline to ensure future events aren't cut off
+  useEffect(() => {
+    setShowFullTimeline(true);
+  }, [setShowFullTimeline]);
   
   const now = new Date();
+  const startOfToday = new Date();
+  startOfToday.setHours(0, 0, 0, 0);
   const thirtyDaysFromNow = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
   
   // Get all upcoming events in next 30 days, excluding meals (covered in Nutrition card)
@@ -20,7 +28,7 @@ export function UpcomingEventsCard({ dogId, className = "" }: UpcomingEventsCard
     .filter(e => 
       e.status === 'upcoming' && 
       e.type !== 'meal' && 
-      e.timestamp > now && 
+      e.timestamp >= startOfToday && 
       e.timestamp <= thirtyDaysFromNow
     )
     .sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime());
