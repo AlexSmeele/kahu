@@ -12,16 +12,16 @@ export function UpcomingEventsCard({ dogId, className = "" }: UpcomingEventsCard
   const { timelineData } = useWellnessTimeline(dogId);
   
   const now = new Date();
-  const oneWeekFromNow = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
+  const thirtyDaysFromNow = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
   
-  // Get all upcoming events in next 7 days, excluding meals (covered in Nutrition card)
+  // Get all upcoming events in next 30 days, excluding meals (covered in Nutrition card)
   const upcomingEvents = timelineData
     .flatMap(day => day.events)
     .filter(e => 
       e.status === 'upcoming' && 
       e.type !== 'meal' && 
       e.timestamp > now && 
-      e.timestamp <= oneWeekFromNow
+      e.timestamp <= thirtyDaysFromNow
     )
     .sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime());
   
@@ -64,7 +64,7 @@ export function UpcomingEventsCard({ dogId, className = "" }: UpcomingEventsCard
                 {eventCount} event{eventCount > 1 ? 's' : ''}
               </p>
               <p className="text-sm text-muted-foreground mb-3">
-                this week
+                in next 30 days
               </p>
               {nextEvent && (
                 <>
