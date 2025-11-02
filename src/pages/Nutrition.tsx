@@ -109,13 +109,13 @@ export default function NutritionScreen() {
   return (
     <div className="flex flex-col h-full safe-top relative">
       {/* Sticky header with back button and dog selector */}
-      <div className="sticky top-0 z-40 bg-background/80 backdrop-blur border-b">
+      <div className="sticky top-0 z-50 bg-background border-b shadow-sm">
         <div className="flex items-center justify-between px-4 py-3">
           <Button
             variant="ghost"
             size="sm"
             onClick={handleBackClick}
-            className="flex items-center gap-2"
+            className="flex items-center gap-2 hover:bg-accent"
           >
             <ArrowLeft className="w-5 h-5" />
             <span className="hidden sm:inline">Back</span>
@@ -203,11 +203,12 @@ export default function NutritionScreen() {
         <div className="p-4">
           {nutritionPlan ? (
             <>
-              {/* Diet Details - Now scrollable with meals */}
+              {/* Diet Details - Enhanced */}
               <div className="mb-6">
                 <h3 className="font-semibold text-foreground mb-3">Diet Details</h3>
-                <div className="card-soft p-4">
-                  <div className="grid grid-cols-2 gap-4 text-sm">
+                <div className="card-soft p-4 space-y-4">
+                  {/* Primary Info */}
+                  <div className="grid grid-cols-2 gap-4 text-sm pb-4 border-b">
                     <div>
                       <span className="text-muted-foreground">Food Type:</span>
                       <p className="font-medium">{nutritionPlan.food_type?.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}</p>
@@ -219,12 +220,35 @@ export default function NutritionScreen() {
                       </div>
                     )}
                   </div>
-                  {nutritionPlan.special_instructions && (
-                    <div className="mt-3">
-                      <span className="text-muted-foreground text-sm">Special Instructions:</span>
-                      <p className="text-sm mt-1">{nutritionPlan.special_instructions}</p>
-                    </div>
-                  )}
+                  
+                  {/* Meal Components */}
+                  {nutritionPlan.special_instructions && (() => {
+                    const components = nutritionPlan.special_instructions
+                      .split(/[;\n]+/)
+                      .map(s => s.trim())
+                      .filter(Boolean)
+                      .map(part => {
+                        const colonIndex = part.indexOf(':');
+                        if (colonIndex !== -1) {
+                          return part.substring(colonIndex + 1).trim();
+                        }
+                        return part;
+                      });
+                    
+                    return components.length > 0 && (
+                      <div>
+                        <span className="text-muted-foreground text-sm mb-2 block">Meal Components:</span>
+                        <div className="flex flex-wrap gap-2">
+                          {components.map((component, idx) => (
+                            <Badge key={idx} variant="secondary" className="px-3 py-1">
+                              <Apple className="w-3 h-3 mr-1.5" />
+                              {component}
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+                    );
+                  })()}
                 </div>
               </div>
 
@@ -244,7 +268,7 @@ export default function NutritionScreen() {
               </div>
               
               <div className="space-y-3">
-                {todayMeals.map((meal) => (
+                {todayMeals.slice().reverse().map((meal) => (
                   <div key={meal.id} className="card-soft p-4">
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center gap-3">
@@ -283,13 +307,6 @@ export default function NutritionScreen() {
                 ))}
               </div>
 
-              {/* Bowl Cleaning Card */}
-              <BowlCleaningCard 
-                nutritionPlan={nutritionPlan}
-                onMarkFoodBowlCleaned={markFoodBowlCleaned}
-                onMarkWaterBowlCleaned={markWaterBowlCleaned}
-              />
-
               {/* Calorie & Macro Tracking */}
               <div className="mt-6 space-y-4">
                 <CalorieProgressCard
@@ -313,6 +330,16 @@ export default function NutritionScreen() {
                   dogId={selectedDogId}
                   nutritionPlanId={nutritionPlan.id}
                   dailyCalorieTarget={nutritionPlan.calorie_target_daily || undefined}
+                />
+              </div>
+
+              {/* Bowl Hygiene Section */}
+              <div className="mt-8">
+                <h3 className="font-semibold text-foreground mb-3">Bowl Hygiene</h3>
+                <BowlCleaningCard 
+                  nutritionPlan={nutritionPlan}
+                  onMarkFoodBowlCleaned={markFoodBowlCleaned}
+                  onMarkWaterBowlCleaned={markWaterBowlCleaned}
                 />
               </div>
 

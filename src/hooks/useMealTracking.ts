@@ -156,10 +156,15 @@ export function useMealTracking(dogId?: string, nutritionPlanId?: string) {
 
   const generateTodayMeals = (mealSchedule: any[], mealRecords: MealRecord[]) => {
     if (!mealSchedule || mealSchedule.length === 0) return [];
+    
+    const todayStr = format(new Date(), 'yyyy-MM-dd');
 
     return mealSchedule.map((meal: any, index: number) => {
+      // Only match records from today
       const existingRecord = mealRecords.find(record => 
-        record.meal_time === meal.time && record.meal_name === meal.name
+        record.meal_time === meal.time && 
+        record.meal_name === meal.name &&
+        record.scheduled_date === todayStr
       );
 
       return {
