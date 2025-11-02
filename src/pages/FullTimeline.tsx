@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, Fragment } from "react";
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams, useLocation } from "react-router-dom";
 import { ArrowLeft, ChevronLeft, ChevronRight, Activity, Heart, Utensils, Weight, Scissors, Stethoscope, Syringe, ClipboardCheck, Pill, Filter, AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
@@ -14,7 +14,8 @@ export default function FullTimeline() {
   const navigate = useNavigate();
   const { dogId } = useParams<{ dogId: string }>();
   const [searchParams] = useSearchParams();
-  const location = window.location;
+  const location = useLocation();
+  const fromTab = (location.state as { from?: string })?.from || 'wellness';
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const verticalScrollRef = useRef<HTMLDivElement>(null);
   const isScrollingRef = useRef(false);
@@ -231,7 +232,16 @@ export default function FullTimeline() {
   const handleBackClick = () => {
     // Clear saved position when navigating back
     sessionStorage.removeItem(`timeline-position-${dogId}`);
-    navigate(-1);
+    
+    // Navigate back to the originating tab
+    const tabMap: Record<string, string> = {
+      'home': 'home',
+      'wellness': 'wellness',
+      'tricks': 'tricks',
+    };
+    
+    const targetTab = tabMap[fromTab] || 'wellness';
+    navigate(`/?tab=${targetTab}`);
   };
   
   // Filter toggle
