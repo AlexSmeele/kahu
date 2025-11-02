@@ -21,9 +21,15 @@ export function TrainerScreenVariant2({ onTypingChange }: { onTypingChange?: (ty
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
   const { dogs } = useDogs();
   const { toast } = useToast();
   const currentDog = dogs[0];
+
+  // Auto-scroll to bottom when messages change
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages, isLoading]);
 
   // Auto-focus input when component mounts
   useEffect(() => {
@@ -207,6 +213,7 @@ export function TrainerScreenVariant2({ onTypingChange }: { onTypingChange?: (ty
                 </div>
               </div>
             )}
+            <div ref={messagesEndRef} />
           </div>
         )}
       </div>
