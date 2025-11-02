@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { Apple, Calendar, TrendingUp, Clock, Edit2, Plus, Bell, Package, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -27,6 +27,7 @@ import { Card } from "@/components/ui/card";
 export default function NutritionScreen() {
   const { dogId } = useParams<{ dogId: string }>();
   const navigate = useNavigate();
+  const location = useLocation();
   const [isWeekPlannerOpen, setIsWeekPlannerOpen] = useState(false);
   const [isInventoryOpen, setIsInventoryOpen] = useState(false);
   const [isCalcModalOpen, setIsCalcModalOpen] = useState(false);
@@ -34,12 +35,20 @@ export default function NutritionScreen() {
   const selectedDogId = dogId || dogs[0]?.id || '';
   const currentDog = dogs.find(dog => dog.id === selectedDogId) || dogs[0];
   
+  const from = (location.state as { from?: 'home' | 'wellness' | 'tricks' })?.from;
+  
   const handleDogChange = (newDogId: string) => {
-    navigate(`/nutrition/${newDogId}`);
+    navigate(`/nutrition/${newDogId}`, { state: { from } });
   };
   
   const handleBackClick = () => {
-    navigate(-1);
+    if (from) {
+      navigate(`/?tab=${from === 'tricks' ? 'tricks' : from}`);
+    } else if (window.history.length > 1) {
+      navigate(-1);
+    } else {
+      navigate('/?tab=home', { replace: true });
+    }
   };
   const { 
     nutritionPlan, 
@@ -94,18 +103,28 @@ export default function NutritionScreen() {
       });
     }
   };
+  // Clamp progress percentage
+  const clampedProgress = Math.min(100, Math.max(0, todayProgress.percentage || 0));
+
   return (
     <div className="flex flex-col h-full safe-top relative">
-      <Button
-        variant="ghost"
-        size="sm"
-        onClick={handleBackClick}
-        className="absolute top-4 left-4 z-50"
-      >
-        <ArrowLeft className="w-5 h-5" />
-      </Button>
-      <div className="pt-16">
-        <DogDropdown selectedDogId={selectedDogId} onDogChange={handleDogChange} />
+      {/* Sticky header with back button and dog selector */}
+      <div className="sticky top-0 z-40 bg-background/80 backdrop-blur border-b">
+        <div className="flex items-center justify-between px-4 py-3">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={handleBackClick}
+            className="flex items-center gap-2"
+          >
+            <ArrowLeft className="w-5 h-5" />
+            <span className="hidden sm:inline">Back</span>
+          </Button>
+          <DogDropdown selectedDogId={selectedDogId} onDogChange={handleDogChange} />
+        </div>
+      </div>
+      
+      <div className="pt-8">
         <PageLogo />
       </div>
 
@@ -143,7 +162,7 @@ export default function NutritionScreen() {
           <div className="flex items-center justify-between mb-3">
             <h3 className="font-semibold text-foreground">Today's Progress</h3>
             <Badge variant="outline" className="text-warning border-warning/30">
-              {todayProgress.percentage}% complete
+              {clampedProgress}% complete
             </Badge>
           </div>
           
@@ -155,7 +174,7 @@ export default function NutritionScreen() {
             <div className="w-full bg-muted rounded-full h-3">
               <div 
                 className="bg-gradient-to-r from-warning to-warning/80 h-3 rounded-full transition-all duration-300"
-                style={{ width: `${todayProgress.percentage}%` }}
+                style={{ width: `${clampedProgress}%` }}
               />
             </div>
           </div>

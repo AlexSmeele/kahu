@@ -65,10 +65,14 @@ export function useMealTracking(dogId?: string, nutritionPlanId?: string) {
       return;
     }
 
-    // Return ALL mock data for dev mode (not just today, ignore nutrition_plan_id mismatch)
+    // Filter mock data to today only
     if (isMockDogId(dogId)) {
+      const targetDate = date || new Date();
+      const dateString = format(targetDate, 'yyyy-MM-dd');
       const mockRecords = MOCK_MEAL_RECORDS.filter(r => 
-        r.dog_id === dogId
+        r.dog_id === dogId &&
+        r.nutrition_plan_id === nutritionPlanId &&
+        r.scheduled_date === dateString
       );
       setMealRecords(mockRecords);
       setLoading(false);
@@ -355,11 +359,17 @@ export function useMealTracking(dogId?: string, nutritionPlanId?: string) {
       return { consumed: 0, target: 480, percentage: 0 };
     }
 
-    const completedMeals = mealRecords.filter(record => record.completed_at);
+    // Filter to today's records only
+    const todayStr = format(new Date(), 'yyyy-MM-dd');
+    const todayRecords = mealRecords.filter(record => record.scheduled_date === todayStr);
+    const completedMeals = todayRecords.filter(record => record.completed_at);
     const totalMeals = mealSchedule.length;
     const completedCount = completedMeals.length;
     
-    const percentage = totalMeals > 0 ? Math.round((completedCount / totalMeals) * 100) : 0;
+    // Clamp percentage between 0 and 100
+    const percentage = totalMeals > 0 
+      ? Math.min(100, Math.max(0, Math.round((completedCount / totalMeals) * 100)))
+      : 0;
     const target = Math.round((dailyAmount || 2) * 240); // Rough calorie estimation
     const consumed = Math.round(target * (percentage / 100));
 
