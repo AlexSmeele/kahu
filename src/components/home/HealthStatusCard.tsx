@@ -76,7 +76,7 @@ export function HealthStatusCard({ dogId, onTabChange, className = "" }: HealthS
             <div className="space-y-1.5">
               {urgentAlerts.slice(0, 3).map((alert, idx) => (
                 <div key={idx}>
-                  <p className="text-sm font-medium text-destructive">
+                  <p className="text-sm font-medium text-destructive truncate">
                     {alert.title}
                   </p>
                   <p className="text-xs text-muted-foreground">
