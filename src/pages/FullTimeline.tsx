@@ -229,9 +229,9 @@ export default function FullTimeline() {
   };
 
   const handleBackClick = () => {
-    // Clear saved position when navigating back to home
+    // Clear saved position when navigating back
     sessionStorage.removeItem(`timeline-position-${dogId}`);
-    navigate('/?tab=wellness');
+    navigate(-1);
   };
   
   // Filter toggle

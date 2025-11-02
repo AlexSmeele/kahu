@@ -40,7 +40,7 @@ export function HealthStatusCard({ dogId, onTabChange, className = "" }: HealthS
   const handleClick = () => {
     if (hasAlerts) {
       // Navigate to timeline with overdue filter
-      navigate(`/full-timeline/${dogId}?filter=overdue`);
+      navigate(`/full-timeline/${dogId}?filter=overdue`, { state: { from: 'home' } });
     } else {
       // Navigate to wellness tab
       onTabChange('wellness');

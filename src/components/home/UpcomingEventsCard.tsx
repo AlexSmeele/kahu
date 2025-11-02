@@ -35,7 +35,7 @@ export function UpcomingEventsCard({ dogId, className = "" }: UpcomingEventsCard
   
   return (
     <button
-      onClick={() => navigate(`/full-timeline/${dogId}`)}
+      onClick={() => navigate(`/full-timeline/${dogId}`, { state: { from: 'home' } })}
       className={`rounded-2xl border bg-card p-4 hover:bg-accent transition-all hover:scale-[1.02] text-left w-full ${className}`}
     >
       <div className="flex flex-col justify-between h-full">
