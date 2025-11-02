@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { MessageCircle, Send, Sparkles, Search } from "lucide-react";
+import { MessageCircle, Send, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
@@ -22,13 +22,19 @@ export function TrainerScreenVariant2({ onTypingChange }: { onTypingChange?: (ty
   const [isLoading, setIsLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
   const { dogs } = useDogs();
   const { toast } = useToast();
   const currentDog = dogs[0];
 
   // Auto-scroll to bottom when messages change
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    const el = scrollContainerRef.current;
+    if (el) {
+      el.scrollTo({ top: el.scrollHeight, behavior: 'smooth' });
+    }
+    // Fallback
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isLoading]);
 
   // Auto-focus input when component mounts
@@ -107,7 +113,7 @@ export function TrainerScreenVariant2({ onTypingChange }: { onTypingChange?: (ty
   return (
     <div className="flex flex-col h-full">
       {/* Content */}
-      <div className="flex-1 overflow-y-auto safe-bottom">
+      <div ref={scrollContainerRef} className="flex-1 overflow-y-auto safe-bottom">
         {messages.length === 0 ? (
           /* Clean Welcome State */
           <div className="flex flex-col items-center justify-center p-6 text-center min-h-[60vh]">
@@ -125,19 +131,16 @@ export function TrainerScreenVariant2({ onTypingChange }: { onTypingChange?: (ty
 
             {/* Search-style input */}
             <div className="w-full max-w-md mb-6">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                <Input
-                  ref={inputRef}
-                  value={inputMessage}
-                  onChange={handleInputChange}
-                  onKeyPress={handleKeyPress}
-                  placeholder="Ask about training, behavior, or care..."
-                  className="pl-10 h-12 text-center"
-                  disabled={isLoading}
-                  autoFocus
-                />
-              </div>
+              <Input
+                ref={inputRef}
+                value={inputMessage}
+                onChange={handleInputChange}
+                onKeyPress={handleKeyPress}
+                placeholder="Ask about training, behavior, or care..."
+                className="h-12 text-center"
+                disabled={isLoading}
+                autoFocus
+              />
               <Button
                 onClick={sendMessage}
                 disabled={!inputMessage.trim() || isLoading}
