@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import dogMax from '@/assets/dog-max.jpg';
 import dogBella from '@/assets/dog-bella.jpg';
 import dogCharlie from '@/assets/dog-charlie.jpg';
+import dogLuna from '@/assets/dog-luna.jpg';
 
 export default function Social() {
   const navigate = useNavigate();
@@ -15,6 +16,7 @@ export default function Social() {
     { name: "Max", breed: "Golden Retriever", owner: "Sarah", avatar: dogMax, distance: "0.5 km away" },
     { name: "Bella", breed: "French Bulldog", owner: "Mike", avatar: dogBella, distance: "1.2 km away" },
     { name: "Charlie", breed: "Labrador", owner: "Emma", avatar: dogCharlie, distance: "2.1 km away" },
+    { name: "Luna", breed: "Beagle", owner: "Alex", avatar: dogLuna, distance: "1.8 km away" },
   ];
 
   const mockGroups = [
