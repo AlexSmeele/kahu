@@ -14,6 +14,9 @@ import { UpcomingEventsCard } from "@/components/home/UpcomingEventsCard";
 import { TreatBudgetCard } from "@/components/home/TreatBudgetCard";
 import { SocialCard } from "@/components/home/SocialCard";
 import { MarketplaceCard } from "@/components/home/MarketplaceCard";
+import { InsuranceCard } from "@/components/home/InsuranceCard";
+import { ServicesCard } from "@/components/home/ServicesCard";
+import { RelaxationCard } from "@/components/home/RelaxationCard";
 import { QuickNoteModal } from "@/components/home/QuickNoteModal";
 import { useHomeData } from "@/hooks/useHomeData";
 import { useWellnessTimeline } from "@/hooks/useWellnessTimeline";
@@ -148,6 +151,9 @@ export function HomeScreen({ selectedDogId, onDogChange, onTabChange }: HomeScre
                 <AnalyticsCard className="animate-fade-in [animation-delay:500ms]" />
                 <SocialCard className="animate-fade-in [animation-delay:550ms]" />
                 <MarketplaceCard className="animate-fade-in [animation-delay:600ms]" />
+                <InsuranceCard className="animate-fade-in [animation-delay:650ms]" />
+                <ServicesCard className="animate-fade-in [animation-delay:700ms]" />
+                <RelaxationCard className="animate-fade-in [animation-delay:750ms]" />
               </div>
             </div>
           </>

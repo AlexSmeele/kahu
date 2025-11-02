@@ -28,6 +28,9 @@ import NotFound from "./pages/NotFound";
 import Nutrition from "./pages/Nutrition";
 import Social from "./pages/Social";
 import Marketplace from "./pages/Marketplace";
+import Insurance from "./pages/Insurance";
+import Services from "./pages/Services";
+import Relaxation from "./pages/Relaxation";
 import { PasswordGate } from "@/components/PasswordGate";
 import { logger } from "@/lib/logger";
 
@@ -129,6 +132,21 @@ const App = () => {
                     <Route path="/marketplace" element={
                       <ProtectedRoute>
                         <Marketplace />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="/insurance" element={
+                      <ProtectedRoute>
+                        <Insurance />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="/services" element={
+                      <ProtectedRoute>
+                        <Services />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="/relaxation" element={
+                      <ProtectedRoute>
+                        <Relaxation />
                       </ProtectedRoute>
                     } />
                     {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
