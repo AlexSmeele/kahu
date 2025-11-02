@@ -62,36 +62,47 @@ export function HealthStatusCard({ dogId, onTabChange, className = "" }: HealthS
         </div>
         
         {/* Main Content */}
-        <div className="flex-1 flex flex-col justify-center items-center my-4">
+        <div className="flex-1 flex flex-col justify-center my-4">
           {allClear ? (
-            <>
-              <p className="text-lg font-semibold text-center text-green-600 mb-2">
+            <div className="text-center">
+              <p className="text-lg font-semibold text-green-600 mb-2">
                 All up to date! ✓
               </p>
               <p className="text-sm text-muted-foreground">
                 No upcoming events
               </p>
-            </>
-          ) : (
-            <>
-              {nextEvent && (
-                <>
-                  <p className="text-lg font-semibold text-center mb-1">
-                    {nextEvent.title}
-                  </p>
-                  <p className="text-sm text-muted-foreground mb-3">
-                    {getDaysUntil(nextEvent.timestamp)}
-                  </p>
-                </>
+            </div>
+          ) : hasAlerts ? (
+            <div className="space-y-1.5">
+              {urgentAlerts.slice(0, 3).map((alert, idx) => (
+                <div key={idx} className="flex items-start gap-2">
+                  <AlertTriangle className="w-3.5 h-3.5 text-destructive mt-0.5 flex-shrink-0" />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium text-destructive truncate">
+                      {alert.title}
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      {alert.description}
+                    </p>
+                  </div>
+                </div>
+              ))}
+              {urgentAlerts.length > 3 && (
+                <p className="text-xs text-muted-foreground text-center pt-1">
+                  + {urgentAlerts.length - 3} more overdue
+                </p>
               )}
-              {hasAlerts && (
-                <Badge variant="destructive" className="gap-1">
-                  <AlertTriangle className="w-3 h-3" />
-                  {urgentAlerts.length} overdue
-                </Badge>
-              )}
-            </>
-          )}
+            </div>
+          ) : nextEvent ? (
+            <div className="text-center">
+              <p className="text-lg font-semibold mb-1">
+                {nextEvent.title}
+              </p>
+              <p className="text-sm text-muted-foreground">
+                {getDaysUntil(nextEvent.timestamp)}
+              </p>
+            </div>
+          ) : null}
         </div>
       </div>
     </button>
