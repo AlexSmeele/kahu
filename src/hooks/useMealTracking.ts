@@ -167,6 +167,12 @@ export function useMealTracking(dogId?: string, nutritionPlanId?: string) {
         record.scheduled_date === todayStr
       );
 
+      // Determine if the scheduled time has passed
+      const [h, m] = (meal.time || '00:00').split(':').map((n: string) => parseInt(n, 10));
+      const scheduledDT = new Date();
+      scheduledDT.setHours(isNaN(h) ? 0 : h, isNaN(m) ? 0 : m, 0, 0);
+      const scheduledHasPassed = new Date() >= scheduledDT;
+
       return {
         id: existingRecord?.id || `meal-${index}`,
         time: new Date(`2000-01-01T${meal.time}`).toLocaleTimeString([], { 
@@ -176,7 +182,7 @@ export function useMealTracking(dogId?: string, nutritionPlanId?: string) {
         name: meal.name || `Meal ${index + 1}`,
         amount: meal.amount || 1,
         reminder_enabled: meal.reminder_enabled || false,
-        completed: !!existingRecord?.completed_at,
+        completed: !!existingRecord?.completed_at && scheduledHasPassed,
         meal_record: existingRecord,
       };
     });
