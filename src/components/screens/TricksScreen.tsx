@@ -733,17 +733,20 @@ export function TricksScreen({ selectedDogId, onDogChange }: TricksScreenProps) 
       />
 
       {/* Sub-Session Detail Modal */}
-      {selectedSubSession && (
+      {selectedSubSession && isSubSessionModalOpen && (
         <div
-          className={`fixed inset-0 z-50 ${isSubSessionModalOpen ? 'pointer-events-auto' : 'pointer-events-none'}`}
+          className="fixed inset-0 z-[100] flex items-end justify-center"
           onClick={() => setIsSubSessionModalOpen(false)}
         >
+          {/* Backdrop */}
           <div className="absolute inset-0 bg-background/80 backdrop-blur-sm" />
-          <div className="fixed inset-x-0 bottom-0 top-auto z-50 max-h-[90vh] overflow-y-auto">
-            <div
-              className="bg-card rounded-t-3xl border-t border-border shadow-xl"
-              onClick={(e) => e.stopPropagation()}
-            >
+          
+          {/* Modal Content */}
+          <div 
+            className="relative z-[101] w-full max-h-[90vh] overflow-y-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="bg-card rounded-t-3xl border-t border-border shadow-xl">
               {/* Modal Header */}
               <div className="sticky top-0 bg-gradient-to-br from-emerald-500 to-emerald-600 p-6 rounded-t-3xl">
                 <div className="flex items-start gap-4">
