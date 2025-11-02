@@ -13,10 +13,10 @@ export default function Social() {
   const navigate = useNavigate();
 
   const mockFriends = [
-    { name: "Max", breed: "Golden Retriever", owner: "Sarah", avatar: dogMax, distance: "0.5 km away" },
-    { name: "Bella", breed: "French Bulldog", owner: "Mike", avatar: dogBella, distance: "1.2 km away" },
-    { name: "Charlie", breed: "Labrador", owner: "Emma", avatar: dogCharlie, distance: "2.1 km away" },
-    { name: "Luna", breed: "Beagle", owner: "Alex", avatar: dogLuna, distance: "1.8 km away" },
+    { name: "Max", breed: "Golden Retriever", owner: "Sarah", avatar: dogMax, distance: "0.5 km" },
+    { name: "Bella", breed: "French Bulldog", owner: "Mike", avatar: dogBella, distance: "1.2 km" },
+    { name: "Charlie", breed: "Labrador", owner: "Emma", avatar: dogCharlie, distance: "2.1 km" },
+    { name: "Luna", breed: "Beagle", owner: "Alex", avatar: dogLuna, distance: "1.8 km" },
   ];
 
   const mockGroups = [
