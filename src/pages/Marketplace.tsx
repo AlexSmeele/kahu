@@ -1,4 +1,4 @@
-import { ArrowLeft, ShoppingCart } from 'lucide-react';
+import { ArrowLeft, ShoppingCart, SlidersHorizontal } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
@@ -10,6 +10,7 @@ import { useToast } from '@/hooks/use-toast';
 export default function Marketplace() {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const [showFilters, setShowFilters] = useState(true);
   const [cartItems, setCartItems] = useState<Array<{
     id: string;
     name: string;
@@ -77,6 +78,14 @@ export default function Marketplace() {
             <ArrowLeft className="w-5 h-5" />
           </Button>
           <h1 className="text-2xl font-bold flex-1">Marketplace</h1>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setShowFilters(!showFilters)}
+            className="flex-shrink-0"
+          >
+            <SlidersHorizontal className="w-5 h-5" />
+          </Button>
           <CartDrawer
             cartItems={cartItems}
             onUpdateQuantity={handleUpdateCartQuantity}
@@ -89,6 +98,7 @@ export default function Marketplace() {
       <MarketplaceScreen 
         cartItems={cartItems}
         setCartItems={setCartItems}
+        showFilters={showFilters}
       />
       <OrderHistoryModal
         isOpen={isOrderHistoryOpen}

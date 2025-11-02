@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { Search, Filter, Star } from "lucide-react";
+import { Search, ArrowUpDown, Star } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -201,9 +201,10 @@ interface MarketplaceScreenProps {
     imageUrl: string;
     supplier: string;
   }>>>;
+  showFilters: boolean;
 }
 
-export function MarketplaceScreen({ cartItems, setCartItems }: MarketplaceScreenProps) {
+export function MarketplaceScreen({ cartItems, setCartItems, showFilters }: MarketplaceScreenProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [sortBy, setSortBy] = useState<'name' | 'price' | 'rating'>('name');
@@ -287,11 +288,11 @@ export function MarketplaceScreen({ cartItems, setCartItems }: MarketplaceScreen
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" className="min-w-24">
-                <Filter className="w-4 h-4 mr-2" />
+                <ArrowUpDown className="w-4 h-4 mr-2" />
                 {sortBy}
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="bg-popover border border-border">
+            <DropdownMenuContent className="bg-popover border border-border z-50">
               <DropdownMenuItem onClick={() => setSortBy('name')}>
                 Name
               </DropdownMenuItem>
@@ -306,18 +307,20 @@ export function MarketplaceScreen({ cartItems, setCartItems }: MarketplaceScreen
         </div>
 
         {/* Categories */}
-        <div className="flex flex-wrap gap-2">
-          {categories.map((category) => (
-            <Badge
-              key={category}
-              variant={selectedCategory === category ? "default" : "secondary"}
-              className="cursor-pointer flex-grow text-center justify-center min-w-[80px]"
-              onClick={() => setSelectedCategory(category)}
-            >
-              {category}
-            </Badge>
-          ))}
-        </div>
+        {showFilters && (
+          <div className="flex flex-wrap gap-2">
+            {categories.map((category) => (
+              <Badge
+                key={category}
+                variant={selectedCategory === category ? "default" : "secondary"}
+                className="cursor-pointer flex-grow text-center justify-center min-w-[80px]"
+                onClick={() => setSelectedCategory(category)}
+              >
+                {category}
+              </Badge>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Product Grid */}
