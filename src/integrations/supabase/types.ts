@@ -564,7 +564,7 @@ export type Database = {
           avatar_url: string | null
           behavioral_goals: Json | null
           birthday: string | null
-          breed_id: string
+          breed_id: string | null
           created_at: string
           custom_breed_id: string | null
           family_id: string | null
@@ -584,7 +584,7 @@ export type Database = {
           avatar_url?: string | null
           behavioral_goals?: Json | null
           birthday?: string | null
-          breed_id: string
+          breed_id?: string | null
           created_at?: string
           custom_breed_id?: string | null
           family_id?: string | null
@@ -604,7 +604,7 @@ export type Database = {
           avatar_url?: string | null
           behavioral_goals?: Json | null
           birthday?: string | null
-          breed_id?: string
+          breed_id?: string | null
           created_at?: string
           custom_breed_id?: string | null
           family_id?: string | null
