@@ -153,8 +153,8 @@ export function DogProfileModal({ isOpen, onClose, dog, mode }: DogProfileModalP
     try {
       const dogData = {
         name: formData.name.trim(),
-        breed_id: formData.isCustomBreed ? undefined : formData.breedId,
-        custom_breed_id: formData.isCustomBreed ? formData.customBreedId : undefined,
+        breed_id: formData.isCustomBreed ? null : formData.breedId,
+        custom_breed_id: formData.isCustomBreed ? formData.customBreedId : null,
         gender: formData.gender || undefined,
         birthday: formData.birthday || undefined,
         weight: formData.weight ? parseFloat(formData.weight) : undefined,
