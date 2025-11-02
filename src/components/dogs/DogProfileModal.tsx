@@ -44,6 +44,14 @@ export function DogProfileModal({ isOpen, onClose, dog, mode }: DogProfileModalP
   useEffect(() => {
     if (isOpen) {
       if (mode === 'edit' && dog) {
+        console.log('🐕 DogProfileModal: Initializing with dog:', {
+          name: dog.name,
+          breed_id: dog.breed_id,
+          custom_breed_id: dog.custom_breed_id,
+          dog_breeds: (dog as any).dog_breeds,
+          custom_breeds: (dog as any).custom_breeds,
+        });
+
         // Determine breed name from various possible sources
         let breedName = '';
         if (dog.custom_breed_id && (dog as any).custom_breeds) {
@@ -52,7 +60,7 @@ export function DogProfileModal({ isOpen, onClose, dog, mode }: DogProfileModalP
           breedName = (dog as any).dog_breeds.breed;
         }
         
-        setFormData({
+        const newFormData = {
           name: dog.name,
           breed: breedName,
           breedId: dog.breed_id || '',
@@ -61,7 +69,10 @@ export function DogProfileModal({ isOpen, onClose, dog, mode }: DogProfileModalP
           gender: dog.gender || '',
           birthday: dog.birthday || '',
           weight: dog.weight ? dog.weight.toString() : '',
-        });
+        };
+
+        console.log('🐕 DogProfileModal: Setting formData:', newFormData);
+        setFormData(newFormData);
         
         // Load current image data
         if (dog.avatar_url) {
@@ -225,6 +236,7 @@ export function DogProfileModal({ isOpen, onClose, dog, mode }: DogProfileModalP
               <Label>Breed *</Label>
               <EnhancedBreedSelector
                 value={formData.breedId || formData.customBreedId}
+                initialBreedName={formData.breed} 
                 onBreedSelect={(breedId, isCustom, breedName) => {
                   setFormData(prev => ({
                     ...prev,

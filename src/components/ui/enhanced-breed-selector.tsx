@@ -19,6 +19,7 @@ interface EnhancedBreedSelectorProps {
   placeholder?: string;
   className?: string;
   defaultTab?: 'standard' | 'custom' | 'create';
+  initialBreedName?: string; // Add this to allow passing the breed name directly
 }
 
 interface ParentBreed {
@@ -32,12 +33,13 @@ export function EnhancedBreedSelector({
   onBreedSelect, 
   placeholder = "Select or create a breed...",
   className,
-  defaultTab = 'standard'
+  defaultTab = 'standard',
+  initialBreedName // Add this parameter
 }: EnhancedBreedSelectorProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedTab, setSelectedTab] = useState(defaultTab);
-  const [displayName, setDisplayName] = useState<string>(placeholder);
+  const [displayName, setDisplayName] = useState<string>(initialBreedName || placeholder);
   
   // Custom breed creation state
   const [customBreedName, setCustomBreedName] = useState('');
@@ -192,9 +194,19 @@ export function EnhancedBreedSelector({
     });
   };
 
-  // Resolve breed ID to display name
+  // Resolve breed ID to display name - but use initialBreedName if provided
   useEffect(() => {
+    console.log('🔍 EnhancedBreedSelector: Resolving breed with value:', value, 'initialBreedName:', initialBreedName);
+    
+    // If we have an initial breed name that matches the current value, use it immediately
+    if (initialBreedName && value) {
+      console.log('🔍 EnhancedBreedSelector: Using initialBreedName:', initialBreedName);
+      setDisplayName(initialBreedName);
+      return;
+    }
+    
     if (!value) {
+      console.log('🔍 EnhancedBreedSelector: No value, setting placeholder');
       setDisplayName(placeholder);
       return;
     }
@@ -203,31 +215,41 @@ export function EnhancedBreedSelector({
       // Check custom breeds first
       const customBreed = customBreeds.find(breed => breed.id === value);
       if (customBreed) {
+        console.log('🔍 EnhancedBreedSelector: Found custom breed:', customBreed.name);
         setDisplayName(customBreed.name);
         return;
       }
 
       // Check standard breeds by ID - query database if needed
       try {
-        const { data: breedData } = await supabase
+        console.log('🔍 EnhancedBreedSelector: Querying database for breed ID:', value);
+        const { data: breedData, error } = await supabase
           .from('dog_breeds')
           .select('breed')
           .eq('id', value)
           .single();
 
+        if (error) {
+          console.error('🔍 EnhancedBreedSelector: Database query error:', error);
+        }
+
         if (breedData) {
+          console.log('🔍 EnhancedBreedSelector: Found standard breed:', breedData.breed);
           setDisplayName(breedData.breed);
           return;
+        } else {
+          console.log('🔍 EnhancedBreedSelector: No breed found for ID:', value);
         }
       } catch (error) {
-        console.error('Error resolving breed name:', error);
+        console.error('🔍 EnhancedBreedSelector: Error resolving breed name:', error);
       }
 
+      console.log('🔍 EnhancedBreedSelector: Falling back to placeholder');
       setDisplayName(placeholder);
     };
 
     resolveBreedName();
-  }, [value, customBreeds, placeholder]);
+  }, [value, customBreeds, placeholder, initialBreedName]);
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => {
