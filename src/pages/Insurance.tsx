@@ -75,7 +75,7 @@ export default function Insurance() {
   const usagePercentage = (mockInsurance.coverage.used / mockInsurance.coverage.annual) * 100;
 
   return (
-    <div className="min-h-screen bg-background pb-20 overflow-y-auto safe-top">
+    <div className="content-frame bg-background safe-top">
       <div className="sticky top-0 z-10 bg-background border-b safe-top">
         <div className="container py-4 flex items-center gap-4">
           <Button
@@ -90,7 +90,7 @@ export default function Insurance() {
         </div>
       </div>
 
-      <div className="container py-6 space-y-6">
+      <div className="container py-6 pb-24 space-y-6">
         {/* Policy Overview */}
         <Card className="p-6">
           <div className="flex items-center gap-3 mb-4">

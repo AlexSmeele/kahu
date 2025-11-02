@@ -95,13 +95,13 @@ export default function Relaxation() {
   };
 
   return (
-    <div className="min-h-screen bg-background pb-20 overflow-y-auto safe-top">
+    <div className="content-frame bg-background safe-top">
       <div className="sticky top-0 z-10 bg-background border-b safe-top">
         <div className="container py-4 flex items-center gap-4">
           <Button
             variant="ghost"
             size="icon"
-            onClick={() => navigate(-1)}
+            onClick={() => navigate('/')}
             className="flex-shrink-0"
           >
             <ArrowLeft className="w-5 h-5" />
@@ -110,7 +110,7 @@ export default function Relaxation() {
         </div>
       </div>
 
-      <div className="container py-6">
+      <div className="container py-6 pb-24">
         <Tabs defaultValue="sounds" className="space-y-6">
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="sounds">Calming Sounds</TabsTrigger>

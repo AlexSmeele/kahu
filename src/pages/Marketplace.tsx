@@ -7,13 +7,13 @@ export default function Marketplace() {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-background pb-20 overflow-y-auto safe-top">
+    <div className="content-frame bg-background safe-top">
       <div className="sticky top-0 z-10 bg-background border-b safe-top">
         <div className="container py-4 flex items-center gap-4">
           <Button
             variant="ghost"
             size="icon"
-            onClick={() => navigate(-1)}
+            onClick={() => navigate('/')}
             className="flex-shrink-0"
           >
             <ArrowLeft className="w-5 h-5" />
