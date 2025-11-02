@@ -107,7 +107,7 @@ export function TrainerScreenVariant2({ onTypingChange }: { onTypingChange?: (ty
   return (
     <div className="flex flex-col h-full">
       {/* Content */}
-      <div className="flex-1 overflow-y-auto safe-bottom">
+      <div className="flex-1 overflow-y-auto pb-24">
         {messages.length === 0 ? (
           /* Clean Welcome State */
           <div className="flex flex-col items-center justify-center p-6 text-center min-h-[60vh]">
@@ -162,13 +162,13 @@ export function TrainerScreenVariant2({ onTypingChange }: { onTypingChange?: (ty
           </div>
         ) : (
           /* Conversation View */
-          <div className="max-w-2xl mx-auto p-4 space-y-6">
+          <div className="max-w-2xl mx-auto p-4 pt-6 space-y-6">
             {messages.map((message) => (
               <div key={message.id} className="space-y-2">
                 {message.role === 'assistant' && (
                   <div className="flex items-center gap-2 text-sm text-muted-foreground">
                     <Sparkles className="w-4 h-4" />
-                    <span>Adviser</span>
+                    <span>Kahu</span>
                   </div>
                 )}
                 <div className={`${
@@ -199,7 +199,7 @@ export function TrainerScreenVariant2({ onTypingChange }: { onTypingChange?: (ty
               <div className="mr-8">
                 <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
                   <Sparkles className="w-4 h-4" />
-                  <span>Adviser</span>
+                  <span>Kahu</span>
                 </div>
                 <div className="inline-block p-4 rounded-2xl bg-muted">
                   <div className="flex items-center gap-1">
@@ -217,7 +217,7 @@ export function TrainerScreenVariant2({ onTypingChange }: { onTypingChange?: (ty
 
       {/* Floating Input (when in conversation) */}
       {messages.length > 0 && (
-        <div className="flex-shrink-0 p-4 bg-card/95 backdrop-blur-sm border-t border-border safe-bottom">
+        <div className="sticky bottom-0 p-4 bg-card/95 backdrop-blur-sm border-t border-border safe-bottom">
           <div className="max-w-2xl mx-auto flex gap-2 items-end">
             <div className="flex-1">
               <Input
