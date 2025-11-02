@@ -4,14 +4,17 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
+import dogMax from '@/assets/dog-max.jpg';
+import dogBella from '@/assets/dog-bella.jpg';
+import dogCharlie from '@/assets/dog-charlie.jpg';
 
 export default function Social() {
   const navigate = useNavigate();
 
   const mockFriends = [
-    { name: "Max", breed: "Golden Retriever", owner: "Sarah", avatar: null, distance: "0.5 km away" },
-    { name: "Bella", breed: "French Bulldog", owner: "Mike", avatar: null, distance: "1.2 km away" },
-    { name: "Charlie", breed: "Labrador", owner: "Emma", avatar: null, distance: "2.1 km away" },
+    { name: "Max", breed: "Golden Retriever", owner: "Sarah", avatar: dogMax, distance: "0.5 km away" },
+    { name: "Bella", breed: "French Bulldog", owner: "Mike", avatar: dogBella, distance: "1.2 km away" },
+    { name: "Charlie", breed: "Labrador", owner: "Emma", avatar: dogCharlie, distance: "2.1 km away" },
   ];
 
   const mockGroups = [
@@ -36,7 +39,7 @@ export default function Social() {
           >
             <ArrowLeft className="w-5 h-5" />
           </Button>
-          <h1 className="text-2xl font-bold">Pet Social Network</h1>
+          <h1 className="text-2xl font-bold">Kahu Social</h1>
         </div>
       </div>
 
@@ -52,29 +55,34 @@ export default function Social() {
           <p className="text-muted-foreground mb-4">
             Connect with pet parents in your area
           </p>
-          <div className="space-y-3">
+          <div className="grid grid-cols-2 gap-3">
             {mockFriends.map((friend, idx) => (
-              <Card key={idx} className="p-4 hover:bg-accent transition-colors cursor-pointer">
-                <div className="flex items-center gap-3">
-                  <Avatar className="w-12 h-12">
-                    <AvatarImage src={friend.avatar || undefined} />
-                    <AvatarFallback>{friend.name[0]}</AvatarFallback>
-                  </Avatar>
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2">
-                      <h3 className="font-semibold">{friend.name}</h3>
-                      <Badge variant="secondary" className="text-xs">{friend.breed}</Badge>
+              <Card key={idx} className="overflow-hidden group cursor-pointer hover:scale-[1.02] transition-all">
+                <div className="relative aspect-square">
+                  <img 
+                    src={friend.avatar} 
+                    alt={friend.name}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                  <div className="absolute bottom-0 left-0 right-0 p-3">
+                    <div className="flex items-end justify-between gap-2">
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-semibold text-white text-lg mb-0.5 truncate">{friend.name}</h3>
+                        <p className="text-white/90 text-xs mb-1 truncate">{friend.breed}</p>
+                        <p className="text-white/80 text-xs flex items-center gap-1">
+                          <MapPin className="w-3 h-3 flex-shrink-0" />
+                          {friend.distance}
+                        </p>
+                      </div>
+                      <Button 
+                        size="sm" 
+                        className="bg-white/90 hover:bg-white text-primary flex-shrink-0"
+                      >
+                        <Heart className="w-4 h-4" />
+                      </Button>
                     </div>
-                    <p className="text-sm text-muted-foreground">Owner: {friend.owner}</p>
-                    <p className="text-xs text-muted-foreground flex items-center gap-1 mt-1">
-                      <MapPin className="w-3 h-3" />
-                      {friend.distance}
-                    </p>
                   </div>
-                  <Button size="sm" variant="outline">
-                    <Heart className="w-4 h-4 mr-1" />
-                    Add
-                  </Button>
                 </div>
               </Card>
             ))}
