@@ -81,12 +81,12 @@ export default function Insurance() {
           <Button
             variant="ghost"
             size="icon"
-            onClick={() => navigate(-1)}
+            onClick={() => navigate('/')}
             className="flex-shrink-0"
           >
             <ArrowLeft className="w-5 h-5" />
           </Button>
-          <h1 className="text-2xl font-bold">Pet Insurance</h1>
+          <h1 className="text-2xl font-bold">Insurance</h1>
         </div>
       </div>
 
@@ -157,6 +157,61 @@ export default function Insurance() {
               <span className="text-muted-foreground">Reimbursement Rate</span>
               <span className="font-semibold">{mockInsurance.reimbursementRate}%</span>
             </div>
+            <div className="flex justify-between items-center">
+              <span className="text-muted-foreground">Coverage Type</span>
+              <span className="font-semibold">Comprehensive</span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-muted-foreground">Premium (Monthly)</span>
+              <span className="font-semibold">$89.99</span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-muted-foreground">Max Benefit per Condition</span>
+              <span className="font-semibold">$5,000</span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-muted-foreground">Wellness Coverage</span>
+              <span className="font-semibold">Included</span>
+            </div>
+          </div>
+        </Card>
+
+        {/* Coverage Includes */}
+        <Card className="p-6">
+          <h3 className="text-lg font-semibold mb-4">What's Covered</h3>
+          <div className="space-y-2">
+            <div className="flex items-start gap-2">
+              <CheckCircle className="w-4 h-4 text-green-600 dark:text-green-400 mt-0.5 flex-shrink-0" />
+              <span className="text-sm">Emergency veterinary care & hospitalization</span>
+            </div>
+            <div className="flex items-start gap-2">
+              <CheckCircle className="w-4 h-4 text-green-600 dark:text-green-400 mt-0.5 flex-shrink-0" />
+              <span className="text-sm">Chronic conditions & ongoing treatments</span>
+            </div>
+            <div className="flex items-start gap-2">
+              <CheckCircle className="w-4 h-4 text-green-600 dark:text-green-400 mt-0.5 flex-shrink-0" />
+              <span className="text-sm">Diagnostic tests, X-rays & bloodwork</span>
+            </div>
+            <div className="flex items-start gap-2">
+              <CheckCircle className="w-4 h-4 text-green-600 dark:text-green-400 mt-0.5 flex-shrink-0" />
+              <span className="text-sm">Surgeries & specialist consultations</span>
+            </div>
+            <div className="flex items-start gap-2">
+              <CheckCircle className="w-4 h-4 text-green-600 dark:text-green-400 mt-0.5 flex-shrink-0" />
+              <span className="text-sm">Prescription medications</span>
+            </div>
+            <div className="flex items-start gap-2">
+              <CheckCircle className="w-4 h-4 text-green-600 dark:text-green-400 mt-0.5 flex-shrink-0" />
+              <span className="text-sm">Alternative therapies (acupuncture, hydrotherapy)</span>
+            </div>
+            <div className="flex items-start gap-2">
+              <CheckCircle className="w-4 h-4 text-green-600 dark:text-green-400 mt-0.5 flex-shrink-0" />
+              <span className="text-sm">Annual wellness exams & vaccinations</span>
+            </div>
+            <div className="flex items-start gap-2">
+              <CheckCircle className="w-4 h-4 text-green-600 dark:text-green-400 mt-0.5 flex-shrink-0" />
+              <span className="text-sm">Dental cleanings & extractions</span>
+            </div>
           </div>
         </Card>
 
@@ -207,13 +262,13 @@ export default function Insurance() {
         </Card>
 
         {/* Quick Actions */}
-        <div className="grid grid-cols-2 gap-3">
-          <Button variant="outline" className="w-full">
-            <DollarSign className="w-4 h-4 mr-2" />
-            File Claim
+        <div className="grid grid-cols-1 gap-3">
+          <Button className="w-full" size="lg">
+            <DollarSign className="w-5 h-5 mr-2" />
+            Make Claim
           </Button>
-          <Button variant="outline" className="w-full">
-            View Policy
+          <Button variant="outline" className="w-full" size="lg">
+            Read Policy Documents
           </Button>
         </div>
       </div>
