@@ -1,8 +1,5 @@
 import { useState, useMemo } from "react";
-import { Search, Filter, ShoppingCart, Star, ShoppingBag } from "lucide-react";
-import { CartDrawer } from "@/components/marketplace/CartDrawer";
-import { OrderHistoryModal } from "@/components/marketplace/OrderHistoryModal"; 
-
+import { Search, Filter, Star } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -187,19 +184,29 @@ const mockProducts: Product[] = [
 
 const categories = ["All", "Food", "Toys", "Accessories", "Treats", "Beds", "Training", "Health"];
 
-export function MarketplaceScreen() {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("All");
-  const [sortBy, setSortBy] = useState<'name' | 'price' | 'rating'>('name');
-  const [cartItems, setCartItems] = useState<Array<{
+interface MarketplaceScreenProps {
+  cartItems: Array<{
     id: string;
     name: string;
     price: number;
     quantity: number;
     imageUrl: string;
     supplier: string;
-  }>>([]);
-  const [isOrderHistoryOpen, setIsOrderHistoryOpen] = useState(false);
+  }>;
+  setCartItems: React.Dispatch<React.SetStateAction<Array<{
+    id: string;
+    name: string;
+    price: number;
+    quantity: number;
+    imageUrl: string;
+    supplier: string;
+  }>>>;
+}
+
+export function MarketplaceScreen({ cartItems, setCartItems }: MarketplaceScreenProps) {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [sortBy, setSortBy] = useState<'name' | 'price' | 'rating'>('name');
   const { toast } = useToast();
 
   const filteredProducts = useMemo(() => {
@@ -262,68 +269,11 @@ export function MarketplaceScreen() {
     });
   };
 
-  const handleUpdateCartQuantity = (id: string, quantity: number) => {
-    if (quantity === 0) {
-      handleRemoveFromCart(id);
-      return;
-    }
-    setCartItems(prev =>
-      prev.map(item =>
-        item.id === id ? { ...item, quantity } : item
-      )
-    );
-  };
-
-  const handleRemoveFromCart = (id: string) => {
-    setCartItems(prev => prev.filter(item => item.id !== id));
-  };
-
-  const handleCheckout = () => {
-    toast({
-      title: "Checkout successful!",
-      description: `Order placed for ${cartItems.length} items. Total: $${cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0).toFixed(2)}`,
-    });
-    setCartItems([]);
-  };
-
-  const handleReorder = (items: Array<{ id: string; name: string; price: number; quantity: number; imageUrl: string; supplier: string; }>) => {
-    setCartItems(prev => {
-      const newItems = [...prev];
-      items.forEach(reorderItem => {
-        const existingItemIndex = newItems.findIndex(item => item.id === reorderItem.id);
-        if (existingItemIndex >= 0) {
-          newItems[existingItemIndex].quantity += reorderItem.quantity;
-        } else {
-          newItems.push({ ...reorderItem });
-        }
-      });
-      return newItems;
-    });
-    
-    toast({
-      title: "Items added to cart",
-      description: `${items.length} items from your previous order have been added to cart.`,
-    });
-  };
 
   return (
     <div className="h-full flex flex-col bg-background">
-      {/* Header */}
+      {/* Search and Sort Bar */}
       <div className="bg-card border-b border-border p-4">
-        <div className="flex items-center justify-between mb-4">
-          <h1 className="text-2xl font-bold text-foreground">Marketplace</h1>
-          <div className="flex items-center gap-2">
-            <CartDrawer
-              cartItems={cartItems}
-              onUpdateQuantity={handleUpdateCartQuantity}
-              onRemoveItem={handleRemoveFromCart}
-              onCheckout={handleCheckout}
-              onViewOrderHistory={() => setIsOrderHistoryOpen(true)}
-            />
-          </div>
-        </div>
-        
-        {/* Search and Sort Bar */}
         <div className="flex gap-2 mb-4">
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
@@ -420,7 +370,6 @@ export function MarketplaceScreen() {
                   variant={product.inStock ? "default" : "secondary"}
                   onClick={() => product.inStock && handleAddToCart(product)}
                 >
-                  <ShoppingCart className="w-4 h-4 mr-2" />
                   {product.inStock ? "Add to Cart" : "Out of Stock"}
                 </Button>
               </CardFooter>
@@ -434,13 +383,6 @@ export function MarketplaceScreen() {
           </div>
         )}
       </div>
-
-      {/* Order History Modal */}
-      <OrderHistoryModal
-        isOpen={isOrderHistoryOpen}
-        onClose={() => setIsOrderHistoryOpen(false)}
-        onReorder={handleReorder}
-      />
     </div>
   );
 }
