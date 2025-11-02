@@ -13,9 +13,10 @@ import { useDogs } from "@/hooks/useDogs";
 interface DogDropdownProps {
   selectedDogId: string;
   onDogChange: (dogId: string) => void;
+  variant?: 'overlay' | 'inline';
 }
 
-export function DogDropdown({ selectedDogId, onDogChange }: DogDropdownProps) {
+export function DogDropdown({ selectedDogId, onDogChange, variant = 'overlay' }: DogDropdownProps) {
   const { dogs } = useDogs();
   const selectedDog = dogs.find(d => d.id === selectedDogId);
 
@@ -26,12 +27,16 @@ export function DogDropdown({ selectedDogId, onDogChange }: DogDropdownProps) {
   // Approximate width: base width + character width * name length + padding
   const minWidth = Math.max(140, 40 + longestNameLength * 9 + 80); // 40px for avatar, 9px per char, 80px for padding/chevron
 
+  const positionClass = variant === 'inline'
+    ? "flex items-center justify-start gap-2 h-12 px-3 hover:bg-accent"
+    : "absolute top-3 left-3 z-[100] flex items-center justify-start gap-2 h-[58px] px-3 bg-background/80 backdrop-blur-sm hover:bg-accent";
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button 
           variant="ghost" 
-          className="flex items-center justify-start gap-2 h-12 px-3 hover:bg-accent"
+          className={positionClass}
           style={{ minWidth: `${minWidth}px` }}
         >
           <Avatar className="w-10 h-10 border-2 border-border shadow-sm">

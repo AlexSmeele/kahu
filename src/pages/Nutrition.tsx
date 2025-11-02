@@ -111,7 +111,7 @@ export default function NutritionScreen() {
       {/* Sticky header with dog selector and close button */}
       <div className="sticky top-0 z-50 bg-background border-b shadow-sm">
         <div className="flex items-center justify-between px-4 py-3">
-          <DogDropdown selectedDogId={selectedDogId} onDogChange={handleDogChange} />
+          <DogDropdown selectedDogId={selectedDogId} onDogChange={handleDogChange} variant="inline" />
           <Button
             variant="ghost"
             size="sm"
