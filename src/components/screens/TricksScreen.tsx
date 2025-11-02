@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { Award, Star, Clock, CheckCircle2, Lock, Trophy, Target, Zap, Play, BookOpen, GraduationCap, AlertCircle, ChevronDown, ChevronUp, Users } from "lucide-react";
+import { Award, Star, Clock, CheckCircle2, Lock, Trophy, Target, Zap, Play, BookOpen, GraduationCap, AlertCircle, ChevronDown, ChevronUp, Users, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
@@ -764,6 +764,13 @@ export function TricksScreen({ selectedDogId, onDogChange }: TricksScreenProps) 
                       </div>
                     )}
                   </div>
+                  <button
+                    onClick={() => setIsSubSessionModalOpen(false)}
+                    className="w-10 h-10 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center flex-shrink-0 transition-colors"
+                    aria-label="Close"
+                  >
+                    <X className="w-5 h-5 text-white" />
+                  </button>
                 </div>
               </div>
 
