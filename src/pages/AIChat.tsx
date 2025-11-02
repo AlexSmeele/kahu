@@ -7,7 +7,7 @@ export default function AIChat() {
   const navigate = useNavigate();
 
   return (
-    <div className="flex flex-col h-[100dvh] bg-background">
+    <div className="flex flex-col h-full bg-background">
       {/* Header */}
       <div className="flex items-center justify-between p-4 safe-top border-b bg-card">
         <Button
@@ -25,7 +25,7 @@ export default function AIChat() {
       </div>
 
       {/* Chat Content */}
-      <div className="flex-1 overflow-y-auto">
+      <div className="flex-1 overflow-hidden">
         <TrainerScreenVariant2 />
       </div>
     </div>
