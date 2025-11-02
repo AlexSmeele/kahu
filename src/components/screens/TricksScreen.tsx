@@ -588,32 +588,6 @@ export function TricksScreen({ selectedDogId, onDogChange }: TricksScreenProps) 
               })}
             </div>
 
-            {/* Legacy Foundation Tricks */}
-            {tricks.filter(t => t.category === 'Foundation').length > 0 && (
-              <div className="space-y-4 mt-6">
-                <h3 className="text-sm font-semibold text-muted-foreground px-2">Individual Foundation Skills</h3>
-                <div className="grid gap-4">
-                  {tricks
-                    .filter(t => t.category === 'Foundation')
-                    .sort((a, b) => (a.priority_order || 0) - (b.priority_order || 0))
-                    .map((trick) => {
-                      const unmetPrereqs = getUnmetPrerequisites(trick);
-                      return (
-                        <TrickCard
-                          key={trick.id}
-                          trick={trick}
-                          dogTrick={learnedTricksMap.get(trick.id)}
-                          onStart={handleStart}
-                          onPractice={handlePractice}
-                          onTrickClick={handleTrickClick}
-                          hasUnmetPrerequisites={unmetPrereqs.length > 0}
-                          unmetPrerequisites={unmetPrereqs}
-                        />
-                      );
-                    })}
-                </div>
-              </div>
-            )}
           </div>
         )}
 
