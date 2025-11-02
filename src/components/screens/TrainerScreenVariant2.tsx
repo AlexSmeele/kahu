@@ -171,7 +171,7 @@ export function TrainerScreenVariant2({ onTypingChange }: { onTypingChange?: (ty
                 {message.role === 'assistant' && (
                   <div className="flex items-center gap-2 text-sm text-muted-foreground">
                     <Sparkles className="w-4 h-4" />
-                    <span>Adviser</span>
+                    <span>Kahu</span>
                   </div>
                 )}
                 <div className={`${
@@ -202,7 +202,7 @@ export function TrainerScreenVariant2({ onTypingChange }: { onTypingChange?: (ty
               <div className="mr-8">
                 <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
                   <Sparkles className="w-4 h-4" />
-                  <span>Adviser</span>
+                  <span>Kahu</span>
                 </div>
                 <div className="inline-block p-4 rounded-2xl bg-muted">
                   <div className="flex items-center gap-1">
