@@ -71,7 +71,7 @@ export default function Social() {
                     <div className="flex items-end justify-between gap-2">
                       <div className="flex-1 min-w-0">
                         <h3 className="font-semibold text-white text-lg mb-0.5 truncate">{friend.name}</h3>
-                        <p className="text-white/90 text-xs mb-1 truncate">{friend.breed}</p>
+                        <p className="text-white/90 text-xs mb-1">{friend.breed}</p>
                         <p className="text-white/80 text-xs flex items-center gap-1">
                           <MapPin className="w-3 h-3 flex-shrink-0" />
                           {friend.distance}
