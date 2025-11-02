@@ -75,16 +75,13 @@ export function HealthStatusCard({ dogId, onTabChange, className = "" }: HealthS
           ) : hasAlerts ? (
             <div className="space-y-1.5">
               {urgentAlerts.slice(0, 3).map((alert, idx) => (
-                <div key={idx} className="flex items-start gap-2">
-                  <AlertTriangle className="w-3.5 h-3.5 text-destructive mt-0.5 flex-shrink-0" />
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-destructive truncate">
-                      {alert.title}
-                    </p>
-                    <p className="text-xs text-muted-foreground">
-                      {alert.description}
-                    </p>
-                  </div>
+                <div key={idx}>
+                  <p className="text-sm font-medium text-destructive">
+                    {alert.title}
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    {alert.description}
+                  </p>
                 </div>
               ))}
               {urgentAlerts.length > 3 && (
