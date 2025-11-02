@@ -10,7 +10,7 @@ import { PageLogo } from "@/components/layout/PageLogo";
 import { ClickerButton } from "@/components/training/ClickerButton";
 import { ClickerModal } from "@/components/training/ClickerModal";
 import { TrickDetailModal } from "@/components/tricks/TrickDetailModal";
-import { MOCK_FOUNDATION_TOPICS, type FoundationTopic, type FoundationSubSession, isMockDogId } from "@/lib/mockData";
+import { MOCK_FOUNDATION_TOPICS, MOCK_TROUBLESHOOTING_TOPICS, type FoundationTopic, type FoundationSubSession, isMockDogId } from "@/lib/mockData";
 
 const categoryColors = {
   Foundation: 'bg-emerald-500',
