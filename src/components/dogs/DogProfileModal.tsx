@@ -228,6 +228,7 @@ export function DogProfileModal({ isOpen, onClose, dog, mode }: DogProfileModalP
                 }}
                 placeholder="Select or create a breed..."
                 className="w-full"
+                defaultTab={formData.isCustomBreed ? 'custom' : 'standard'}
               />
             </div>
 
