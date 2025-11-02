@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
-import { Apple, Calendar, TrendingUp, Clock, Edit2, Plus, Bell, Package, ArrowLeft } from "lucide-react";
+import { Apple, Calendar, TrendingUp, Clock, Edit2, Plus, Bell, Package, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useDogs, calculateAge } from "@/hooks/useDogs";
@@ -108,19 +108,19 @@ export default function NutritionScreen() {
 
   return (
     <div className="flex flex-col h-full safe-top relative">
-      {/* Sticky header with back button and dog selector */}
+      {/* Sticky header with dog selector and close button */}
       <div className="sticky top-0 z-50 bg-background border-b shadow-sm">
         <div className="flex items-center justify-between px-4 py-3">
+          <DogDropdown selectedDogId={selectedDogId} onDogChange={handleDogChange} />
           <Button
             variant="ghost"
             size="sm"
             onClick={handleBackClick}
             className="flex items-center gap-2 hover:bg-accent"
+            aria-label="Close"
           >
-            <ArrowLeft className="w-5 h-5" />
-            <span className="hidden sm:inline">Back</span>
+            <X className="w-5 h-5" />
           </Button>
-          <DogDropdown selectedDogId={selectedDogId} onDogChange={handleDogChange} />
         </div>
       </div>
       

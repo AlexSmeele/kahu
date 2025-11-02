@@ -31,7 +31,7 @@ export function DogDropdown({ selectedDogId, onDogChange }: DogDropdownProps) {
       <DropdownMenuTrigger asChild>
         <Button 
           variant="ghost" 
-          className="absolute top-3 left-3 z-[100] flex items-center justify-start gap-2 h-[58px] px-3 bg-background/80 backdrop-blur-sm hover:bg-accent"
+          className="flex items-center justify-start gap-2 h-12 px-3 hover:bg-accent"
           style={{ minWidth: `${minWidth}px` }}
         >
           <Avatar className="w-10 h-10 border-2 border-border shadow-sm">
