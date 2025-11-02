@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { MessageCircle, Send, Sparkles, Search } from "lucide-react";
+import { MessageCircle, Send, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
@@ -125,19 +125,16 @@ export function TrainerScreenVariant2({ onTypingChange }: { onTypingChange?: (ty
 
             {/* Search-style input */}
             <div className="w-full max-w-md mb-6">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                <Input
-                  ref={inputRef}
-                  value={inputMessage}
-                  onChange={handleInputChange}
-                  onKeyPress={handleKeyPress}
-                  placeholder="Ask about training, behavior, or care..."
-                  className="pl-10 h-12 text-center"
-                  disabled={isLoading}
-                  autoFocus
-                />
-              </div>
+              <Input
+                ref={inputRef}
+                value={inputMessage}
+                onChange={handleInputChange}
+                onKeyPress={handleKeyPress}
+                placeholder="Ask about training, behavior, or care..."
+                className="h-12 text-center"
+                disabled={isLoading}
+                autoFocus
+              />
               <Button
                 onClick={sendMessage}
                 disabled={!inputMessage.trim() || isLoading}
