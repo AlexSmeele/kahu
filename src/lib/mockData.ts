@@ -1910,6 +1910,96 @@ export const MOCK_TRAINING_SESSIONS: any[] = [
   }
 ];
 
+// Foundation Topics with Sub-Sessions
+export interface FoundationSubSession {
+  id: string;
+  name: string;
+  description: string;
+  instructions: string;
+  estimated_time_weeks?: number;
+  order: number;
+  created_at: string;
+}
+
+export interface FoundationTopic {
+  id: string;
+  name: string;
+  description: string;
+  icon: string;
+  color: string;
+  order: number;
+  subSessions: FoundationSubSession[];
+  created_at: string;
+}
+
+export const MOCK_FOUNDATION_TOPICS: FoundationTopic[] = [
+  {
+    id: 'foundation-topic-001',
+    name: 'Puppy socialization',
+    description: 'Essential socialization skills to help your puppy become a confident, well-adjusted dog',
+    icon: 'Users',
+    color: 'from-emerald-500 to-emerald-600',
+    order: 1,
+    created_at: new Date().toISOString(),
+    subSessions: [
+      {
+        id: 'foundation-sub-001-1',
+        name: 'Puppy socialization intro',
+        description: 'Understanding the critical socialization period and why it matters for your puppy\'s development',
+        instructions: 'Learn about the sensitive socialization period (3-14 weeks) and how positive experiences during this time shape your puppy\'s adult behavior. Understand the difference between socialization and exposure, and how to create positive associations.',
+        estimated_time_weeks: 1,
+        order: 1,
+        created_at: new Date().toISOString(),
+      },
+      {
+        id: 'foundation-sub-001-2',
+        name: 'Core principles of puppy socialization',
+        description: 'Key principles for safe and effective socialization',
+        instructions: 'Master the core principles: go at your puppy\'s pace, always end on a positive note, prioritize quality over quantity, and never force interactions. Learn to read your puppy\'s body language to ensure experiences remain positive and confidence-building.',
+        estimated_time_weeks: 1,
+        order: 2,
+        created_at: new Date().toISOString(),
+      },
+      {
+        id: 'foundation-sub-001-3',
+        name: 'Socialize your puppy with other dogs',
+        description: 'Safe dog-to-dog interactions and play skills',
+        instructions: 'Arrange controlled meetings with healthy, vaccinated, friendly dogs. Start with calm, well-socialized adult dogs before puppy playgroups. Monitor play closely, intervene if it becomes too rough. Teach your puppy appropriate play signals and how to take breaks.',
+        estimated_time_weeks: 2,
+        order: 3,
+        created_at: new Date().toISOString(),
+      },
+      {
+        id: 'foundation-sub-001-4',
+        name: 'Socialize your puppy with new people',
+        description: 'Building confidence around diverse people',
+        instructions: 'Expose your puppy to people of different ages, genders, appearances, and clothing. Encourage gentle interactions - ask people to let your puppy approach them rather than reaching over. Reward calm, polite greetings. Include people with hats, sunglasses, uniforms, and mobility aids.',
+        estimated_time_weeks: 2,
+        order: 4,
+        created_at: new Date().toISOString(),
+      },
+      {
+        id: 'foundation-sub-001-5',
+        name: 'Socialize your puppy with children',
+        description: 'Safe and positive interactions with kids',
+        instructions: 'Supervise all interactions closely. Teach children how to pet gently and respect the puppy\'s space. Practice with calm, dog-savvy children first. Reward your puppy for gentle behavior around kids. Teach your puppy that children mean good things by pairing their presence with treats.',
+        estimated_time_weeks: 2,
+        order: 5,
+        created_at: new Date().toISOString(),
+      },
+      {
+        id: 'foundation-sub-001-6',
+        name: 'Introduce your dog to other pets at home',
+        description: 'Successful multi-pet household integration',
+        instructions: 'Make introductions gradually and in neutral territory when possible. Use barriers initially (baby gates, crates) to allow safe observation. Feed pets separately to prevent resource guarding. Supervise all interactions until you\'re confident they\'re safe together. Reward calm, appropriate behavior from both animals.',
+        estimated_time_weeks: 3,
+        order: 6,
+        created_at: new Date().toISOString(),
+      },
+    ],
+  },
+];
+
 export const MOCK_TRICKS = [
   TRICK_PREPARE,
   TRICK_FIRST_DAYS,
