@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { Apple, Calendar, TrendingUp, Clock, Edit2, Plus, Bell, Package } from "lucide-react";
+import { useParams, useNavigate } from "react-router-dom";
+import { Apple, Calendar, TrendingUp, Clock, Edit2, Plus, Bell, Package, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useDogs, calculateAge } from "@/hooks/useDogs";
@@ -23,17 +24,23 @@ import { Card } from "@/components/ui/card";
 
 // This function is now handled by useMealTracking hook
 
-interface NutritionScreenProps {
-  selectedDogId: string;
-  onDogChange: (dogId: string) => void;
-}
-
-export function NutritionScreen({ selectedDogId, onDogChange }: NutritionScreenProps) {
+export default function NutritionScreen() {
+  const { dogId } = useParams<{ dogId: string }>();
+  const navigate = useNavigate();
   const [isWeekPlannerOpen, setIsWeekPlannerOpen] = useState(false);
   const [isInventoryOpen, setIsInventoryOpen] = useState(false);
   const [isCalcModalOpen, setIsCalcModalOpen] = useState(false);
   const { dogs } = useDogs();
+  const selectedDogId = dogId || dogs[0]?.id || '';
   const currentDog = dogs.find(dog => dog.id === selectedDogId) || dogs[0];
+  
+  const handleDogChange = (newDogId: string) => {
+    navigate(`/nutrition/${newDogId}`);
+  };
+  
+  const handleBackClick = () => {
+    navigate(-1);
+  };
   const { 
     nutritionPlan, 
     loading,
@@ -93,7 +100,15 @@ export function NutritionScreen({ selectedDogId, onDogChange }: NutritionScreenP
   return (
     <div className="flex flex-col h-full safe-top relative">
       <div className="pt-16">
-        <DogDropdown selectedDogId={selectedDogId} onDogChange={onDogChange} />
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={handleBackClick}
+          className="absolute top-4 left-4 z-10"
+        >
+          <ArrowLeft className="w-5 h-5" />
+        </Button>
+        <DogDropdown selectedDogId={selectedDogId} onDogChange={handleDogChange} />
         <PageLogo />
       </div>
 

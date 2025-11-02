@@ -3,6 +3,8 @@ import { useLocation } from "react-router-dom";
 import { DogDropdown } from "@/components/dogs/DogDropdown";
 import { PageLogo } from "@/components/layout/PageLogo";
 import { useDogs } from "@/hooks/useDogs";
+import { useNutrition } from "@/hooks/useNutrition";
+import { MealLogModal } from "@/components/nutrition/MealLogModal";
 import { WeightTracker } from "@/components/health/WeightTracker";
 import { VaccineScheduleModal } from "@/components/health/VaccineScheduleModal";
 import { VetVisitsModal } from "@/components/health/VetVisitsModal";
@@ -28,9 +30,11 @@ export function WellnessScreen({ selectedDogId, onDogChange }: WellnessScreenPro
   const [isGroomingModalOpen, setIsGroomingModalOpen] = useState(false);
   const [isCheckupModalOpen, setIsCheckupModalOpen] = useState(false);
   const [isActivityModalOpen, setIsActivityModalOpen] = useState(false);
+  const [isMealLogModalOpen, setIsMealLogModalOpen] = useState(false);
   
   const { dogs } = useDogs();
   const currentDog = dogs.find(dog => dog.id === selectedDogId) || dogs[0];
+  const { nutritionPlan } = useNutrition(selectedDogId);
   const location = useLocation();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const { loading: timelineLoading } = useWellnessTimeline(selectedDogId);
@@ -109,10 +113,7 @@ export function WellnessScreen({ selectedDogId, onDogChange }: WellnessScreenPro
           {/* Quick Actions - Horizontal scrollable */}
           <TimelineQuickActions
             onAddActivity={() => setIsActivityModalOpen(true)}
-            onLogMeal={() => {
-              // Future: Open meal logging modal
-              console.log('Log meal clicked');
-            }}
+            onLogMeal={() => setIsMealLogModalOpen(true)}
             onRecordWeight={() => setIsWeightTrackerOpen(true)}
             onGrooming={() => setIsGroomingModalOpen(true)}
             onCheckup={() => setIsCheckupModalOpen(true)}
@@ -178,6 +179,14 @@ export function WellnessScreen({ selectedDogId, onDogChange }: WellnessScreenPro
         isOpen={isActivityModalOpen}
         onClose={() => setIsActivityModalOpen(false)}
         dogId={selectedDogId}
+      />
+
+      <MealLogModal
+        isOpen={isMealLogModalOpen}
+        onClose={() => setIsMealLogModalOpen(false)}
+        dogId={selectedDogId}
+        dogName={currentDog?.name}
+        nutritionPlanId={nutritionPlan?.id}
       />
     </div>
   );

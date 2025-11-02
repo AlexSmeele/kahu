@@ -1,15 +1,15 @@
 import { Apple } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { useMealTracking } from "@/hooks/useMealTracking";
 import { useNutrition } from "@/hooks/useNutrition";
-import type { TabType } from "@/components/layout/BottomNavigation";
 
 interface NutritionOverviewCardProps {
   dogId: string;
-  onTabChange: (tab: TabType) => void;
   className?: string;
 }
 
-export function NutritionOverviewCard({ dogId, onTabChange, className = "" }: NutritionOverviewCardProps) {
+export function NutritionOverviewCard({ dogId, className = "" }: NutritionOverviewCardProps) {
+  const navigate = useNavigate();
   const { nutritionPlan } = useNutrition(dogId);
   const { todayMeals } = useMealTracking(dogId, nutritionPlan?.id);
   
@@ -28,7 +28,7 @@ export function NutritionOverviewCard({ dogId, onTabChange, className = "" }: Nu
   
   return (
     <button
-      onClick={() => onTabChange('nutrition')}
+      onClick={() => navigate(`/nutrition/${dogId}`)}
       className={`rounded-2xl border bg-card p-4 hover:bg-accent transition-all hover:scale-[1.02] text-left w-full ${className}`}
     >
       <div className="flex flex-col justify-between h-full">

@@ -1,15 +1,15 @@
 import { Cookie } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { useTreatTracking } from "@/hooks/useTreatTracking";
 import { useNutrition } from "@/hooks/useNutrition";
-import type { TabType } from "@/components/layout/BottomNavigation";
 
 interface TreatBudgetCardProps {
   dogId: string;
-  onTabChange: (tab: TabType) => void;
   className?: string;
 }
 
-export function TreatBudgetCard({ dogId, onTabChange, className = "" }: TreatBudgetCardProps) {
+export function TreatBudgetCard({ dogId, className = "" }: TreatBudgetCardProps) {
+  const navigate = useNavigate();
   const { nutritionPlan } = useNutrition(dogId);
   const { calculateTreatBudget } = useTreatTracking(dogId, nutritionPlan?.id);
   
@@ -34,7 +34,7 @@ export function TreatBudgetCard({ dogId, onTabChange, className = "" }: TreatBud
   
   return (
     <button
-      onClick={() => onTabChange('nutrition')}
+      onClick={() => navigate(`/nutrition/${dogId}`)}
       className={`rounded-2xl border bg-card p-4 hover:bg-accent transition-all hover:scale-[1.02] text-left w-full ${className}`}
     >
       <div className="flex flex-col justify-between h-full">

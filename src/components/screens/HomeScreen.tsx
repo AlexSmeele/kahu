@@ -120,7 +120,6 @@ export function HomeScreen({ selectedDogId, onDogChange, onTabChange }: HomeScre
                 <AnalyticsCard className="animate-fade-in [animation-delay:300ms]" />
                 <NutritionOverviewCard 
                   dogId={selectedDogId}
-                  onTabChange={onTabChange}
                   className="animate-fade-in [animation-delay:350ms]"
                 />
                 
@@ -138,7 +137,6 @@ export function HomeScreen({ selectedDogId, onDogChange, onTabChange }: HomeScre
                 {/* Row 5 */}
                 <TreatBudgetCard 
                   dogId={selectedDogId}
-                  onTabChange={onTabChange}
                   className="animate-fade-in [animation-delay:500ms]"
                 />
                 <TrainingStreakCard 
