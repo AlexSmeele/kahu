@@ -48,10 +48,7 @@ export default function GuideModules() {
             className="p-4 cursor-pointer hover:shadow-lg transition-all border-primary/20 bg-gradient-to-br from-primary/5 to-primary/10"
             onClick={() => navigate('/guide/recommendations')}
           >
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-primary/10 rounded-lg">
-                <Heart className="w-5 h-5 text-primary" />
-              </div>
+            <div className="flex items-center justify-between gap-3">
               <div className="flex-1">
                 <h3 className="font-semibold text-sm">Breed Matches</h3>
                 <p className="text-xs text-muted-foreground">Find your perfect breed</p>
@@ -64,10 +61,7 @@ export default function GuideModules() {
             className="p-4 cursor-pointer hover:shadow-lg transition-all border-primary/20 bg-gradient-to-br from-primary/5 to-primary/10"
             onClick={() => navigate('/guide/progress')}
           >
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-primary/10 rounded-lg">
-                <TrendingUp className="w-5 h-5 text-primary" />
-              </div>
+            <div className="flex items-center justify-between gap-3">
               <div className="flex-1">
                 <h3 className="font-semibold text-sm">View Progress</h3>
                 <p className="text-xs text-muted-foreground">Track your journey</p>
@@ -80,10 +74,7 @@ export default function GuideModules() {
             className="p-4 cursor-pointer hover:shadow-lg transition-all border-primary/20 bg-gradient-to-br from-primary/5 to-primary/10"
             onClick={() => navigate('/guide/final-test')}
           >
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-primary/10 rounded-lg">
-                <Award className="w-5 h-5 text-primary" />
-              </div>
+            <div className="flex items-center justify-between gap-3">
               <div className="flex-1">
                 <h3 className="font-semibold text-sm">Final Test</h3>
                 <p className="text-xs text-muted-foreground">Earn certificate</p>
