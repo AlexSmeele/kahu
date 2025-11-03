@@ -27,6 +27,9 @@ import RecordActivity from "./pages/RecordActivity";
 import NotFound from "./pages/NotFound";
 import Nutrition from "./pages/Nutrition";
 import Social from "./pages/Social";
+import GuideIntro from "./pages/guide/GuideIntro";
+import GuideOnboarding from "./pages/guide/GuideOnboarding";
+import GuideModules from "./pages/guide/GuideModules";
 import Marketplace from "./pages/Marketplace";
 import Insurance from "./pages/Insurance";
 import Services from "./pages/Services";
@@ -149,6 +152,20 @@ const App = () => {
                         <Relaxation />
                       </ProtectedRoute>
                     } />
+                    
+                    {/* Pre-Purchase Guide Routes */}
+                    <Route path="/guide/intro" element={<GuideIntro />} />
+                    <Route path="/guide/onboarding" element={
+                      <ProtectedRoute>
+                        <GuideOnboarding />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="/guide/modules" element={
+                      <ProtectedRoute>
+                        <GuideModules />
+                      </ProtectedRoute>
+                    } />
+                    
                     {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                     <Route path="*" element={<NotFound />} />
                   </Routes>

@@ -150,6 +150,99 @@ export type Database = {
         }
         Relationships: []
       }
+      badges: {
+        Row: {
+          badge_type: string
+          earned_at: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          badge_type: string
+          earned_at?: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          badge_type?: string
+          earned_at?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      certificates: {
+        Row: {
+          badge_tier: string
+          created_at: string
+          id: string
+          issued_at: string
+          name_on_cert: string
+          pdf_url: string | null
+          readiness_score: number | null
+          score_pct: number
+          share_url: string | null
+          user_id: string
+        }
+        Insert: {
+          badge_tier: string
+          created_at?: string
+          id?: string
+          issued_at?: string
+          name_on_cert: string
+          pdf_url?: string | null
+          readiness_score?: number | null
+          score_pct: number
+          share_url?: string | null
+          user_id: string
+        }
+        Update: {
+          badge_tier?: string
+          created_at?: string
+          id?: string
+          issued_at?: string
+          name_on_cert?: string
+          pdf_url?: string | null
+          readiness_score?: number | null
+          score_pct?: number
+          share_url?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      course_modules: {
+        Row: {
+          created_at: string
+          description: string | null
+          estimated_minutes: number
+          id: string
+          is_published: boolean
+          order_index: number
+          tags: Json
+          title: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          estimated_minutes: number
+          id?: string
+          is_published?: boolean
+          order_index: number
+          tags?: Json
+          title: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          estimated_minutes?: number
+          id?: string
+          is_published?: boolean
+          order_index?: number
+          tags?: Json
+          title?: string
+        }
+        Relationships: []
+      }
       custom_breeds: {
         Row: {
           created_at: string
@@ -1028,6 +1121,110 @@ export type Database = {
           },
         ]
       }
+      lessons: {
+        Row: {
+          content: Json
+          created_at: string
+          id: string
+          lesson_type: string
+          module_id: string
+          order_index: number
+          personalization_rules: Json | null
+          title: string
+        }
+        Insert: {
+          content?: Json
+          created_at?: string
+          id?: string
+          lesson_type: string
+          module_id: string
+          order_index: number
+          personalization_rules?: Json | null
+          title: string
+        }
+        Update: {
+          content?: Json
+          created_at?: string
+          id?: string
+          lesson_type?: string
+          module_id?: string
+          order_index?: number
+          personalization_rules?: Json | null
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lessons_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "course_modules"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      lifestyle_profiles: {
+        Row: {
+          activity_level: string
+          allergies: boolean
+          budget_monthly_nzd: number
+          created_at: string
+          experience: string
+          home_type: string
+          household_adults: number
+          household_children: number
+          household_seniors: number
+          id: string
+          outdoor_space: string
+          preferences: Json
+          target_timeline_months: number | null
+          travel_frequency: string
+          updated_at: string
+          user_id: string
+          weekday_hours_away: number
+          weekend_hours_away: number
+        }
+        Insert: {
+          activity_level: string
+          allergies?: boolean
+          budget_monthly_nzd?: number
+          created_at?: string
+          experience: string
+          home_type: string
+          household_adults?: number
+          household_children?: number
+          household_seniors?: number
+          id?: string
+          outdoor_space: string
+          preferences?: Json
+          target_timeline_months?: number | null
+          travel_frequency: string
+          updated_at?: string
+          user_id: string
+          weekday_hours_away?: number
+          weekend_hours_away?: number
+        }
+        Update: {
+          activity_level?: string
+          allergies?: boolean
+          budget_monthly_nzd?: number
+          created_at?: string
+          experience?: string
+          home_type?: string
+          household_adults?: number
+          household_children?: number
+          household_seniors?: number
+          id?: string
+          outdoor_space?: string
+          preferences?: Json
+          target_timeline_months?: number | null
+          travel_frequency?: string
+          updated_at?: string
+          user_id?: string
+          weekday_hours_away?: number
+          weekend_hours_away?: number
+        }
+        Relationships: []
+      }
       meal_records: {
         Row: {
           amount_consumed: number | null
@@ -1429,6 +1626,153 @@ export type Database = {
         }
         Relationships: []
       }
+      questions: {
+        Row: {
+          choices: Json | null
+          correct_answer: string | null
+          created_at: string
+          id: string
+          media_url: string | null
+          question_type: string
+          quiz_id: string
+          rationale: string | null
+          stem: string
+          tags: Json
+          weight: number
+        }
+        Insert: {
+          choices?: Json | null
+          correct_answer?: string | null
+          created_at?: string
+          id?: string
+          media_url?: string | null
+          question_type: string
+          quiz_id: string
+          rationale?: string | null
+          stem: string
+          tags?: Json
+          weight?: number
+        }
+        Update: {
+          choices?: Json | null
+          correct_answer?: string | null
+          created_at?: string
+          id?: string
+          media_url?: string | null
+          question_type?: string
+          quiz_id?: string
+          rationale?: string | null
+          stem?: string
+          tags?: Json
+          weight?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "questions_quiz_id_fkey"
+            columns: ["quiz_id"]
+            isOneToOne: false
+            referencedRelation: "quizzes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      quiz_attempts: {
+        Row: {
+          answers: Json
+          created_at: string
+          id: string
+          quiz_id: string
+          score_pct: number
+          tag_breakdown: Json | null
+          user_id: string
+        }
+        Insert: {
+          answers?: Json
+          created_at?: string
+          id?: string
+          quiz_id: string
+          score_pct: number
+          tag_breakdown?: Json | null
+          user_id: string
+        }
+        Update: {
+          answers?: Json
+          created_at?: string
+          id?: string
+          quiz_id?: string
+          score_pct?: number
+          tag_breakdown?: Json | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "quiz_attempts_quiz_id_fkey"
+            columns: ["quiz_id"]
+            isOneToOne: false
+            referencedRelation: "quizzes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      quizzes: {
+        Row: {
+          created_at: string
+          id: string
+          module_id: string | null
+          pass_percentage: number
+          pull_from_tags: Json | null
+          quiz_type: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          module_id?: string | null
+          pass_percentage?: number
+          pull_from_tags?: Json | null
+          quiz_type: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          module_id?: string | null
+          pass_percentage?: number
+          pull_from_tags?: Json | null
+          quiz_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "quizzes_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "course_modules"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      recommendations: {
+        Row: {
+          created_at: string
+          dog_profiles: Json
+          id: string
+          next_steps: Json
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          dog_profiles?: Json
+          id?: string
+          next_steps?: Json
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          dog_profiles?: Json
+          id?: string
+          next_steps?: Json
+          user_id?: string
+        }
+        Relationships: []
+      }
       saved_messages: {
         Row: {
           conversation_context: Json | null
@@ -1619,6 +1963,71 @@ export type Database = {
           name?: string
           prerequisites?: string[] | null
           priority_order?: number | null
+        }
+        Relationships: []
+      }
+      user_progress: {
+        Row: {
+          best_score_pct: number | null
+          completed_at: string | null
+          completed_lessons: Json
+          created_at: string
+          id: string
+          mastered: boolean
+          module_id: string
+          quiz_attempts: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          best_score_pct?: number | null
+          completed_at?: string | null
+          completed_lessons?: Json
+          created_at?: string
+          id?: string
+          mastered?: boolean
+          module_id: string
+          quiz_attempts?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          best_score_pct?: number | null
+          completed_at?: string | null
+          completed_lessons?: Json
+          created_at?: string
+          id?: string
+          mastered?: boolean
+          module_id?: string
+          quiz_attempts?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_progress_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "course_modules"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_roles: {
+        Row: {
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
         }
         Relationships: []
       }
@@ -1938,6 +2347,13 @@ export type Database = {
           id: string
         }[]
       }
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
       is_family_admin: {
         Args: { p_family_id: string; p_user_id: string }
         Returns: boolean
@@ -1992,7 +2408,7 @@ export type Database = {
       }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "moderator" | "user"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -2119,6 +2535,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "moderator", "user"],
+    },
   },
 } as const
