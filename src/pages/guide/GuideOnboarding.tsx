@@ -123,7 +123,7 @@ export default function GuideOnboarding() {
   };
 
   return (
-    <div className="min-h-screen bg-background pb-20">
+    <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="sticky top-0 z-10 bg-background/95 backdrop-blur-sm border-b">
         <div className="p-4 max-w-4xl mx-auto">
@@ -141,7 +141,7 @@ export default function GuideOnboarding() {
       </header>
 
       {/* Content */}
-      <div className="p-6 max-w-2xl mx-auto">
+      <div className="p-6 max-w-2xl mx-auto pb-32">
         <CurrentStepComponent 
           data={profileData}
           setData={(updates: Partial<LifestyleProfileData>) => 

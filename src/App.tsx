@@ -31,6 +31,7 @@ import GuideIntro from "./pages/guide/GuideIntro";
 import GuideOnboarding from "./pages/guide/GuideOnboarding";
 import GuideModules from "./pages/guide/GuideModules";
 import GuideLessonPlayer from "./pages/guide/GuideLessonPlayer";
+import GuideInteractiveDemo from "./pages/guide/GuideInteractiveDemo";
 import Marketplace from "./pages/Marketplace";
 import Insurance from "./pages/Insurance";
 import Services from "./pages/Services";
@@ -169,6 +170,11 @@ const App = () => {
                     <Route path="/guide/module/:moduleId" element={
                       <ProtectedRoute>
                         <GuideLessonPlayer />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="/guide/interactive" element={
+                      <ProtectedRoute>
+                        <GuideInteractiveDemo />
                       </ProtectedRoute>
                     } />
                     

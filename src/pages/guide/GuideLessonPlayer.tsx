@@ -12,7 +12,7 @@ export default function GuideLessonPlayer() {
   const progress = 30;
 
   return (
-    <div className="min-h-screen bg-background pb-20">
+    <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="sticky top-0 z-10 bg-background/95 backdrop-blur-sm border-b">
         <div className="p-4 max-w-4xl mx-auto">
@@ -29,7 +29,7 @@ export default function GuideLessonPlayer() {
         </div>
       </header>
 
-      <div className="p-6 max-w-4xl mx-auto space-y-6">
+      <div className="p-6 max-w-4xl mx-auto space-y-6 pb-24">
         {/* Lesson Content */}
         <Card className="p-6">
           <h2 className="font-bold text-2xl mb-4">Understanding Dog Lifespan</h2>

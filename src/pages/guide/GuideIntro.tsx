@@ -7,7 +7,7 @@ export default function GuideIntro() {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-background pb-20">
+    <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="sticky top-0 z-10 bg-background/95 backdrop-blur-sm border-b">
         <div className="flex items-center justify-between p-4 max-w-4xl mx-auto">
@@ -19,7 +19,7 @@ export default function GuideIntro() {
         </div>
       </header>
 
-      <div className="p-6 max-w-4xl mx-auto space-y-6">
+      <div className="p-6 max-w-4xl mx-auto space-y-6 pb-24">
         {/* Hero Section */}
         <div className="text-center space-y-4 pt-6">
           <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mx-auto">
@@ -98,9 +98,9 @@ export default function GuideIntro() {
             variant="outline" 
             size="lg" 
             className="w-full"
-            onClick={() => navigate('/guide/modules')}
+            onClick={() => navigate('/guide/interactive')}
           >
-            Preview Course Outline
+            Try Interactive Demo
           </Button>
         </div>
 

@@ -23,7 +23,7 @@ export default function GuideModules() {
   }
 
   return (
-    <div className="min-h-screen bg-background pb-20">
+    <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="sticky top-0 z-10 bg-background/95 backdrop-blur-sm border-b">
         <div className="flex items-center justify-between p-4 max-w-4xl mx-auto">
@@ -35,7 +35,7 @@ export default function GuideModules() {
         </div>
       </header>
 
-      <div className="p-6 max-w-4xl mx-auto space-y-6">
+      <div className="p-6 max-w-4xl mx-auto space-y-6 pb-24">
         {/* Overall Progress */}
         <Card className="p-6">
           <div className="flex items-center justify-between mb-3">
