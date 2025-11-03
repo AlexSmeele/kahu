@@ -184,7 +184,7 @@ Yorkshire Terrier,England,13–16,2.0,6.0,1.5,4.5,2.0,6.0,1.5,4.5,"bold, determi
       return breed;
     }).filter(breed => breed.breed); // Only include breeds with names
     
-    console.log(\`Processing \${breedData.length} breeds...\`);
+    console.log(`Processing ${breedData.length} breeds...`);
 
     // Insert breeds in batches to avoid timeout
     const batchSize = 50;
@@ -224,11 +224,11 @@ Yorkshire Terrier,England,13–16,2.0,6.0,1.5,4.5,2.0,6.0,1.5,4.5,"bold, determi
         );
 
       if (error) {
-        console.error(\`Error inserting batch \${i / batchSize + 1}:\`, error);
+        console.error(`Error inserting batch ${i / batchSize + 1}:`, error);
         skipped += batch.length;
       } else {
         inserted += batch.length;
-        console.log(\`Inserted batch \${i / batchSize + 1}/\${Math.ceil(breedData.length / batchSize)}\`);
+        console.log(`Inserted batch ${i / batchSize + 1}/${Math.ceil(breedData.length / batchSize)}`);
       }
     }
 
@@ -240,7 +240,7 @@ Yorkshire Terrier,England,13–16,2.0,6.0,1.5,4.5,2.0,6.0,1.5,4.5,"bold, determi
     return new Response(
       JSON.stringify({
         success: true,
-        message: \`Breed encyclopedia seeded successfully\`,
+        message: `Breed encyclopedia seeded successfully`,
         total_processed: breedData.length,
         inserted: inserted,
         skipped: skipped,
