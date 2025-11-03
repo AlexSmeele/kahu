@@ -26,29 +26,29 @@ export function HomeTypeStep({ data, setData }: StepProps) {
           value={data.home_type}
           onValueChange={(value) => setData({ home_type: value })}
         >
-          <div className="flex items-center space-x-3 p-4 rounded-lg border cursor-pointer hover:bg-accent">
+          <Label htmlFor="apartment" className="flex items-center space-x-3 p-4 rounded-lg border cursor-pointer hover:bg-accent">
             <RadioGroupItem value="apartment" id="apartment" />
             <Building className="w-5 h-5 text-muted-foreground" />
-            <Label htmlFor="apartment" className="flex-1 cursor-pointer">
+            <span className="flex-1">
               Apartment/Flat
-            </Label>
-          </div>
+            </span>
+          </Label>
           
-          <div className="flex items-center space-x-3 p-4 rounded-lg border cursor-pointer hover:bg-accent">
+          <Label htmlFor="house" className="flex items-center space-x-3 p-4 rounded-lg border cursor-pointer hover:bg-accent">
             <RadioGroupItem value="house" id="house" />
             <Home className="w-5 h-5 text-muted-foreground" />
-            <Label htmlFor="house" className="flex-1 cursor-pointer">
+            <span className="flex-1">
               House (urban/suburban)
-            </Label>
-          </div>
+            </span>
+          </Label>
           
-          <div className="flex items-center space-x-3 p-4 rounded-lg border cursor-pointer hover:bg-accent">
+          <Label htmlFor="rural" className="flex items-center space-x-3 p-4 rounded-lg border cursor-pointer hover:bg-accent">
             <RadioGroupItem value="rural" id="rural" />
             <Trees className="w-5 h-5 text-muted-foreground" />
-            <Label htmlFor="rural" className="flex-1 cursor-pointer">
+            <span className="flex-1">
               Rural property
-            </Label>
-          </div>
+            </span>
+          </Label>
         </RadioGroup>
       </div>
 
@@ -58,26 +58,26 @@ export function HomeTypeStep({ data, setData }: StepProps) {
           value={data.outdoor_space}
           onValueChange={(value) => setData({ outdoor_space: value })}
         >
-          <div className="flex items-center space-x-3 p-4 rounded-lg border cursor-pointer hover:bg-accent">
+          <Label htmlFor="none" className="flex items-center space-x-3 p-4 rounded-lg border cursor-pointer hover:bg-accent">
             <RadioGroupItem value="none" id="none" />
-            <Label htmlFor="none" className="flex-1 cursor-pointer">
+            <span className="flex-1">
               No outdoor space
-            </Label>
-          </div>
+            </span>
+          </Label>
           
-          <div className="flex items-center space-x-3 p-4 rounded-lg border cursor-pointer hover:bg-accent">
+          <Label htmlFor="small" className="flex items-center space-x-3 p-4 rounded-lg border cursor-pointer hover:bg-accent">
             <RadioGroupItem value="small" id="small" />
-            <Label htmlFor="small" className="flex-1 cursor-pointer">
+            <span className="flex-1">
               Small yard/balcony
-            </Label>
-          </div>
+            </span>
+          </Label>
           
-          <div className="flex items-center space-x-3 p-4 rounded-lg border cursor-pointer hover:bg-accent">
+          <Label htmlFor="large" className="flex items-center space-x-3 p-4 rounded-lg border cursor-pointer hover:bg-accent">
             <RadioGroupItem value="large" id="large" />
-            <Label htmlFor="large" className="flex-1 cursor-pointer">
+            <span className="flex-1">
               Large yard/land
-            </Label>
-          </div>
+            </span>
+          </Label>
         </RadioGroup>
       </div>
     </div>
