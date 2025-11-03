@@ -5,6 +5,7 @@ import { ArrowLeft, Loader2, Sparkles, Heart } from "lucide-react";
 import { useBreedRecommendations } from "@/hooks/useBreedRecommendations";
 import { BreedRecommendationCard } from "@/components/guide/recommendations/BreedRecommendationCard";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { GuideNavigation } from "@/components/guide/GuideNavigation";
 
 export default function GuideRecommendations() {
   const navigate = useNavigate();
@@ -50,20 +51,15 @@ export default function GuideRecommendations() {
   return (
     <div className="min-h-screen bg-background">
       <div className="max-w-4xl mx-auto p-6">
-        <div className="flex items-center gap-4 mb-6">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => navigate('/guide/modules')}
-          >
-            <ArrowLeft />
-          </Button>
-          <div className="flex-1">
-            <h1 className="text-3xl font-bold">Your Breed Recommendations</h1>
-            <p className="text-muted-foreground">
-              Based on your lifestyle profile and preferences
-            </p>
-          </div>
+        <div className="mb-6">
+          <GuideNavigation />
+        </div>
+
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold mb-2">Your Breed Recommendations</h1>
+          <p className="text-muted-foreground">
+            Based on your lifestyle profile and preferences
+          </p>
         </div>
 
         {loading ? (

@@ -14,6 +14,7 @@ import { UpcomingEventsCard } from "@/components/home/UpcomingEventsCard";
 import { TreatBudgetCard } from "@/components/home/TreatBudgetCard";
 import { CareTipsCard } from "@/components/home/CareTipsCard";
 import { PrePurchaseGuideBanner } from "@/components/home/PrePurchaseGuideBanner";
+import { PrePurchaseGuideCard } from "@/components/home/PrePurchaseGuideCard";
 import { SocialCard } from "@/components/home/SocialCard";
 import { MarketplaceCard } from "@/components/home/MarketplaceCard";
 import { InsuranceCard } from "@/components/home/InsuranceCard";
@@ -141,6 +142,11 @@ export function HomeScreen({ selectedDogId, onDogChange, onTabChange }: HomeScre
                 <CareTipsCard 
                   className="animate-fade-in [animation-delay:450ms]"
                 />
+              </div>
+
+              {/* Pre-Purchase Education Guide */}
+              <div className="col-span-2">
+                <PrePurchaseGuideCard />
               </div>
 
               {/* Future Features Section */}

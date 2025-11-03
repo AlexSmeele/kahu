@@ -3,8 +3,11 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
+import { Badge } from "@/components/ui/badge";
+import { Award, TrendingUp, Heart, ArrowRight } from "lucide-react";
 import { useModules } from "@/hooks/useModules";
 import { useGuideProgress } from "@/hooks/useGuideProgress";
+import { GuideNavigation } from "@/components/guide/GuideNavigation";
 
 export default function GuideModules() {
   const navigate = useNavigate();
@@ -36,6 +39,59 @@ export default function GuideModules() {
       </header>
 
       <div className="p-6 max-w-4xl mx-auto space-y-6 pb-24">
+        {/* Navigation */}
+        <GuideNavigation />
+
+        {/* Quick Actions */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <Card 
+            className="p-4 cursor-pointer hover:shadow-lg transition-all border-primary/20 bg-gradient-to-br from-primary/5 to-primary/10"
+            onClick={() => navigate('/guide/recommendations')}
+          >
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-primary/10 rounded-lg">
+                <Heart className="w-5 h-5 text-primary" />
+              </div>
+              <div className="flex-1">
+                <h3 className="font-semibold text-sm">Breed Matches</h3>
+                <p className="text-xs text-muted-foreground">Find your perfect breed</p>
+              </div>
+              <ArrowRight className="w-4 h-4 text-muted-foreground" />
+            </div>
+          </Card>
+
+          <Card 
+            className="p-4 cursor-pointer hover:shadow-lg transition-all border-primary/20 bg-gradient-to-br from-primary/5 to-primary/10"
+            onClick={() => navigate('/guide/progress')}
+          >
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-primary/10 rounded-lg">
+                <TrendingUp className="w-5 h-5 text-primary" />
+              </div>
+              <div className="flex-1">
+                <h3 className="font-semibold text-sm">View Progress</h3>
+                <p className="text-xs text-muted-foreground">Track your journey</p>
+              </div>
+              <ArrowRight className="w-4 h-4 text-muted-foreground" />
+            </div>
+          </Card>
+
+          <Card 
+            className="p-4 cursor-pointer hover:shadow-lg transition-all border-primary/20 bg-gradient-to-br from-primary/5 to-primary/10"
+            onClick={() => navigate('/guide/final-test')}
+          >
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-primary/10 rounded-lg">
+                <Award className="w-5 h-5 text-primary" />
+              </div>
+              <div className="flex-1">
+                <h3 className="font-semibold text-sm">Final Test</h3>
+                <p className="text-xs text-muted-foreground">Earn certificate</p>
+              </div>
+              <ArrowRight className="w-4 h-4 text-muted-foreground" />
+            </div>
+          </Card>
+        </div>
         {/* Overall Progress */}
         <Card className="p-6">
           <div className="flex items-center justify-between mb-3">

@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { useGuideProgress } from "@/hooks/useGuideProgress";
+import { GuideNavigation } from "@/components/guide/GuideNavigation";
 
 export default function GuideProgress() {
   const navigate = useNavigate();
@@ -30,6 +31,10 @@ export default function GuideProgress() {
       </header>
 
       <div className="p-6 max-w-4xl mx-auto pb-24">
+        {/* Navigation */}
+        <div className="mb-6">
+          <GuideNavigation />
+        </div>
         {/* Overall Stats */}
         <Card className="p-6 mb-6">
           <div className="flex items-center justify-between mb-4">
