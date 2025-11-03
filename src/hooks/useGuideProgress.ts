@@ -70,12 +70,25 @@ export function useGuideProgress() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
 
+      // Get current progress
+      const currentProgress = progress[moduleId] || {
+        completed_lessons: [],
+        quiz_attempts: 0,
+        best_score_pct: null,
+        mastered: false,
+        completed_at: null,
+      };
+
       const { error } = await supabase
         .from('user_progress')
         .upsert({
           user_id: user.id,
           module_id: moduleId,
-          ...updates,
+          completed_lessons: updates.completed_lessons || currentProgress.completed_lessons,
+          quiz_attempts: updates.quiz_attempts !== undefined ? updates.quiz_attempts : currentProgress.quiz_attempts,
+          best_score_pct: updates.best_score_pct !== undefined ? updates.best_score_pct : currentProgress.best_score_pct,
+          mastered: updates.mastered !== undefined ? updates.mastered : currentProgress.mastered,
+          completed_at: updates.completed_at || currentProgress.completed_at,
         });
 
       if (error) throw error;
@@ -86,11 +99,23 @@ export function useGuideProgress() {
     }
   };
 
+  const markLessonComplete = async (moduleId: string, lessonId: string) => {
+    const currentProgress = progress[moduleId];
+    const completedLessons = currentProgress?.completed_lessons || [];
+    
+    if (!completedLessons.includes(lessonId)) {
+      await updateProgress(moduleId, {
+        completed_lessons: [...completedLessons, lessonId],
+      });
+    }
+  };
+
   return {
     progress,
     overallProgress,
     loading,
     updateProgress,
+    markLessonComplete,
     refetch: fetchProgress,
   };
 }

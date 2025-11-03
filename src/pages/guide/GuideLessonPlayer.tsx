@@ -1,16 +1,40 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ArrowLeft } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { useLessons } from "@/hooks/useLessons";
+import { useGuideProgress } from "@/hooks/useGuideProgress";
 import { LessonContent } from "@/components/guide/lessons/LessonContent";
+import { supabase } from "@/integrations/supabase/client";
 
 export default function GuideLessonPlayer() {
   const navigate = useNavigate();
   const { moduleId } = useParams();
   const { lessons, loading } = useLessons(moduleId || '');
+  const { markLessonComplete } = useGuideProgress();
   const [currentLessonIndex, setCurrentLessonIndex] = useState(0);
+  const [quizId, setQuizId] = useState<string | null>(null);
+
+  useEffect(() => {
+    // Fetch quiz ID for this module
+    const fetchQuizId = async () => {
+      if (!moduleId) return;
+      
+      const { data } = await supabase
+        .from('quizzes')
+        .select('id')
+        .eq('module_id', moduleId)
+        .eq('quiz_type', 'module_quiz')
+        .single();
+      
+      if (data) {
+        setQuizId(data.id);
+      }
+    };
+    
+    fetchQuizId();
+  }, [moduleId]);
 
   if (loading) {
     return (
@@ -45,12 +69,21 @@ export default function GuideLessonPlayer() {
   const currentLesson = lessons[currentLessonIndex];
   const progress = ((currentLessonIndex + 1) / lessons.length) * 100;
 
-  const handleNext = () => {
+  const handleNext = async () => {
+    // Mark current lesson as complete
+    if (moduleId && currentLesson) {
+      await markLessonComplete(moduleId, currentLesson.id);
+    }
+
     if (currentLessonIndex < lessons.length - 1) {
       setCurrentLessonIndex(currentLessonIndex + 1);
     } else {
       // Navigate to quiz or back to modules
-      navigate(`/guide/quiz/${moduleId}`);
+      if (quizId) {
+        navigate(`/guide/quiz/${quizId}`);
+      } else {
+        navigate('/guide/modules');
+      }
     }
   };
 
