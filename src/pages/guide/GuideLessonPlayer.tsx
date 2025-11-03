@@ -12,7 +12,7 @@ export default function GuideLessonPlayer() {
   const progress = 30;
 
   return (
-    <div className="min-h-screen bg-background">
+    <main className="content-frame bg-background">
       {/* Header */}
       <header className="sticky top-0 z-10 bg-background/95 backdrop-blur-sm border-b">
         <div className="p-4 max-w-4xl mx-auto">
@@ -81,6 +81,6 @@ export default function GuideLessonPlayer() {
           Lesson 1 of 4 • 5 minutes remaining
         </p>
       </div>
-    </div>
+    </main>
   );
 }

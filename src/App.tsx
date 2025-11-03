@@ -32,6 +32,11 @@ import GuideOnboarding from "./pages/guide/GuideOnboarding";
 import GuideModules from "./pages/guide/GuideModules";
 import GuideLessonPlayer from "./pages/guide/GuideLessonPlayer";
 import GuideInteractiveDemo from "./pages/guide/GuideInteractiveDemo";
+import GuideQuiz from "./pages/guide/GuideQuiz";
+import GuideFinalTest from "./pages/guide/GuideFinalTest";
+import GuideCertificate from "./pages/guide/GuideCertificate";
+import GuideResources from "./pages/guide/GuideResources";
+import GuideProgress from "./pages/guide/GuideProgress";
 import Marketplace from "./pages/Marketplace";
 import Insurance from "./pages/Insurance";
 import Services from "./pages/Services";
@@ -175,6 +180,31 @@ const App = () => {
                     <Route path="/guide/interactive" element={
                       <ProtectedRoute>
                         <GuideInteractiveDemo />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="/guide/quiz/:quizId" element={
+                      <ProtectedRoute>
+                        <GuideQuiz />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="/guide/final-test" element={
+                      <ProtectedRoute>
+                        <GuideFinalTest />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="/guide/certificate" element={
+                      <ProtectedRoute>
+                        <GuideCertificate />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="/guide/resources" element={
+                      <ProtectedRoute>
+                        <GuideResources />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="/guide/progress" element={
+                      <ProtectedRoute>
+                        <GuideProgress />
                       </ProtectedRoute>
                     } />
                     

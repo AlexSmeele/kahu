@@ -123,7 +123,7 @@ export default function GuideOnboarding() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <main className="content-frame bg-background">
       {/* Header */}
       <header className="sticky top-0 z-10 bg-background/95 backdrop-blur-sm border-b">
         <div className="p-4 max-w-4xl mx-auto">
@@ -151,7 +151,7 @@ export default function GuideOnboarding() {
       </div>
 
       {/* Footer */}
-      <div className="fixed bottom-0 left-0 right-0 bg-background/95 backdrop-blur-sm border-t p-4">
+      <div className="sticky bottom-0 bg-background/95 backdrop-blur-sm border-t p-4">
         <div className="max-w-2xl mx-auto flex gap-3">
           <Button 
             variant="outline" 
@@ -176,6 +176,6 @@ export default function GuideOnboarding() {
           </Button>
         </div>
       </div>
-    </div>
+    </main>
   );
 }

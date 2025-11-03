@@ -23,7 +23,7 @@ export default function GuideModules() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <main className="content-frame bg-background">
       {/* Header */}
       <header className="sticky top-0 z-10 bg-background/95 backdrop-blur-sm border-b">
         <div className="flex items-center justify-between p-4 max-w-4xl mx-auto">
@@ -149,6 +149,6 @@ export default function GuideModules() {
           </div>
         </Card>
       </div>
-    </div>
+    </main>
   );
 }
