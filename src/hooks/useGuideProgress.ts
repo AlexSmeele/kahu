@@ -14,6 +14,11 @@ export function useGuideProgress() {
   const [progress, setProgress] = useState<Record<string, ModuleProgress>>({});
   const [loading, setLoading] = useState(true);
   const [overallProgress, setOverallProgress] = useState(0);
+  const [stats, setStats] = useState({
+    modulesCompleted: 0,
+    daysActive: 1,
+    quizAverage: 0,
+  });
 
   useEffect(() => {
     fetchProgress();
@@ -54,6 +59,26 @@ export function useGuideProgress() {
       // Calculate overall progress (assuming 6 modules)
       const totalModules = 6;
       setOverallProgress(Math.round((totalCompleted / totalModules) * 100));
+
+      // Calculate stats
+      const quizScores = Object.values(progressMap)
+        .map(p => p.best_score_pct)
+        .filter((score): score is number => score !== null && score !== undefined);
+      
+      const avgScore = quizScores.length > 0 
+        ? Math.round(quizScores.reduce((a, b) => a + b, 0) / quizScores.length)
+        : 0;
+
+      // Calculate days active (days since first progress)
+      const timestamps = data?.map(d => new Date(d.created_at).getTime()) || [];
+      const firstActivity = timestamps.length > 0 ? Math.min(...timestamps) : Date.now();
+      const daysActive = Math.max(1, Math.ceil((Date.now() - firstActivity) / (1000 * 60 * 60 * 24)));
+
+      setStats({
+        modulesCompleted: totalCompleted,
+        daysActive,
+        quizAverage: avgScore,
+      });
       
     } catch (error) {
       logger.error('Error fetching progress', error);
@@ -113,6 +138,7 @@ export function useGuideProgress() {
   return {
     progress,
     overallProgress,
+    stats,
     loading,
     updateProgress,
     markLessonComplete,

@@ -7,7 +7,7 @@ import { useGuideProgress } from "@/hooks/useGuideProgress";
 
 export default function GuideProgress() {
   const navigate = useNavigate();
-  const { overallProgress } = useGuideProgress();
+  const { overallProgress, stats } = useGuideProgress();
 
   const badges = [
     { id: "started", name: "Getting Started", earned: true, icon: "🎯" },
@@ -51,21 +51,21 @@ export default function GuideProgress() {
               <TrendingUp className="w-4 h-4" />
               <span className="text-xs">Modules Completed</span>
             </div>
-            <p className="font-bold text-2xl">0/6</p>
+            <p className="font-bold text-2xl">{stats.modulesCompleted}/6</p>
           </Card>
           <Card className="p-4">
             <div className="flex items-center gap-2 text-muted-foreground mb-2">
               <Calendar className="w-4 h-4" />
               <span className="text-xs">Days Active</span>
             </div>
-            <p className="font-bold text-2xl">1</p>
+            <p className="font-bold text-2xl">{stats.daysActive}</p>
           </Card>
           <Card className="p-4">
             <div className="flex items-center gap-2 text-muted-foreground mb-2">
               <Target className="w-4 h-4" />
               <span className="text-xs">Quiz Average</span>
             </div>
-            <p className="font-bold text-2xl">--%</p>
+            <p className="font-bold text-2xl">{stats.quizAverage > 0 ? `${stats.quizAverage}%` : '--'}</p>
           </Card>
           <Card className="p-4">
             <div className="flex items-center gap-2 text-muted-foreground mb-2">
