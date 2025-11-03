@@ -125,7 +125,7 @@ export default function GuideOnboarding() {
   };
 
   return (
-    <main className="content-frame bg-background relative">
+    <main className="content-frame bg-background flex flex-col h-full">
       {/* Header */}
       <header className="sticky top-0 z-10 bg-background/95 backdrop-blur-sm border-b">
         <div className="p-4 max-w-4xl mx-auto">
@@ -142,18 +142,20 @@ export default function GuideOnboarding() {
         </div>
       </header>
 
-      {/* Content */}
-      <div className="p-6 max-w-2xl mx-auto pb-32">
-        <CurrentStepComponent 
-          data={profileData}
-          setData={(updates: Partial<LifestyleProfileData>) => 
-            setProfileData({ ...profileData, ...updates })
-          }
-        />
+      {/* Scrollable Content */}
+      <div className="flex-1 overflow-auto">
+        <div className="p-6 max-w-2xl mx-auto pb-32">
+          <CurrentStepComponent 
+            data={profileData}
+            setData={(updates: Partial<LifestyleProfileData>) => 
+              setProfileData({ ...profileData, ...updates })
+            }
+          />
+        </div>
       </div>
 
       {/* Footer */}
-      <div className="absolute bottom-0 left-0 right-0 bg-background/95 backdrop-blur-sm border-t p-4 z-20">
+      <div className="fixed bottom-0 left-0 right-0 bg-background/95 backdrop-blur-sm border-t p-4 z-20">
         <div className="max-w-2xl mx-auto flex gap-3">
           <Button 
             variant="outline" 
