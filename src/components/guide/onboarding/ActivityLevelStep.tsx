@@ -26,32 +26,32 @@ export function ActivityLevelStep({ data, setData }: StepProps) {
           value={data.activity_level}
           onValueChange={(value) => setData({ activity_level: value })}
         >
-          <div className="flex items-center space-x-3 p-4 rounded-lg border cursor-pointer hover:bg-accent">
+          <Label htmlFor="low" className="flex items-center space-x-3 p-4 rounded-lg border cursor-pointer hover:bg-accent">
             <RadioGroupItem value="low" id="low" />
             <Armchair className="w-5 h-5 text-muted-foreground" />
             <div className="flex-1">
-              <Label htmlFor="low" className="cursor-pointer font-semibold">Low</Label>
+              <div className="font-semibold">Low</div>
               <p className="text-sm text-muted-foreground">Short walks, relaxed lifestyle</p>
             </div>
-          </div>
+          </Label>
           
-          <div className="flex items-center space-x-3 p-4 rounded-lg border cursor-pointer hover:bg-accent">
+          <Label htmlFor="medium" className="flex items-center space-x-3 p-4 rounded-lg border cursor-pointer hover:bg-accent">
             <RadioGroupItem value="medium" id="medium" />
             <Footprints className="w-5 h-5 text-muted-foreground" />
             <div className="flex-1">
-              <Label htmlFor="medium" className="cursor-pointer font-semibold">Medium</Label>
+              <div className="font-semibold">Medium</div>
               <p className="text-sm text-muted-foreground">Regular walks and occasional activities</p>
             </div>
-          </div>
+          </Label>
           
-          <div className="flex items-center space-x-3 p-4 rounded-lg border cursor-pointer hover:bg-accent">
+          <Label htmlFor="high" className="flex items-center space-x-3 p-4 rounded-lg border cursor-pointer hover:bg-accent">
             <RadioGroupItem value="high" id="high" />
             <Bike className="w-5 h-5 text-muted-foreground" />
             <div className="flex-1">
-              <Label htmlFor="high" className="cursor-pointer font-semibold">High</Label>
+              <div className="font-semibold">High</div>
               <p className="text-sm text-muted-foreground">Very active, hiking, running, sports</p>
             </div>
-          </div>
+          </Label>
         </RadioGroup>
       </div>
 
@@ -61,26 +61,26 @@ export function ActivityLevelStep({ data, setData }: StepProps) {
           value={data.travel_frequency}
           onValueChange={(value) => setData({ travel_frequency: value })}
         >
-          <div className="flex items-center space-x-3 p-4 rounded-lg border cursor-pointer hover:bg-accent">
+          <Label htmlFor="rare" className="flex items-center space-x-3 p-4 rounded-lg border cursor-pointer hover:bg-accent">
             <RadioGroupItem value="rare" id="rare" />
-            <Label htmlFor="rare" className="flex-1 cursor-pointer">
+            <span className="flex-1">
               Rarely (1-2 times/year)
-            </Label>
-          </div>
+            </span>
+          </Label>
           
-          <div className="flex items-center space-x-3 p-4 rounded-lg border cursor-pointer hover:bg-accent">
+          <Label htmlFor="sometimes" className="flex items-center space-x-3 p-4 rounded-lg border cursor-pointer hover:bg-accent">
             <RadioGroupItem value="sometimes" id="sometimes" />
-            <Label htmlFor="sometimes" className="flex-1 cursor-pointer">
+            <span className="flex-1">
               Sometimes (3-6 times/year)
-            </Label>
-          </div>
+            </span>
+          </Label>
           
-          <div className="flex items-center space-x-3 p-4 rounded-lg border cursor-pointer hover:bg-accent">
+          <Label htmlFor="often" className="flex items-center space-x-3 p-4 rounded-lg border cursor-pointer hover:bg-accent">
             <RadioGroupItem value="often" id="often" />
-            <Label htmlFor="often" className="flex-1 cursor-pointer">
+            <span className="flex-1">
               Often (7+ times/year)
-            </Label>
-          </div>
+            </span>
+          </Label>
         </RadioGroup>
       </div>
     </div>

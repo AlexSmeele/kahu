@@ -33,12 +33,12 @@ export function PreferencesStep({ data, setData }: StepProps) {
           })}
         >
           {['small', 'medium', 'large', 'any'].map((size) => (
-            <div key={size} className="flex items-center space-x-3 p-3 rounded-lg border cursor-pointer hover:bg-accent">
+            <Label key={size} htmlFor={`size-${size}`} className="flex items-center space-x-3 p-3 rounded-lg border cursor-pointer hover:bg-accent">
               <RadioGroupItem value={size} id={`size-${size}`} />
-              <Label htmlFor={`size-${size}`} className="flex-1 cursor-pointer capitalize">
+              <span className="flex-1 capitalize">
                 {size === 'any' ? 'No preference' : size}
-              </Label>
-            </div>
+              </span>
+            </Label>
           ))}
         </RadioGroup>
       </div>
@@ -52,12 +52,12 @@ export function PreferencesStep({ data, setData }: StepProps) {
           })}
         >
           {['low', 'medium', 'high', 'any'].map((level) => (
-            <div key={level} className="flex items-center space-x-3 p-3 rounded-lg border cursor-pointer hover:bg-accent">
+            <Label key={level} htmlFor={`shed-${level}`} className="flex items-center space-x-3 p-3 rounded-lg border cursor-pointer hover:bg-accent">
               <RadioGroupItem value={level} id={`shed-${level}`} />
-              <Label htmlFor={`shed-${level}`} className="flex-1 cursor-pointer capitalize">
+              <span className="flex-1 capitalize">
                 {level === 'any' ? 'No preference' : level}
-              </Label>
-            </div>
+              </span>
+            </Label>
           ))}
         </RadioGroup>
       </div>
@@ -71,12 +71,12 @@ export function PreferencesStep({ data, setData }: StepProps) {
           })}
         >
           {['puppy', 'adult', 'senior', 'any'].map((age) => (
-            <div key={age} className="flex items-center space-x-3 p-3 rounded-lg border cursor-pointer hover:bg-accent">
+            <Label key={age} htmlFor={`age-${age}`} className="flex items-center space-x-3 p-3 rounded-lg border cursor-pointer hover:bg-accent">
               <RadioGroupItem value={age} id={`age-${age}`} />
-              <Label htmlFor={`age-${age}`} className="flex-1 cursor-pointer capitalize">
+              <span className="flex-1 capitalize">
                 {age === 'any' ? 'No preference' : age}
-              </Label>
-            </div>
+              </span>
+            </Label>
           ))}
         </RadioGroup>
       </div>
