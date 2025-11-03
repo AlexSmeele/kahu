@@ -3,6 +3,9 @@ project_id = "bhkqdxhyceflfesxrztm"
 [functions.ai-trainer]
 verify_jwt = true
 
+[functions.generate-breed-recommendations]
+verify_jwt = true
+
 [functions.search-vet-clinics]
 verify_jwt = true
 
