@@ -1,15 +1,64 @@
-import { ArrowLeft, ArrowRight, CheckCircle2 } from "lucide-react";
+import { useState } from "react";
+import { ArrowLeft } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
+import { useLessons } from "@/hooks/useLessons";
+import { LessonContent } from "@/components/guide/lessons/LessonContent";
 
 export default function GuideLessonPlayer() {
   const navigate = useNavigate();
   const { moduleId } = useParams();
+  const { lessons, loading } = useLessons(moduleId || '');
+  const [currentLessonIndex, setCurrentLessonIndex] = useState(0);
 
-  // TODO: Fetch actual module and lessons data
-  const progress = 30;
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="animate-pulse text-center">
+          <div className="w-16 h-16 bg-primary/20 rounded-full mx-auto mb-4" />
+          <p className="text-muted-foreground">Loading lesson...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (lessons.length === 0) {
+    return (
+      <main className="content-frame bg-background">
+        <header className="sticky top-0 z-10 bg-background/95 backdrop-blur-sm border-b">
+          <div className="flex items-center justify-between p-4 max-w-4xl mx-auto">
+            <Button variant="ghost" size="icon" onClick={() => navigate('/guide/modules')}>
+              <ArrowLeft className="w-5 h-5" />
+            </Button>
+            <h1 className="font-bold text-lg">No Lessons</h1>
+            <div className="w-10" />
+          </div>
+        </header>
+        <div className="p-6 max-w-4xl mx-auto">
+          <p className="text-center text-muted-foreground">No lessons available for this module yet.</p>
+        </div>
+      </main>
+    );
+  }
+
+  const currentLesson = lessons[currentLessonIndex];
+  const progress = ((currentLessonIndex + 1) / lessons.length) * 100;
+
+  const handleNext = () => {
+    if (currentLessonIndex < lessons.length - 1) {
+      setCurrentLessonIndex(currentLessonIndex + 1);
+    } else {
+      // Navigate to quiz or back to modules
+      navigate(`/guide/quiz/${moduleId}`);
+    }
+  };
+
+  const handlePrevious = () => {
+    if (currentLessonIndex > 0) {
+      setCurrentLessonIndex(currentLessonIndex - 1);
+    }
+  };
 
   return (
     <main className="content-frame bg-background">
@@ -20,9 +69,9 @@ export default function GuideLessonPlayer() {
             <Button variant="ghost" size="icon" onClick={() => navigate('/guide/modules')}>
               <ArrowLeft className="w-5 h-5" />
             </Button>
-            <h1 className="font-bold text-lg">Module 1</h1>
-            <Button variant="ghost" size="sm">
-              Save & Exit
+            <h1 className="font-bold text-lg">{currentLesson.title}</h1>
+            <Button variant="ghost" onClick={() => navigate('/guide/modules')}>
+              <span className="text-sm">Save & Exit</span>
             </Button>
           </div>
           <Progress value={progress} className="h-2" />
@@ -31,54 +80,26 @@ export default function GuideLessonPlayer() {
 
       <div className="p-6 max-w-4xl mx-auto space-y-6 pb-24">
         {/* Lesson Content */}
-        <Card className="p-6">
-          <h2 className="font-bold text-2xl mb-4">Understanding Dog Lifespan</h2>
-          
-          <div className="prose prose-sm max-w-none space-y-4">
-            <p>
-              Dogs are a long-term commitment. Most dogs live between 10-15 years, with some breeds living even longer. 
-              This means you'll be responsible for their care, health, and happiness for over a decade.
-            </p>
-
-            <p>
-              Consider where you'll be in 10-15 years. Will you be in the same home? Will your work situation change? 
-              Are you prepared for the financial and time commitments throughout your dog's entire life?
-            </p>
-
-            <div className="p-4 rounded-lg bg-primary/10 border border-primary/20 my-6">
-              <h3 className="font-semibold text-lg mb-2 flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-primary" />
-                Key Takeaway
-              </h3>
-              <p className="text-sm">
-                A dog is a 10-15+ year commitment. Make sure you're ready for this long-term responsibility 
-                before bringing a dog into your life.
-              </p>
-            </div>
-
-            <h3 className="font-semibold text-lg mt-6 mb-3">Life Stage Considerations</h3>
-            <ul className="space-y-2">
-              <li><strong>Puppy (0-1 year):</strong> Requires extensive training, socialization, and frequent vet visits</li>
-              <li><strong>Adult (1-7 years):</strong> Active years with routine care and maintenance</li>
-              <li><strong>Senior (7+ years):</strong> May need special diets, more frequent vet care, and mobility support</li>
-            </ul>
-          </div>
-        </Card>
+        <LessonContent content={currentLesson.content} />
 
         {/* Navigation */}
         <div className="flex gap-3">
-          <Button variant="outline" className="flex-1" disabled>
+          <Button 
+            variant="outline" 
+            className="flex-1"
+            onClick={handlePrevious}
+            disabled={currentLessonIndex === 0}
+          >
             Previous Lesson
           </Button>
-          <Button className="flex-1">
-            Next Lesson
-            <ArrowRight className="w-4 h-4 ml-2" />
+          <Button className="flex-1" onClick={handleNext}>
+            {currentLessonIndex === lessons.length - 1 ? 'Take Quiz' : 'Next Lesson'}
           </Button>
         </div>
 
         {/* Progress Note */}
         <p className="text-center text-sm text-muted-foreground">
-          Lesson 1 of 4 • 5 minutes remaining
+          Lesson {currentLessonIndex + 1} of {lessons.length}
         </p>
       </div>
     </main>
