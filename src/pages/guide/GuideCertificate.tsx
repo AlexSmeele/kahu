@@ -3,10 +3,165 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useCertificate } from "@/hooks/useCertificate";
+import { toast } from "sonner";
+import { useRef } from "react";
 
 export default function GuideCertificate() {
   const navigate = useNavigate();
   const { certificate, loading } = useCertificate();
+  const certificateRef = useRef<HTMLDivElement>(null);
+
+  const downloadCertificate = () => {
+    if (!certificate || !certificateRef.current) return;
+
+    // Create HTML content for download
+    const certificateHTML = `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Certificate - ${certificate.name_on_cert}</title>
+  <style>
+    body {
+      font-family: 'Georgia', serif;
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 40px;
+      background: white;
+      color: #333;
+    }
+    .certificate {
+      border: 8px double #4CAF50;
+      padding: 60px;
+      text-align: center;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    }
+    .badge {
+      font-size: 80px;
+      margin: 20px 0;
+    }
+    h1 {
+      font-size: 36px;
+      margin: 20px 0;
+      color: #2c3e50;
+    }
+    .subtitle {
+      font-size: 18px;
+      color: #7f8c8d;
+      margin: 10px 0;
+    }
+    .name {
+      font-size: 32px;
+      font-weight: bold;
+      margin: 30px 0;
+      color: #2c3e50;
+      font-style: italic;
+    }
+    .details {
+      margin: 30px 0;
+      font-size: 16px;
+      color: #555;
+    }
+    .stats {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      margin: 30px 0;
+    }
+    .stat {
+      background: rgba(255,255,255,0.8);
+      padding: 15px 30px;
+      border-radius: 8px;
+    }
+    .stat-label {
+      font-size: 12px;
+      color: #7f8c8d;
+      text-transform: uppercase;
+    }
+    .stat-value {
+      font-size: 24px;
+      font-weight: bold;
+      color: #2c3e50;
+    }
+    .date {
+      margin-top: 30px;
+      font-size: 14px;
+      color: #7f8c8d;
+    }
+  </style>
+</head>
+<body>
+  <div class="certificate">
+    <div class="badge">${certificate.badge_tier === 'gold' ? '🥇' : certificate.badge_tier === 'silver' ? '🥈' : '🥉'}</div>
+    <h1>Certificate of Completion</h1>
+    <p class="subtitle">Pre-Purchase Dog Ownership Education</p>
+    
+    <div class="details">
+      <p>This certifies that</p>
+      <p class="name">${certificate.name_on_cert}</p>
+      <p>has successfully completed the comprehensive<br>pre-purchase dog ownership course</p>
+    </div>
+    
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-label">Score</div>
+        <div class="stat-value">${certificate.score_pct}%</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Badge</div>
+        <div class="stat-value">${certificate.badge_tier.toUpperCase()}</div>
+      </div>
+    </div>
+    
+    <p class="date">Issued on ${new Date(certificate.issued_at).toLocaleDateString('en-NZ', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
+  </div>
+</body>
+</html>
+    `.trim();
+
+    // Create and download the file
+    const blob = new Blob([certificateHTML], { type: 'text/html' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `Dog_Ownership_Certificate_${certificate.name_on_cert.replace(/\s+/g, '_')}.html`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
+    toast.success("Certificate downloaded! Open the HTML file in your browser to view or print.");
+  };
+
+  const shareCertificate = async () => {
+    if (!certificate) return;
+
+    const shareData = {
+      title: 'Dog Ownership Certificate',
+      text: `I've completed the Pre-Purchase Dog Ownership Education course with a score of ${certificate.score_pct}% and earned a ${certificate.badge_tier} badge! 🐕`,
+      url: window.location.href,
+    };
+
+    if (navigator.share && navigator.canShare(shareData)) {
+      try {
+        await navigator.share(shareData);
+        toast.success("Shared successfully!");
+      } catch (err) {
+        if (err instanceof Error && err.name !== 'AbortError') {
+          copyToClipboard();
+        }
+      }
+    } else {
+      copyToClipboard();
+    }
+  };
+
+  const copyToClipboard = () => {
+    const text = `I've completed the Pre-Purchase Dog Ownership Education course with a score of ${certificate?.score_pct}% and earned a ${certificate?.badge_tier} badge! 🐕`;
+    navigator.clipboard.writeText(text).then(() => {
+      toast.success("Achievement copied to clipboard!");
+    });
+  };
 
   if (loading) {
     return (
@@ -73,7 +228,7 @@ export default function GuideCertificate() {
 
       <div className="p-6 max-w-2xl mx-auto pb-24">
         {/* Certificate Display */}
-        <Card className="p-8 text-center mb-6 border-2 border-primary/20">
+        <Card ref={certificateRef} className="p-8 text-center mb-6 border-2 border-primary/20">
           <div className="w-24 h-24 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
             <Award className={`w-12 h-12 ${getBadgeColor(certificate.badge_tier)}`} />
           </div>
@@ -107,16 +262,16 @@ export default function GuideCertificate() {
 
         {/* Actions */}
         <div className="space-y-3">
-          <Button variant="outline" className="w-full" disabled>
+          <Button variant="outline" className="w-full" onClick={downloadCertificate}>
             <Download className="w-4 h-4 mr-2" />
-            Download Certificate (Coming Soon)
+            Download Certificate
           </Button>
-          <Button variant="outline" className="w-full" disabled>
+          <Button variant="outline" className="w-full" onClick={shareCertificate}>
             <Share2 className="w-4 h-4 mr-2" />
-            Share Certificate (Coming Soon)
+            Share Achievement
           </Button>
           <Button className="w-full" onClick={() => navigate('/guide/resources')}>
-            See Personalized Recommendations
+            View Resources & Recommendations
           </Button>
         </div>
       </div>

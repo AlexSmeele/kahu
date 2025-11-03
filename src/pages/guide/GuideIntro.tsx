@@ -98,9 +98,9 @@ export default function GuideIntro() {
             variant="outline" 
             size="lg" 
             className="w-full"
-            onClick={() => navigate('/guide/interactive')}
+            onClick={() => navigate('/guide/modules')}
           >
-            Try Interactive Demo
+            Browse Course Modules
           </Button>
         </div>
 
