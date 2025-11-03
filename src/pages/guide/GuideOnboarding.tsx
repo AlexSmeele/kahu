@@ -95,21 +95,23 @@ export default function GuideOnboarding() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error('Not authenticated');
 
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from('lifestyle_profiles')
         .upsert({
           user_id: user.id,
           ...profileData,
-        });
+        })
+        .select()
+        .single();
 
       if (error) throw error;
 
       toast({
         title: "Profile saved!",
-        description: "Let's start your learning journey.",
+        description: "Generating your personalized breed recommendations...",
       });
 
-      navigate('/guide/modules');
+      navigate(`/guide/recommendations?profile_id=${data.id}`);
     } catch (error) {
       console.error('Error saving profile:', error);
       toast({

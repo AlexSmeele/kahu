@@ -2010,6 +2010,56 @@ export type Database = {
         }
         Relationships: []
       }
+      user_breed_recommendations: {
+        Row: {
+          breed_name: string
+          considerations: string
+          created_at: string | null
+          id: string
+          lifestyle_profile_id: string
+          match_score: number
+          rank: number
+          reasoning: string
+          shortlisted: boolean | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          breed_name: string
+          considerations: string
+          created_at?: string | null
+          id?: string
+          lifestyle_profile_id: string
+          match_score: number
+          rank: number
+          reasoning: string
+          shortlisted?: boolean | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          breed_name?: string
+          considerations?: string
+          created_at?: string | null
+          id?: string
+          lifestyle_profile_id?: string
+          match_score?: number
+          rank?: number
+          reasoning?: string
+          shortlisted?: boolean | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_breed_recommendations_lifestyle_profile_id_fkey"
+            columns: ["lifestyle_profile_id"]
+            isOneToOne: false
+            referencedRelation: "lifestyle_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_progress: {
         Row: {
           best_score_pct: number | null

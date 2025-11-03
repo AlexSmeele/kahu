@@ -35,6 +35,7 @@ import GuideInteractiveDemo from "./pages/guide/GuideInteractiveDemo";
 import GuideQuiz from "./pages/guide/GuideQuiz";
 import GuideFinalTest from "./pages/guide/GuideFinalTest";
 import GuideCertificate from "./pages/guide/GuideCertificate";
+import GuideRecommendations from "./pages/guide/GuideRecommendations";
 import GuideResources from "./pages/guide/GuideResources";
 import GuideProgress from "./pages/guide/GuideProgress";
 import Marketplace from "./pages/Marketplace";
@@ -205,6 +206,11 @@ const App = () => {
                     <Route path="/guide/progress" element={
                       <ProtectedRoute>
                         <GuideProgress />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="/guide/recommendations" element={
+                      <ProtectedRoute>
+                        <GuideRecommendations />
                       </ProtectedRoute>
                     } />
                     
