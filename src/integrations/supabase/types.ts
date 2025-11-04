@@ -1868,6 +1868,151 @@ export type Database = {
           },
         ]
       }
+      training_program_lessons: {
+        Row: {
+          category: string
+          content: Json
+          created_at: string
+          estimated_minutes: number | null
+          id: string
+          lesson_type: string
+          order_index: number | null
+          prerequisites: string[] | null
+          title: string
+          updated_at: string
+          week_id: string
+        }
+        Insert: {
+          category: string
+          content?: Json
+          created_at?: string
+          estimated_minutes?: number | null
+          id?: string
+          lesson_type: string
+          order_index?: number | null
+          prerequisites?: string[] | null
+          title: string
+          updated_at?: string
+          week_id: string
+        }
+        Update: {
+          category?: string
+          content?: Json
+          created_at?: string
+          estimated_minutes?: number | null
+          id?: string
+          lesson_type?: string
+          order_index?: number | null
+          prerequisites?: string[] | null
+          title?: string
+          updated_at?: string
+          week_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "training_program_lessons_week_id_fkey"
+            columns: ["week_id"]
+            isOneToOne: false
+            referencedRelation: "training_program_weeks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      training_program_weeks: {
+        Row: {
+          created_at: string
+          description: string | null
+          focus_areas: string[] | null
+          goals: string[] | null
+          id: string
+          order_index: number | null
+          program_id: string
+          title: string
+          updated_at: string
+          week_number: number
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          focus_areas?: string[] | null
+          goals?: string[] | null
+          id?: string
+          order_index?: number | null
+          program_id: string
+          title: string
+          updated_at?: string
+          week_number: number
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          focus_areas?: string[] | null
+          goals?: string[] | null
+          id?: string
+          order_index?: number | null
+          program_id?: string
+          title?: string
+          updated_at?: string
+          week_number?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "training_program_weeks_program_id_fkey"
+            columns: ["program_id"]
+            isOneToOne: false
+            referencedRelation: "training_programs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      training_programs: {
+        Row: {
+          age_group: string
+          created_at: string
+          description: string | null
+          difficulty_level: string
+          duration_weeks: number
+          id: string
+          image_url: string | null
+          is_published: boolean | null
+          max_age_weeks: number | null
+          min_age_weeks: number | null
+          name: string
+          order_index: number | null
+          updated_at: string
+        }
+        Insert: {
+          age_group: string
+          created_at?: string
+          description?: string | null
+          difficulty_level?: string
+          duration_weeks: number
+          id?: string
+          image_url?: string | null
+          is_published?: boolean | null
+          max_age_weeks?: number | null
+          min_age_weeks?: number | null
+          name: string
+          order_index?: number | null
+          updated_at?: string
+        }
+        Update: {
+          age_group?: string
+          created_at?: string
+          description?: string | null
+          difficulty_level?: string
+          duration_weeks?: number
+          id?: string
+          image_url?: string | null
+          is_published?: boolean | null
+          max_age_weeks?: number | null
+          min_age_weeks?: number | null
+          name?: string
+          order_index?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       training_sessions: {
         Row: {
           created_at: string
@@ -2060,6 +2205,54 @@ export type Database = {
           },
         ]
       }
+      user_lesson_completions: {
+        Row: {
+          completed_at: string
+          created_at: string
+          dog_id: string | null
+          id: string
+          lesson_id: string
+          notes: string | null
+          rating: number | null
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string
+          created_at?: string
+          dog_id?: string | null
+          id?: string
+          lesson_id: string
+          notes?: string | null
+          rating?: number | null
+          user_id: string
+        }
+        Update: {
+          completed_at?: string
+          created_at?: string
+          dog_id?: string | null
+          id?: string
+          lesson_id?: string
+          notes?: string | null
+          rating?: number | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_lesson_completions_dog_id_fkey"
+            columns: ["dog_id"]
+            isOneToOne: false
+            referencedRelation: "dogs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_lesson_completions_lesson_id_fkey"
+            columns: ["lesson_id"]
+            isOneToOne: false
+            referencedRelation: "training_program_lessons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_progress: {
         Row: {
           best_score_pct: number | null
@@ -2124,6 +2317,60 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      user_training_progress: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          current_week: number | null
+          dog_id: string | null
+          id: string
+          program_id: string
+          started_at: string
+          status: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          current_week?: number | null
+          dog_id?: string | null
+          id?: string
+          program_id: string
+          started_at?: string
+          status?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          current_week?: number | null
+          dog_id?: string | null
+          id?: string
+          program_id?: string
+          started_at?: string
+          status?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_training_progress_dog_id_fkey"
+            columns: ["dog_id"]
+            isOneToOne: false
+            referencedRelation: "dogs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_training_progress_program_id_fkey"
+            columns: ["program_id"]
+            isOneToOne: false
+            referencedRelation: "training_programs"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       vaccination_records: {
         Row: {
