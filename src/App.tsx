@@ -25,9 +25,6 @@ import InjuryDetail from "./pages/InjuryDetail";
 import Analytics from "./pages/Analytics";
 import RecordActivity from "./pages/RecordActivity";
 import NotFound from "./pages/NotFound";
-import TrainingPrograms from "./pages/TrainingPrograms";
-import TrainingProgramDetail from "./pages/TrainingProgramDetail";
-import TrainingLessonViewer from "./pages/TrainingLessonViewer";
 import Nutrition from "./pages/Nutrition";
 import Social from "./pages/Social";
 import GuideIntro from "./pages/guide/GuideIntro";
@@ -161,23 +158,6 @@ const App = () => {
                     <Route path="/relaxation" element={
                       <ProtectedRoute>
                         <Relaxation />
-                      </ProtectedRoute>
-                    } />
-                    
-                    {/* Training Programs Routes */}
-                    <Route path="/training-programs" element={
-                      <ProtectedRoute>
-                        <TrainingPrograms />
-                      </ProtectedRoute>
-                    } />
-                    <Route path="/training-program/:programId" element={
-                      <ProtectedRoute>
-                        <TrainingProgramDetail />
-                      </ProtectedRoute>
-                    } />
-                    <Route path="/training-lesson/:lessonId" element={
-                      <ProtectedRoute>
-                        <TrainingLessonViewer />
                       </ProtectedRoute>
                     } />
                     

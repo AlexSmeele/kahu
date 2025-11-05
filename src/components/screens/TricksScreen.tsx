@@ -360,71 +360,30 @@ export function TricksScreen({ selectedDogId, onDogChange }: TricksScreenProps) 
         {/* Training Program Content */}
         {selectedSection === 'program' && (
           <div className="p-4 space-y-4">
-            <div className="bg-gradient-to-br from-primary/10 to-primary/5 rounded-xl p-4 border-2 border-primary/30">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-12 h-12 bg-gradient-to-br from-primary to-primary-hover rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg">
-                  <Trophy className="w-6 h-6 text-white" />
+            <div className="bg-card rounded-xl p-3 border border-primary/20">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 bg-gradient-to-br from-primary to-primary-hover rounded-lg flex items-center justify-center flex-shrink-0">
+                  <Trophy className="w-4 h-4 text-white" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h2 className="text-lg font-bold leading-tight">Training Programs</h2>
-                  <p className="text-xs text-muted-foreground">Structured curricula for every stage</p>
+                  <h2 className="text-base font-bold leading-tight">Training Program</h2>
+                  <p className="text-xs text-muted-foreground">Structured learning path</p>
                 </div>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setExpandedSections(prev => ({ ...prev, program: !prev.program }))}
+                  className="flex items-center gap-0.5 h-auto py-1 px-2 flex-shrink-0"
+                >
+                  <span className="text-xs">{expandedSections.program ? 'Less' : 'More'}</span>
+                  {expandedSections.program ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
+                </Button>
               </div>
-              
-              <p className="text-sm text-muted-foreground mb-4">
-                Follow comprehensive, step-by-step training programs designed by professional trainers. 
-                Perfect for puppies, adolescent dogs, or learning new skills at any age.
-              </p>
-
-              <div className="space-y-2">
-                <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                  <CheckCircle2 className="w-4 h-4 text-green-500" />
-                  <span>Week-by-week structured lessons</span>
-                </div>
-                <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                  <CheckCircle2 className="w-4 h-4 text-green-500" />
-                  <span>Foundations, skills & troubleshooting</span>
-                </div>
-                <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                  <CheckCircle2 className="w-4 h-4 text-green-500" />
-                  <span>Track your progress</span>
-                </div>
-              </div>
-
-              <Button 
-                onClick={() => window.location.href = '/training-programs'}
-                className="w-full mt-4 bg-gradient-to-r from-primary to-primary-hover hover:from-primary-hover hover:to-primary shadow-lg"
-              >
-                <BookOpen className="w-4 h-4 mr-2" />
-                Browse Training Programs
-              </Button>
-            </div>
-
-            {/* Featured Programs Preview */}
-            <div className="bg-card rounded-xl p-4 border">
-              <h3 className="font-semibold mb-3 flex items-center gap-2">
-                <Star className="w-4 h-4 text-yellow-500" />
-                Featured Programs
-              </h3>
-              <div className="space-y-2">
-                <div className="flex items-center gap-3 p-2 rounded-lg hover:bg-accent/50 transition-colors cursor-pointer"
-                     onClick={() => window.location.href = '/training-programs'}>
-                  <div className="text-2xl">🐕</div>
-                  <div className="flex-1">
-                    <p className="font-medium text-sm">8-Week Puppy Foundation</p>
-                    <p className="text-xs text-muted-foreground">Perfect for 8-16 week old puppies</p>
-                  </div>
-                  <ChevronDown className="w-4 h-4 text-muted-foreground rotate-[-90deg]" />
-                </div>
-                <div className="flex items-center gap-3 p-2 rounded-lg opacity-50">
-                  <div className="text-2xl">🦮</div>
-                  <div className="flex-1">
-                    <p className="font-medium text-sm">Adolescent Training</p>
-                    <p className="text-xs text-muted-foreground">Coming soon</p>
-                  </div>
-                  <Lock className="w-4 h-4 text-muted-foreground" />
-                </div>
-              </div>
+              {expandedSections.program && (
+                <p className="text-xs text-muted-foreground mt-2 pl-10">
+                  Your personalized training program will appear here. This section will guide you through a structured curriculum tailored to your dog's level and needs.
+                </p>
+              )}
             </div>
           </div>
         )}
