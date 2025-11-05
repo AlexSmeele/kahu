@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { Scale, Apple, Heart, MessageCircle, Camera, Plus } from "lucide-react";
+import { Scale, Apple, Heart, MessageCircle, Camera, AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { AddWeightModal } from "@/components/health/AddWeightModal";
 import { HealthNotesModal } from "@/components/health/HealthNotesModal";
 import { MealLogModal } from "@/components/nutrition/MealLogModal";
+import { EmergencyModal } from "@/components/health/EmergencyModal";
 import { useToast } from "@/hooks/use-toast";
 import { useNutrition } from "@/hooks/useNutrition";
 import type { TabType } from "@/components/layout/BottomNavigation";
@@ -18,6 +19,14 @@ interface QuickActionModalProps {
 }
 
 const quickActions = [
+  {
+    id: 'emergency',
+    title: 'Emergency',
+    description: 'Urgent pet assistance',
+    icon: AlertTriangle,
+    color: 'text-destructive',
+    bgColor: 'bg-destructive/20'
+  },
   {
     id: 'weight',
     title: 'Log Weight',
@@ -39,24 +48,24 @@ const quickActions = [
     title: 'Health Note',
     description: 'Add health observation',
     icon: Heart,
-    color: 'text-destructive',
-    bgColor: 'bg-destructive/10'
+    color: 'text-primary',
+    bgColor: 'bg-primary/10'
   },
   {
     id: 'ai-chat',
     title: 'Ask Trainer',
     description: 'Quick question for AI',
     icon: MessageCircle,
-    color: 'text-primary',
-    bgColor: 'bg-primary/10'
+    color: 'text-accent',
+    bgColor: 'bg-accent/10'
   },
   {
     id: 'photo',
     title: 'Take Photo',
     description: 'Capture moment',
     icon: Camera,
-    color: 'text-accent',
-    bgColor: 'bg-accent/10'
+    color: 'text-muted-foreground',
+    bgColor: 'bg-muted'
   }
 ];
 
@@ -66,9 +75,13 @@ export function QuickActionModal({ isOpen, onClose, selectedDogId, selectedDogNa
   const [isAddWeightOpen, setIsAddWeightOpen] = useState(false);
   const [isHealthNotesOpen, setIsHealthNotesOpen] = useState(false);
   const [isMealLogOpen, setIsMealLogOpen] = useState(false);
+  const [isEmergencyOpen, setIsEmergencyOpen] = useState(false);
 
   const handleAction = (actionId: string) => {
     switch (actionId) {
+      case 'emergency':
+        setIsEmergencyOpen(true);
+        break;
       case 'weight':
         setIsAddWeightOpen(true);
         break;
@@ -154,6 +167,13 @@ export function QuickActionModal({ isOpen, onClose, selectedDogId, selectedDogNa
         dogId={selectedDogId}
         dogName={selectedDogName}
         nutritionPlanId={nutritionPlan?.id}
+      />
+
+      <EmergencyModal
+        isOpen={isEmergencyOpen}
+        onClose={() => setIsEmergencyOpen(false)}
+        dogId={selectedDogId}
+        dogName={selectedDogName}
       />
     </>
   );
