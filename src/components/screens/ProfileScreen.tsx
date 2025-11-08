@@ -131,8 +131,8 @@ export function ProfileScreen() {
     }
   };
   return (
-    <div className="flex flex-col h-full pt-4">
-      <div className="fixed top-3 right-3 z-50 flex items-center gap-2">
+    <div className="flex flex-col h-full pt-4 relative">
+      <div className="absolute top-3 right-3 z-50 flex items-center gap-2">
         <NotificationsDrawer />
         <ThemeToggle />
       </div>
