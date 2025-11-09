@@ -427,7 +427,7 @@ export function TricksScreen({ selectedDogId, onDogChange }: TricksScreenProps) 
               const levelProgress = (levelCompleted / skillsTricks.length) * 100;
 
               return (
-                <div key={level} className="space-y-4">
+                <div key={level} className="space-y-3">
                   {/* Level Header */}
                   <div className="flex items-center gap-3">
                     <div className={`w-8 h-8 ${color} rounded-lg flex items-center justify-center`}>
