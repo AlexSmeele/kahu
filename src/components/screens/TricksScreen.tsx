@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { Award, Star, Clock, CheckCircle2, Lock, Trophy, Target, Zap, Play, BookOpen, GraduationCap, AlertCircle, ChevronDown, ChevronUp, Users, X } from "lucide-react";
+import { Award, Star, Clock, CheckCircle2, Lock, Trophy, Target, Zap, Play, BookOpen, GraduationCap, AlertCircle, ChevronDown, ChevronUp, Users, X, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
@@ -44,119 +44,92 @@ const difficultyRanges = {
 function TrickCard({ trick, dogTrick, onStart, onPractice, onTrickClick, hasUnmetPrerequisites, unmetPrerequisites }: any) {
   const isCompleted = dogTrick?.status === 'mastered';
   const isInProgress = dogTrick && dogTrick.status !== 'not_started' && !isCompleted;
-  const progress = isCompleted ? 100 : isInProgress ? Math.min((dogTrick.total_sessions / 10) * 100, 80) : 0;
   
+  // Color schemes for different categories
+  const categoryGradients: Record<string, string> = {
+    'Basic': 'from-green-400 to-green-500',
+    'Intermediate': 'from-blue-400 to-blue-500',
+    'Advanced': 'from-purple-400 to-purple-500',
+    'Fun': 'from-orange-400 to-orange-500',
+    'Agility': 'from-red-400 to-red-500',
+    'Service': 'from-yellow-400 to-yellow-500',
+  };
+
+  const bgGradient = categoryGradients[trick.category] || 'from-gray-400 to-gray-500';
+  
+  // Render difficulty paws
+  const renderPaws = () => {
+    const paws = [];
+    for (let i = 0; i < 5; i++) {
+      paws.push(
+        <span 
+          key={i} 
+          className={`text-base ${i < trick.difficulty_level ? 'opacity-100' : 'opacity-30'}`}
+        >
+          🐾
+        </span>
+      );
+    }
+    return paws;
+  };
+
   const CategoryIcon = categoryIcons[trick.category as keyof typeof categoryIcons] || Award;
-  const categoryColor = categoryColors[trick.category as keyof typeof categoryColors] || 'bg-gray-500';
 
   return (
     <div 
       onClick={() => onTrickClick(trick)}
-      className={`bg-card rounded-xl p-3 border-2 transition-all duration-200 hover:scale-[1.02] cursor-pointer flex flex-col h-full ${
-        isCompleted ? 'border-green-400 bg-green-50 dark:bg-green-950/20' : 
-        isInProgress ? 'border-blue-400 bg-blue-50 dark:bg-blue-950/20' : 
-        'border-border hover:border-primary/50'
+      className={`relative aspect-[3/4] bg-gradient-to-br ${bgGradient} rounded-2xl p-4 cursor-pointer transition-transform hover:scale-105 flex flex-col justify-between overflow-hidden ${
+        isCompleted ? 'ring-2 ring-green-400 ring-offset-2' : ''
       }`}
     >
-      <div className="flex items-center gap-2 mb-1.5">
-        <div className={`w-9 h-9 ${categoryColor} rounded-lg flex items-center justify-center relative flex-shrink-0`}>
-          <CategoryIcon className="w-4.5 h-4.5 text-white" />
-          {isCompleted && (
-            <div className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-green-500 rounded-full flex items-center justify-center">
-              <CheckCircle2 className="w-2.5 h-2.5 text-white" />
-            </div>
-          )}
-        </div>
-        <div className="flex-1 min-w-0">
-          <h3 className="font-bold text-sm text-foreground leading-tight">{trick.name}</h3>
-          <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground">
-            <span>Level {trick.difficulty_level}</span>
-            <span>•</span>
-            <span>{trick.category}</span>
-            {trick.estimated_time_weeks && (
-              <>
-                <span>•</span>
-                <Clock className="w-2.5 h-2.5" />
-                <span>{trick.estimated_time_weeks}w</span>
-              </>
-            )}
+      {/* Decorative sparkles */}
+      <div className="absolute top-4 left-4 text-white/30 text-xl">✦</div>
+      <div className="absolute top-8 right-8 text-white/20 text-base">✦</div>
+      <div className="absolute bottom-16 right-6 text-white/20 text-base">✦</div>
+      
+      {/* Favorite heart button */}
+      <div className="absolute top-3 right-3 z-10">
+        <button 
+          className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center hover:bg-white/30 transition-colors"
+          onClick={(e) => {
+            e.stopPropagation();
+            // TODO: Add favorite functionality
+          }}
+        >
+          <Heart className="w-5 h-5 text-white" />
+        </button>
+      </div>
+
+      {/* Status indicator */}
+      {isCompleted && (
+        <div className="absolute top-3 left-3 z-10">
+          <div className="w-8 h-8 rounded-full bg-white/90 flex items-center justify-center">
+            <CheckCircle2 className="w-5 h-5 text-green-600" />
           </div>
+        </div>
+      )}
+      
+      {isInProgress && !isCompleted && (
+        <div className="absolute top-3 left-3 z-10">
+          <div className="w-8 h-8 rounded-full bg-white/90 flex items-center justify-center">
+            <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+          </div>
+        </div>
+      )}
+
+      {/* Central illustration area */}
+      <div className="flex-1 flex items-center justify-center py-6">
+        <div className={`w-24 h-24 ${categoryColors[trick.category as keyof typeof categoryColors] || 'bg-white'} bg-opacity-20 rounded-2xl flex items-center justify-center backdrop-blur-sm`}>
+          <CategoryIcon className="w-12 h-12 text-white" />
         </div>
       </div>
 
-      <p className="text-xs text-muted-foreground mb-2 line-clamp-2">{trick.description}</p>
-
-      {/* Prerequisites Warning */}
-      {hasUnmetPrerequisites && (
-        <div className="mb-2 p-2 bg-amber-50 dark:bg-amber-950/20 border border-amber-300 dark:border-amber-700 rounded-lg">
-          <div className="flex items-start gap-1.5">
-            <AlertCircle className="w-3 h-3 text-amber-600 dark:text-amber-400 mt-0.5 flex-shrink-0" />
-            <div className="flex-1 min-w-0">
-              <p className="text-[10px] font-medium text-amber-800 dark:text-amber-300 mb-0.5">Prerequisites Required</p>
-              <p className="text-[9px] text-amber-700 dark:text-amber-400">
-                Master: {unmetPrerequisites.join(', ')}
-              </p>
-            </div>
-          </div>
+      {/* Bottom info */}
+      <div className="text-center text-white space-y-2 pb-2">
+        <h3 className="font-bold text-lg leading-tight">{trick.name}</h3>
+        <div className="flex justify-center gap-0.5">
+          {renderPaws()}
         </div>
-      )}
-
-      {/* Progress Bar */}
-      {(isInProgress || isCompleted) && (
-        <div className="mb-2">
-          <div className="flex justify-between text-[10px] mb-0.5">
-            <span className="text-muted-foreground">Progress</span>
-            <span className={isCompleted ? 'text-green-600 font-bold' : 'text-blue-600'}>
-              {isCompleted ? "Mastered!" : `${Math.round(progress)}%`}
-            </span>
-          </div>
-          <Progress value={progress} className="h-1.5" />
-          {dogTrick && dogTrick.total_sessions > 0 && (
-            <p className="text-[9px] text-muted-foreground mt-0.5">
-              {dogTrick.total_sessions} sessions
-            </p>
-          )}
-        </div>
-      )}
-
-      {/* Action Button */}
-      <div>
-        {!dogTrick && (
-          <Button 
-            onClick={(e) => {
-              e.stopPropagation();
-              onStart(trick.id);
-            }}
-            className="w-full bg-gradient-to-r from-primary to-primary-hover hover:from-primary-hover hover:to-primary text-white font-semibold py-2 rounded-lg h-8 text-xs"
-          >
-            Start Learning
-          </Button>
-        )}
-        
-        {isInProgress && (
-          <Button 
-            onClick={(e) => {
-              e.stopPropagation();
-              onPractice(trick.id);
-            }}
-            className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold py-2 rounded-lg h-8 text-xs"
-          >
-            Continue Practice 🚀
-          </Button>
-        )}
-        
-        {isCompleted && (
-          <Button 
-            onClick={(e) => {
-              e.stopPropagation();
-              onPractice(trick.id);
-            }}
-            variant="outline"
-            className="w-full border-2 border-green-400 text-green-700 hover:bg-green-50 dark:hover:bg-green-950/20 font-semibold py-2 rounded-lg h-8 text-xs"
-          >
-            Review & Perfect ⭐
-          </Button>
-        )}
       </div>
     </div>
   );
@@ -445,21 +418,20 @@ export function TricksScreen({ selectedDogId, onDogChange }: TricksScreenProps) 
                   </div>
 
                   {/* Tricks Grid */}
-                  <div className="grid grid-cols-2 gap-3 w-full">
+                  <div className="grid grid-cols-2 gap-4 p-4">
                     {skillsTricks.map((trick) => {
                       const unmetPrereqs = getUnmetPrerequisites(trick);
                       return (
-                        <div key={trick.id} className="min-w-0">
-                          <TrickCard
-                            trick={trick}
-                            dogTrick={learnedTricksMap.get(trick.id)}
-                            onStart={handleStart}
-                            onPractice={handlePractice}
-                            onTrickClick={handleTrickClick}
-                            hasUnmetPrerequisites={unmetPrereqs.length > 0}
-                            unmetPrerequisites={unmetPrereqs}
-                          />
-                        </div>
+                        <TrickCard
+                          key={trick.id}
+                          trick={trick}
+                          dogTrick={learnedTricksMap.get(trick.id)}
+                          onStart={handleStart}
+                          onPractice={handlePractice}
+                          onTrickClick={handleTrickClick}
+                          hasUnmetPrerequisites={unmetPrereqs.length > 0}
+                          unmetPrerequisites={unmetPrereqs}
+                        />
                       );
                     })}
                   </div>
