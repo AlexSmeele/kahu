@@ -52,7 +52,7 @@ function TrickCard({ trick, dogTrick, onStart, onPractice, onTrickClick, hasUnme
   return (
     <div 
       onClick={() => onTrickClick(trick)}
-      className={`bg-card rounded-xl p-3 border-2 transition-all duration-200 hover:scale-[1.02] cursor-pointer flex flex-col ${
+      className={`w-full min-w-0 bg-card rounded-xl p-3 border-2 transition-all duration-200 hover:scale-[1.02] cursor-pointer flex flex-col ${
         isCompleted ? 'border-green-400 bg-green-50 dark:bg-green-950/20' : 
         isInProgress ? 'border-blue-400 bg-blue-50 dark:bg-blue-950/20' : 
         'border-border hover:border-primary/50'
