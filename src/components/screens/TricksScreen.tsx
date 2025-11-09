@@ -52,7 +52,7 @@ function TrickCard({ trick, dogTrick, onStart, onPractice, onTrickClick, hasUnme
   return (
     <div 
       onClick={() => onTrickClick(trick)}
-      className={`w-full min-w-0 bg-card rounded-xl p-3 border-2 transition-all duration-200 hover:scale-[1.02] cursor-pointer flex flex-col ${
+      className={`bg-card rounded-xl p-3 border-2 transition-all duration-200 hover:scale-[1.02] cursor-pointer flex flex-col h-full ${
         isCompleted ? 'border-green-400 bg-green-50 dark:bg-green-950/20' : 
         isInProgress ? 'border-blue-400 bg-blue-50 dark:bg-blue-950/20' : 
         'border-border hover:border-primary/50'
@@ -445,20 +445,21 @@ export function TricksScreen({ selectedDogId, onDogChange }: TricksScreenProps) 
                   </div>
 
                   {/* Tricks Grid */}
-                  <div className="grid grid-cols-2 gap-3">
+                  <div className="grid grid-cols-2 gap-3 w-full">
                     {skillsTricks.map((trick) => {
                       const unmetPrereqs = getUnmetPrerequisites(trick);
                       return (
-                        <TrickCard
-                          key={trick.id}
-                          trick={trick}
-                          dogTrick={learnedTricksMap.get(trick.id)}
-                          onStart={handleStart}
-                          onPractice={handlePractice}
-                          onTrickClick={handleTrickClick}
-                          hasUnmetPrerequisites={unmetPrereqs.length > 0}
-                          unmetPrerequisites={unmetPrereqs}
-                        />
+                        <div key={trick.id} className="min-w-0">
+                          <TrickCard
+                            trick={trick}
+                            dogTrick={learnedTricksMap.get(trick.id)}
+                            onStart={handleStart}
+                            onPractice={handlePractice}
+                            onTrickClick={handleTrickClick}
+                            hasUnmetPrerequisites={unmetPrereqs.length > 0}
+                            unmetPrerequisites={unmetPrereqs}
+                          />
+                        </div>
                       );
                     })}
                   </div>
