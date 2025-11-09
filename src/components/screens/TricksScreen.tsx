@@ -446,7 +446,7 @@ export function TricksScreen({ selectedDogId, onDogChange }: TricksScreenProps) 
 
                   {/* Tricks Grid */}
                   <div className="grid grid-cols-2 gap-3">
-                  {skillsTricks.map((trick) => {
+                    {skillsTricks.map((trick) => {
                       const unmetPrereqs = getUnmetPrerequisites(trick);
                       return (
                         <TrickCard
