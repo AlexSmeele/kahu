@@ -45,18 +45,6 @@ function TrickCard({ trick, dogTrick, onStart, onPractice, onTrickClick, hasUnme
   const isCompleted = dogTrick?.status === 'mastered';
   const isInProgress = dogTrick && dogTrick.status !== 'not_started' && !isCompleted;
   
-  // Color schemes for different categories
-  const categoryGradients: Record<string, string> = {
-    'Basic': 'from-green-400 to-green-500',
-    'Intermediate': 'from-blue-400 to-blue-500',
-    'Advanced': 'from-purple-400 to-purple-500',
-    'Fun': 'from-orange-400 to-orange-500',
-    'Agility': 'from-red-400 to-red-500',
-    'Service': 'from-yellow-400 to-yellow-500',
-  };
-
-  const bgGradient = categoryGradients[trick.category] || 'from-gray-400 to-gray-500';
-  
   // Render difficulty paws
   const renderPaws = () => {
     const paws = [];
@@ -64,7 +52,7 @@ function TrickCard({ trick, dogTrick, onStart, onPractice, onTrickClick, hasUnme
       paws.push(
         <span 
           key={i} 
-          className={`text-base ${i < trick.difficulty_level ? 'opacity-100' : 'opacity-30'}`}
+          className={`text-sm ${i < trick.difficulty_level ? 'opacity-100' : 'opacity-30'}`}
         >
           🐾
         </span>
@@ -74,48 +62,58 @@ function TrickCard({ trick, dogTrick, onStart, onPractice, onTrickClick, hasUnme
   };
 
   const CategoryIcon = categoryIcons[trick.category as keyof typeof categoryIcons] || Award;
+  const categoryColor = categoryColors[trick.category as keyof typeof categoryColors] || 'bg-gray-500';
 
   return (
     <div 
       onClick={() => onTrickClick(trick)}
-      className={`relative aspect-[3/4] bg-gradient-to-br ${bgGradient} rounded-2xl p-4 cursor-pointer transition-transform hover:scale-105 flex flex-col justify-between overflow-hidden ${
-        isCompleted ? 'ring-2 ring-green-400 ring-offset-2' : ''
-      }`}
+      className="relative aspect-[3/4] bg-card border border-border rounded-xl overflow-hidden cursor-pointer transition-all hover:shadow-lg hover:scale-[1.02] flex flex-col"
     >
-      {/* Decorative sparkles */}
-      <div className="absolute top-4 left-4 text-white/30 text-xl">✦</div>
-      <div className="absolute top-8 right-8 text-white/20 text-base">✦</div>
-      <div className="absolute bottom-16 right-6 text-white/20 text-base">✦</div>
-
-      {/* Status indicator */}
-      {isCompleted && (
-        <div className="absolute top-3 left-3 z-10">
-          <div className="w-8 h-8 rounded-full bg-white/90 flex items-center justify-center">
-            <CheckCircle2 className="w-5 h-5 text-green-600" />
-          </div>
-        </div>
-      )}
+      {/* Header with category color bar */}
+      <div className={`${categoryColor} h-2 w-full`} />
       
-      {isInProgress && !isCompleted && (
-        <div className="absolute top-3 left-3 z-10">
-          <div className="w-8 h-8 rounded-full bg-white/90 flex items-center justify-center">
-            <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+      {/* Status Badge - top right */}
+      <div className="absolute top-3 right-3 z-10">
+        {isCompleted && (
+          <div className="bg-green-500 text-white text-xs font-bold px-2 py-1 rounded-full flex items-center gap-1">
+            <CheckCircle2 className="w-3 h-3" />
+            <span>Done</span>
           </div>
-        </div>
-      )}
-
-      {/* Central illustration area */}
-      <div className="flex-1 flex items-center justify-center py-6">
-        <div className={`w-24 h-24 ${categoryColors[trick.category as keyof typeof categoryColors] || 'bg-white'} bg-opacity-20 rounded-2xl flex items-center justify-center backdrop-blur-sm`}>
-          <CategoryIcon className="w-12 h-12 text-white" />
-        </div>
+        )}
+        {isInProgress && !isCompleted && (
+          <div className="bg-blue-500 text-white text-xs font-bold px-2 py-1 rounded-full flex items-center gap-1">
+            <Clock className="w-3 h-3" />
+            <span>Learning</span>
+          </div>
+        )}
       </div>
 
-      {/* Bottom info */}
-      <div className="text-center text-white space-y-2 pb-2">
-        <h3 className="font-bold text-lg leading-tight">{trick.name}</h3>
-        <div className="flex justify-center gap-0.5">
-          {renderPaws()}
+      {/* Card Content */}
+      <div className="flex-1 flex flex-col p-4">
+        {/* Icon Section */}
+        <div className="flex-1 flex items-center justify-center py-4">
+          <div className={`w-20 h-20 ${categoryColor} rounded-2xl flex items-center justify-center shadow-sm`}>
+            <CategoryIcon className="w-10 h-10 text-white" />
+          </div>
+        </div>
+
+        {/* Info Section */}
+        <div className="space-y-2 text-center">
+          <h3 className="font-bold text-base leading-tight line-clamp-2 min-h-[2.5rem]">{trick.name}</h3>
+          
+          {/* Difficulty and Category */}
+          <div className="flex items-center justify-center gap-2">
+            <div className="flex gap-0.5">
+              {renderPaws()}
+            </div>
+          </div>
+          
+          {/* Category Badge */}
+          <div className="flex justify-center">
+            <Badge variant="secondary" className="text-xs">
+              {trick.category}
+            </Badge>
+          </div>
         </div>
       </div>
     </div>
