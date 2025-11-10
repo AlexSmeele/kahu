@@ -86,19 +86,6 @@ function TrickCard({ trick, dogTrick, onStart, onPractice, onTrickClick, hasUnme
       <div className="absolute top-4 left-4 text-white/30 text-xl">✦</div>
       <div className="absolute top-8 right-8 text-white/20 text-base">✦</div>
       <div className="absolute bottom-16 right-6 text-white/20 text-base">✦</div>
-      
-      {/* Favorite heart button */}
-      <div className="absolute top-3 right-3 z-10">
-        <button 
-          className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center hover:bg-white/30 transition-colors"
-          onClick={(e) => {
-            e.stopPropagation();
-            // TODO: Add favorite functionality
-          }}
-        >
-          <Heart className="w-5 h-5 text-white" />
-        </button>
-      </div>
 
       {/* Status indicator */}
       {isCompleted && (
