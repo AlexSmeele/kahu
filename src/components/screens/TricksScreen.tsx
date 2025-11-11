@@ -1,7 +1,9 @@
 import { useState, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 import { Award, Star, Clock, CheckCircle2, Lock, Trophy, Target, Zap, Play, BookOpen, GraduationCap, AlertCircle, ChevronDown, ChevronUp, Users, X, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { TopicCard } from "@/components/training/TopicCard";
 import { useDogs } from "@/hooks/useDogs";
@@ -111,6 +113,7 @@ interface TricksScreenProps {
 }
 
 export function TricksScreen({ selectedDogId, onDogChange }: TricksScreenProps) {
+  const navigate = useNavigate();
   const { dogs } = useDogs();
   const currentDog = dogs.find(dog => dog.id === selectedDogId) || dogs[0];
   const { tricks, dogTricks, loading, startTrick, addPracticeSession, updateTrickStatus } = useTricks(currentDog?.id);
@@ -320,10 +323,45 @@ export function TricksScreen({ selectedDogId, onDogChange }: TricksScreenProps) 
               </div>
               {expandedSections.program && (
                 <p className="text-xs text-muted-foreground mt-2 pl-10">
-                  Your personalized training program will appear here. This section will guide you through a structured curriculum tailored to your dog's level and needs.
+                  Follow a chronological roadmap from preparing for your puppy through raising them into a well-trained adult dog. Each stage unlocks age-appropriate training content.
                 </p>
               )}
             </div>
+
+            {/* Roadmap Card */}
+            <Card 
+              onClick={() => navigate('/training/programs')}
+              className="relative overflow-hidden cursor-pointer transition-all duration-200 hover:scale-[1.02] hover:shadow-lg active:scale-[0.98]"
+            >
+              {/* Color gradient header */}
+              <div className="bg-gradient-to-br from-indigo-500 to-purple-600 h-24 w-full relative">
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center backdrop-blur-sm">
+                    <Trophy className="w-10 h-10 text-white" />
+                  </div>
+                </div>
+              </div>
+
+              {/* Card Content */}
+              <div className="p-4 space-y-2">
+                <h3 className="font-bold text-base leading-tight">
+                  Training Roadmap
+                </h3>
+                <p className="text-sm text-muted-foreground">
+                  Age-based journey combining foundations, skills & troubleshooting
+                </p>
+                <Button 
+                  size="sm" 
+                  className="w-full mt-2"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigate('/training/programs');
+                  }}
+                >
+                  View Roadmap
+                </Button>
+              </div>
+            </Card>
           </div>
         )}
 
