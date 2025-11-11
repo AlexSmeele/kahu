@@ -34,8 +34,12 @@ const Index = () => {
   useEffect(() => {
     if (tabFromUrl && ['home', 'tricks', 'wellness', 'profile'].includes(tabFromUrl)) {
       setActiveTab(tabFromUrl);
-      // Clear the URL param after setting the tab
-      setSearchParams({});
+      // Clear the tab param but preserve other params like section
+      setSearchParams((prev) => {
+        const params = new URLSearchParams(prev);
+        params.delete('tab');
+        return params;
+      });
     }
   }, [tabFromUrl, setSearchParams]);
 

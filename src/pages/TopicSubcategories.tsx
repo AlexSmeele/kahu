@@ -53,7 +53,7 @@ export default function TopicSubcategories() {
         <Button
           variant="ghost"
           size="sm"
-          onClick={() => navigate(type === 'foundation' ? '/trainer?section=foundations' : '/trainer?section=troubleshooting')}
+          onClick={() => navigate(type === 'foundation' ? '/?tab=tricks&section=foundations' : '/?tab=tricks&section=troubleshooting')}
           className="absolute top-4 left-4 text-white hover:bg-white/20"
         >
           <ArrowLeft className="h-5 w-5" />
