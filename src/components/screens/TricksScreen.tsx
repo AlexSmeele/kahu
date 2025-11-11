@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { TopicCard } from "@/components/training/TopicCard";
+import { RoadmapContent } from "@/components/training/RoadmapContent";
 import { useDogs } from "@/hooks/useDogs";
 import { useTricks, Trick } from "@/hooks/useTricks";
 import { DogDropdown } from "@/components/dogs/DogDropdown";
@@ -337,40 +338,8 @@ export function TricksScreen({ selectedDogId, onDogChange }: TricksScreenProps) 
               )}
             </div>
 
-            {/* Roadmap Card */}
-            <Card 
-              onClick={() => navigate('/training/programs')}
-              className="relative overflow-hidden cursor-pointer transition-all duration-200 hover:scale-[1.02] hover:shadow-lg active:scale-[0.98]"
-            >
-              {/* Color gradient header */}
-              <div className="bg-gradient-to-br from-indigo-500 to-purple-600 h-24 w-full relative">
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center backdrop-blur-sm">
-                    <Trophy className="w-10 h-10 text-white" />
-                  </div>
-                </div>
-              </div>
-
-              {/* Card Content */}
-              <div className="p-4 space-y-2">
-                <h3 className="font-bold text-base leading-tight">
-                  Training Roadmap
-                </h3>
-                <p className="text-sm text-muted-foreground">
-                  Age-based journey combining foundations, skills & troubleshooting
-                </p>
-                <Button 
-                  size="sm" 
-                  className="w-full mt-2"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    navigate('/training/programs');
-                  }}
-                >
-                  View Roadmap
-                </Button>
-              </div>
-            </Card>
+            {/* Embedded Roadmap */}
+            <RoadmapContent selectedDogId={selectedDogId} />
           </div>
         )}
 
