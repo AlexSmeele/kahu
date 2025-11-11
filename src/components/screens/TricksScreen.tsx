@@ -1,5 +1,5 @@
-import { useState, useMemo } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useMemo, useEffect } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { Award, Star, Clock, CheckCircle2, Lock, Trophy, Target, Zap, Play, BookOpen, GraduationCap, AlertCircle, ChevronDown, ChevronUp, Users, X, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -114,6 +114,7 @@ interface TricksScreenProps {
 
 export function TricksScreen({ selectedDogId, onDogChange }: TricksScreenProps) {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { dogs } = useDogs();
   const currentDog = dogs.find(dog => dog.id === selectedDogId) || dogs[0];
   const { tricks, dogTricks, loading, startTrick, addPracticeSession, updateTrickStatus } = useTricks(currentDog?.id);
@@ -128,6 +129,14 @@ export function TricksScreen({ selectedDogId, onDogChange }: TricksScreenProps) 
     skills: false,
     troubleshooting: false
   });
+
+  // Handle section query parameter on mount
+  useEffect(() => {
+    const section = searchParams.get('section');
+    if (section === 'foundations' || section === 'troubleshooting' || section === 'skills' || section === 'program') {
+      setSelectedSection(section);
+    }
+  }, [searchParams]);
 
   // Load foundation topics for mock dogs
   const foundationTopics = isMockDogId(currentDog?.id || '') ? MOCK_FOUNDATION_TOPICS : [];
