@@ -73,16 +73,16 @@ function TrickCard({ trick, dogTrick, onStart, onPractice, onTrickClick, hasUnme
       <div className={`${categoryColor} h-2 w-full`} />
 
       {/* Card Content */}
-      <div className="flex-1 flex flex-col p-4">
+      <div className="flex-1 flex flex-col p-3">
         {/* Icon Section */}
-        <div className="flex-1 flex items-center justify-center py-4">
+        <div className="flex-1 flex items-center justify-center py-2">
           <div className={`w-20 h-20 ${categoryColor} rounded-2xl flex items-center justify-center shadow-sm`}>
             <CategoryIcon className="w-10 h-10 text-white" />
           </div>
         </div>
 
         {/* Info Section */}
-        <div className="space-y-2 text-center">
+        <div className="space-y-1.5 text-center pb-1">
           <h3 className="font-bold text-base leading-tight line-clamp-2 min-h-[2.5rem]">{trick.name}</h3>
           
           {/* Difficulty and Category */}
