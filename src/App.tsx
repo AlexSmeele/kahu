@@ -38,6 +38,7 @@ import GuideCertificate from "./pages/guide/GuideCertificate";
 import GuideRecommendations from "./pages/guide/GuideRecommendations";
 import GuideResources from "./pages/guide/GuideResources";
 import GuideProgress from "./pages/guide/GuideProgress";
+import TopicSubcategories from "./pages/TopicSubcategories";
 import Marketplace from "./pages/Marketplace";
 import Insurance from "./pages/Insurance";
 import Services from "./pages/Services";
@@ -211,6 +212,13 @@ const App = () => {
                     <Route path="/guide/recommendations" element={
                       <ProtectedRoute>
                         <GuideRecommendations />
+                      </ProtectedRoute>
+                    } />
+                    
+                    {/* Training Topic Routes */}
+                    <Route path="/training/:type/:topicId" element={
+                      <ProtectedRoute>
+                        <TopicSubcategories />
                       </ProtectedRoute>
                     } />
                     

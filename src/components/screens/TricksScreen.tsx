@@ -3,6 +3,7 @@ import { Award, Star, Clock, CheckCircle2, Lock, Trophy, Target, Zap, Play, Book
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import { TopicCard } from "@/components/training/TopicCard";
 import { useDogs } from "@/hooks/useDogs";
 import { useTricks, Trick } from "@/hooks/useTricks";
 import { DogDropdown } from "@/components/dogs/DogDropdown";
@@ -10,7 +11,7 @@ import { PageLogo } from "@/components/layout/PageLogo";
 import { ClickerButton } from "@/components/training/ClickerButton";
 import { ClickerModal } from "@/components/training/ClickerModal";
 import { TrickDetailModal } from "@/components/tricks/TrickDetailModal";
-import { MOCK_FOUNDATION_TOPICS, MOCK_TROUBLESHOOTING_TOPICS, type FoundationTopic, type FoundationSubSession, isMockDogId } from "@/lib/mockData";
+import { MOCK_FOUNDATION_TOPICS, MOCK_TROUBLESHOOTING_TOPICS, type FoundationTopic, isMockDogId } from "@/lib/mockData";
 
 const categoryColors = {
   Foundation: 'bg-emerald-500',
@@ -124,10 +125,6 @@ export function TricksScreen({ selectedDogId, onDogChange }: TricksScreenProps) 
     skills: false,
     troubleshooting: false
   });
-  const [expandedFoundations, setExpandedFoundations] = useState<Record<string, boolean>>({});
-  const [expandedTroubleshooting, setExpandedTroubleshooting] = useState<Record<string, boolean>>({});
-  const [selectedSubSession, setSelectedSubSession] = useState<FoundationSubSession | null>(null);
-  const [isSubSessionModalOpen, setIsSubSessionModalOpen] = useState(false);
 
   // Load foundation topics for mock dogs
   const foundationTopics = isMockDogId(currentDog?.id || '') ? MOCK_FOUNDATION_TOPICS : [];
@@ -439,97 +436,11 @@ export function TricksScreen({ selectedDogId, onDogChange }: TricksScreenProps) 
               )}
             </div>
 
-            {/* Foundation Topics with Sub-Sessions */}
-            <div className="space-y-4">
-              {foundationTopics.map((topic) => {
-                const isExpanded = expandedFoundations[topic.id];
-                const completedSessions = 0; // TODO: Track completed sub-sessions
-                const totalSessions = topic.subSessions.length;
-                const progress = (completedSessions / totalSessions) * 100;
-
-                return (
-                  <div key={topic.id} className="bg-card rounded-xl border-2 border-border overflow-hidden">
-                    {/* Topic Header */}
-                    <button
-                      onClick={() => setExpandedFoundations(prev => ({ ...prev, [topic.id]: !prev[topic.id] }))}
-                      className="w-full p-4 flex items-center gap-3 hover:bg-accent/50 transition-colors"
-                    >
-                      <div className={`w-12 h-12 bg-gradient-to-br ${topic.color} rounded-xl flex items-center justify-center flex-shrink-0`}>
-                        <Users className="w-6 h-6 text-white" />
-                      </div>
-                      <div className="flex-1 text-left min-w-0">
-                        <h3 className="font-bold text-lg text-foreground">{topic.name}</h3>
-                        <p className="text-xs text-muted-foreground line-clamp-1">{topic.description}</p>
-                        <div className="flex items-center gap-2 mt-1">
-                          <Progress value={progress} className="h-1.5 flex-1" />
-                          <span className="text-xs text-muted-foreground whitespace-nowrap">
-                            {completedSessions}/{totalSessions}
-                          </span>
-                        </div>
-                      </div>
-                      <div className="flex-shrink-0">
-                        {isExpanded ? (
-                          <ChevronUp className="w-5 h-5 text-muted-foreground" />
-                        ) : (
-                          <ChevronDown className="w-5 h-5 text-muted-foreground" />
-                        )}
-                      </div>
-                    </button>
-
-                    {/* Sub-Sessions */}
-                    {isExpanded && (
-                      <div className="border-t border-border bg-accent/20">
-                        <div className="p-3 space-y-2">
-                          {topic.subSessions
-                            .sort((a, b) => a.order - b.order)
-                            .map((subSession, index) => {
-                              const isCompleted = false; // TODO: Track completed state
-                              
-                              return (
-                                <div
-                                  key={subSession.id}
-                                  onClick={() => {
-                                    setSelectedSubSession(subSession);
-                                    setIsSubSessionModalOpen(true);
-                                  }}
-                                  className={`p-3 rounded-lg border-2 transition-all cursor-pointer ${
-                                    isCompleted
-                                      ? 'border-green-400 bg-green-50 dark:bg-green-950/20'
-                                      : 'border-border bg-card hover:border-primary/50 hover:scale-[1.02]'
-                                  }`}
-                                >
-                                  <div className="flex items-start gap-3">
-                                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${
-                                      isCompleted ? 'bg-green-500' : 'bg-primary'
-                                    }`}>
-                                      {isCompleted ? (
-                                        <CheckCircle2 className="w-4 h-4 text-white" />
-                                      ) : (
-                                        <span className="text-sm font-bold text-white">{index + 1}</span>
-                                      )}
-                                    </div>
-                                    <div className="flex-1 min-w-0">
-                                      <h4 className="font-semibold text-sm text-foreground">{subSession.name}</h4>
-                                      <p className="text-xs text-muted-foreground line-clamp-2 mt-0.5">
-                                        {subSession.description}
-                                      </p>
-                                      {subSession.estimated_time_weeks && (
-                                        <div className="flex items-center gap-1 mt-1 text-[10px] text-muted-foreground">
-                                          <Clock className="w-3 h-3" />
-                                          <span>{subSession.estimated_time_weeks} weeks</span>
-                                        </div>
-                                      )}
-                                    </div>
-                                  </div>
-                                </div>
-                              );
-                            })}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
+            {/* Foundation Topics Gallery */}
+            <div className="grid grid-cols-2 gap-3">
+              {foundationTopics.map((topic) => (
+                <TopicCard key={topic.id} topic={topic} type="foundation" />
+              ))}
             </div>
 
           </div>
@@ -564,97 +475,11 @@ export function TricksScreen({ selectedDogId, onDogChange }: TricksScreenProps) 
               )}
             </div>
 
-            {/* Troubleshooting Topics with Sub-Sessions */}
-            <div className="space-y-4">
-              {troubleshootingTopics.map((topic) => {
-                const isExpanded = expandedTroubleshooting[topic.id];
-                const completedSessions = 0; // TODO: Track completed sub-sessions
-                const totalSessions = topic.subSessions.length;
-                const progress = (completedSessions / totalSessions) * 100;
-
-                return (
-                  <div key={topic.id} className="bg-card rounded-xl border-2 border-border overflow-hidden">
-                    {/* Topic Header */}
-                    <button
-                      onClick={() => setExpandedTroubleshooting(prev => ({ ...prev, [topic.id]: !prev[topic.id] }))}
-                      className="w-full p-4 flex items-center gap-3 hover:bg-accent/50 transition-colors"
-                    >
-                      <div className={`w-12 h-12 bg-gradient-to-br ${topic.color} rounded-xl flex items-center justify-center flex-shrink-0`}>
-                        <AlertCircle className="w-6 h-6 text-white" />
-                      </div>
-                      <div className="flex-1 text-left min-w-0">
-                        <h3 className="font-bold text-lg text-foreground">{topic.name}</h3>
-                        <p className="text-xs text-muted-foreground line-clamp-1">{topic.description}</p>
-                        <div className="flex items-center gap-2 mt-1">
-                          <Progress value={progress} className="h-1.5 flex-1" />
-                          <span className="text-xs text-muted-foreground whitespace-nowrap">
-                            {completedSessions}/{totalSessions}
-                          </span>
-                        </div>
-                      </div>
-                      <div className="flex-shrink-0">
-                        {isExpanded ? (
-                          <ChevronUp className="w-5 h-5 text-muted-foreground" />
-                        ) : (
-                          <ChevronDown className="w-5 h-5 text-muted-foreground" />
-                        )}
-                      </div>
-                    </button>
-
-                    {/* Sub-Sessions */}
-                    {isExpanded && (
-                      <div className="border-t border-border bg-accent/20">
-                        <div className="p-3 space-y-2">
-                          {topic.subSessions
-                            .sort((a, b) => a.order - b.order)
-                            .map((subSession, index) => {
-                              const isCompleted = false; // TODO: Track completed state
-                              
-                              return (
-                                <div
-                                  key={subSession.id}
-                                  onClick={() => {
-                                    setSelectedSubSession(subSession);
-                                    setIsSubSessionModalOpen(true);
-                                  }}
-                                  className={`p-3 rounded-lg border-2 transition-all cursor-pointer ${
-                                    isCompleted
-                                      ? 'border-green-400 bg-green-50 dark:bg-green-950/20'
-                                      : 'border-border bg-card hover:border-primary/50 hover:scale-[1.02]'
-                                  }`}
-                                >
-                                  <div className="flex items-start gap-3">
-                                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${
-                                      isCompleted ? 'bg-green-500' : 'bg-orange-500'
-                                    }`}>
-                                      {isCompleted ? (
-                                        <CheckCircle2 className="w-4 h-4 text-white" />
-                                      ) : (
-                                        <span className="text-sm font-bold text-white">{index + 1}</span>
-                                      )}
-                                    </div>
-                                    <div className="flex-1 min-w-0">
-                                      <h4 className="font-semibold text-sm text-foreground">{subSession.name}</h4>
-                                      <p className="text-xs text-muted-foreground line-clamp-2 mt-0.5">
-                                        {subSession.description}
-                                      </p>
-                                      {subSession.estimated_time_weeks && (
-                                        <div className="flex items-center gap-1 mt-1 text-[10px] text-muted-foreground">
-                                          <Clock className="w-3 h-3" />
-                                          <span>{subSession.estimated_time_weeks} weeks</span>
-                                        </div>
-                                      )}
-                                    </div>
-                                  </div>
-                                </div>
-                              );
-                            })}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
+            {/* Troubleshooting Topics Gallery */}
+            <div className="grid grid-cols-2 gap-3">
+              {troubleshootingTopics.map((topic) => (
+                <TopicCard key={topic.id} topic={topic} type="troubleshooting" />
+              ))}
             </div>
 
           </div>
@@ -673,89 +498,6 @@ export function TricksScreen({ selectedDogId, onDogChange }: TricksScreenProps) 
         onPracticeSession={handlePracticeSession}
         onUpdateStatus={handleUpdateStatus}
       />
-
-      {/* Sub-Session Detail Modal */}
-      {selectedSubSession && isSubSessionModalOpen && (
-        <div
-          className="fixed inset-0 z-[100] flex items-end justify-center"
-          onClick={() => setIsSubSessionModalOpen(false)}
-        >
-          {/* Backdrop */}
-          <div className="absolute inset-0 bg-background/80 backdrop-blur-sm" />
-          
-          {/* Modal Content */}
-          <div 
-            className="relative z-[101] w-full max-h-[90vh] overflow-y-auto"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="bg-card rounded-t-3xl border-t border-border shadow-xl">
-              {/* Modal Header */}
-              <div className="sticky top-0 bg-gradient-to-br from-emerald-500 to-emerald-600 p-6 rounded-t-3xl">
-                <div className="flex items-start gap-4">
-                  <div className="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center flex-shrink-0">
-                    <BookOpen className="w-7 h-7 text-white" />
-                  </div>
-                  <div className="flex-1">
-                    <h2 className="text-2xl font-bold text-white mb-2">
-                      {selectedSubSession.name}
-                    </h2>
-                    <p className="text-sm text-white/90">
-                      {selectedSubSession.description}
-                    </p>
-                    {selectedSubSession.estimated_time_weeks && (
-                      <div className="flex items-center gap-2 mt-3 text-white/90">
-                        <Clock className="w-4 h-4" />
-                        <span className="text-sm">Estimated: {selectedSubSession.estimated_time_weeks} weeks</span>
-                      </div>
-                    )}
-                  </div>
-                  <button
-                    onClick={() => setIsSubSessionModalOpen(false)}
-                    className="w-10 h-10 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center flex-shrink-0 transition-colors"
-                    aria-label="Close"
-                  >
-                    <X className="w-5 h-5 text-white" />
-                  </button>
-                </div>
-              </div>
-
-              {/* Modal Content */}
-              <div className="p-6 space-y-6">
-                {/* Instructions */}
-                <div>
-                  <h3 className="text-lg font-bold text-foreground mb-3 flex items-center gap-2">
-                    <Target className="w-5 h-5 text-primary" />
-                    Training Guide
-                  </h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-line">
-                    {selectedSubSession.instructions}
-                  </p>
-                </div>
-
-                {/* Action Buttons */}
-                <div className="space-y-3 pt-4">
-                  <Button
-                    className="w-full bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white font-bold py-6 rounded-xl text-base"
-                    onClick={() => {
-                      // TODO: Track as started/completed
-                      setIsSubSessionModalOpen(false);
-                    }}
-                  >
-                    Start Training Session
-                  </Button>
-                  <Button
-                    variant="outline"
-                    className="w-full py-6 rounded-xl text-base"
-                    onClick={() => setIsSubSessionModalOpen(false)}
-                  >
-                    Close
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
