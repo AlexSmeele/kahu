@@ -84,7 +84,8 @@ export function RoadmapStage({ stage, isUnlocked, isActive }: RoadmapStageProps)
                   <TopicCard 
                     key={topic.id} 
                     topic={topic} 
-                    type={topicRef.type as 'foundation' | 'troubleshooting'} 
+                    type={topicRef.type as 'foundation' | 'troubleshooting'}
+                    source="program"
                   />
                 );
               })}

@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { useState } from 'react';
 import { ArrowLeft, CheckCircle2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -16,6 +16,8 @@ interface SubSessionModalData {
 export default function TopicSubcategories() {
   const { type, topicId } = useParams<{ type: string; topicId: string }>();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const source = searchParams.get('source');
   const [selectedSubSession, setSelectedSubSession] = useState<SubSessionModalData | null>(null);
 
   // Find the topic from the appropriate data source
@@ -53,7 +55,13 @@ export default function TopicSubcategories() {
         <Button
           variant="ghost"
           size="sm"
-          onClick={() => navigate(type === 'foundation' ? '/?tab=tricks&section=foundations' : '/?tab=tricks&section=troubleshooting')}
+          onClick={() => {
+            if (source === 'program') {
+              navigate('/?tab=tricks&section=program');
+            } else {
+              navigate(type === 'foundation' ? '/?tab=tricks&section=foundations' : '/?tab=tricks&section=troubleshooting');
+            }
+          }}
           className="absolute top-4 left-4 text-white hover:bg-white/20"
         >
           <ArrowLeft className="h-5 w-5" />

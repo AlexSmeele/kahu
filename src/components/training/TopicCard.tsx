@@ -12,9 +12,10 @@ interface TopicCardProps {
     subSessions: any[];
   };
   type: 'foundation' | 'troubleshooting';
+  source?: 'program' | 'foundations' | 'troubleshooting';
 }
 
-export function TopicCard({ topic, type }: TopicCardProps) {
+export function TopicCard({ topic, type, source }: TopicCardProps) {
   const navigate = useNavigate();
   
   // Get icon component
@@ -25,7 +26,8 @@ export function TopicCard({ topic, type }: TopicCardProps) {
   const totalCount = topic.subSessions.length;
 
   const handleClick = () => {
-    navigate(`/training/${type}/${topic.id}`);
+    const url = `/training/${type}/${topic.id}${source ? `?source=${source}` : ''}`;
+    navigate(url);
   };
 
   return (
