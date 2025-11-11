@@ -71,22 +71,6 @@ function TrickCard({ trick, dogTrick, onStart, onPractice, onTrickClick, hasUnme
     >
       {/* Header with category color bar */}
       <div className={`${categoryColor} h-2 w-full`} />
-      
-      {/* Status Badge - top right */}
-      <div className="absolute top-3 right-3 z-10">
-        {isCompleted && (
-          <div className="bg-green-500 text-white text-xs font-bold px-2 py-1 rounded-full flex items-center gap-1">
-            <CheckCircle2 className="w-3 h-3" />
-            <span>Done</span>
-          </div>
-        )}
-        {isInProgress && !isCompleted && (
-          <div className="bg-blue-500 text-white text-xs font-bold px-2 py-1 rounded-full flex items-center gap-1">
-            <Clock className="w-3 h-3" />
-            <span>Learning</span>
-          </div>
-        )}
-      </div>
 
       {/* Card Content */}
       <div className="flex-1 flex flex-col p-4">
