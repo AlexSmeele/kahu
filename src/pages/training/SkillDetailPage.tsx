@@ -329,6 +329,7 @@ export default function SkillDetailPage() {
         <Button 
           className="w-full gap-2"
           onClick={() => navigate(`/training/skill/${trickId}/session`)}
+          disabled={!dogTrickId || loading}
         >
           <Target className="w-4 h-4" />
           Begin Training Session
