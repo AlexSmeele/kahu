@@ -1,6 +1,7 @@
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import * as LucideIcons from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { TopicCard } from './TopicCard';
 import { SkillCard } from './SkillCard';
 import { RoadmapStage as RoadmapStageType } from '@/data/roadmapData';
@@ -14,10 +15,10 @@ interface RoadmapStageProps {
   isActive: boolean;
   selectedDogId: string;
   unlockedSkills: Set<string>;
-  onSkillClick: (skillId: string, dogTrickId: string) => void;
 }
 
-export function RoadmapStage({ stage, isUnlocked, isActive, selectedDogId, unlockedSkills, onSkillClick }: RoadmapStageProps) {
+export function RoadmapStage({ stage, isUnlocked, isActive, selectedDogId, unlockedSkills }: RoadmapStageProps) {
+  const navigate = useNavigate();
   const IconComponent = (LucideIcons as any)[stage.icon] || LucideIcons.MapPin;
   const { tricks, dogTricks } = useTricks(selectedDogId);
 
@@ -114,7 +115,7 @@ export function RoadmapStage({ stage, isUnlocked, isActive, selectedDogId, unloc
                       prerequisiteName={prerequisiteName}
                       minAgeWeeks={stage.ageRangeWeeks.min}
                       dogTrick={dogTrick}
-                      onClick={() => dogTrick && onSkillClick(topicRef.id, dogTrick.id)}
+                      onClick={() => navigate(`/training/skill/${topicRef.id}/detail`)}
                     />
                   );
                 }

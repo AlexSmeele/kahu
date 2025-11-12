@@ -1,8 +1,7 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { Info } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { RoadmapStage } from '@/components/training/RoadmapStage';
-import { SkillProgressionModal } from '@/components/training/SkillProgressionModal';
 import { TRAINING_ROADMAP } from '@/data/roadmapData';
 import { SKILL_PROGRESSION_MAP } from '@/data/skillProgressionMap';
 import { useDogs } from '@/hooks/useDogs';
@@ -17,8 +16,6 @@ export function RoadmapContent({ selectedDogId }: RoadmapContentProps) {
   const { dogs } = useDogs();
   const { tricks, dogTricks } = useTricks(selectedDogId);
   const currentDog = dogs.find(dog => dog.id === selectedDogId);
-  
-  const [selectedSkill, setSelectedSkill] = useState<{ skillId: string; dogTrickId: string } | null>(null);
 
   // Calculate dog's age in weeks
   const dogAgeWeeks = useMemo(() => {
@@ -132,21 +129,9 @@ export function RoadmapContent({ selectedDogId }: RoadmapContentProps) {
             isActive={stage.isActive}
             selectedDogId={selectedDogId}
             unlockedSkills={unlockedSkills}
-            onSkillClick={(skillId, dogTrickId) => setSelectedSkill({ skillId, dogTrickId })}
           />
         ))}
       </div>
-
-      {/* Skill progression modal */}
-      {selectedSkill && tricks.find(t => t.id === selectedSkill.skillId) && (
-        <SkillProgressionModal
-          open={!!selectedSkill}
-          onOpenChange={(open) => !open && setSelectedSkill(null)}
-          skill={tricks.find(t => t.id === selectedSkill.skillId) as any}
-          dogTrickId={selectedSkill.dogTrickId}
-          dogId={selectedDogId}
-        />
-      )}
     </div>
   );
 }
