@@ -41,6 +41,7 @@ import GuideProgress from "./pages/guide/GuideProgress";
 import TopicSubcategories from "./pages/TopicSubcategories";
 import TrainingProgramsRoadmap from "./pages/TrainingProgramsRoadmap";
 import SkillDetailPage from "./pages/training/SkillDetailPage";
+import InstructionalPage from "./pages/training/InstructionalPage";
 import Marketplace from "./pages/Marketplace";
 import Insurance from "./pages/Insurance";
 import Services from "./pages/Services";
@@ -235,6 +236,23 @@ const App = () => {
                     <Route path="/training/skill/:trickId/detail" element={
                       <ProtectedRoute>
                         <SkillDetailPage />
+                      </ProtectedRoute>
+                    } />
+                    
+                    {/* Training Instructional Routes */}
+                    <Route path="/training/skill/:trickId/instructional" element={
+                      <ProtectedRoute>
+                        <InstructionalPage type="skill" />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="/training/foundation/:topicId/:lessonId/instructional" element={
+                      <ProtectedRoute>
+                        <InstructionalPage type="foundation" />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="/training/troubleshooting/:topicId/:lessonId/instructional" element={
+                      <ProtectedRoute>
+                        <InstructionalPage type="troubleshooting" />
                       </ProtectedRoute>
                     } />
                     
