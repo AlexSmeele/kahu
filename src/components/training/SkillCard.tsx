@@ -1,17 +1,21 @@
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import * as LucideIcons from 'lucide-react';
-import { Lock, CheckCircle2 } from 'lucide-react';
+import { Lock, CheckCircle2, Target, CheckCircle } from 'lucide-react';
+import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
 
 interface SkillCardProps {
   skill: {
     id: string;
     name: string;
+    description?: string;
     category?: string;
     difficulty?: number;
   };
   proficiencyLevel: 'basic' | 'generalized' | 'proofed';
   isUnlocked: boolean;
+  prerequisiteName?: string;
+  minAgeWeeks?: number;
   dogTrick?: {
     id: string;
     proficiency_level?: 'basic' | 'generalized' | 'proofed';
@@ -20,7 +24,7 @@ interface SkillCardProps {
   onClick: () => void;
 }
 
-export function SkillCard({ skill, proficiencyLevel, isUnlocked, dogTrick, onClick }: SkillCardProps) {
+export function SkillCard({ skill, proficiencyLevel, isUnlocked, prerequisiteName, minAgeWeeks, dogTrick, onClick }: SkillCardProps) {
   // Determine proficiency display
   const proficiencyConfig = {
     basic: { 
@@ -59,8 +63,8 @@ export function SkillCard({ skill, proficiencyLevel, isUnlocked, dogTrick, onCli
   
   const iconColor = skill.category ? categoryColors[skill.category] || 'from-gray-500 to-gray-600' : 'from-blue-500 to-blue-600';
 
-  return (
-    <Card 
+  const cardContent = (
+    <Card
       onClick={isUnlocked ? onClick : undefined}
       className={`relative overflow-hidden transition-all duration-200 aspect-[3/4] ${
         isUnlocked 
@@ -153,4 +157,63 @@ export function SkillCard({ skill, proficiencyLevel, isUnlocked, dogTrick, onCli
       </div>
     </Card>
   );
+
+  // For locked cards, wrap with HoverCard to show description
+  if (!isUnlocked && skill.description) {
+    return (
+      <HoverCard openDelay={200}>
+        <HoverCardTrigger asChild>
+          {cardContent}
+        </HoverCardTrigger>
+        <HoverCardContent className="w-72">
+          <div className="space-y-3">
+            {/* Header */}
+            <div className="flex items-start gap-2">
+              <Lock className="w-4 h-4 text-muted-foreground mt-0.5 flex-shrink-0" />
+              <div className="flex-1">
+                <h4 className="font-semibold text-sm leading-tight">{skill.name}</h4>
+                <Badge variant={config.badgeVariant} className="text-xs mt-1">
+                  {config.label}
+                </Badge>
+              </div>
+            </div>
+
+            {/* Description */}
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              {skill.description}
+            </p>
+
+            {/* Prerequisites */}
+            <div className="space-y-1.5 pt-2 border-t border-border">
+              <div className="flex items-center gap-1.5 text-xs font-medium text-foreground">
+                <CheckCircle className="w-3.5 h-3.5" />
+                <span>Prerequisites:</span>
+              </div>
+              {prerequisiteName ? (
+                <p className="text-xs text-muted-foreground pl-5">
+                  Complete <span className="font-medium text-foreground">{prerequisiteName}</span>
+                </p>
+              ) : minAgeWeeks ? (
+                <p className="text-xs text-muted-foreground pl-5">
+                  Available at {minAgeWeeks} weeks old
+                </p>
+              ) : (
+                <p className="text-xs text-green-600 pl-5">
+                  None - Available now!
+                </p>
+              )}
+            </div>
+
+            {/* Proficiency Level */}
+            <div className="flex items-center gap-1.5 text-xs pt-1">
+              <Target className="w-3.5 h-3.5 text-muted-foreground" />
+              <span className="text-muted-foreground">Proficiency Level: <span className="font-medium text-foreground">{config.label}</span></span>
+            </div>
+          </div>
+        </HoverCardContent>
+      </HoverCard>
+    );
+  }
+
+  return cardContent;
 }

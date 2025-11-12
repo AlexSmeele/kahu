@@ -6,6 +6,7 @@ import { SkillCard } from './SkillCard';
 import { RoadmapStage as RoadmapStageType } from '@/data/roadmapData';
 import { MOCK_FOUNDATION_TOPICS, MOCK_TROUBLESHOOTING_TOPICS } from '@/lib/mockData';
 import { useTricks } from '@/hooks/useTricks';
+import { getSkillProgression } from '@/data/skillProgressionMap';
 
 interface RoadmapStageProps {
   stage: RoadmapStageType;
@@ -93,12 +94,25 @@ export function RoadmapStage({ stage, isUnlocked, isActive, selectedDogId, unloc
                   const dogTrick = dogTricks.find(dt => dt.trick_id === topicRef.id);
                   const isSkillUnlocked = unlockedSkills.has(`${topicRef.id}-${topicRef.level || 'basic'}`);
                   
+                  // Look up prerequisite name from skill progression map
+                  let prerequisiteName: string | undefined;
+                  const skillProgression = getSkillProgression(topicRef.id, topicRef.level || 'basic');
+                  if (skillProgression?.prerequisite) {
+                    const prerequisiteTrick = tricks.find(t => t.id === skillProgression.prerequisite?.trickId);
+                    if (prerequisiteTrick && skillProgression.prerequisite.level) {
+                      const levelLabel = skillProgression.prerequisite.level.charAt(0).toUpperCase() + skillProgression.prerequisite.level.slice(1);
+                      prerequisiteName = `${prerequisiteTrick.name} (${levelLabel})`;
+                    }
+                  }
+                  
                   return (
                     <SkillCard
                       key={`${topic.id}-${topicRef.level || 'basic'}`}
                       skill={topic as any}
                       proficiencyLevel={topicRef.level || 'basic'}
                       isUnlocked={isSkillUnlocked}
+                      prerequisiteName={prerequisiteName}
+                      minAgeWeeks={stage.ageRangeWeeks.min}
                       dogTrick={dogTrick}
                       onClick={() => dogTrick && onSkillClick(topicRef.id, dogTrick.id)}
                     />
