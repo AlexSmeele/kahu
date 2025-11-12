@@ -39,9 +39,10 @@ export default function SkillDetailPage() {
   const { trickId } = useParams<{ trickId: string }>();
   const navigate = useNavigate();
   const { dogs } = useDogs();
-  const { tricks, dogTricks, startTrick } = useTricks(dogs[0]?.id);
+  const { tricks, dogTricks, startTrick, refetch } = useTricks(dogs[0]?.id);
   const [seeMoreOpen, setSeeMoreOpen] = useState(false);
   const [dogTrickId, setDogTrickId] = useState<string | null>(null);
+  const [isStartingTrick, setIsStartingTrick] = useState(false);
 
   const skill = tricks.find(t => t.id === trickId);
   const CategoryIcon = skill?.category ? categoryIcons[skill.category] : Award;
@@ -56,16 +57,17 @@ export default function SkillDetailPage() {
     const existingDogTrick = learnedTricksMap.get(skill.id);
     if (existingDogTrick) {
       setDogTrickId(existingDogTrick.id);
-    } else {
+      setIsStartingTrick(false);
+    } else if (!isStartingTrick) {
       // Auto-start the trick to create a tracking record
-      startTrick(skill.id).then(() => {
-        const newDogTrick = dogTricks.find(dt => dt.trick_id === skill.id);
-        if (newDogTrick) {
-          setDogTrickId(newDogTrick.id);
-        }
+      setIsStartingTrick(true);
+      startTrick(skill.id).then(async () => {
+        // Refetch to ensure we have the latest data
+        await refetch();
+        setIsStartingTrick(false);
       });
     }
-  }, [skill, dogs, learnedTricksMap, startTrick, dogTricks]);
+  }, [skill, dogs, learnedTricksMap, startTrick, dogTricks, refetch, isStartingTrick]);
 
   const { progressData, loading } = useSkillProgression(dogTrickId);
 
@@ -329,10 +331,10 @@ export default function SkillDetailPage() {
         <Button 
           className="w-full gap-2"
           onClick={() => navigate(`/training/skill/${trickId}/session`)}
-          disabled={!dogTrickId || loading}
+          disabled={!dogTrickId || loading || isStartingTrick}
         >
           <Target className="w-4 h-4" />
-          Begin Training Session
+          {isStartingTrick ? 'Preparing...' : 'Begin Training Session'}
         </Button>
       </div>
     </div>
