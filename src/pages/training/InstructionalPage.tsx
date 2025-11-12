@@ -8,6 +8,7 @@ import { cn } from '@/lib/utils';
 import { useTricks } from '@/hooks/useTricks';
 import useEmblaCarousel from 'embla-carousel-react';
 import { useToast } from '@/hooks/use-toast';
+import { MOCK_FOUNDATION_TOPICS, MOCK_TROUBLESHOOTING_TOPICS } from '@/lib/mockData';
 
 interface Step {
   number: number;
@@ -148,7 +149,7 @@ function ProgressDots({ count, selected, onSelect }: ProgressDotsProps) {
 }
 
 export default function InstructionalPage({ type }: InstructionalPageProps) {
-  const { trickId } = useParams<{ trickId: string }>();
+  const { trickId, topicId, lessonId } = useParams<{ trickId: string; topicId: string; lessonId: string }>();
   const navigate = useNavigate();
   const { toast } = useToast();
   const { tricks } = useTricks();
@@ -165,9 +166,25 @@ export default function InstructionalPage({ type }: InstructionalPageProps) {
     if (type === 'skill' && trickId) {
       return tricks.find(t => t.id === trickId);
     }
-    // TODO: Add foundation/troubleshooting data fetching when implemented
+    
+    if (type === 'foundation' && topicId && lessonId) {
+      const topic = MOCK_FOUNDATION_TOPICS.find(t => t.id === topicId);
+      if (topic) {
+        const lesson = topic.subSessions.find(s => s.id === lessonId);
+        return lesson;
+      }
+    }
+    
+    if (type === 'troubleshooting' && topicId && lessonId) {
+      const topic = MOCK_TROUBLESHOOTING_TOPICS.find((t: any) => t.id === topicId);
+      if (topic) {
+        const lesson = topic.subSessions.find((s: any) => s.id === lessonId);
+        return lesson;
+      }
+    }
+    
     return null;
-  }, [type, trickId, tricks]);
+  }, [type, trickId, topicId, lessonId, tricks]);
 
   const steps = useMemo(() => {
     if (!content?.instructions) return [];
