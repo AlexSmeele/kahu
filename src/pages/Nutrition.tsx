@@ -33,7 +33,15 @@ export default function NutritionScreen() {
   const [isCalcModalOpen, setIsCalcModalOpen] = useState(false);
   const { dogs } = useDogs();
   const selectedDogId = dogId || dogs[0]?.id || '';
-  const currentDog = dogs.find(dog => dog.id === selectedDogId) || dogs[0];
+  const currentDog = dogs.find(dog => dog.id === selectedDogId);
+
+  if (!currentDog) {
+    return (
+      <div className="flex flex-col h-full safe-top items-center justify-center">
+        <p className="text-muted-foreground">Please select a dog</p>
+      </div>
+    );
+  }
   
   const from = (location.state as { from?: 'home' | 'wellness' | 'tricks' })?.from;
   

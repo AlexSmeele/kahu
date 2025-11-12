@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ChevronLeft, TrendingUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -12,8 +12,23 @@ import { useDogs } from '@/hooks/useDogs';
 export default function Analytics() {
   const navigate = useNavigate();
   const { dogs } = useDogs();
-  const [selectedDogId, setSelectedDogId] = useState(dogs[0]?.id || '');
-  const currentDog = dogs.find(dog => dog.id === selectedDogId) || dogs[0];
+  const [selectedDogId, setSelectedDogId] = useState('');
+  const currentDog = dogs.find(dog => dog.id === selectedDogId);
+
+  // Initialize with first dog if not set
+  useEffect(() => {
+    if (dogs.length > 0 && !selectedDogId) {
+      setSelectedDogId(dogs[0].id);
+    }
+  }, [dogs, selectedDogId]);
+
+  if (!currentDog) {
+    return (
+      <div className="flex flex-col h-full safe-top items-center justify-center">
+        <p className="text-muted-foreground">Please select a dog</p>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col h-full safe-top">

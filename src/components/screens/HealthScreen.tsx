@@ -33,7 +33,7 @@ export function WellnessScreen({ selectedDogId, onDogChange }: WellnessScreenPro
   const [isMealLogModalOpen, setIsMealLogModalOpen] = useState(false);
   
   const { dogs } = useDogs();
-  const currentDog = dogs.find(dog => dog.id === selectedDogId) || dogs[0];
+  const currentDog = dogs.find(dog => dog.id === selectedDogId);
   const { nutritionPlan } = useNutrition(selectedDogId);
   const location = useLocation();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -99,6 +99,14 @@ export function WellnessScreen({ selectedDogId, onDogChange }: WellnessScreenPro
       });
     }
   }, [location.state, timelineLoading, selectedDogId]);
+
+  if (!currentDog) {
+    return (
+      <div className="flex flex-col h-full safe-top relative items-center justify-center">
+        <p className="text-muted-foreground">Please select a dog</p>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col h-full safe-top relative">

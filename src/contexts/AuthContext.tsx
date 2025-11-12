@@ -87,6 +87,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signOut = async () => {
     logger.info('AuthProvider: User signing out');
+    
+    // Clear dog selection on logout
+    const { clearStoredDogId } = await import('@/lib/dogSelection');
+    clearStoredDogId();
+    
     await supabase.auth.signOut();
     logger.info('AuthProvider: User signed out successfully');
   };

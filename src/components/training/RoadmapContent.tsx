@@ -12,7 +12,7 @@ interface RoadmapContentProps {
 
 export function RoadmapContent({ selectedDogId }: RoadmapContentProps) {
   const { dogs } = useDogs();
-  const currentDog = dogs.find(dog => dog.id === selectedDogId) || dogs[0];
+  const currentDog = dogs.find(dog => dog.id === selectedDogId);
 
   // Calculate dog's age in weeks
   const dogAgeWeeks = useMemo(() => {

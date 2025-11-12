@@ -117,7 +117,7 @@ export function TricksScreen({ selectedDogId, onDogChange }: TricksScreenProps) 
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { dogs } = useDogs();
-  const currentDog = dogs.find(dog => dog.id === selectedDogId) || dogs[0];
+  const currentDog = dogs.find(dog => dog.id === selectedDogId);
   const { tricks, dogTricks, loading, startTrick, addPracticeSession, updateTrickStatus } = useTricks(currentDog?.id);
   const [selectedDifficulty, setSelectedDifficulty] = useState<string>('all');
   const [selectedTrick, setSelectedTrick] = useState<Trick | null>(null);

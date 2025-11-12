@@ -10,6 +10,7 @@ import { DogOnboarding } from "@/components/onboarding/DogOnboarding";
 import { useDogs } from "@/hooks/useDogs";
 import { useAuth } from "@/contexts/AuthContext";
 import { logger } from "@/lib/logger";
+import { getStoredDogId, setStoredDogId } from "@/lib/dogSelection";
 
 
 const Index = () => {
@@ -18,7 +19,7 @@ const Index = () => {
   const [activeTab, setActiveTab] = useState<TabType>(tabFromUrl || 'home');
   const [isQuickActionOpen, setIsQuickActionOpen] = useState(false);
   const [isUserTyping, setIsUserTyping] = useState(false);
-  const [selectedDogId, setSelectedDogId] = useState<string>('');
+  const [selectedDogId, setSelectedDogId] = useState<string>(() => getStoredDogId() || '');
   const { user, session } = useAuth();
   const { dogs, loading } = useDogs();
 
@@ -46,10 +47,27 @@ const Index = () => {
   // Update selected dog when dogs load
   useEffect(() => {
     if (dogs.length > 0 && !selectedDogId) {
-      logger.info('Index: Auto-selecting first dog', { dogId: dogs[0].id, dogName: dogs[0].name });
-      setSelectedDogId(dogs[0].id);
+      const storedDogId = getStoredDogId();
+      const validStoredDog = storedDogId && dogs.find(d => d.id === storedDogId);
+      
+      if (validStoredDog) {
+        logger.info('Index: Restoring dog selection from storage', { dogId: storedDogId });
+        setSelectedDogId(storedDogId);
+      } else {
+        logger.info('Index: Auto-selecting first dog', { dogId: dogs[0].id, dogName: dogs[0].name });
+        const firstDogId = dogs[0].id;
+        setSelectedDogId(firstDogId);
+        setStoredDogId(firstDogId);
+      }
     }
   }, [dogs, selectedDogId]);
+
+  // Persist selected dog to localStorage
+  useEffect(() => {
+    if (selectedDogId) {
+      setStoredDogId(selectedDogId);
+    }
+  }, [selectedDogId]);
 
   // Show onboarding if user has no dogs (disabled in Dev Mode bypass)
   const isDevSession = session?.access_token === 'mock-access-token' || user?.id === 'dev-user-mock-id' || user?.email === 'dev@example.com';

@@ -17,8 +17,16 @@ interface MealPlanningProps {
 export default function MealPlanning({ selectedDogId }: MealPlanningProps) {
   const navigate = useNavigate();
   const { dogs } = useDogs();
-  const currentDog = dogs.find(dog => dog.id === selectedDogId) || dogs[0];
+  const currentDog = dogs.find(dog => dog.id === selectedDogId);
   const { nutritionPlan } = useNutrition(selectedDogId);
+
+  if (!currentDog) {
+    return (
+      <div className="flex flex-col h-full safe-top items-center justify-center">
+        <p className="text-muted-foreground">Please select a dog</p>
+      </div>
+    );
+  }
   const [activeTab, setActiveTab] = useState<string>("multi");
   const [isWeekPlannerOpen, setIsWeekPlannerOpen] = useState(false);
 
