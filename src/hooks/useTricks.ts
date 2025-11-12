@@ -355,7 +355,8 @@ export function useTricks(dogId?: string) {
     dogTrickId: string,
     context: string,
     distractionLevel: 'none' | 'mild' | 'moderate' | 'high',
-    successRate: number
+    successRate: number,
+    notes?: string
   ) => {
     if (!user) return;
 
@@ -367,6 +368,7 @@ export function useTricks(dogId?: string) {
         practice_context: context,
         distraction_level: distractionLevel,
         success_rate_percentage: successRate,
+        notes: notes || null,
         created_at: new Date().toISOString(),
       } as any);
 

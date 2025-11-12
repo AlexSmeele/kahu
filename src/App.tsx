@@ -42,6 +42,7 @@ import TopicSubcategories from "./pages/TopicSubcategories";
 import TrainingProgramsRoadmap from "./pages/TrainingProgramsRoadmap";
 import SkillDetailPage from "./pages/training/SkillDetailPage";
 import InstructionalPage from "./pages/training/InstructionalPage";
+import TrainingSessionPage from "./pages/training/TrainingSessionPage";
 import Marketplace from "./pages/Marketplace";
 import Insurance from "./pages/Insurance";
 import Services from "./pages/Services";
@@ -253,6 +254,13 @@ const App = () => {
                     <Route path="/training/troubleshooting/:topicId/:lessonId/instructional" element={
                       <ProtectedRoute>
                         <InstructionalPage type="troubleshooting" />
+                      </ProtectedRoute>
+                    } />
+                    
+                    {/* Training Session Route */}
+                    <Route path="/training/skill/:trickId/session" element={
+                      <ProtectedRoute>
+                        <TrainingSessionPage />
                       </ProtectedRoute>
                     } />
                     
