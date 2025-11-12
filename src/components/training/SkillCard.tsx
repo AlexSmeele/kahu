@@ -121,17 +121,14 @@ export function SkillCard({ skill, proficiencyLevel, isUnlocked, prerequisiteNam
         isUnlocked 
           ? 'cursor-pointer hover:scale-[1.02] hover:shadow-lg active:scale-[0.98]' 
           : skill.description 
-            ? 'opacity-60 cursor-pointer active:scale-[0.98]'
-            : 'opacity-60 cursor-not-allowed'
+            ? 'opacity-50 saturate-50 cursor-pointer active:scale-[0.98]'
+            : 'opacity-50 saturate-50 cursor-not-allowed'
       } ${canLevelUp ? 'animate-pulse' : ''}`}
     >
-      {/* Lock overlay */}
+      {/* Lock badge in corner */}
       {!isUnlocked && (
-        <div className="absolute inset-0 bg-background/80 backdrop-blur-sm z-10 flex items-center justify-center">
-          <div className="text-center">
-            <Lock className="w-8 h-8 text-muted-foreground mx-auto mb-2" />
-            <p className="text-xs text-muted-foreground px-4">Prerequisites not met</p>
-          </div>
+        <div className="absolute top-2 right-2 z-20 w-8 h-8 bg-black/60 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg">
+          <Lock className="w-4 h-4 text-white" />
         </div>
       )}
 
