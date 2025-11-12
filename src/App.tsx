@@ -40,6 +40,7 @@ import GuideResources from "./pages/guide/GuideResources";
 import GuideProgress from "./pages/guide/GuideProgress";
 import TopicSubcategories from "./pages/TopicSubcategories";
 import TrainingProgramsRoadmap from "./pages/TrainingProgramsRoadmap";
+import SkillDetailPage from "./pages/training/SkillDetailPage";
 import Marketplace from "./pages/Marketplace";
 import Insurance from "./pages/Insurance";
 import Services from "./pages/Services";
@@ -227,6 +228,13 @@ const App = () => {
                     <Route path="/training/programs" element={
                       <ProtectedRoute>
                         <TrainingProgramsRoadmap />
+                      </ProtectedRoute>
+                    } />
+                    
+                    {/* Training Skill Detail Routes */}
+                    <Route path="/training/skill/:trickId/detail" element={
+                      <ProtectedRoute>
+                        <SkillDetailPage />
                       </ProtectedRoute>
                     } />
                     
