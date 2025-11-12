@@ -557,10 +557,16 @@ export type Database = {
       }
       dog_tricks: {
         Row: {
+          basic_completed_at: string | null
           created_at: string
           dog_id: string
+          generalized_completed_at: string | null
           id: string
+          last_practiced_at: string | null
           mastered_at: string | null
+          practice_contexts: Json | null
+          proficiency_level: string
+          proofed_completed_at: string | null
           started_at: string | null
           status: string
           total_sessions: number | null
@@ -568,10 +574,16 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          basic_completed_at?: string | null
           created_at?: string
           dog_id: string
+          generalized_completed_at?: string | null
           id?: string
+          last_practiced_at?: string | null
           mastered_at?: string | null
+          practice_contexts?: Json | null
+          proficiency_level?: string
+          proofed_completed_at?: string | null
           started_at?: string | null
           status?: string
           total_sessions?: number | null
@@ -579,10 +591,16 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          basic_completed_at?: string | null
           created_at?: string
           dog_id?: string
+          generalized_completed_at?: string | null
           id?: string
+          last_practiced_at?: string | null
           mastered_at?: string | null
+          practice_contexts?: Json | null
+          proficiency_level?: string
+          proofed_completed_at?: string | null
           started_at?: string | null
           status?: string
           total_sessions?: number | null
@@ -1868,6 +1886,44 @@ export type Database = {
           },
         ]
       }
+      skill_progression_requirements: {
+        Row: {
+          contexts_required: Json | null
+          created_at: string
+          description: string | null
+          id: string
+          min_sessions_required: number
+          proficiency_level: string
+          trick_id: string
+        }
+        Insert: {
+          contexts_required?: Json | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          min_sessions_required?: number
+          proficiency_level: string
+          trick_id: string
+        }
+        Update: {
+          contexts_required?: Json | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          min_sessions_required?: number
+          proficiency_level?: string
+          trick_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "skill_progression_requirements_trick_id_fkey"
+            columns: ["trick_id"]
+            isOneToOne: false
+            referencedRelation: "tricks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       training_program_lessons: {
         Row: {
           category: string
@@ -2016,34 +2072,43 @@ export type Database = {
       training_sessions: {
         Row: {
           created_at: string
+          distraction_level: string | null
           dog_id: string
           duration_minutes: number | null
           id: string
           notes: string | null
+          practice_context: string | null
           progress_status: string | null
           session_date: string
+          success_rate_percentage: number | null
           success_rating: number | null
           trick_id: string
         }
         Insert: {
           created_at?: string
+          distraction_level?: string | null
           dog_id: string
           duration_minutes?: number | null
           id?: string
           notes?: string | null
+          practice_context?: string | null
           progress_status?: string | null
           session_date?: string
+          success_rate_percentage?: number | null
           success_rating?: number | null
           trick_id: string
         }
         Update: {
           created_at?: string
+          distraction_level?: string | null
           dog_id?: string
           duration_minutes?: number | null
           id?: string
           notes?: string | null
+          practice_context?: string | null
           progress_status?: string | null
           session_date?: string
+          success_rate_percentage?: number | null
           success_rating?: number | null
           trick_id?: string
         }
@@ -2125,9 +2190,12 @@ export type Database = {
           estimated_time_weeks: number | null
           id: string
           instructions: string
+          min_age_weeks: number | null
           name: string
           prerequisites: string[] | null
           priority_order: number | null
+          recommended_practice_frequency_days: number | null
+          skill_type: string | null
         }
         Insert: {
           category: string
@@ -2137,9 +2205,12 @@ export type Database = {
           estimated_time_weeks?: number | null
           id?: string
           instructions: string
+          min_age_weeks?: number | null
           name: string
           prerequisites?: string[] | null
           priority_order?: number | null
+          recommended_practice_frequency_days?: number | null
+          skill_type?: string | null
         }
         Update: {
           category?: string
@@ -2149,9 +2220,12 @@ export type Database = {
           estimated_time_weeks?: number | null
           id?: string
           instructions?: string
+          min_age_weeks?: number | null
           name?: string
           prerequisites?: string[] | null
           priority_order?: number | null
+          recommended_practice_frequency_days?: number | null
+          skill_type?: string | null
         }
         Relationships: []
       }

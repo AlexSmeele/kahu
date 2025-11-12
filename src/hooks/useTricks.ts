@@ -25,6 +25,12 @@ export interface DogTrick {
   started_at?: string;
   mastered_at?: string;
   total_sessions: number;
+  proficiency_level: 'basic' | 'generalized' | 'proofed';
+  basic_completed_at?: string;
+  generalized_completed_at?: string;
+  proofed_completed_at?: string;
+  last_practiced_at?: string;
+  practice_contexts: string[];
   trick: Trick;
 }
 
@@ -96,6 +102,8 @@ export function useTricks(dogId?: string) {
       // Combine the data
       const combinedData = dogTricksData?.map(dogTrick => ({
         ...dogTrick,
+        proficiency_level: dogTrick.proficiency_level || 'basic',
+        practice_contexts: Array.isArray(dogTrick.practice_contexts) ? dogTrick.practice_contexts : [],
         trick: tricksMap.get(dogTrick.trick_id)
       })).filter(dt => dt.trick) || [];
 
@@ -213,6 +221,7 @@ export function useTricks(dogId?: string) {
         .insert({
           dog_id: currentDogTrick.dog_id,
           trick_id: currentDogTrick.trick_id,
+          dog_trick_id: dogTrickId,
           duration_minutes: 10, // Default session length
           success_rating: 3, // Neutral rating
           progress_status: data.status,
@@ -308,6 +317,95 @@ export function useTricks(dogId?: string) {
     }
   }, [dogId, user]);
 
+  const levelUpSkill = async (dogTrickId: string, newLevel: 'generalized' | 'proofed') => {
+    if (!user) return;
+
+    const completedAtField = newLevel === 'generalized' ? 'generalized_completed_at' : 'proofed_completed_at';
+    
+    const { error } = await supabase
+      .from('dog_tricks')
+      .update({
+        proficiency_level: newLevel,
+        [completedAtField]: new Date().toISOString(),
+      })
+      .eq('id', dogTrickId);
+
+    if (error) {
+      console.error('Error leveling up skill:', error);
+      toast({
+        title: 'Error leveling up skill',
+        description: 'Please try again',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    toast({
+      title: 'Skill leveled up!',
+      description: `Skill advanced to ${newLevel} level!`,
+    });
+    if (dogId) fetchDogTricks();
+  };
+
+  const recordPracticeSession = async (
+    dogTrickId: string,
+    context: string,
+    distractionLevel: 'none' | 'mild' | 'moderate' | 'high',
+    successRate: number
+  ) => {
+    if (!user) return;
+
+    // Insert training session
+    const { error: sessionError } = await supabase
+      .from('training_sessions')
+      .insert({
+        dog_trick_id: dogTrickId,
+        practice_context: context,
+        distraction_level: distractionLevel,
+        success_rate_percentage: successRate,
+        created_at: new Date().toISOString(),
+      });
+
+    if (sessionError) {
+      console.error('Error recording practice session:', sessionError);
+      toast({
+        title: 'Error recording session',
+        description: 'Please try again',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    // Update dog_trick with last practiced and contexts
+    const { data: dogTrick } = await supabase
+      .from('dog_tricks')
+      .select('practice_contexts, total_sessions')
+      .eq('id', dogTrickId)
+      .single();
+
+    if (dogTrick) {
+      const contexts = Array.isArray(dogTrick.practice_contexts) ? dogTrick.practice_contexts : [];
+      if (!contexts.includes(context)) {
+        contexts.push(context);
+      }
+
+      await supabase
+        .from('dog_tricks')
+        .update({
+          last_practiced_at: new Date().toISOString(),
+          practice_contexts: contexts,
+          total_sessions: (dogTrick.total_sessions || 0) + 1,
+        })
+        .eq('id', dogTrickId);
+    }
+
+    toast({
+      title: 'Session recorded!',
+      description: 'Practice session tracked successfully',
+    });
+    if (dogId) fetchDogTricks();
+  };
+
   return {
     tricks,
     dogTricks,
@@ -315,6 +413,8 @@ export function useTricks(dogId?: string) {
     startTrick,
     addPracticeSession,
     updateTrickStatus,
+    levelUpSkill,
+    recordPracticeSession,
     refetch: () => {
       fetchTricks();
       if (dogId) fetchDogTricks();
