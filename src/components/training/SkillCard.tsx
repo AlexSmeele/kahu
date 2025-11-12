@@ -3,6 +3,8 @@ import { Badge } from '@/components/ui/badge';
 import * as LucideIcons from 'lucide-react';
 import { Lock, CheckCircle2, Target, CheckCircle } from 'lucide-react';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { useState } from 'react';
 
 interface SkillCardProps {
   skill: {
@@ -25,6 +27,7 @@ interface SkillCardProps {
 }
 
 export function SkillCard({ skill, proficiencyLevel, isUnlocked, prerequisiteName, minAgeWeeks, dogTrick, onClick }: SkillCardProps) {
+  const [mobileDialogOpen, setMobileDialogOpen] = useState(false);
   // Determine proficiency display
   const proficiencyConfig = {
     basic: { 
@@ -63,13 +66,63 @@ export function SkillCard({ skill, proficiencyLevel, isUnlocked, prerequisiteNam
   
   const iconColor = skill.category ? categoryColors[skill.category] || 'from-gray-500 to-gray-600' : 'from-blue-500 to-blue-600';
 
+  // Description content for both HoverCard and Dialog
+  const descriptionContent = (
+    <div className="space-y-3">
+      {/* Header */}
+      <div className="flex items-start gap-2">
+        <Lock className="w-4 h-4 text-muted-foreground mt-0.5 flex-shrink-0" />
+        <div className="flex-1">
+          <h4 className="font-semibold text-sm leading-tight">{skill.name}</h4>
+          <Badge variant={config.badgeVariant} className="text-xs mt-1">
+            {config.label}
+          </Badge>
+        </div>
+      </div>
+
+      {/* Description */}
+      <p className="text-sm text-muted-foreground leading-relaxed">
+        {skill.description}
+      </p>
+
+      {/* Prerequisites */}
+      <div className="space-y-1.5 pt-2 border-t border-border">
+        <div className="flex items-center gap-1.5 text-xs font-medium text-foreground">
+          <CheckCircle className="w-3.5 h-3.5" />
+          <span>Prerequisites:</span>
+        </div>
+        {prerequisiteName ? (
+          <p className="text-xs text-muted-foreground pl-5">
+            Complete <span className="font-medium text-foreground">{prerequisiteName}</span>
+          </p>
+        ) : minAgeWeeks ? (
+          <p className="text-xs text-muted-foreground pl-5">
+            Available at {minAgeWeeks} weeks old
+          </p>
+        ) : (
+          <p className="text-xs text-green-600 pl-5">
+            None - Available now!
+          </p>
+        )}
+      </div>
+
+      {/* Proficiency Level */}
+      <div className="flex items-center gap-1.5 text-xs pt-1">
+        <Target className="w-3.5 h-3.5 text-muted-foreground" />
+        <span className="text-muted-foreground">Proficiency Level: <span className="font-medium text-foreground">{config.label}</span></span>
+      </div>
+    </div>
+  );
+
   const cardContent = (
-    <Card
-      onClick={isUnlocked ? onClick : undefined}
+    <Card 
+      onClick={isUnlocked ? onClick : !skill.description ? undefined : () => setMobileDialogOpen(true)}
       className={`relative overflow-hidden transition-all duration-200 aspect-[3/4] ${
         isUnlocked 
           ? 'cursor-pointer hover:scale-[1.02] hover:shadow-lg active:scale-[0.98]' 
-          : 'opacity-60 cursor-not-allowed'
+          : skill.description 
+            ? 'opacity-60 cursor-pointer active:scale-[0.98]'
+            : 'opacity-60 cursor-not-allowed'
       } ${canLevelUp ? 'animate-pulse' : ''}`}
     >
       {/* Lock overlay */}
@@ -158,60 +211,33 @@ export function SkillCard({ skill, proficiencyLevel, isUnlocked, prerequisiteNam
     </Card>
   );
 
-  // For locked cards, wrap with HoverCard to show description
+  // For locked cards, wrap with both HoverCard (desktop) and Dialog (mobile)
   if (!isUnlocked && skill.description) {
     return (
-      <HoverCard openDelay={200}>
-        <HoverCardTrigger asChild>
-          {cardContent}
-        </HoverCardTrigger>
-        <HoverCardContent className="w-72">
-          <div className="space-y-3">
-            {/* Header */}
-            <div className="flex items-start gap-2">
-              <Lock className="w-4 h-4 text-muted-foreground mt-0.5 flex-shrink-0" />
-              <div className="flex-1">
-                <h4 className="font-semibold text-sm leading-tight">{skill.name}</h4>
-                <Badge variant={config.badgeVariant} className="text-xs mt-1">
-                  {config.label}
-                </Badge>
-              </div>
-            </div>
+      <>
+        {/* Desktop: HoverCard on hover */}
+        <HoverCard openDelay={200}>
+          <HoverCardTrigger asChild>
+            {cardContent}
+          </HoverCardTrigger>
+          <HoverCardContent className="w-72 hidden md:block">
+            {descriptionContent}
+          </HoverCardContent>
+        </HoverCard>
 
-            {/* Description */}
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              {skill.description}
-            </p>
-
-            {/* Prerequisites */}
-            <div className="space-y-1.5 pt-2 border-t border-border">
-              <div className="flex items-center gap-1.5 text-xs font-medium text-foreground">
-                <CheckCircle className="w-3.5 h-3.5" />
-                <span>Prerequisites:</span>
-              </div>
-              {prerequisiteName ? (
-                <p className="text-xs text-muted-foreground pl-5">
-                  Complete <span className="font-medium text-foreground">{prerequisiteName}</span>
-                </p>
-              ) : minAgeWeeks ? (
-                <p className="text-xs text-muted-foreground pl-5">
-                  Available at {minAgeWeeks} weeks old
-                </p>
-              ) : (
-                <p className="text-xs text-green-600 pl-5">
-                  None - Available now!
-                </p>
-              )}
-            </div>
-
-            {/* Proficiency Level */}
-            <div className="flex items-center gap-1.5 text-xs pt-1">
-              <Target className="w-3.5 h-3.5 text-muted-foreground" />
-              <span className="text-muted-foreground">Proficiency Level: <span className="font-medium text-foreground">{config.label}</span></span>
-            </div>
-          </div>
-        </HoverCardContent>
-      </HoverCard>
+        {/* Mobile: Dialog on tap */}
+        <Dialog open={mobileDialogOpen} onOpenChange={setMobileDialogOpen}>
+          <DialogContent className="w-[90vw] max-w-md">
+            <DialogHeader>
+              <DialogTitle className="flex items-center gap-2">
+                <Lock className="w-4 h-4" />
+                Locked Skill
+              </DialogTitle>
+            </DialogHeader>
+            {descriptionContent}
+          </DialogContent>
+        </Dialog>
+      </>
     );
   }
 
