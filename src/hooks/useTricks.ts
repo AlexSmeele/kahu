@@ -25,12 +25,12 @@ export interface DogTrick {
   started_at?: string;
   mastered_at?: string;
   total_sessions: number;
-  proficiency_level: 'basic' | 'generalized' | 'proofed';
-  basic_completed_at?: string;
-  generalized_completed_at?: string;
-  proofed_completed_at?: string;
-  last_practiced_at?: string;
-  practice_contexts: string[];
+  proficiency_level?: 'basic' | 'generalized' | 'proofed';
+  basic_completed_at?: string | null;
+  generalized_completed_at?: string | null;
+  proofed_completed_at?: string | null;
+  last_practiced_at?: string | null;
+  practice_contexts?: string[];
   trick: Trick;
 }
 
@@ -104,6 +104,10 @@ export function useTricks(dogId?: string) {
         ...dogTrick,
         proficiency_level: dogTrick.proficiency_level || 'basic',
         practice_contexts: Array.isArray(dogTrick.practice_contexts) ? dogTrick.practice_contexts : [],
+        basic_completed_at: dogTrick.basic_completed_at || null,
+        generalized_completed_at: dogTrick.generalized_completed_at || null,
+        proofed_completed_at: dogTrick.proofed_completed_at || null,
+        last_practiced_at: dogTrick.last_practiced_at || dogTrick.started_at || null,
         trick: tricksMap.get(dogTrick.trick_id)
       })).filter(dt => dt.trick) || [];
 
@@ -226,7 +230,7 @@ export function useTricks(dogId?: string) {
           success_rating: 3, // Neutral rating
           progress_status: data.status,
           notes: `Practice session ${newTotalSessions}`,
-        });
+        } as any);
 
       toast({
         title: "Great work!",
@@ -364,7 +368,7 @@ export function useTricks(dogId?: string) {
         distraction_level: distractionLevel,
         success_rate_percentage: successRate,
         created_at: new Date().toISOString(),
-      });
+      } as any);
 
     if (sessionError) {
       console.error('Error recording practice session:', sessionError);

@@ -2074,6 +2074,7 @@ export type Database = {
           created_at: string
           distraction_level: string | null
           dog_id: string
+          dog_trick_id: string | null
           duration_minutes: number | null
           id: string
           notes: string | null
@@ -2088,6 +2089,7 @@ export type Database = {
           created_at?: string
           distraction_level?: string | null
           dog_id: string
+          dog_trick_id?: string | null
           duration_minutes?: number | null
           id?: string
           notes?: string | null
@@ -2102,6 +2104,7 @@ export type Database = {
           created_at?: string
           distraction_level?: string | null
           dog_id?: string
+          dog_trick_id?: string | null
           duration_minutes?: number | null
           id?: string
           notes?: string | null
@@ -2118,6 +2121,13 @@ export type Database = {
             columns: ["dog_id"]
             isOneToOne: false
             referencedRelation: "dogs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "training_sessions_dog_trick_id_fkey"
+            columns: ["dog_trick_id"]
+            isOneToOne: false
+            referencedRelation: "dog_tricks"
             referencedColumns: ["id"]
           },
         ]

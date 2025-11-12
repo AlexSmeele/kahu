@@ -63,7 +63,7 @@ export function useSkillProgression(dogTrickId: string | null) {
         .from('training_sessions')
         .select('*')
         .eq('dog_trick_id', dogTrickId)
-        .order('created_at', { ascending: false });
+        .order('created_at', { ascending: false }) as any;
 
       if (sessionsError) throw sessionsError;
 
@@ -74,10 +74,10 @@ export function useSkillProgression(dogTrickId: string | null) {
 
       const sessionsCompleted = sessions?.length || 0;
       const contextsCompleted = Array.from(new Set(
-        sessions?.map(s => s.practice_context).filter(Boolean) || []
-      ));
+        sessions?.map((s: any) => s.practice_context).filter(Boolean) || []
+      )) as string[];
       
-      const totalSuccess = sessions?.reduce((sum, s) => sum + (s.success_rate_percentage || 0), 0) || 0;
+      const totalSuccess = sessions?.reduce((sum: number, s: any) => sum + (s.success_rate_percentage || 0), 0) || 0;
       const averageSuccessRate = sessionsCompleted > 0 ? totalSuccess / sessionsCompleted : 0;
 
       // Check if can level up
