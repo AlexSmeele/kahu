@@ -8,9 +8,9 @@ import { Progress } from '@/components/ui/progress';
 import { Slider } from '@/components/ui/slider';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { CheckCircle2, Lock, ArrowUp, Plus, MapPin, Zap, Award } from 'lucide-react';
+import { CheckCircle2, Lock, ArrowUp, Plus, MapPin, Zap, Award, Star, Clock, Target, BookOpen } from 'lucide-react';
 import { useSkillProgression } from '@/hooks/useSkillProgression';
-import { useTricks } from '@/hooks/useTricks';
+import { useTricks, Trick } from '@/hooks/useTricks';
 import { toast } from '@/hooks/use-toast';
 import { PRACTICE_CONTEXTS, DISTRACTION_LEVELS } from '@/data/skillProgressionMap';
 
@@ -25,14 +25,38 @@ interface SkillProgressionModalProps {
   };
   dogTrickId: string;
   dogId: string;
+  trick?: Trick;
 }
+
+const categoryColors = {
+  Foundation: 'bg-emerald-500',
+  Obedience: 'bg-blue-500',
+  Performance: 'bg-purple-500',
+  'Body Control': 'bg-orange-500',
+  'Prop Work': 'bg-rose-500',
+  'Impulse Control': 'bg-indigo-500',
+  Practical: 'bg-teal-500',
+  Chain: 'bg-amber-500'
+};
+
+const categoryIcons = {
+  Foundation: Target,
+  Obedience: Award,
+  Performance: Star,
+  'Body Control': Zap,
+  'Prop Work': Plus,
+  'Impulse Control': Award,
+  Practical: BookOpen,
+  Chain: CheckCircle2
+};
 
 export function SkillProgressionModal({ 
   open, 
   onOpenChange, 
   skill, 
   dogTrickId,
-  dogId 
+  dogId,
+  trick
 }: SkillProgressionModalProps) {
   const { progressData, requirements, loading } = useSkillProgression(dogTrickId);
   const { levelUpSkill, recordPracticeSession } = useTricks(dogId);
@@ -130,15 +154,40 @@ export function SkillProgressionModal({
     ? (progressData.contextsCompleted.length / currentReq.contexts_required.length) * 100 
     : 0;
 
+  const categoryColor = categoryColors[skill.category as keyof typeof categoryColors] || 'bg-primary';
+  const CategoryIcon = categoryIcons[skill.category as keyof typeof categoryIcons] || Award;
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-lg max-h-[85vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="text-xl">{skill.name}</DialogTitle>
-          <p className="text-sm text-muted-foreground">Track your progression through proficiency levels</p>
+          {/* Visual header with icon */}
+          <div className="flex flex-col items-center text-center mb-2">
+            <div className={`w-14 h-14 ${categoryColor} rounded-xl flex items-center justify-center mb-3`}>
+              <CategoryIcon className="w-7 h-7 text-white" />
+            </div>
+            <DialogTitle className="text-xl">{skill.name}</DialogTitle>
+            <div className="flex items-center gap-2 mt-2 flex-wrap justify-center">
+              {skill.category && (
+                <Badge variant="outline" className="text-xs">{skill.category}</Badge>
+              )}
+              {skill.difficulty && (
+                <Badge variant="secondary" className="text-xs">
+                  Level {skill.difficulty}
+                </Badge>
+              )}
+              {trick?.estimated_time_weeks && (
+                <Badge variant="outline" className="flex items-center gap-1 text-xs">
+                  <Clock className="w-3 h-3" />
+                  {trick.estimated_time_weeks} weeks
+                </Badge>
+              )}
+            </div>
+          </div>
+          <p className="text-sm text-muted-foreground text-center">Track your progression through proficiency levels</p>
         </DialogHeader>
 
-        <Tabs defaultValue="current" className="w-full">
+        <Tabs defaultValue={currentLevel} className="w-full">
           <TabsList className="grid w-full grid-cols-3">
             {(['basic', 'generalized', 'proofed'] as const).map((level) => {
               const LevelIcon = levelConfig[level].icon;
@@ -168,6 +217,32 @@ export function SkillProgressionModal({
             
             return (
               <TabsContent key={level} value={level} className="space-y-4 mt-4">
+                {/* Overview section for first-time viewers */}
+                {isCurrent && progressData && progressData.sessionsCompleted === 0 && trick && (
+                  <Card className="p-4 bg-gradient-to-br from-primary/5 to-accent/5 border-primary/20">
+                    <h4 className="font-semibold mb-2 flex items-center gap-2">
+                      <BookOpen className="w-4 h-4" />
+                      About This Skill
+                    </h4>
+                    <p className="text-sm text-muted-foreground mb-3">{trick.description}</p>
+                    
+                    {/* Prerequisites */}
+                    {trick.prerequisites && trick.prerequisites.length > 0 && (
+                      <div className="mt-3 pt-3 border-t">
+                        <p className="text-xs font-medium mb-2">Prerequisites:</p>
+                        <div className="space-y-1">
+                          {trick.prerequisites.map((prereq, idx) => (
+                            <div key={idx} className="flex items-center gap-2 text-xs">
+                              <Star className="w-3 h-3 text-yellow-500" />
+                              <span>{prereq}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </Card>
+                )}
+
                 {/* Level description */}
                 <Card className="p-4 bg-muted/50">
                   <div className="flex items-start gap-3">
@@ -331,19 +406,34 @@ export function SkillProgressionModal({
                 )}
 
                 {!isCurrent && req && (
-                  <Card className="p-4 bg-muted/30">
-                    <p className="text-sm text-muted-foreground mb-3">{req.description}</p>
-                    <div className="space-y-2 text-sm">
-                      <div className="flex items-center gap-2">
-                        <Badge variant="outline">{req.min_sessions_required} sessions</Badge>
-                        <span className="text-muted-foreground">required</span>
+                  <>
+                    <Card className="p-4 bg-muted/30">
+                      <p className="text-sm text-muted-foreground mb-3">{req.description}</p>
+                      <div className="space-y-2 text-sm">
+                        <div className="flex items-center gap-2">
+                          <Badge variant="outline">{req.min_sessions_required} sessions</Badge>
+                          <span className="text-muted-foreground">required</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Badge variant="outline">{req.contexts_required.length} contexts</Badge>
+                          <span className="text-muted-foreground">to practice in</span>
+                        </div>
                       </div>
-                      <div className="flex items-center gap-2">
-                        <Badge variant="outline">{req.contexts_required.length} contexts</Badge>
-                        <span className="text-muted-foreground">to practice in</span>
-                      </div>
-                    </div>
-                  </Card>
+                    </Card>
+
+                    {/* Training tips for future levels */}
+                    <Card className="p-3 bg-blue-50 dark:bg-blue-950/20 border-blue-200 dark:border-blue-900">
+                      <h4 className="text-sm font-semibold text-blue-900 dark:text-blue-100 mb-2">
+                        Training Tips for {levelConfig[level].label}
+                      </h4>
+                      <ul className="text-xs text-blue-800 dark:text-blue-200 space-y-1">
+                        <li>• Practice consistently across different scenarios</li>
+                        <li>• Use high-value rewards for difficult contexts</li>
+                        <li>• Keep sessions short and positive</li>
+                        <li>• Gradually increase difficulty over time</li>
+                      </ul>
+                    </Card>
+                  </>
                 )}
               </TabsContent>
             );

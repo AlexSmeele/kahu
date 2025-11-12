@@ -13,7 +13,7 @@ import { DogDropdown } from "@/components/dogs/DogDropdown";
 import { PageLogo } from "@/components/layout/PageLogo";
 import { ClickerButton } from "@/components/training/ClickerButton";
 import { ClickerModal } from "@/components/training/ClickerModal";
-import { TrickDetailModal } from "@/components/tricks/TrickDetailModal";
+import { SkillProgressionModal } from "@/components/training/SkillProgressionModal";
 import { MOCK_FOUNDATION_TOPICS, MOCK_TROUBLESHOOTING_TOPICS, type FoundationTopic, isMockDogId } from "@/lib/mockData";
 
 const categoryColors = {
@@ -118,10 +118,10 @@ export function TricksScreen({ selectedDogId, onDogChange }: TricksScreenProps) 
   const [searchParams] = useSearchParams();
   const { dogs } = useDogs();
   const currentDog = dogs.find(dog => dog.id === selectedDogId);
-  const { tricks, dogTricks, loading, startTrick, addPracticeSession, updateTrickStatus } = useTricks(currentDog?.id);
+  const { tricks, dogTricks, loading, startTrick, addPracticeSession, updateTrickStatus, refetch } = useTricks(currentDog?.id);
   const [selectedDifficulty, setSelectedDifficulty] = useState<string>('all');
-  const [selectedTrick, setSelectedTrick] = useState<Trick | null>(null);
-  const [isTrickModalOpen, setIsTrickModalOpen] = useState(false);
+  const [selectedSkill, setSelectedSkill] = useState<{ trickId: string; dogTrickId: string; trick: Trick } | null>(null);
+  const [isSkillModalOpen, setIsSkillModalOpen] = useState(false);
   const [isClickerOpen, setIsClickerOpen] = useState(false);
   const [selectedSection, setSelectedSection] = useState<'program' | 'foundations' | 'skills' | 'troubleshooting'>('program');
   const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({
@@ -197,9 +197,23 @@ export function TricksScreen({ selectedDogId, onDogChange }: TricksScreenProps) 
     }
   };
 
-  const handleTrickClick = (trick: Trick) => {
-    setSelectedTrick(trick);
-    setIsTrickModalOpen(true);
+  const handleTrickClick = async (trick: Trick) => {
+    let dogTrick = learnedTricksMap.get(trick.id);
+    
+    // If not started, create the record first
+    if (!dogTrick) {
+      await startTrick(trick.id);
+      // Wait a moment for the refetch to complete
+      await new Promise(resolve => setTimeout(resolve, 100));
+      await refetch();
+      // Get the newly created dogTrick
+      dogTrick = dogTricks.find(dt => dt.trick_id === trick.id);
+    }
+    
+    if (dogTrick) {
+      setSelectedSkill({ trickId: trick.id, dogTrickId: dogTrick.id, trick });
+      setIsSkillModalOpen(true);
+    }
   };
 
   const handlePracticeSession = (dogTrickId: string) => {
@@ -505,15 +519,21 @@ export function TricksScreen({ selectedDogId, onDogChange }: TricksScreenProps) 
       {/* Modals */}
       <ClickerModal isOpen={isClickerOpen} onClose={() => setIsClickerOpen(false)} />
       
-      <TrickDetailModal
-        isOpen={isTrickModalOpen}
-        onClose={() => setIsTrickModalOpen(false)}
-        trick={selectedTrick}
-        dogTrick={selectedTrick ? learnedTricksMap.get(selectedTrick.id) : undefined}
-        onStartTrick={handleStart}
-        onPracticeSession={handlePracticeSession}
-        onUpdateStatus={handleUpdateStatus}
-      />
+      {selectedSkill && (
+        <SkillProgressionModal
+          open={isSkillModalOpen}
+          onOpenChange={setIsSkillModalOpen}
+          skill={{
+            id: selectedSkill.trickId,
+            name: selectedSkill.trick.name,
+            category: selectedSkill.trick.category,
+            difficulty: selectedSkill.trick.difficulty_level,
+          }}
+          dogTrickId={selectedSkill.dogTrickId}
+          dogId={currentDog?.id || ''}
+          trick={selectedSkill.trick}
+        />
+      )}
     </div>
   );
 }
