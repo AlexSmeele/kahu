@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { ChevronLeft, Book, Clock, ArrowRight } from 'lucide-react';
 import * as LucideIcons from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -10,6 +10,8 @@ import { MOCK_FOUNDATION_TOPICS } from '@/lib/mockData';
 export default function FoundationDetailPage() {
   const { topicId } = useParams();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const source = searchParams.get('source');
 
   const topic = useMemo(() => {
     return MOCK_FOUNDATION_TOPICS.find(t => t.id === topicId);
@@ -37,7 +39,13 @@ export default function FoundationDetailPage() {
         <Button
           variant="ghost"
           size="icon"
-          onClick={() => navigate(-1)}
+          onClick={() => {
+            if (source === 'program') {
+              navigate('/?tab=tricks&section=program');
+            } else {
+              navigate('/?tab=tricks&section=foundations');
+            }
+          }}
         >
           <ChevronLeft className="w-5 h-5" />
         </Button>

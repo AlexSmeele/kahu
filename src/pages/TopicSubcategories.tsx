@@ -7,18 +7,13 @@ import { Progress } from '@/components/ui/progress';
 import { MOCK_FOUNDATION_TOPICS, MOCK_TROUBLESHOOTING_TOPICS } from '@/lib/mockData';
 import * as LucideIcons from 'lucide-react';
 
-interface SubSessionModalData {
-  name: string;
-  instructions: string;
-  description: string;
-}
 
 export default function TopicSubcategories() {
   const { type, topicId } = useParams<{ type: string; topicId: string }>();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const source = searchParams.get('source');
-  const [selectedSubSession, setSelectedSubSession] = useState<SubSessionModalData | null>(null);
+  
 
   // Find the topic from the appropriate data source
   const topics = type === 'foundation' ? MOCK_FOUNDATION_TOPICS : MOCK_TROUBLESHOOTING_TOPICS;
@@ -41,11 +36,8 @@ export default function TopicSubcategories() {
   const progressPercentage = (completedCount / totalCount) * 100;
 
   const handleLessonClick = (subSession: any) => {
-    setSelectedSubSession({
-      name: subSession.name,
-      instructions: subSession.instructions,
-      description: subSession.description,
-    });
+    // Navigate directly to instructional page
+    navigate(`/training/${type}/${topicId}/${subSession.id}/instructional`);
   };
 
   return (
@@ -125,42 +117,6 @@ export default function TopicSubcategories() {
         })}
       </div>
 
-      {/* Sub-Session Detail Modal */}
-      {selectedSubSession && (
-        <div 
-          className="fixed inset-0 bg-black/50 z-50 flex items-end"
-          onClick={() => setSelectedSubSession(null)}
-        >
-          <div 
-            className="bg-background rounded-t-3xl w-full max-h-[80vh] overflow-y-auto animate-slide-up"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="sticky top-0 bg-background border-b p-4 flex items-center justify-between">
-              <h2 className="text-xl font-bold">{selectedSubSession.name}</h2>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setSelectedSubSession(null)}
-              >
-                Close
-              </Button>
-            </div>
-
-            <div className="p-6 space-y-6">
-              <div>
-                <p className="text-muted-foreground mb-4">{selectedSubSession.description}</p>
-                <div className="prose prose-sm max-w-none">
-                  <p className="whitespace-pre-line">{selectedSubSession.instructions}</p>
-                </div>
-              </div>
-
-              <Button className="w-full" size="lg">
-                Start Training Session
-              </Button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

@@ -26,7 +26,9 @@ export function TopicCard({ topic, type, source }: TopicCardProps) {
   const totalCount = topic.subSessions.length;
 
   const handleClick = () => {
-    const url = `/training/${type}/${topic.id}/detail`;
+    const url = source 
+      ? `/training/${type}/${topic.id}/detail?source=${source}`
+      : `/training/${type}/${topic.id}/detail`;
     navigate(url);
   };
 
