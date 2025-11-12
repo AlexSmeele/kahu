@@ -2,17 +2,23 @@ import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import * as LucideIcons from 'lucide-react';
 import { TopicCard } from './TopicCard';
+import { SkillCard } from './SkillCard';
 import { RoadmapStage as RoadmapStageType } from '@/data/roadmapData';
 import { MOCK_FOUNDATION_TOPICS, MOCK_TROUBLESHOOTING_TOPICS } from '@/lib/mockData';
+import { useTricks } from '@/hooks/useTricks';
 
 interface RoadmapStageProps {
   stage: RoadmapStageType;
   isUnlocked: boolean;
   isActive: boolean;
+  selectedDogId: string;
+  unlockedSkills: Set<string>;
+  onSkillClick: (skillId: string, dogTrickId: string) => void;
 }
 
-export function RoadmapStage({ stage, isUnlocked, isActive }: RoadmapStageProps) {
+export function RoadmapStage({ stage, isUnlocked, isActive, selectedDogId, unlockedSkills, onSkillClick }: RoadmapStageProps) {
   const IconComponent = (LucideIcons as any)[stage.icon] || LucideIcons.MapPin;
+  const { tricks, dogTricks } = useTricks(selectedDogId);
 
   // Get topic data from mock data
   const getTopicData = (topicId: string, type: 'foundation' | 'troubleshooting' | 'skill') => {
@@ -20,6 +26,8 @@ export function RoadmapStage({ stage, isUnlocked, isActive }: RoadmapStageProps)
       return MOCK_FOUNDATION_TOPICS.find(t => t.id === topicId);
     } else if (type === 'troubleshooting') {
       return MOCK_TROUBLESHOOTING_TOPICS.find(t => t.id === topicId);
+    } else if (type === 'skill') {
+      return tricks.find(t => t.id === topicId);
     }
     return null;
   };
@@ -80,10 +88,28 @@ export function RoadmapStage({ stage, isUnlocked, isActive }: RoadmapStageProps)
                 const topic = getTopicData(topicRef.id, topicRef.type);
                 if (!topic) return null;
                 
+                // Render skill card for skills
+                if (topicRef.type === 'skill') {
+                  const dogTrick = dogTricks.find(dt => dt.trick_id === topicRef.id);
+                  const isSkillUnlocked = unlockedSkills.has(`${topicRef.id}-${topicRef.level || 'basic'}`);
+                  
+                  return (
+                    <SkillCard
+                      key={`${topic.id}-${topicRef.level || 'basic'}`}
+                      skill={topic as any}
+                      proficiencyLevel={topicRef.level || 'basic'}
+                      isUnlocked={isSkillUnlocked}
+                      dogTrick={dogTrick}
+                      onClick={() => dogTrick && onSkillClick(topicRef.id, dogTrick.id)}
+                    />
+                  );
+                }
+                
+                // Render topic card for foundations/troubleshooting
                 return (
                   <TopicCard 
                     key={topic.id} 
-                    topic={topic} 
+                    topic={topic as any} 
                     type={topicRef.type as 'foundation' | 'troubleshooting'}
                     source="program"
                   />

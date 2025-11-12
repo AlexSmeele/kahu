@@ -47,8 +47,8 @@ export const TRAINING_ROADMAP: RoadmapStage[] = [
     topics: [
       { id: 'foundation-topic-003', type: 'foundation' }, // Crate & Alone-Time Training
       { id: 'foundation-topic-007', type: 'foundation' }, // House Training Mastery
-      { id: 'sit', type: 'skill', level: 'basic' },
-      { id: 'down', type: 'skill', level: 'basic' },
+      { id: 'bbc0357d-2d9e-4ae1-8ac8-e9af77a82852', type: 'skill', level: 'basic' }, // Sit
+      { id: 'fffa5ef5-83e6-4839-92e1-e1badbd88887', type: 'skill', level: 'basic' }, // Down
     ],
   },
   {
@@ -61,8 +61,8 @@ export const TRAINING_ROADMAP: RoadmapStage[] = [
     topics: [
       { id: 'foundation-topic-004', type: 'foundation' }, // Puppy Socialization
       { id: 'foundation-topic-006', type: 'foundation' }, // Preventing & Managing Common Puppy Behaviors
-      { id: 'stay', type: 'skill', level: 'basic' },
-      { id: 'come', type: 'skill', level: 'basic' },
+      { id: 'd3fff6a0-871d-40eb-91ae-dd4e2cc6780b', type: 'skill', level: 'basic' }, // Stay
+      { id: '25cafc44-6396-4c3a-b6de-d203656eac71', type: 'skill', level: 'basic' }, // Come
     ],
   },
   {
@@ -75,12 +75,11 @@ export const TRAINING_ROADMAP: RoadmapStage[] = [
     topics: [
       { id: 'foundation-topic-005', type: 'foundation' }, // Foundation Life Skills
       { id: 'foundation-topic-008', type: 'foundation' }, // Leash Walking Foundations
-      { id: 'sit', type: 'skill', level: 'generalized' },
-      { id: 'down', type: 'skill', level: 'generalized' },
-      { id: 'stay', type: 'skill', level: 'generalized' },
-      { id: 'come', type: 'skill', level: 'generalized' },
-      { id: 'leave-it', type: 'skill', level: 'basic' },
-      { id: 'drop-it', type: 'skill', level: 'basic' },
+      { id: 'bbc0357d-2d9e-4ae1-8ac8-e9af77a82852', type: 'skill', level: 'generalized' }, // Sit
+      { id: 'fffa5ef5-83e6-4839-92e1-e1badbd88887', type: 'skill', level: 'generalized' }, // Down
+      { id: 'd3fff6a0-871d-40eb-91ae-dd4e2cc6780b', type: 'skill', level: 'generalized' }, // Stay
+      { id: '25cafc44-6396-4c3a-b6de-d203656eac71', type: 'skill', level: 'generalized' }, // Come
+      { id: '46950108-abb8-48e4-86c4-fd0367e514eb', type: 'skill', level: 'basic' }, // Leave It
     ],
   },
   {
@@ -94,11 +93,10 @@ export const TRAINING_ROADMAP: RoadmapStage[] = [
       { id: 'foundation-topic-009', type: 'foundation' }, // Core Obedience Commands
       { id: 'troubleshooting-topic-001', type: 'troubleshooting' }, // Understanding Behavior Problems
       { id: 'troubleshooting-topic-002', type: 'troubleshooting' }, // Excessive Barking
-      { id: 'sit', type: 'skill', level: 'proofed' },
-      { id: 'down', type: 'skill', level: 'proofed' },
-      { id: 'stay', type: 'skill', level: 'proofed' },
-      { id: 'leave-it', type: 'skill', level: 'generalized' },
-      { id: 'drop-it', type: 'skill', level: 'generalized' },
+      { id: 'bbc0357d-2d9e-4ae1-8ac8-e9af77a82852', type: 'skill', level: 'proofed' }, // Sit
+      { id: 'fffa5ef5-83e6-4839-92e1-e1badbd88887', type: 'skill', level: 'proofed' }, // Down
+      { id: 'd3fff6a0-871d-40eb-91ae-dd4e2cc6780b', type: 'skill', level: 'proofed' }, // Stay
+      { id: '46950108-abb8-48e4-86c4-fd0367e514eb', type: 'skill', level: 'generalized' }, // Leave It
     ],
   },
   {
@@ -117,9 +115,8 @@ export const TRAINING_ROADMAP: RoadmapStage[] = [
       { id: 'troubleshooting-topic-007', type: 'troubleshooting' }, // Fear & Anxiety
       { id: 'troubleshooting-topic-008', type: 'troubleshooting' }, // Dog Reactivity
       { id: 'troubleshooting-topic-009', type: 'troubleshooting' }, // Destructive Behavior
-      { id: 'come', type: 'skill', level: 'proofed' },
-      { id: 'leave-it', type: 'skill', level: 'proofed' },
-      { id: 'drop-it', type: 'skill', level: 'proofed' },
+      { id: '25cafc44-6396-4c3a-b6de-d203656eac71', type: 'skill', level: 'proofed' }, // Come
+      { id: '46950108-abb8-48e4-86c4-fd0367e514eb', type: 'skill', level: 'proofed' }, // Leave It
     ],
   },
 ];

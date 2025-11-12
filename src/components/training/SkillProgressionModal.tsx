@@ -1,0 +1,355 @@
+import { useState } from 'react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Card } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Progress } from '@/components/ui/progress';
+import { Slider } from '@/components/ui/slider';
+import { Textarea } from '@/components/ui/textarea';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { CheckCircle2, Lock, ArrowUp, Plus, MapPin, Zap, Award } from 'lucide-react';
+import { useSkillProgression } from '@/hooks/useSkillProgression';
+import { useTricks } from '@/hooks/useTricks';
+import { toast } from '@/hooks/use-toast';
+import { PRACTICE_CONTEXTS, DISTRACTION_LEVELS } from '@/data/skillProgressionMap';
+
+interface SkillProgressionModalProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  skill: {
+    id: string;
+    name: string;
+    category?: string;
+    difficulty?: number;
+  };
+  dogTrickId: string;
+  dogId: string;
+}
+
+export function SkillProgressionModal({ 
+  open, 
+  onOpenChange, 
+  skill, 
+  dogTrickId,
+  dogId 
+}: SkillProgressionModalProps) {
+  const { progressData, requirements, loading } = useSkillProgression(dogTrickId);
+  const { levelUpSkill, recordPracticeSession } = useTricks(dogId);
+  
+  const [showPracticeForm, setShowPracticeForm] = useState(false);
+  const [practiceContext, setPracticeContext] = useState('');
+  const [distractionLevel, setDistractionLevel] = useState('');
+  const [successRate, setSuccessRate] = useState([80]);
+  const [notes, setNotes] = useState('');
+
+  const currentLevel = progressData?.nextRequirements?.proficiency_level || 'basic';
+  
+  const levelConfig = {
+    basic: {
+      label: 'Basic',
+      icon: MapPin,
+      color: 'text-blue-500',
+      description: 'Learning the skill in a controlled environment with minimal distractions.'
+    },
+    generalized: {
+      label: 'Generalized',
+      icon: Zap,
+      color: 'text-purple-500',
+      description: 'Performing consistently across different contexts, locations, and with different people.'
+    },
+    proofed: {
+      label: 'Proofed',
+      icon: Award,
+      color: 'text-amber-500',
+      description: 'Reliable performance even with significant distractions present.'
+    }
+  };
+
+  const handleRecordPractice = async () => {
+    if (!practiceContext || !distractionLevel) {
+      toast({
+        title: 'Missing information',
+        description: 'Please select both context and distraction level',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    try {
+      await recordPracticeSession(
+        dogTrickId,
+        practiceContext,
+        distractionLevel as 'none' | 'mild' | 'moderate' | 'high',
+        successRate[0]
+      );
+
+      toast({
+        title: 'Practice recorded',
+        description: `Great work practicing ${skill.name}!`,
+      });
+
+      // Reset form
+      setPracticeContext('');
+      setDistractionLevel('');
+      setSuccessRate([80]);
+      setNotes('');
+      setShowPracticeForm(false);
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: 'Failed to record practice session',
+        variant: 'destructive',
+      });
+    }
+  };
+
+  const handleLevelUp = async (newLevel: 'generalized' | 'proofed') => {
+    try {
+      await levelUpSkill(dogTrickId, newLevel);
+      toast({
+        title: 'Level up!',
+        description: `${skill.name} advanced to ${levelConfig[newLevel].label} level`,
+      });
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: 'Failed to level up skill',
+        variant: 'destructive',
+      });
+    }
+  };
+
+  if (loading) {
+    return null;
+  }
+
+  const currentReq = requirements.find(r => r.proficiency_level === currentLevel);
+  const sessionsProgress = progressData ? (progressData.sessionsCompleted / (currentReq?.min_sessions_required || 1)) * 100 : 0;
+  const contextsProgress = progressData && currentReq 
+    ? (progressData.contextsCompleted.length / currentReq.contexts_required.length) * 100 
+    : 0;
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="max-w-lg max-h-[85vh] overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle className="text-xl">{skill.name}</DialogTitle>
+          <p className="text-sm text-muted-foreground">Track your progression through proficiency levels</p>
+        </DialogHeader>
+
+        <Tabs defaultValue="current" className="w-full">
+          <TabsList className="grid w-full grid-cols-3">
+            {(['basic', 'generalized', 'proofed'] as const).map((level) => {
+              const LevelIcon = levelConfig[level].icon;
+              const isComplete = progressData?.canLevelUp && currentLevel === level;
+              const isLocked = level !== 'basic' && currentLevel !== level;
+              
+              return (
+                <TabsTrigger 
+                  key={level} 
+                  value={level}
+                  disabled={isLocked && !isComplete}
+                  className="relative"
+                >
+                  <LevelIcon className={`w-4 h-4 mr-1 ${levelConfig[level].color}`} />
+                  {levelConfig[level].label}
+                  {isComplete && <CheckCircle2 className="w-3 h-3 ml-1 text-green-500" />}
+                  {isLocked && <Lock className="w-3 h-3 ml-1" />}
+                </TabsTrigger>
+              );
+            })}
+          </TabsList>
+
+          {(['basic', 'generalized', 'proofed'] as const).map((level) => {
+            const LevelIcon = levelConfig[level].icon;
+            const req = requirements.find(r => r.proficiency_level === level);
+            const isCurrent = currentLevel === level;
+            
+            return (
+              <TabsContent key={level} value={level} className="space-y-4 mt-4">
+                {/* Level description */}
+                <Card className="p-4 bg-muted/50">
+                  <div className="flex items-start gap-3">
+                    <LevelIcon className={`w-5 h-5 ${levelConfig[level].color} flex-shrink-0 mt-0.5`} />
+                    <div>
+                      <h4 className="font-semibold mb-1">{levelConfig[level].label} Level</h4>
+                      <p className="text-sm text-muted-foreground">{levelConfig[level].description}</p>
+                    </div>
+                  </div>
+                </Card>
+
+                {isCurrent && req && progressData && (
+                  <>
+                    {/* Requirements progress */}
+                    <div className="space-y-3">
+                      <h4 className="font-semibold text-sm">Requirements</h4>
+                      
+                      {/* Sessions */}
+                      <div>
+                        <div className="flex justify-between text-sm mb-1">
+                          <span>Practice Sessions</span>
+                          <span className="text-muted-foreground">
+                            {progressData.sessionsCompleted}/{req.min_sessions_required}
+                          </span>
+                        </div>
+                        <Progress value={sessionsProgress} className="h-2" />
+                      </div>
+
+                      {/* Contexts */}
+                      <div>
+                        <div className="flex justify-between text-sm mb-2">
+                          <span>Practice Contexts</span>
+                          <span className="text-muted-foreground">
+                            {progressData.contextsCompleted.length}/{req.contexts_required.length}
+                          </span>
+                        </div>
+                        <div className="grid grid-cols-2 gap-2">
+                          {req.contexts_required.map((ctx) => (
+                            <div 
+                              key={ctx}
+                              className={`text-xs p-2 rounded-md border ${
+                                progressData.contextsCompleted.includes(ctx)
+                                  ? 'bg-green-50 border-green-200 text-green-700'
+                                  : 'bg-muted border-border text-muted-foreground'
+                              }`}
+                            >
+                              {progressData.contextsCompleted.includes(ctx) && (
+                                <CheckCircle2 className="w-3 h-3 inline mr-1" />
+                              )}
+                              {PRACTICE_CONTEXTS[ctx] || ctx}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Success Rate */}
+                      <div>
+                        <div className="flex justify-between text-sm mb-1">
+                          <span>Average Success Rate</span>
+                          <span className={`font-medium ${
+                            progressData.averageSuccessRate >= 70 ? 'text-green-600' : 'text-muted-foreground'
+                          }`}>
+                            {progressData.averageSuccessRate.toFixed(0)}%
+                          </span>
+                        </div>
+                        <Progress 
+                          value={progressData.averageSuccessRate} 
+                          className="h-2"
+                        />
+                        <p className="text-xs text-muted-foreground mt-1">Minimum 70% required</p>
+                      </div>
+                    </div>
+
+                    {/* Practice form */}
+                    {!showPracticeForm ? (
+                      <Button onClick={() => setShowPracticeForm(true)} className="w-full" variant="outline">
+                        <Plus className="w-4 h-4 mr-2" />
+                        Record Practice Session
+                      </Button>
+                    ) : (
+                      <Card className="p-4 space-y-3">
+                        <h4 className="font-semibold text-sm">Record Practice</h4>
+                        
+                        <div>
+                          <label className="text-xs text-muted-foreground mb-1 block">Context</label>
+                          <Select value={practiceContext} onValueChange={setPracticeContext}>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Where did you practice?" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {Object.entries(PRACTICE_CONTEXTS).map(([key, label]) => (
+                                <SelectItem key={key} value={key}>{label}</SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
+
+                        <div>
+                          <label className="text-xs text-muted-foreground mb-1 block">Distraction Level</label>
+                          <Select value={distractionLevel} onValueChange={setDistractionLevel}>
+                            <SelectTrigger>
+                              <SelectValue placeholder="How distracting was it?" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {Object.entries(DISTRACTION_LEVELS).map(([key, label]) => (
+                                <SelectItem key={key} value={key}>{label}</SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
+
+                        <div>
+                          <label className="text-xs text-muted-foreground mb-1 block">
+                            Success Rate: {successRate[0]}%
+                          </label>
+                          <Slider
+                            value={successRate}
+                            onValueChange={setSuccessRate}
+                            min={0}
+                            max={100}
+                            step={5}
+                          />
+                        </div>
+
+                        <div>
+                          <label className="text-xs text-muted-foreground mb-1 block">Notes (optional)</label>
+                          <Textarea
+                            value={notes}
+                            onChange={(e) => setNotes(e.target.value)}
+                            placeholder="Any observations or challenges..."
+                            rows={2}
+                          />
+                        </div>
+
+                        <div className="flex gap-2">
+                          <Button onClick={handleRecordPractice} className="flex-1">
+                            Save Session
+                          </Button>
+                          <Button 
+                            onClick={() => setShowPracticeForm(false)} 
+                            variant="outline"
+                          >
+                            Cancel
+                          </Button>
+                        </div>
+                      </Card>
+                    )}
+
+                    {/* Level up button */}
+                    {progressData.canLevelUp && level !== 'proofed' && (
+                      <Button 
+                        onClick={() => handleLevelUp(level === 'basic' ? 'generalized' : 'proofed')}
+                        className="w-full"
+                        size="lg"
+                      >
+                        <ArrowUp className="w-4 h-4 mr-2" />
+                        Level Up to {level === 'basic' ? 'Generalized' : 'Proofed'}
+                      </Button>
+                    )}
+                  </>
+                )}
+
+                {!isCurrent && req && (
+                  <Card className="p-4 bg-muted/30">
+                    <p className="text-sm text-muted-foreground mb-3">{req.description}</p>
+                    <div className="space-y-2 text-sm">
+                      <div className="flex items-center gap-2">
+                        <Badge variant="outline">{req.min_sessions_required} sessions</Badge>
+                        <span className="text-muted-foreground">required</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Badge variant="outline">{req.contexts_required.length} contexts</Badge>
+                        <span className="text-muted-foreground">to practice in</span>
+                      </div>
+                    </div>
+                  </Card>
+                )}
+              </TabsContent>
+            );
+          })}
+        </Tabs>
+      </DialogContent>
+    </Dialog>
+  );
+}

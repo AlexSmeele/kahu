@@ -1,9 +1,12 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { Info } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { RoadmapStage } from '@/components/training/RoadmapStage';
+import { SkillProgressionModal } from '@/components/training/SkillProgressionModal';
 import { TRAINING_ROADMAP } from '@/data/roadmapData';
+import { SKILL_PROGRESSION_MAP } from '@/data/skillProgressionMap';
 import { useDogs } from '@/hooks/useDogs';
+import { useTricks } from '@/hooks/useTricks';
 import { differenceInWeeks } from 'date-fns';
 
 interface RoadmapContentProps {
@@ -12,7 +15,10 @@ interface RoadmapContentProps {
 
 export function RoadmapContent({ selectedDogId }: RoadmapContentProps) {
   const { dogs } = useDogs();
+  const { tricks, dogTricks } = useTricks(selectedDogId);
   const currentDog = dogs.find(dog => dog.id === selectedDogId);
+  
+  const [selectedSkill, setSelectedSkill] = useState<{ skillId: string; dogTrickId: string } | null>(null);
 
   // Calculate dog's age in weeks
   const dogAgeWeeks = useMemo(() => {
@@ -21,6 +27,44 @@ export function RoadmapContent({ selectedDogId }: RoadmapContentProps) {
     const now = new Date();
     return Math.max(0, differenceInWeeks(now, birthDate));
   }, [currentDog?.birthday]);
+
+  // Determine which skills are unlocked based on prerequisites and age
+  const unlockedSkills = useMemo(() => {
+    const unlocked = new Set<string>();
+    
+    // Check each skill in the progression map
+    Object.entries(SKILL_PROGRESSION_MAP).forEach(([skillKey, progression]) => {
+      const trick = tricks.find(t => t.id === progression.trickId);
+      if (!trick) return;
+      
+      // Find the stage that contains this skill
+      const stage = TRAINING_ROADMAP.find(s => s.id === progression.stage);
+      const meetsAgeRequirement = stage ? dogAgeWeeks >= stage.ageRangeWeeks.min : false;
+      
+      // Check prerequisite requirement
+      let meetsPrerequisite = true;
+      if (progression.prerequisite) {
+        const prereqDogTrick = dogTricks.find(dt => dt.trick_id === progression.prerequisite?.trickId);
+        const requiredLevel = progression.prerequisite.level;
+        
+        if (!prereqDogTrick) {
+          meetsPrerequisite = false;
+        } else if (requiredLevel === 'basic') {
+          meetsPrerequisite = !!prereqDogTrick.basic_completed_at;
+        } else if (requiredLevel === 'generalized') {
+          meetsPrerequisite = !!prereqDogTrick.generalized_completed_at;
+        } else if (requiredLevel === 'proofed') {
+          meetsPrerequisite = !!prereqDogTrick.proofed_completed_at;
+        }
+      }
+      
+      if (meetsAgeRequirement && meetsPrerequisite) {
+        unlocked.add(skillKey);
+      }
+    });
+    
+    return unlocked;
+  }, [dogAgeWeeks, dogTricks, tricks]);
 
   // Determine which stages are unlocked and which is active
   const stagesWithStatus = useMemo(() => {
@@ -86,9 +130,23 @@ export function RoadmapContent({ selectedDogId }: RoadmapContentProps) {
             stage={stage}
             isUnlocked={stage.isUnlocked}
             isActive={stage.isActive}
+            selectedDogId={selectedDogId}
+            unlockedSkills={unlockedSkills}
+            onSkillClick={(skillId, dogTrickId) => setSelectedSkill({ skillId, dogTrickId })}
           />
         ))}
       </div>
+
+      {/* Skill progression modal */}
+      {selectedSkill && tricks.find(t => t.id === selectedSkill.skillId) && (
+        <SkillProgressionModal
+          open={!!selectedSkill}
+          onOpenChange={(open) => !open && setSelectedSkill(null)}
+          skill={tricks.find(t => t.id === selectedSkill.skillId) as any}
+          dogTrickId={selectedSkill.dogTrickId}
+          dogId={selectedDogId}
+        />
+      )}
     </div>
   );
 }

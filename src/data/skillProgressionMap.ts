@@ -10,154 +10,132 @@ export interface SkillProgression {
 // Maps skill ID + level to roadmap stage and prerequisite
 export const SKILL_PROGRESSION_MAP: Record<string, SkillProgression> = {
   // Sit progression
-  'sit-basic': {
-    trickId: 'sit',
+  'bbc0357d-2d9e-4ae1-8ac8-e9af77a82852-basic': {
+    trickId: 'bbc0357d-2d9e-4ae1-8ac8-e9af77a82852',
     level: 'basic',
     stage: 'stage-003',
     prerequisite: null,
   },
-  'sit-generalized': {
-    trickId: 'sit',
+  'bbc0357d-2d9e-4ae1-8ac8-e9af77a82852-generalized': {
+    trickId: 'bbc0357d-2d9e-4ae1-8ac8-e9af77a82852',
     level: 'generalized',
     stage: 'stage-005',
-    prerequisite: { trickId: 'sit', level: 'basic' },
+    prerequisite: { trickId: 'bbc0357d-2d9e-4ae1-8ac8-e9af77a82852', level: 'basic' },
   },
-  'sit-proofed': {
-    trickId: 'sit',
+  'bbc0357d-2d9e-4ae1-8ac8-e9af77a82852-proofed': {
+    trickId: 'bbc0357d-2d9e-4ae1-8ac8-e9af77a82852',
     level: 'proofed',
     stage: 'stage-006',
-    prerequisite: { trickId: 'sit', level: 'generalized' },
+    prerequisite: { trickId: 'bbc0357d-2d9e-4ae1-8ac8-e9af77a82852', level: 'generalized' },
   },
 
   // Down progression
-  'down-basic': {
-    trickId: 'down',
+  'fffa5ef5-83e6-4839-92e1-e1badbd88887-basic': {
+    trickId: 'fffa5ef5-83e6-4839-92e1-e1badbd88887',
     level: 'basic',
     stage: 'stage-003',
     prerequisite: null,
   },
-  'down-generalized': {
-    trickId: 'down',
+  'fffa5ef5-83e6-4839-92e1-e1badbd88887-generalized': {
+    trickId: 'fffa5ef5-83e6-4839-92e1-e1badbd88887',
     level: 'generalized',
     stage: 'stage-005',
-    prerequisite: { trickId: 'down', level: 'basic' },
+    prerequisite: { trickId: 'fffa5ef5-83e6-4839-92e1-e1badbd88887', level: 'basic' },
   },
-  'down-proofed': {
-    trickId: 'down',
+  'fffa5ef5-83e6-4839-92e1-e1badbd88887-proofed': {
+    trickId: 'fffa5ef5-83e6-4839-92e1-e1badbd88887',
     level: 'proofed',
     stage: 'stage-006',
-    prerequisite: { trickId: 'down', level: 'generalized' },
+    prerequisite: { trickId: 'fffa5ef5-83e6-4839-92e1-e1badbd88887', level: 'generalized' },
   },
 
   // Stay progression
-  'stay-basic': {
-    trickId: 'stay',
+  'd3fff6a0-871d-40eb-91ae-dd4e2cc6780b-basic': {
+    trickId: 'd3fff6a0-871d-40eb-91ae-dd4e2cc6780b',
     level: 'basic',
     stage: 'stage-004',
-    prerequisite: { trickId: 'sit', level: 'basic' },
+    prerequisite: { trickId: 'fffa5ef5-83e6-4839-92e1-e1badbd88887', level: 'basic' },
   },
-  'stay-generalized': {
-    trickId: 'stay',
+  'd3fff6a0-871d-40eb-91ae-dd4e2cc6780b-generalized': {
+    trickId: 'd3fff6a0-871d-40eb-91ae-dd4e2cc6780b',
     level: 'generalized',
     stage: 'stage-005',
-    prerequisite: { trickId: 'stay', level: 'basic' },
+    prerequisite: { trickId: 'd3fff6a0-871d-40eb-91ae-dd4e2cc6780b', level: 'basic' },
   },
-  'stay-proofed': {
-    trickId: 'stay',
+  'd3fff6a0-871d-40eb-91ae-dd4e2cc6780b-proofed': {
+    trickId: 'd3fff6a0-871d-40eb-91ae-dd4e2cc6780b',
     level: 'proofed',
     stage: 'stage-006',
-    prerequisite: { trickId: 'stay', level: 'generalized' },
+    prerequisite: { trickId: 'd3fff6a0-871d-40eb-91ae-dd4e2cc6780b', level: 'generalized' },
   },
 
-  // Come/Recall progression
-  'come-basic': {
-    trickId: 'come',
+  // Come progression
+  '25cafc44-6396-4c3a-b6de-d203656eac71-basic': {
+    trickId: '25cafc44-6396-4c3a-b6de-d203656eac71',
     level: 'basic',
     stage: 'stage-004',
     prerequisite: null,
   },
-  'come-generalized': {
-    trickId: 'come',
+  '25cafc44-6396-4c3a-b6de-d203656eac71-generalized': {
+    trickId: '25cafc44-6396-4c3a-b6de-d203656eac71',
     level: 'generalized',
     stage: 'stage-005',
-    prerequisite: { trickId: 'come', level: 'basic' },
+    prerequisite: { trickId: '25cafc44-6396-4c3a-b6de-d203656eac71', level: 'basic' },
   },
-  'come-proofed': {
-    trickId: 'come',
+  '25cafc44-6396-4c3a-b6de-d203656eac71-proofed': {
+    trickId: '25cafc44-6396-4c3a-b6de-d203656eac71',
     level: 'proofed',
     stage: 'stage-007',
-    prerequisite: { trickId: 'come', level: 'generalized' },
+    prerequisite: { trickId: '25cafc44-6396-4c3a-b6de-d203656eac71', level: 'generalized' },
   },
 
-  // Leave it progression
-  'leave-it-basic': {
-    trickId: 'leave-it',
+  // Leave It progression
+  '46950108-abb8-48e4-86c4-fd0367e514eb-basic': {
+    trickId: '46950108-abb8-48e4-86c4-fd0367e514eb',
     level: 'basic',
     stage: 'stage-005',
     prerequisite: null,
   },
-  'leave-it-generalized': {
-    trickId: 'leave-it',
+  '46950108-abb8-48e4-86c4-fd0367e514eb-generalized': {
+    trickId: '46950108-abb8-48e4-86c4-fd0367e514eb',
     level: 'generalized',
     stage: 'stage-006',
-    prerequisite: { trickId: 'leave-it', level: 'basic' },
+    prerequisite: { trickId: '46950108-abb8-48e4-86c4-fd0367e514eb', level: 'basic' },
   },
-  'leave-it-proofed': {
-    trickId: 'leave-it',
+  '46950108-abb8-48e4-86c4-fd0367e514eb-proofed': {
+    trickId: '46950108-abb8-48e4-86c4-fd0367e514eb',
     level: 'proofed',
     stage: 'stage-007',
-    prerequisite: { trickId: 'leave-it', level: 'generalized' },
-  },
-
-  // Drop it progression
-  'drop-it-basic': {
-    trickId: 'drop-it',
-    level: 'basic',
-    stage: 'stage-005',
-    prerequisite: null,
-  },
-  'drop-it-generalized': {
-    trickId: 'drop-it',
-    level: 'generalized',
-    stage: 'stage-006',
-    prerequisite: { trickId: 'drop-it', level: 'basic' },
-  },
-  'drop-it-proofed': {
-    trickId: 'drop-it',
-    level: 'proofed',
-    stage: 'stage-007',
-    prerequisite: { trickId: 'drop-it', level: 'generalized' },
+    prerequisite: { trickId: '46950108-abb8-48e4-86c4-fd0367e514eb', level: 'generalized' },
   },
 };
 
-// Helper function to get skill key
 export function getSkillKey(trickId: string, level: 'basic' | 'generalized' | 'proofed'): string {
   return `${trickId}-${level}`;
 }
 
-// Helper function to get progression for a skill
-export function getSkillProgression(trickId: string, level: 'basic' | 'generalized' | 'proofed'): SkillProgression | undefined {
+export function getSkillProgression(
+  trickId: string,
+  level: 'basic' | 'generalized' | 'proofed'
+): SkillProgression | undefined {
   return SKILL_PROGRESSION_MAP[getSkillKey(trickId, level)];
 }
 
-// Context options for practice sessions
-export const PRACTICE_CONTEXTS = {
-  indoor_controlled: 'Indoor - Controlled Environment',
-  indoor_busy: 'Indoor - Busy/Active',
-  outdoor_quiet: 'Outdoor - Quiet Area',
-  outdoor_busy: 'Outdoor - Busy Area',
-  different_locations: 'Different Locations',
-  with_people: 'Around Other People',
-  with_dogs: 'Around Other Dogs',
-  with_mild_distractions: 'Mild Distractions',
-  with_moderate_distractions: 'Moderate Distractions',
-  with_high_distractions: 'High Distractions',
+// Practice contexts for skill generalization
+export const PRACTICE_CONTEXTS: Record<string, string> = {
+  'indoors': 'Inside home',
+  'outdoors-yard': 'Backyard/garden',
+  'outdoors-park': 'Park or open area',
+  'public-quiet': 'Quiet public space',
+  'public-busy': 'Busy public space',
+  'around-people': 'Around other people',
+  'around-dogs': 'Around other dogs',
 };
 
-// Distraction level descriptions
-export const DISTRACTION_LEVELS = {
-  none: 'No Distractions',
-  mild: 'Mild - Quiet background activity',
-  moderate: 'Moderate - Noticeable distractions',
-  high: 'High - Very tempting distractions',
+// Distraction levels for proofing
+export const DISTRACTION_LEVELS: Record<string, string> = {
+  'none': 'No distractions',
+  'mild': 'Mild distractions',
+  'moderate': 'Moderate distractions',
+  'high': 'High distractions',
 };
