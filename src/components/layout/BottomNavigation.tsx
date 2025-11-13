@@ -17,7 +17,7 @@ const tabs = [
 export function BottomNavigation({ activeTab, onTabChange }: BottomNavigationProps) {
   return (
     <nav className="tab-bar">
-        <div className="flex">
+        <div className="flex h-full">
           {tabs.map((tab) => {
             const Icon = tab.icon;
             const isActive = activeTab === tab.id;

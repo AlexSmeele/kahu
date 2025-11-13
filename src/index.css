@@ -529,12 +529,15 @@
     @apply bg-card border-t border-border safe-bottom absolute bottom-0 left-0 right-0 z-50;
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    height: var(--tabbar-height);
+    min-height: calc(var(--tabbar-height) + env(safe-area-inset-bottom));
+    display: flex;
+    align-items: stretch;
   }
   
   .tab-item {
     @apply flex-1 flex flex-col items-center justify-center py-2 px-1 transition-colors duration-200;
-    height: 5rem; /* Match tab-bar height */
+    height: 100%;
+    min-height: var(--tabbar-height);
   }
   
   .tab-item.active {
