@@ -146,9 +146,9 @@ export function QuickActionFAB(props: QuickActionFABProps) {
       )}
 
       {/* FAB Container */}
-      <div className="fixed bottom-[100px] right-6 z-50 flex flex-col-reverse items-end gap-3">
+      <div className="fixed bottom-[100px] right-6 z-50 flex flex-col items-end gap-3">
         {/* Action Items */}
-        {isExpanded && actions.map((action, index) => {
+        {isExpanded && [...actions].reverse().map((action, index) => {
           const Icon = action.icon;
           return (
             <div 
