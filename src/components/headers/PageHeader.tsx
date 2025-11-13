@@ -3,6 +3,7 @@ import { ChevronLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { IOSStatusBar } from "./IOSStatusBar";
 import { DynamicIsland } from "./DynamicIsland";
+import { useDevicePreview } from "@/preview/DevicePreviewProvider";
 
 interface PageHeaderProps {
   title: string;
@@ -11,13 +12,21 @@ interface PageHeaderProps {
 }
 
 export function PageHeader({ title, onBack, actions }: PageHeaderProps) {
+  // Detect if running on real mobile device vs desktop preview
+  const { isMobileDevice } = useDevicePreview();
+
   return (
     <div className="sticky top-0 z-20 bg-background/95 backdrop-blur-md after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[10px] after:bg-gradient-to-b after:from-transparent after:to-background/10 after:pointer-events-none">
-      {/* Status bar safe area with overlapping elements */}
-      <div className="relative h-[54px]">
-        <DynamicIsland />
-        <IOSStatusBar />
-      </div>
+      {/* Desktop preview: show simulated iOS status bar */}
+      {!isMobileDevice && (
+        <div className="relative h-[54px]">
+          <DynamicIsland />
+          <IOSStatusBar />
+        </div>
+      )}
+      
+      {/* Real mobile device: use native safe area */}
+      {isMobileDevice && <div className="safe-top" />}
       
       <div className="px-5 pb-4 flex items-center justify-between gap-3">
         {/* Back Button */}
