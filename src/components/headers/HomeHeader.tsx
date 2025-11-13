@@ -23,8 +23,11 @@ export function HomeHeader({
 }: HomeHeaderProps) {
   return (
     <div className="sticky top-0 z-20 bg-background/95 backdrop-blur-md after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[10px] after:bg-gradient-to-b after:from-transparent after:to-background/10 after:pointer-events-none">
-      <IOSStatusBar />
-      <DynamicIsland />
+      {/* Status bar safe area with overlapping elements */}
+      <div className="relative h-[54px]">
+        <DynamicIsland />
+        <IOSStatusBar />
+      </div>
       
       <div className="px-5 pb-4 flex items-center justify-between gap-3">
         {/* Dog Selector - Left */}

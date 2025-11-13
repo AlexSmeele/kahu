@@ -23,18 +23,16 @@ export function IOSStatusBar() {
     return () => clearInterval(interval);
   }, []);
 
-  const iconColor = theme === "dark" ? "#ffffff" : "#111827";
-
   return (
-    <div className="h-[54px] px-5 flex items-center justify-between text-foreground">
+    <div className="absolute inset-x-0 top-0 h-[54px] px-6 flex items-start justify-between text-foreground pt-[17px] z-30">
       {/* Left side - Time */}
-      <span className="text-xs font-semibold">{time}</span>
+      <span className="text-[15px] font-semibold tracking-tight">{time}</span>
 
       {/* Right side - Status icons */}
-      <div className="flex items-center gap-1.5">
-        <Signal className="w-3.5 h-3.5" strokeWidth={2.5} />
-        <Wifi className="w-3.5 h-3.5" strokeWidth={2.5} />
-        <Battery className="w-5 h-3.5" strokeWidth={2} />
+      <div className="flex items-center gap-[5px]">
+        <Signal className="w-[17px] h-[11px]" strokeWidth={2.8} />
+        <Wifi className="w-[15px] h-[11px]" strokeWidth={2.8} />
+        <Battery className="w-[27px] h-[11px]" strokeWidth={2.5} />
       </div>
     </div>
   );

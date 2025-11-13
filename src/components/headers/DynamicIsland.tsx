@@ -1,7 +1,7 @@
 export function DynamicIsland() {
   return (
-    <div className="flex justify-center pt-[7px] pb-3">
-      <div className="w-[150px] h-[40px] bg-black rounded-full" />
+    <div className="absolute inset-x-0 top-0 flex justify-center pt-[11px] z-20">
+      <div className="w-[126px] h-[37px] bg-black rounded-[43px]" />
     </div>
   );
 }
