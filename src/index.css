@@ -545,14 +545,6 @@
     @apply text-muted-foreground hover:text-foreground;
   }
 
-  /* Floating action button - Anchored to app viewport */
-  .fab {
-    @apply absolute w-14 h-14 bg-gradient-button-emerald text-white rounded-full flex items-center justify-center transition-transform duration-200 hover:scale-105 active:scale-95 z-40;
-    right: 1rem;
-    bottom: calc(var(--tabbar-height) + env(safe-area-inset-bottom) + 1rem);
-    box-shadow: var(--elevation-6);
-  }
-
   /* Content area constrained above tab bar */
   .content-area {
     height: calc(100dvh - var(--tabbar-height) - env(safe-area-inset-bottom));

@@ -1,4 +1,4 @@
-import { Award, Heart, Apple, User, Plus, Home } from "lucide-react";
+import { Award, Heart, Apple, User, Home } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export type TabType = 'home' | 'tricks' | 'wellness' | 'nutrition' | 'profile';
@@ -6,8 +6,6 @@ export type TabType = 'home' | 'tricks' | 'wellness' | 'nutrition' | 'profile';
 interface BottomNavigationProps {
   activeTab: TabType;
   onTabChange: (tab: TabType) => void;
-  onQuickAction: () => void;
-  hideFab?: boolean;
 }
 
 const tabs = [
@@ -16,22 +14,9 @@ const tabs = [
   { id: 'wellness' as TabType, label: 'Wellness', icon: Heart },
 ];
 
-export function BottomNavigation({ activeTab, onTabChange, onQuickAction, hideFab = false }: BottomNavigationProps) {
+export function BottomNavigation({ activeTab, onTabChange }: BottomNavigationProps) {
   return (
-    <>
-      {/* Floating Action Button */}
-      {!hideFab && (
-        <button
-          onClick={onQuickAction}
-          className="fab"
-          aria-label="Quick add"
-        >
-          <Plus className="w-6 h-6" />
-        </button>
-      )}
-
-      {/* Bottom Tab Bar */}
-      <nav className="tab-bar">
+    <nav className="tab-bar">
         <div className="flex">
           {tabs.map((tab) => {
             const Icon = tab.icon;
@@ -51,6 +36,5 @@ export function BottomNavigation({ activeTab, onTabChange, onQuickAction, hideFa
           })}
         </div>
       </nav>
-    </>
   );
 }

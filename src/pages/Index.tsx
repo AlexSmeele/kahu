@@ -5,7 +5,6 @@ import { TricksScreen } from "@/components/screens/TricksScreen";
 import { WellnessScreen } from "@/components/screens/HealthScreen";
 import { ProfileScreen } from "@/components/screens/ProfileScreen";
 import { BottomNavigation, TabType } from "@/components/layout/BottomNavigation";
-import { QuickActionModal } from "@/components/layout/QuickActionModal";
 import { DogOnboarding } from "@/components/onboarding/DogOnboarding";
 import { useDogs } from "@/hooks/useDogs";
 import { useAuth } from "@/contexts/AuthContext";
@@ -17,7 +16,6 @@ const Index = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const tabFromUrl = searchParams.get('tab') as TabType | null;
   const [activeTab, setActiveTab] = useState<TabType>(tabFromUrl || 'home');
-  const [isQuickActionOpen, setIsQuickActionOpen] = useState(false);
   const [isUserTyping, setIsUserTyping] = useState(false);
   const [selectedDogId, setSelectedDogId] = useState<string>(() => getStoredDogId() || '');
   const { user, session } = useAuth();
@@ -122,20 +120,6 @@ const Index = () => {
             logger.userAction('tabChange', { from: activeTab, to: tab });
             setActiveTab(tab);
           }}
-          onQuickAction={() => {
-            logger.userAction('quickActionOpen');
-            setIsQuickActionOpen(true);
-          }}
-          hideFab={true}
-        />
-
-        {/* Quick Action Modal */}
-        <QuickActionModal
-          isOpen={isQuickActionOpen}
-          onClose={() => setIsQuickActionOpen(false)}
-          onNavigateToTab={(tab) => setActiveTab(tab)}
-          selectedDogId={selectedDogId}
-          selectedDogName={dogs.find(dog => dog.id === selectedDogId)?.name}
         />
       </>
   );
