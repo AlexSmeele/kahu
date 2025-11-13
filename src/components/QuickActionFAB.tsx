@@ -156,7 +156,7 @@ export function QuickActionFAB(props: QuickActionFABProps) {
               className="flex items-center gap-3"
               style={{
                 animation: 'emergeFAB 0.15s ease-out forwards',
-                animationDelay: `${index * 30}ms`,
+                animationDelay: `${(actions.length - 1 - index) * 30}ms`,
                 opacity: 0,
                 transform: 'scale(0) translateY(60px)'
               }}
