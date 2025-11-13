@@ -9,12 +9,12 @@ export function ClickerButton({ onClick }: ClickerButtonProps) {
   return (
     <Button
       variant="ghost"
-      size="icon"
       onClick={onClick}
-      className="w-11 h-11 rounded-full"
+      className="h-11 px-4 rounded-full gap-2"
       aria-label="Open clicker"
     >
       <Radio className="w-[26px] h-[26px]" />
+      <span className="font-medium">Clicker</span>
     </Button>
   );
 }
