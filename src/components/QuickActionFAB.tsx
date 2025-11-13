@@ -205,15 +205,21 @@ export function QuickActionFAB(props: QuickActionFABProps) {
           onClick={() => setIsExpanded(!isExpanded)}
           aria-label="Quick actions"
           aria-expanded={isExpanded}
-          className={`w-14 h-14 rounded-full transition-all duration-300 flex items-center justify-center border shadow-lg ${
-            isExpanded 
-              ? theme === 'dark'
-                ? 'bg-white/10 hover:bg-white/15 border-white/20' 
-                : 'bg-gray-200 hover:bg-gray-300 border-gray-300'
-              : 'bg-gradient-to-br from-emerald-500 to-emerald-600 border-emerald-500/20 shadow-emerald-500/30 hover:scale-105'
-          }`}
+          className="relative w-14 h-14 rounded-full flex items-center justify-center shadow-lg"
         >
-          <div className={`transition-transform duration-300 ${isExpanded ? 'rotate-45' : 'rotate-0'}`}>
+          {/* Background layer with transition */}
+          <div 
+            className={`absolute inset-0 rounded-full border transition-all duration-300 ${
+              isExpanded 
+                ? theme === 'dark'
+                  ? 'bg-white/10 border-white/20' 
+                  : 'bg-gray-200 border-gray-300'
+                : 'bg-gradient-to-br from-emerald-500 to-emerald-600 border-emerald-500/20 shadow-emerald-500/30'
+            }`}
+          />
+          
+          {/* Icon with rotation */}
+          <div className={`relative z-10 transition-transform duration-300 ${isExpanded ? 'rotate-45' : 'rotate-0'}`}>
             <Plus className="w-6 h-6 text-white" />
           </div>
         </button>
