@@ -117,6 +117,7 @@ export function WellnessScreen({ selectedDogId, onDogChange }: WellnessScreenPro
           <DogDropdown 
             selectedDogId={selectedDogId} 
             onDogChange={onDogChange}
+            variant="inline"
           />
         }
       />

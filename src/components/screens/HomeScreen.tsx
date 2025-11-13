@@ -63,6 +63,7 @@ export function HomeScreen({ selectedDogId, onDogChange, onTabChange }: HomeScre
             <DogDropdown 
               selectedDogId={selectedDogId} 
               onDogChange={onDogChange}
+              variant="inline"
             />
           }
           rightSlot={

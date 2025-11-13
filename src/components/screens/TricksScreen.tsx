@@ -215,6 +215,7 @@ export function TricksScreen({ selectedDogId, onDogChange }: TricksScreenProps) 
           <DogDropdown 
             selectedDogId={selectedDogId} 
             onDogChange={onDogChange}
+            variant="inline"
           />
         }
         rightSlot={
