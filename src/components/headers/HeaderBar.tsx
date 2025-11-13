@@ -3,6 +3,8 @@ import { ChevronLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useSafeArea } from '@/contexts/SafeAreaContext';
 import { cn } from '@/lib/utils';
+import { IOSStatusBar } from './IOSStatusBar';
+import { DynamicIsland } from './DynamicIsland';
 
 interface HeaderBarProps {
   transparent?: boolean;
@@ -38,8 +40,13 @@ export function HeaderBar({
         'after:pointer-events-none',
         className
       )}
-      style={{ paddingTop: `${contentTopPadding}px` }}
     >
+      {/* iOS Status Bar Area */}
+      <div className="relative h-[54px]">
+        <DynamicIsland />
+        <IOSStatusBar />
+      </div>
+
       <div className="px-5 pb-4 flex items-center justify-between gap-3">
         {/* Left Action */}
         <div className="flex-shrink-0">
