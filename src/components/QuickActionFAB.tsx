@@ -146,7 +146,7 @@ export function QuickActionFAB(props: QuickActionFABProps) {
       )}
 
       {/* FAB Container */}
-      <div className="fixed bottom-24 right-6 z-50 flex flex-col-reverse items-end gap-3">
+      <div className="fixed bottom-[100px] right-6 z-50 flex flex-col-reverse items-end gap-3">
         {/* Action Items */}
         {isExpanded && actions.map((action, index) => {
           const Icon = action.icon;
@@ -212,8 +212,8 @@ export function QuickActionFAB(props: QuickActionFABProps) {
             className={`absolute inset-0 rounded-full border transition-all duration-300 ${
               isExpanded 
                 ? theme === 'dark'
-                  ? 'bg-white/10 border-white/20' 
-                  : 'bg-gray-200 border-gray-300'
+                  ? 'bg-emerald-600/50 border-emerald-400/30' 
+                  : 'bg-emerald-500/70 border-emerald-400/40'
                 : 'bg-gradient-to-br from-emerald-500 to-emerald-600 border-emerald-500/20 shadow-emerald-500/30'
             }`}
           />
