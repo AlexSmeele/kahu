@@ -29,7 +29,7 @@ export function BottomNavigation({ activeTab, onTabChange }: BottomNavigationPro
                 className={cn('tab-item', { active: isActive })}
                 aria-label={tab.label}
               >
-                <Icon className="w-6 h-6 mb-1" />
+                <Icon className="w-6 h-6 mb-2" />
                 <span className="text-xs font-medium">{tab.label}</span>
               </button>
             );

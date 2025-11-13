@@ -10,7 +10,7 @@ import { StatusBarController } from './components/headers/StatusBarController'
 createRoot(document.getElementById("root")!).render(
   <DevicePreviewProvider>
     <SafeAreaProvider debug={false}>
-      <StatusBarController visible={true} style="auto">
+      <StatusBarController visible={true} style="auto" backgroundAtTop="hsl(var(--background))">
         <ResponsiveShell>
           <App />
         </ResponsiveShell>
