@@ -27,6 +27,13 @@ import { useWellnessTimeline } from "@/hooks/useWellnessTimeline";
 import { useProfile } from "@/hooks/useProfile";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { TabType } from "@/components/layout/BottomNavigation";
+import { QuickActionFAB } from "@/components/QuickActionFAB";
+import { EmergencyModal } from "@/components/health/EmergencyModal";
+import { WeightTracker } from "@/components/health/WeightTracker";
+import { MealLogModal } from "@/components/nutrition/MealLogModal";
+import { HealthNotesModal } from "@/components/health/HealthNotesModal";
+import { useNutrition } from "@/hooks/useNutrition";
+import { useDogs } from "@/hooks/useDogs";
 
 interface HomeScreenProps {
   selectedDogId: string;
@@ -37,7 +44,15 @@ interface HomeScreenProps {
 export function HomeScreen({ selectedDogId, onDogChange, onTabChange }: HomeScreenProps) {
   const navigate = useNavigate();
   const [showNoteModal, setShowNoteModal] = useState(false);
+  const [showEmergencyModal, setShowEmergencyModal] = useState(false);
+  const [showWeightModal, setShowWeightModal] = useState(false);
+  const [showMealModal, setShowMealModal] = useState(false);
+  const [showHealthNotesModal, setShowHealthNotesModal] = useState(false);
   const { profile } = useProfile();
+  const { dogs } = useDogs();
+  const { nutritionPlan } = useNutrition(selectedDogId);
+  
+  const currentDog = dogs.find(dog => dog.id === selectedDogId);
   
   const {
     loading,
@@ -175,6 +190,46 @@ export function HomeScreen({ selectedDogId, onDogChange, onTabChange }: HomeScre
       </div>
 
       <QuickNoteModal dogId={selectedDogId} isOpen={showNoteModal} onClose={() => setShowNoteModal(false)} />
+      
+      <EmergencyModal
+        isOpen={showEmergencyModal}
+        onClose={() => setShowEmergencyModal(false)}
+        dogId={selectedDogId}
+        dogName={currentDog?.name}
+      />
+      
+      <WeightTracker
+        isOpen={showWeightModal}
+        onClose={() => setShowWeightModal(false)}
+        dogId={selectedDogId}
+        dogName={currentDog?.name || 'Your Dog'}
+        currentWeight={currentDog?.weight || 0}
+      />
+      
+      <MealLogModal
+        isOpen={showMealModal}
+        onClose={() => setShowMealModal(false)}
+        dogId={selectedDogId}
+        dogName={currentDog?.name}
+        nutritionPlanId={nutritionPlan?.id}
+      />
+      
+      <HealthNotesModal
+        isOpen={showHealthNotesModal}
+        onClose={() => setShowHealthNotesModal(false)}
+        dogId={selectedDogId}
+        dogName={currentDog?.name}
+      />
+      
+      <QuickActionFAB
+        theme="dark"
+        onEmergency={() => setShowEmergencyModal(true)}
+        onLogWeight={() => setShowWeightModal(true)}
+        onLogMeal={() => setShowMealModal(true)}
+        onHealthNote={() => setShowHealthNotesModal(true)}
+        onAskAI={() => navigate('/ai-chat')}
+        onTakePhoto={() => {}}
+      />
     </>
   );
 }

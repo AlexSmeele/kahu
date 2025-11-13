@@ -126,7 +126,7 @@ const Index = () => {
             logger.userAction('quickActionOpen');
             setIsQuickActionOpen(true);
           }}
-          hideFab={false}
+          hideFab={true}
         />
 
         {/* Quick Action Modal */}

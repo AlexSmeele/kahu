@@ -16,6 +16,8 @@ import { TimelineQuickActions } from "@/components/health/TimelineQuickActions";
 import { WellnessTimeline } from "@/components/health/WellnessTimeline";
 import { ActivityRecordModal } from "@/components/home/ActivityRecordModal";
 import { useWellnessTimeline } from "@/hooks/useWellnessTimeline";
+import { QuickActionFAB } from "@/components/QuickActionFAB";
+import { Heart, Scale, StickyNote, Apple } from "lucide-react";
 
 interface WellnessScreenProps {
   selectedDogId: string;
@@ -202,6 +204,36 @@ export function WellnessScreen({ selectedDogId, onDogChange }: WellnessScreenPro
         dogId={selectedDogId}
         dogName={currentDog?.name}
         nutritionPlanId={nutritionPlan?.id}
+      />
+      
+      <QuickActionFAB
+        theme="dark"
+        actions={[
+          {
+            icon: Heart,
+            label: 'Health Check',
+            onClick: () => setIsCheckupModalOpen(true),
+            gradient: 'from-red-500 to-red-600'
+          },
+          {
+            icon: Scale,
+            label: 'Log Weight',
+            onClick: () => setIsWeightTrackerOpen(true),
+            gradient: 'from-emerald-500 to-emerald-600'
+          },
+          {
+            icon: StickyNote,
+            label: 'Health Note',
+            onClick: () => setIsHealthNotesModalOpen(true),
+            gradient: 'from-blue-500 to-blue-600'
+          },
+          {
+            icon: Apple,
+            label: 'Log Meal',
+            onClick: () => setIsMealLogModalOpen(true),
+            gradient: 'from-amber-500 to-amber-600'
+          }
+        ]}
       />
     </div>
   );

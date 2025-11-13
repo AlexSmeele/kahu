@@ -14,6 +14,7 @@ import { DogDropdown } from "@/components/dogs/DogDropdown";
 import { ClickerButton } from "@/components/training/ClickerButton";
 import { ClickerModal } from "@/components/training/ClickerModal";
 import { MOCK_FOUNDATION_TOPICS, MOCK_TROUBLESHOOTING_TOPICS, type FoundationTopic, isMockDogId } from "@/lib/mockData";
+import { QuickActionFAB, type QuickAction } from "@/components/QuickActionFAB";
 
 const categoryColors = {
   Foundation: 'bg-emerald-500',
@@ -509,6 +510,38 @@ export function TricksScreen({ selectedDogId, onDogChange }: TricksScreenProps) 
 
       {/* Modals */}
       <ClickerModal isOpen={isClickerOpen} onClose={() => setIsClickerOpen(false)} />
+      
+      <QuickActionFAB
+        theme="dark"
+        actions={[
+          {
+            icon: Play,
+            label: 'Start Training',
+            onClick: () => {
+              if (currentDog) {
+                navigate(`/training-session?dogId=${currentDog.id}`);
+              }
+            },
+            gradient: 'from-emerald-500 to-emerald-600'
+          },
+          {
+            icon: Trophy,
+            label: 'View Roadmap',
+            onClick: () => {
+              navigate(`/?tab=tricks&section=program`);
+            },
+            gradient: 'from-amber-500 to-amber-600'
+          },
+          {
+            icon: Target,
+            label: 'Foundations',
+            onClick: () => {
+              navigate(`/?tab=tricks&section=foundations`);
+            },
+            gradient: 'from-blue-500 to-blue-600'
+          }
+        ]}
+      />
     </div>
   );
 }
