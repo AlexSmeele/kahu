@@ -5,13 +5,16 @@ import './lib/performance' // Initialize global error handlers
 import { DevicePreviewProvider } from './preview/DevicePreviewProvider'
 import { ResponsiveShell } from './preview/ResponsiveShell'
 import { SafeAreaProvider } from './contexts/SafeAreaContext'
+import { StatusBarController } from './components/headers/StatusBarController'
 
 createRoot(document.getElementById("root")!).render(
   <DevicePreviewProvider>
     <SafeAreaProvider debug={false}>
-      <ResponsiveShell>
-        <App />
-      </ResponsiveShell>
+      <StatusBarController visible={true} style="auto">
+        <ResponsiveShell>
+          <App />
+        </ResponsiveShell>
+      </StatusBarController>
     </SafeAreaProvider>
   </DevicePreviewProvider>
 );

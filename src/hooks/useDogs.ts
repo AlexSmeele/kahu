@@ -111,13 +111,13 @@ export function useDogs() {
         .from('dog_breeds')
         .select('id')
         .ilike('breed', 'Shiba Inu')
-        .single();
+        .maybeSingle();
 
       const { data: miniAussieBreed } = await supabase
         .from('dog_breeds')
         .select('id')
         .or('breed.ilike.%Miniature Australian Shepherd%,breed.ilike.%Mini Australian Shepherd%')
-        .single();
+        .maybeSingle();
 
       const mockDogs: Dog[] = [
         {

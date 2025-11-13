@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
-import { HomeHeader } from "@/components/headers/HomeHeader";
+import { HeaderBar } from "@/components/headers/HeaderBar";
+import { DogDropdown } from "@/components/dogs/DogDropdown";
 import { useDogs } from "@/hooks/useDogs";
 import { useNutrition } from "@/hooks/useNutrition";
 import { MealLogModal } from "@/components/nutrition/MealLogModal";
@@ -108,10 +109,16 @@ export function WellnessScreen({ selectedDogId, onDogChange }: WellnessScreenPro
   }
 
   return (
-    <div className="flex flex-col h-full safe-top relative">
-      <HomeHeader
-        selectedDogId={selectedDogId}
-        onDogChange={onDogChange}
+    <div className="flex flex-col h-full relative">
+      <HeaderBar
+        transparent={false}
+        elevated={false}
+        leftSlot={
+          <DogDropdown 
+            selectedDogId={selectedDogId} 
+            onDogChange={onDogChange}
+          />
+        }
       />
 
       {/* Scrollable Content */}

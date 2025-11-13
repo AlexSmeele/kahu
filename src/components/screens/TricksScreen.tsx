@@ -9,7 +9,8 @@ import { TopicCard } from "@/components/training/TopicCard";
 import { RoadmapContent } from "@/components/training/RoadmapContent";
 import { useDogs } from "@/hooks/useDogs";
 import { useTricks, Trick } from "@/hooks/useTricks";
-import { HomeHeader } from "@/components/headers/HomeHeader";
+import { HeaderBar } from "@/components/headers/HeaderBar";
+import { DogDropdown } from "@/components/dogs/DogDropdown";
 import { ClickerButton } from "@/components/training/ClickerButton";
 import { ClickerModal } from "@/components/training/ClickerModal";
 import { MOCK_FOUNDATION_TOPICS, MOCK_TROUBLESHOOTING_TOPICS, type FoundationTopic, isMockDogId } from "@/lib/mockData";
@@ -206,11 +207,17 @@ export function TricksScreen({ selectedDogId, onDogChange }: TricksScreenProps) 
   };
 
   return (
-    <div className="flex flex-col h-full bg-gradient-to-br from-primary/5 via-accent/5 to-secondary/10 overflow-hidden safe-top relative">
-      <HomeHeader
-        selectedDogId={selectedDogId}
-        onDogChange={onDogChange}
-        extraActions={
+    <div className="flex flex-col h-full bg-gradient-to-br from-primary/5 via-accent/5 to-secondary/10 overflow-hidden relative">
+      <HeaderBar
+        transparent={false}
+        elevated={false}
+        leftSlot={
+          <DogDropdown 
+            selectedDogId={selectedDogId} 
+            onDogChange={onDogChange}
+          />
+        }
+        rightSlot={
           <ClickerButton onClick={() => setIsClickerOpen(true)} />
         }
       />

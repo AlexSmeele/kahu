@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { HomeHeader } from "@/components/headers/HomeHeader";
+import { HeaderBar } from "@/components/headers/HeaderBar";
+import { DogDropdown } from "@/components/dogs/DogDropdown";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { User } from "lucide-react";
 import { TrainingGoalCard } from "@/components/home/TrainingGoalCard";
 import { UrgentAlertsBanner } from "@/components/home/UrgentAlertsBanner";
 import { ActivityCircleCard } from "@/components/home/ActivityCircleCard";
@@ -52,13 +55,27 @@ export function HomeScreen({ selectedDogId, onDogChange, onTabChange }: HomeScre
 
   return (
     <>
-      <div className="bg-background pb-20 safe-top relative">
-        <HomeHeader
-          selectedDogId={selectedDogId}
-          onDogChange={onDogChange}
-          userImage={profile?.avatar_url || undefined}
-          userName={profile?.display_name}
-          onProfileClick={() => onTabChange('profile')}
+      <div className="bg-background pb-20 relative">
+        <HeaderBar
+          transparent={false}
+          elevated={false}
+          leftSlot={
+            <DogDropdown 
+              selectedDogId={selectedDogId} 
+              onDogChange={onDogChange}
+            />
+          }
+          rightSlot={
+            <Avatar 
+              className="w-10 h-10 cursor-pointer" 
+              onClick={() => onTabChange('profile')}
+            >
+              <AvatarImage src={profile?.avatar_url || undefined} />
+              <AvatarFallback>
+                <User className="w-5 h-5" />
+              </AvatarFallback>
+            </Avatar>
+          }
         />
 
         {loading ? (
