@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import { HomeHeader } from "@/components/headers/HomeHeader";
 import { useDogs } from "@/hooks/useDogs";
-import { useProfile } from "@/hooks/useProfile";
 import { useNutrition } from "@/hooks/useNutrition";
 import { MealLogModal } from "@/components/nutrition/MealLogModal";
 import { WeightTracker } from "@/components/health/WeightTracker";
@@ -33,7 +32,6 @@ export function WellnessScreen({ selectedDogId, onDogChange }: WellnessScreenPro
   const [isMealLogModalOpen, setIsMealLogModalOpen] = useState(false);
   
   const { dogs } = useDogs();
-  const { profile } = useProfile();
   const currentDog = dogs.find(dog => dog.id === selectedDogId);
   const { nutritionPlan } = useNutrition(selectedDogId);
   const location = useLocation();
@@ -114,8 +112,6 @@ export function WellnessScreen({ selectedDogId, onDogChange }: WellnessScreenPro
       <HomeHeader
         selectedDogId={selectedDogId}
         onDogChange={onDogChange}
-        userImage={profile?.avatar_url || undefined}
-        userName={profile?.display_name}
       />
 
       {/* Scrollable Content */}

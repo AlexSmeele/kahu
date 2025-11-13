@@ -11,7 +11,6 @@ import { useDogs } from "@/hooks/useDogs";
 import { useTricks, Trick } from "@/hooks/useTricks";
 import { HomeHeader } from "@/components/headers/HomeHeader";
 import { ClickerButton } from "@/components/training/ClickerButton";
-import { useProfile } from "@/hooks/useProfile";
 import { ClickerModal } from "@/components/training/ClickerModal";
 import { MOCK_FOUNDATION_TOPICS, MOCK_TROUBLESHOOTING_TOPICS, type FoundationTopic, isMockDogId } from "@/lib/mockData";
 
@@ -116,7 +115,6 @@ export function TricksScreen({ selectedDogId, onDogChange }: TricksScreenProps) 
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { dogs } = useDogs();
-  const { profile } = useProfile();
   const currentDog = dogs.find(dog => dog.id === selectedDogId);
   const { tricks, dogTricks, loading, startTrick, addPracticeSession, updateTrickStatus, refetch } = useTricks(currentDog?.id);
   const [selectedDifficulty, setSelectedDifficulty] = useState<string>('all');
@@ -212,8 +210,6 @@ export function TricksScreen({ selectedDogId, onDogChange }: TricksScreenProps) 
       <HomeHeader
         selectedDogId={selectedDogId}
         onDogChange={onDogChange}
-        userImage={profile?.avatar_url || undefined}
-        userName={profile?.display_name}
         extraActions={
           <ClickerButton onClick={() => setIsClickerOpen(true)} />
         }
