@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Kahu Design System - Kauri Leaf Green with native NZ-inspired neutrals */
+/* Kahu Design System - Updated with design-system.json tokens */
 
 @layer base {
   :root {
@@ -12,119 +12,215 @@
     --app-min-height: 600px;
     --app-max-height: 844px;
 
-    /* Core brand colors - Kauri Leaf Green with native NZ-inspired neutrals */
-    --background: 43 41% 89%;
-    --foreground: 80 4% 16%;
+    /* Core Design System Colors - Emerald Primary */
+    --background: 0 0% 100%; /* white */
+    --foreground: 220 9% 10%; /* gray.900 */
 
-    --card: 0 0% 100%;
-    --card-foreground: 80 4% 16%;
+    --card: 0 0% 100%; /* white */
+    --card-foreground: 220 9% 10%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 80 4% 16%;
+    --popover-foreground: 220 9% 10%;
 
-    --primary: 130 30% 45%; /* Logo Green - matches brand icon */
-    --primary-foreground: 43 41% 89%; /* Flax Sand text on green */
-    --primary-hover: 130 30% 40%;
+    /* Primary - Emerald Scale */
+    --primary: 160 84% 39%; /* emerald.500 */
+    --primary-foreground: 0 0% 100%;
+    --primary-hover: 160 84% 35%; /* emerald.600 */
 
-    --secondary: 40 52% 59%;
-    --secondary-foreground: 80 4% 16%;
-    --secondary-hover: 40 52% 54%;
+    /* Secondary - Amber Scale */
+    --secondary: 38 92% 50%; /* amber.500 */
+    --secondary-foreground: 26 90% 4%; /* amber.900 */
+    --secondary-hover: 32 95% 44%; /* amber.600 */
 
-    --muted: 43 41% 85%;
-    --muted-foreground: 80 4% 40%;
+    /* Muted - Gray tones */
+    --muted: 210 40% 98%; /* gray.50 */
+    --muted-foreground: 220 9% 46%; /* gray.500 */
 
-    --accent: 16 47% 42%;
-    --accent-foreground: 43 41% 89%;
-    --accent-hover: 16 47% 37%;
+    /* Accent - Purple Scale */
+    --accent: 271 81% 56%; /* purple.500 */
+    --accent-foreground: 0 0% 100%;
+    --accent-hover: 271 91% 65%; /* purple.400 */
 
-    --success: 142 76% 36%;
+    /* Semantic Colors */
+    --success: 160 84% 39%; /* emerald.500 */
     --success-foreground: 0 0% 100%;
 
-    --warning: 40 52% 59%;
-    --warning-foreground: 80 4% 16%;
+    --warning: 38 92% 50%; /* amber.500 */
+    --warning-foreground: 26 90% 4%;
 
-    --destructive: 16 60% 50%;
+    --destructive: 0 84% 60%; /* red/error */
     --destructive-foreground: 0 0% 100%;
 
-    --border: 43 30% 80%;
-    --input: 43 35% 92%;
-    --ring: 130 30% 45%;
+    /* Borders & Inputs */
+    --border: 220 13% 91%; /* gray.200 */
+    --input: 220 13% 91%; /* gray.200 */
+    --ring: 160 84% 39%; /* emerald.500 */
 
-    --radius: 1rem;
+    /* Border Radius */
+    --radius: 0.5rem; /* 8px - default */
+    --radius-sm: 0.25rem; /* 4px */
+    --radius-md: 0.75rem; /* 12px */
+    --radius-lg: 1rem; /* 16px */
+    --radius-xl: 1.25rem; /* 20px */
+    --radius-2xl: 1.5rem; /* 24px */
+    --radius-3xl: 2rem; /* 32px */
 
-    --tabbar-height: 4rem;
+    --tabbar-height: 5rem; /* 80px */
 
-    /* Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(130 30% 45%), hsl(130 30% 40%));
-    --gradient-secondary: linear-gradient(135deg, hsl(40 52% 59%), hsl(40 52% 54%));
-    --gradient-accent: linear-gradient(135deg, hsl(16 47% 42%), hsl(16 47% 37%));
+    /* Gradients - Light Mode */
+    --gradient-glass: linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, rgba(249, 250, 251, 1) 100%);
+    --gradient-primary: linear-gradient(180deg, rgba(236, 253, 245, 1) 0%, rgba(255, 255, 255, 1) 50%, rgba(249, 250, 251, 1) 100%);
+    --gradient-amber: linear-gradient(180deg, rgba(255, 251, 235, 1) 0%, rgba(255, 247, 237, 1) 50%, rgba(249, 250, 251, 1) 100%);
+    --gradient-button-emerald: linear-gradient(90deg, #10b981 0%, #059669 100%);
+    --gradient-button-amber: linear-gradient(90deg, #f59e0b 0%, #d97706 100%);
+    --gradient-button-blue: linear-gradient(90deg, #3b82f6 0%, #2563eb 100%);
+    --gradient-button-purple: linear-gradient(90deg, #a855f7 0%, #9333ea 100%);
 
-    /* Shadows */
-    --shadow-soft: 0 4px 20px -4px hsl(130 30% 45% / 0.1);
-    --shadow-medium: 0 8px 32px -8px hsl(130 30% 45% / 0.15);
-    --shadow-large: 0 16px 48px -12px hsl(130 30% 45% / 0.2);
+    /* Shadows - Elevation System */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-default: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.05);
 
-    /* Timeline specific */
-    --timeline-line-width: 3px;
-    --timeline-dot-size: 6px;
-    --card-shadow-subtle: 0 1px 3px rgba(0, 0, 0, 0.08);
-    --card-shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.12);
+    /* Elevation levels (web box-shadow) */
+    --elevation-0: none;
+    --elevation-1: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --elevation-2: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+    --elevation-3: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --elevation-4: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --elevation-5: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --elevation-6: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    --elevation-8: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    --elevation-12: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    --elevation-16: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    --elevation-24: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
 
+    /* State Modifiers */
+    --hover-opacity: 0.9;
+    --hover-scale: 1.02;
+    --pressed-opacity: 0.8;
+    --pressed-scale: 0.98;
+    --disabled-opacity: 0.5;
+    --loading-opacity: 0.7;
+
+    /* Transitions */
+    --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-base: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: 500ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: 300ms cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+    /* Layout & Spacing */
+    --safe-area-top: 44px;
+    --safe-area-bottom: 34px;
+    --status-bar-height: 54px;
+    --gutter-mobile: 16px;
+    --gutter-tablet: 24px;
+    --gutter-desktop: 32px;
+    --padding-page: 20px;
+    --padding-section: 24px;
+    --padding-card: 20px;
+    --padding-modal: 24px;
+
+    /* Z-Index Scale */
+    --z-base: 0;
+    --z-dropdown: 10;
+    --z-sticky: 20;
+    --z-fixed: 30;
+    --z-modal: 40;
+    --z-popover: 50;
+    --z-tooltip: 60;
+
+    /* Sidebar */
     --sidebar-background: 0 0% 98%;
-
     --sidebar-foreground: 240 5.3% 26.1%;
-
     --sidebar-primary: 240 5.9% 10%;
-
     --sidebar-primary-foreground: 0 0% 98%;
-
     --sidebar-accent: 240 4.8% 95.9%;
-
     --sidebar-accent-foreground: 240 5.9% 10%;
-
     --sidebar-border: 220 13% 91%;
-
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
   .dark {
-    /* Dark mode with Kauri Leaf Green and native NZ-inspired neutrals - inverted */
-    --background: 80 4% 16%;
-    --foreground: 43 41% 89%;
+    /* Dark Mode - Design System */
+    --background: 0 0% 10%; /* #1a1a1a */
+    --foreground: 0 0% 100%; /* white */
 
-    --card: 80 4% 20%;
-    --card-foreground: 43 41% 89%;
+    --card: 0 0% 16%; /* #2a2a2a */
+    --card-foreground: 0 0% 100%;
 
-    --popover: 80 4% 20%;
-    --popover-foreground: 43 41% 89%;
+    --popover: 0 0% 16%;
+    --popover-foreground: 0 0% 100%;
 
-    --primary: 130 30% 52%; /* brighter Logo Green for dark mode visibility */
-    --primary-foreground: 80 4% 16%; /* Deep Charcoal for contrast */
-    --primary-hover: 130 30% 57%;
+    /* Primary - Emerald (adjusted for dark) */
+    --primary: 160 84% 39%; /* emerald.500 */
+    --primary-foreground: 220 9% 10%; /* dark text */
+    --primary-hover: 160 80% 44%; /* brighter for dark mode */
 
-    --secondary: 40 52% 65%;
-    --secondary-foreground: 80 4% 16%;
-    --secondary-hover: 40 52% 70%;
+    /* Secondary - Amber */
+    --secondary: 38 92% 50%; /* amber.500 */
+    --secondary-foreground: 220 9% 10%;
+    --secondary-hover: 38 92% 55%;
 
-    --muted: 80 4% 25%;
-    --muted-foreground: 43 30% 65%;
+    /* Muted */
+    --muted: 0 0% 25%;
+    --muted-foreground: 210 40% 65%;
 
-    --accent: 16 47% 55%;
-    --accent-foreground: 80 4% 16%;
-    --accent-hover: 16 47% 60%;
+    /* Accent - Purple */
+    --accent: 271 81% 56%; /* purple.500 */
+    --accent-foreground: 220 9% 10%;
+    --accent-hover: 271 81% 60%;
 
+    /* Semantic Colors (dark adjusted) */
     --success: 142 70% 45%;
-    --success-foreground: 80 4% 16%;
+    --success-foreground: 220 9% 10%;
 
-    --warning: 40 52% 65%;
-    --warning-foreground: 80 4% 16%;
+    --warning: 38 92% 55%;
+    --warning-foreground: 220 9% 10%;
 
-    --destructive: 16 60% 55%;
-    --destructive-foreground: 43 41% 89%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 80 4% 30%;
-    --input: 80 4% 22%;
-    --ring: 130 30% 52%;
+    /* Borders & Inputs */
+    --border: 0 0% 30%; /* rgba(255, 255, 255, 0.1) */
+    --input: 0 0% 22%;
+    --ring: 160 84% 39%;
+
+    /* Gradients - Dark Mode */
+    --gradient-glass: linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+    --gradient-primary: linear-gradient(180deg, rgba(6, 78, 59, 0.2) 0%, rgba(255, 255, 255, 0.05) 50%, rgba(255, 255, 255, 0.02) 100%);
+    --gradient-amber: linear-gradient(180deg, rgba(120, 53, 15, 0.2) 0%, rgba(124, 45, 18, 0.15) 50%, rgba(255, 255, 255, 0.02) 100%);
+    --gradient-button-emerald: linear-gradient(90deg, #10b981 0%, #059669 100%);
+    --gradient-button-amber: linear-gradient(90deg, #f59e0b 0%, #d97706 100%);
+    --gradient-button-blue: linear-gradient(90deg, #3b82f6 0%, #2563eb 100%);
+    --gradient-button-purple: linear-gradient(90deg, #a855f7 0%, #9333ea 100%);
+
+    /* Shadows (adjusted for dark) */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+    --shadow-default: 0 1px 3px 0 rgba(0, 0, 0, 0.4);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.4);
+    --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.3);
+
+    /* Elevation levels (dark mode) */
+    --elevation-0: none;
+    --elevation-1: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+    --elevation-2: 0 1px 3px 0 rgba(0, 0, 0, 0.4);
+    --elevation-3: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+    --elevation-4: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+    --elevation-5: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
+    --elevation-6: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
+    --elevation-8: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 10px 10px -5px rgba(0, 0, 0, 0.3);
+    --elevation-12: 0 20px 25px -5px rgba(0, 0, 0, 0.4);
+    --elevation-16: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    --elevation-24: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+
+    /* Sidebar (existing dark mode values) */
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
@@ -164,6 +260,92 @@
 }
 
 @layer components {
+  /* Typography Role Classes */
+  .text-heading-1 {
+    font-size: 2.25rem; /* 36px */
+    line-height: 1.2;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    color: hsl(var(--foreground));
+  }
+
+  .text-heading-2 {
+    font-size: 1.875rem; /* 30px */
+    line-height: 1.25;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    color: hsl(var(--foreground));
+  }
+
+  .text-heading-3 {
+    font-size: 1.5rem; /* 24px */
+    line-height: 1.33;
+    font-weight: 600;
+    color: hsl(var(--foreground));
+  }
+
+  .text-heading-4 {
+    font-size: 1.25rem; /* 20px */
+    line-height: 1.4;
+    font-weight: 600;
+    color: hsl(var(--foreground));
+  }
+
+  .text-heading-5 {
+    font-size: 1.125rem; /* 18px */
+    line-height: 1.55;
+    font-weight: 600;
+    color: hsl(var(--foreground));
+  }
+
+  .text-heading-6 {
+    font-size: 1rem; /* 16px */
+    line-height: 1.5;
+    font-weight: 600;
+    color: hsl(var(--foreground));
+  }
+
+  .text-body-large {
+    font-size: 1.125rem; /* 18px */
+    line-height: 1.55;
+    color: hsl(var(--foreground));
+  }
+
+  .text-body {
+    font-size: 1rem; /* 16px */
+    line-height: 1.5;
+    color: hsl(var(--foreground));
+  }
+
+  .text-body-small {
+    font-size: 0.875rem; /* 14px */
+    line-height: 1.43;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .text-caption {
+    font-size: 0.75rem; /* 12px */
+    line-height: 1.33;
+    letter-spacing: 0.025em;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .text-overline {
+    font-size: 0.75rem; /* 12px */
+    line-height: 1.33;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .text-label {
+    font-size: 0.875rem; /* 14px */
+    line-height: 1.43;
+    font-weight: 500;
+    color: hsl(var(--muted-foreground));
+  }
+
   /* Animation utilities */
   .animate-fade-in {
     animation: fadeIn 0.3s ease-in-out;
@@ -223,6 +405,48 @@
     }
   }
 
+  /* Elevation System - shadow utilities */
+  .elevation-0 { box-shadow: var(--elevation-0); }
+  .elevation-1 { box-shadow: var(--elevation-1); }
+  .elevation-2 { box-shadow: var(--elevation-2); }
+  .elevation-3 { box-shadow: var(--elevation-3); }
+  .elevation-4 { box-shadow: var(--elevation-4); }
+  .elevation-5 { box-shadow: var(--elevation-5); }
+  .elevation-6 { box-shadow: var(--elevation-6); }
+  .elevation-8 { box-shadow: var(--elevation-8); }
+  .elevation-12 { box-shadow: var(--elevation-12); }
+  .elevation-16 { box-shadow: var(--elevation-16); }
+  .elevation-24 { box-shadow: var(--elevation-24); }
+
+  /* Gradient utilities */
+  .bg-gradient-glass {
+    background: var(--gradient-glass);
+  }
+
+  .bg-gradient-primary {
+    background: var(--gradient-primary);
+  }
+
+  .bg-gradient-amber {
+    background: var(--gradient-amber);
+  }
+
+  .bg-gradient-button-emerald {
+    background: var(--gradient-button-emerald);
+  }
+
+  .bg-gradient-button-amber {
+    background: var(--gradient-button-amber);
+  }
+
+  .bg-gradient-button-blue {
+    background: var(--gradient-button-blue);
+  }
+
+  .bg-gradient-button-purple {
+    background: var(--gradient-button-purple);
+  }
+
   /* App shell for iPhone-like viewport */
   .app-shell {
     @apply flex justify-center items-center bg-background;
@@ -240,11 +464,19 @@
 
   /* Card variants */
   .card-soft {
-    @apply bg-card shadow-[var(--shadow-soft)] border border-border rounded-[var(--radius)];
+    @apply bg-card border border-border rounded-[var(--radius)];
+    box-shadow: var(--shadow-sm);
   }
   
   .card-elevated {
-    @apply bg-card shadow-[var(--shadow-medium)] border border-border rounded-[var(--radius)];
+    @apply bg-card border border-border rounded-[var(--radius)];
+    box-shadow: var(--shadow-md);
+  }
+
+  .card-glass {
+    @apply bg-gradient-glass border border-border rounded-[var(--radius-2xl)];
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
   }
 
   /* Button variants for mobile touch */
@@ -253,7 +485,8 @@
   }
   
   .btn-primary {
-    @apply btn-touch bg-gradient-to-r from-primary to-primary-hover text-primary-foreground hover:shadow-[var(--shadow-soft)] active:scale-95;
+    @apply btn-touch bg-gradient-button-emerald text-primary-foreground hover:opacity-90 active:scale-95;
+    box-shadow: var(--elevation-2);
   }
   
   .btn-secondary {
@@ -261,7 +494,8 @@
   }
   
   .btn-accent {
-    @apply btn-touch bg-gradient-to-r from-accent to-accent-hover text-accent-foreground hover:shadow-[var(--shadow-soft)] active:scale-95;
+    @apply btn-touch bg-gradient-button-purple text-white hover:opacity-90 active:scale-95;
+    box-shadow: var(--elevation-2);
   }
 
   /* Tab bar styles - Anchored to app viewport bottom */
@@ -274,7 +508,7 @@
   
   .tab-item {
     @apply flex-1 flex flex-col items-center justify-center py-2 px-1 transition-colors duration-200;
-    height: 4rem; /* Match tab-bar height */
+    height: 5rem; /* Match tab-bar height */
   }
   
   .tab-item.active {
@@ -287,9 +521,10 @@
 
   /* Floating action button - Anchored to app viewport */
   .fab {
-    @apply absolute w-14 h-14 bg-gradient-to-r from-primary to-primary-hover text-primary-foreground rounded-full shadow-[var(--shadow-large)] flex items-center justify-center transition-transform duration-200 hover:scale-105 active:scale-95 z-40;
+    @apply absolute w-14 h-14 bg-gradient-button-emerald text-white rounded-full flex items-center justify-center transition-transform duration-200 hover:scale-105 active:scale-95 z-40;
     right: 1rem;
     bottom: calc(var(--tabbar-height) + env(safe-area-inset-bottom) + 1rem);
+    box-shadow: var(--elevation-6);
   }
 
   /* Content area constrained above tab bar */
@@ -311,4 +546,3 @@
     -webkit-overflow-scrolling: touch;
   }
 }
-
