@@ -1,4 +1,4 @@
-import { RotateCw, Eye, EyeOff, Camera } from 'lucide-react';
+import { Eye, EyeOff, Camera } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   Select,
@@ -16,11 +16,9 @@ export function DeviceToolbar() {
   const { 
     selectedDeviceId, 
     zoom, 
-    orientation, 
     frameVisible,
     setSelectedDevice, 
     setZoom, 
-    toggleOrientation,
     toggleFrameVisible
   } = useDevicePreview();
   
@@ -97,16 +95,6 @@ export function DeviceToolbar() {
           <SelectItem value="0.5">50%</SelectItem>
         </SelectContent>
       </Select>
-      
-      <Button
-        variant="outline"
-        size="icon"
-        onClick={toggleOrientation}
-        aria-label={`Switch to ${orientation === 'portrait' ? 'landscape' : 'portrait'}`}
-        title="Toggle orientation"
-      >
-        <RotateCw className="h-4 w-4" />
-      </Button>
       
       <Button
         variant="outline"
