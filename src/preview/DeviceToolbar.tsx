@@ -6,6 +6,8 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
+  SelectGroup,
+  SelectLabel,
 } from '@/components/ui/select';
 import { useDevicePreview } from './DevicePreviewProvider';
 import { DEVICE_PRESETS } from './DevicePresets';
@@ -26,6 +28,15 @@ export function DeviceToolbar() {
   
   const zoomValue = zoom === 1 ? '1' : zoom.toFixed(2);
   
+  // Group devices by manufacturer
+  const groupedDevices = DEVICE_PRESETS.reduce((acc, preset) => {
+    if (!acc[preset.manufacturer]) {
+      acc[preset.manufacturer] = [];
+    }
+    acc[preset.manufacturer].push(preset);
+    return acc;
+  }, {} as Record<string, typeof DEVICE_PRESETS>);
+  
   return (
     <div 
       className="preview-toolbar" 
@@ -34,28 +45,36 @@ export function DeviceToolbar() {
       data-preview-ui="true"
     >
       <Select value={selectedDeviceId} onValueChange={setSelectedDevice}>
-        <SelectTrigger className="w-[220px]" aria-label="Select device">
+        <SelectTrigger className="w-[280px]" aria-label="Select device">
           <SelectValue>
             {selectedPreset?.name}
-            {selectedPreset && selectedPreset.width > 0 && (
+            {selectedPreset && selectedPreset.screenSize !== 'Variable' && (
               <span className="text-xs text-muted-foreground ml-2">
-                {selectedPreset.width}×{selectedPreset.height}
+                {selectedPreset.screenSize}, {selectedPreset.year}
               </span>
             )}
           </SelectValue>
         </SelectTrigger>
-        <SelectContent>
-          {DEVICE_PRESETS.map(preset => (
-            <SelectItem key={preset.id} value={preset.id}>
-              <span className="flex items-center gap-2">
-                {preset.name}
-                {preset.width > 0 && (
-                  <span className="text-xs text-muted-foreground">
-                    {preset.width}×{preset.height}
+        <SelectContent 
+          portalContainer={typeof document !== 'undefined' ? document.body : null}
+          className="z-[10050]"
+        >
+          {Object.entries(groupedDevices).map(([manufacturer, devices]) => (
+            <SelectGroup key={manufacturer}>
+              <SelectLabel>{manufacturer}</SelectLabel>
+              {devices.map(preset => (
+                <SelectItem key={preset.id} value={preset.id}>
+                  <span className="flex items-center gap-2">
+                    {preset.name}
+                    {preset.screenSize !== 'Variable' && (
+                      <span className="text-xs text-muted-foreground">
+                        {preset.screenSize}, {preset.year}
+                      </span>
+                    )}
                   </span>
-                )}
-              </span>
-            </SelectItem>
+                </SelectItem>
+              ))}
+            </SelectGroup>
           ))}
         </SelectContent>
       </Select>
@@ -66,7 +85,10 @@ export function DeviceToolbar() {
             {zoom === 1 ? '100%' : `${Math.round(zoom * 100)}%`}
           </SelectValue>
         </SelectTrigger>
-        <SelectContent>
+        <SelectContent 
+          portalContainer={typeof document !== 'undefined' ? document.body : null}
+          className="z-[10050]"
+        >
           <SelectItem value="fit">Fit</SelectItem>
           <SelectItem value="1">100%</SelectItem>
           <SelectItem value="0.9">90%</SelectItem>
