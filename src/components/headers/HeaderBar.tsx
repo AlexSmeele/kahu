@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { IOSStatusBar } from './IOSStatusBar';
 import { DynamicIsland } from './DynamicIsland';
+import { useDevicePreview } from '@/preview/DevicePreviewProvider';
 
 interface HeaderBarProps {
   transparent?: boolean;
@@ -26,6 +27,9 @@ export function HeaderBar({
   rightSlot,
   className,
 }: HeaderBarProps) {
+  // Detect if running on real mobile device vs desktop preview
+  const { isMobileDevice } = useDevicePreview();
+
   return (
     <header
       className={cn(
@@ -38,11 +42,16 @@ export function HeaderBar({
         className
       )}
     >
-      {/* iOS Status Bar Area */}
-      <div className="relative h-[54px]">
-        <DynamicIsland />
-        <IOSStatusBar />
-      </div>
+      {/* Desktop preview: show simulated iOS status bar */}
+      {!isMobileDevice && (
+        <div className="relative h-[54px]">
+          <DynamicIsland />
+          <IOSStatusBar />
+        </div>
+      )}
+      
+      {/* Real mobile device: use native safe area */}
+      {isMobileDevice && <div className="safe-top" />}
 
       <div className="px-5 pb-4 flex items-center justify-between gap-3">
         {/* Left Action */}
