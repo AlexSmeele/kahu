@@ -4,11 +4,14 @@ import './index.css'
 import './lib/performance' // Initialize global error handlers
 import { DevicePreviewProvider } from './preview/DevicePreviewProvider'
 import { ResponsiveShell } from './preview/ResponsiveShell'
+import { SafeAreaProvider } from './contexts/SafeAreaContext'
 
 createRoot(document.getElementById("root")!).render(
   <DevicePreviewProvider>
-    <ResponsiveShell>
-      <App />
-    </ResponsiveShell>
+    <SafeAreaProvider debug={false}>
+      <ResponsiveShell>
+        <App />
+      </ResponsiveShell>
+    </SafeAreaProvider>
   </DevicePreviewProvider>
 );

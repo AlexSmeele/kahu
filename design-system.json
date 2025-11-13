@@ -393,7 +393,11 @@
       "left": 0,
       "right": 0,
       "statusBar": 54
-    }
+    },
+    "hitTarget": 44,
+    "iconGlyph": 26,
+    "scrimHeight": 96,
+    "scrimOpacity": 0.66
   },
   "typography": {
     "fontFamily": {
