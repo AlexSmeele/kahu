@@ -1,4 +1,6 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { useDevicePreview } from '@/preview/DevicePreviewProvider';
+import { DEVICE_PRESETS } from '@/preview/DevicePresets';
 
 interface SafeAreaInsets {
   top: number;
@@ -28,15 +30,32 @@ export function SafeAreaProvider({ children, debug = false }: SafeAreaProviderPr
     left: 0,
   });
 
+  // Access device preview context for fallback
+  let devicePreview;
+  try {
+    devicePreview = useDevicePreview();
+  } catch {
+    // DevicePreviewProvider not available, continue without fallback
+    devicePreview = null;
+  }
+
   useEffect(() => {
     // Read CSS environment variables for safe area insets
     const updateInsets = () => {
       const computedStyle = getComputedStyle(document.documentElement);
       
-      const top = parseInt(computedStyle.getPropertyValue('--safe-area-inset-top') || '0');
+      let top = parseInt(computedStyle.getPropertyValue('--safe-area-inset-top') || '0');
       const right = parseInt(computedStyle.getPropertyValue('--safe-area-inset-right') || '0');
       const bottom = parseInt(computedStyle.getPropertyValue('--safe-area-inset-bottom') || '0');
       const left = parseInt(computedStyle.getPropertyValue('--safe-area-inset-left') || '0');
+
+      // Fallback to DevicePreviewProvider's statusBarHeight if CSS env variables return 0
+      if (top === 0 && devicePreview && !devicePreview.isMobileDevice) {
+        const selectedDevice = DEVICE_PRESETS.find(p => p.id === devicePreview.selectedDeviceId);
+        if (selectedDevice) {
+          top = selectedDevice.statusBarHeight;
+        }
+      }
 
       setInsets({ top, right, bottom, left });
     };
@@ -51,7 +70,7 @@ export function SafeAreaProvider({ children, debug = false }: SafeAreaProviderPr
       window.removeEventListener('resize', updateInsets);
       window.removeEventListener('orientationchange', updateInsets);
     };
-  }, []);
+  }, [devicePreview]);
 
   const value: SafeAreaContextValue = {
     insets,
