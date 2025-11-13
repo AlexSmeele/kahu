@@ -531,12 +531,12 @@
     -webkit-backdrop-filter: blur(20px);
     min-height: calc(var(--tabbar-height) + env(safe-area-inset-bottom));
     display: flex;
-    align-items: center;
+    align-items: flex-start;
   }
   
   .tab-item {
     @apply flex-1 flex flex-col items-center justify-center py-2 px-1 transition-colors duration-200;
-    height: var(--tabbar-height);
+    height: 5rem; /* Ensure enough space for icon + label */
   }
   
   .tab-item.active {
