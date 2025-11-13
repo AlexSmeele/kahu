@@ -1,7 +1,6 @@
 import { ReactNode } from 'react';
 import { ChevronLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { useSafeArea } from '@/contexts/SafeAreaContext';
 import { cn } from '@/lib/utils';
 import { IOSStatusBar } from './IOSStatusBar';
 import { DynamicIsland } from './DynamicIsland';
@@ -27,8 +26,6 @@ export function HeaderBar({
   rightSlot,
   className,
 }: HeaderBarProps) {
-  const { contentTopPadding } = useSafeArea();
-
   return (
     <header
       className={cn(
