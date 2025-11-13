@@ -104,13 +104,16 @@ export function DeviceFrame({ preset, zoom, orientation, children }: DeviceFrame
       
       <div 
         className="device-viewport"
+        data-device-preview="true"
         style={{
           position: 'relative',
           width: `${width}px`,
           height: `${height}px`,
           borderRadius: `${preset.cornerRadius}px`,
           overflow: 'hidden',
-          background: 'white'
+          background: 'white',
+          display: 'flex',
+          flexDirection: 'column'
         }}
       >
         {children}

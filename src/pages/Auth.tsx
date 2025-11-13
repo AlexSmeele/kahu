@@ -204,7 +204,7 @@ export default function Auth() {
   }
 
   return (
-    <div className="h-full bg-background flex flex-col overflow-hidden">
+    <div className="h-full min-h-0 bg-background flex flex-col overflow-hidden">
       <div className="flex-1 flex flex-col p-4">
         <div className="text-center mb-6 pt-4">
 <img src={logoIcon} alt="Kahu Logo" className="mx-auto w-[83px] h-[83px] mb-3 object-contain block" />
