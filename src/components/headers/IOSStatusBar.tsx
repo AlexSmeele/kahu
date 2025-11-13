@@ -23,25 +23,16 @@ export function IOSStatusBar() {
     return () => clearInterval(interval);
   }, []);
 
-  // Show WiFi by default (most common), but could be made dynamic
-  const showWiFi = true;
-
   return (
     <div className="absolute inset-x-0 top-0 h-[54px] px-6 flex items-center justify-between text-foreground z-30">
       {/* Left side - Time */}
       <span className="text-[17px] font-semibold tracking-tight leading-none">{time}</span>
 
       {/* Right side - Status icons */}
-      <div className="flex items-center gap-[5px]">
-        {showWiFi ? (
-          <Wifi className="w-[17px] h-[13px]" strokeWidth={2.5} />
-        ) : (
-          <>
-            <Signal className="w-[18px] h-[13px]" strokeWidth={2.5} />
-            <span className="text-[15px] font-semibold tracking-tight leading-none">4G</span>
-          </>
-        )}
-        <Battery className="w-[30px] h-[14px]" strokeWidth={2.5} />
+      <div className="flex items-center gap-[6px]">
+        <Signal className="w-[18px] h-[13px]" strokeWidth={2.4} />
+        <Wifi className="w-[17px] h-[13px]" strokeWidth={2.4} />
+        <Battery className="w-[34px] h-[15px]" strokeWidth={2.4} />
       </div>
     </div>
   );
