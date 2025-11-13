@@ -26,13 +26,13 @@ export function IOSStatusBar() {
   return (
     <div className="absolute inset-x-0 top-0 h-[54px] px-6 flex items-start justify-between text-foreground pt-[17px] z-30">
       {/* Left side - Time */}
-      <span className="text-[15px] font-semibold tracking-tight">{time}</span>
+      <span className="text-[15px] font-semibold tracking-tight leading-none">{time}</span>
 
       {/* Right side - Status icons */}
-      <div className="flex items-center gap-[5px]">
-        <Signal className="w-[17px] h-[11px]" strokeWidth={2.8} />
-        <Wifi className="w-[15px] h-[11px]" strokeWidth={2.8} />
-        <Battery className="w-[27px] h-[11px]" strokeWidth={2.5} />
+      <div className="flex items-center gap-[4px]">
+        <Signal className="w-[17px] h-[12px]" strokeWidth={3} />
+        <Wifi className="w-[16px] h-[12px]" strokeWidth={3} />
+        <Battery className="w-[25px] h-[12px]" strokeWidth={2.5} fill="currentColor" fillOpacity={0} />
       </div>
     </div>
   );
