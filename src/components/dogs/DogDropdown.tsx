@@ -49,7 +49,7 @@ export function DogDropdown({ selectedDogId, onDogChange, variant = 'overlay' }:
           <ChevronDown className="w-4 h-4 text-muted-foreground ml-auto" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="start" className="z-[100] bg-background border-2 shadow-xl" style={{ minWidth: `${minWidth}px` }}>
+      <DropdownMenuContent align="start" className="z-[150] bg-background border-2 shadow-xl" style={{ minWidth: `${minWidth}px` }}>
         {dogs.map((dog) => (
           <DropdownMenuItem
             key={dog.id}

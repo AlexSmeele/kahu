@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { DogDropdown } from "@/components/dogs/DogDropdown";
-import { PageLogo } from "@/components/layout/PageLogo";
+import { HomeHeader } from "@/components/headers/HomeHeader";
 import { TrainingGoalCard } from "@/components/home/TrainingGoalCard";
 import { UrgentAlertsBanner } from "@/components/home/UrgentAlertsBanner";
 import { ActivityCircleCard } from "@/components/home/ActivityCircleCard";
@@ -24,8 +23,6 @@ import { useHomeData } from "@/hooks/useHomeData";
 import { useWellnessTimeline } from "@/hooks/useWellnessTimeline";
 import { useProfile } from "@/hooks/useProfile";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { User } from "lucide-react";
 import type { TabType } from "@/components/layout/BottomNavigation";
 
 interface HomeScreenProps {
@@ -55,25 +52,14 @@ export function HomeScreen({ selectedDogId, onDogChange, onTabChange }: HomeScre
 
   return (
     <>
-      <div className="bg-background pb-20 pt-4 safe-top relative">
-        <div className="pt-16">
-          <DogDropdown selectedDogId={selectedDogId} onDogChange={onDogChange} />
-          <PageLogo />
-          
-          {/* Profile Avatar */}
-          <Avatar 
-            className="absolute top-4 right-4 w-10 h-10 cursor-pointer hover:opacity-80 transition-opacity"
-            onClick={() => onTabChange('profile')}
-          >
-            <AvatarImage src={profile?.avatar_url || undefined} alt="Profile" />
-            <AvatarFallback>
-              {profile?.display_name 
-                ? profile.display_name.charAt(0).toUpperCase()
-                : <User className="w-5 h-5" />
-              }
-            </AvatarFallback>
-          </Avatar>
-        </div>
+      <div className="bg-background pb-20 safe-top relative">
+        <HomeHeader
+          selectedDogId={selectedDogId}
+          onDogChange={onDogChange}
+          userImage={profile?.avatar_url || undefined}
+          userName={profile?.display_name}
+          onProfileClick={() => onTabChange('profile')}
+        />
 
         {loading ? (
           <div className="container pt-4 space-y-4">

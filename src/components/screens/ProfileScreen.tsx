@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { User, Dog, Settings, CreditCard, Share, Download, HelpCircle, LogOut, Plus, Edit, Trash2, Package, MessageSquare, ChevronUp, ChevronDown, Stethoscope, Bell } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { PageHeader } from "@/components/headers/PageHeader";
 import { Badge } from "@/components/ui/badge";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
@@ -131,13 +132,18 @@ export function ProfileScreen() {
     }
   };
   return (
-    <div className="flex flex-col h-full pt-4 relative">
-      <div className="absolute top-3 right-3 z-50 flex items-center gap-2">
-        <NotificationsDrawer />
-        <ThemeToggle />
-      </div>
+    <div className="flex flex-col h-full relative">
+      <PageHeader
+        title="Profile"
+        actions={
+          <>
+            <NotificationsDrawer />
+            <ThemeToggle />
+          </>
+        }
+      />
 
-      <div className="flex-1 overflow-y-auto">
+      <div className="flex-1 overflow-y-auto pt-2">
           {/* User Profile Section */}
           <div className="p-4 border-b border-border">
             <div className="flex items-center gap-4 mb-4">

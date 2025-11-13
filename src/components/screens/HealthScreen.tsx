@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
-import { DogDropdown } from "@/components/dogs/DogDropdown";
-import { PageLogo } from "@/components/layout/PageLogo";
+import { HomeHeader } from "@/components/headers/HomeHeader";
 import { useDogs } from "@/hooks/useDogs";
+import { useProfile } from "@/hooks/useProfile";
 import { useNutrition } from "@/hooks/useNutrition";
 import { MealLogModal } from "@/components/nutrition/MealLogModal";
 import { WeightTracker } from "@/components/health/WeightTracker";
@@ -33,6 +33,7 @@ export function WellnessScreen({ selectedDogId, onDogChange }: WellnessScreenPro
   const [isMealLogModalOpen, setIsMealLogModalOpen] = useState(false);
   
   const { dogs } = useDogs();
+  const { profile } = useProfile();
   const currentDog = dogs.find(dog => dog.id === selectedDogId);
   const { nutritionPlan } = useNutrition(selectedDogId);
   const location = useLocation();
@@ -110,10 +111,12 @@ export function WellnessScreen({ selectedDogId, onDogChange }: WellnessScreenPro
 
   return (
     <div className="flex flex-col h-full safe-top relative">
-      <div className="pt-16">
-        <DogDropdown selectedDogId={selectedDogId} onDogChange={onDogChange} />
-        <PageLogo />
-      </div>
+      <HomeHeader
+        selectedDogId={selectedDogId}
+        onDogChange={onDogChange}
+        userImage={profile?.avatar_url || undefined}
+        userName={profile?.display_name}
+      />
 
       {/* Scrollable Content */}
       <div ref={scrollContainerRef} className="flex-1 overflow-y-auto">

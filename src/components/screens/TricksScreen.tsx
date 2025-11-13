@@ -9,9 +9,9 @@ import { TopicCard } from "@/components/training/TopicCard";
 import { RoadmapContent } from "@/components/training/RoadmapContent";
 import { useDogs } from "@/hooks/useDogs";
 import { useTricks, Trick } from "@/hooks/useTricks";
-import { DogDropdown } from "@/components/dogs/DogDropdown";
-import { PageLogo } from "@/components/layout/PageLogo";
+import { HomeHeader } from "@/components/headers/HomeHeader";
 import { ClickerButton } from "@/components/training/ClickerButton";
+import { useProfile } from "@/hooks/useProfile";
 import { ClickerModal } from "@/components/training/ClickerModal";
 import { MOCK_FOUNDATION_TOPICS, MOCK_TROUBLESHOOTING_TOPICS, type FoundationTopic, isMockDogId } from "@/lib/mockData";
 
@@ -116,6 +116,7 @@ export function TricksScreen({ selectedDogId, onDogChange }: TricksScreenProps) 
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { dogs } = useDogs();
+  const { profile } = useProfile();
   const currentDog = dogs.find(dog => dog.id === selectedDogId);
   const { tricks, dogTricks, loading, startTrick, addPracticeSession, updateTrickStatus, refetch } = useTricks(currentDog?.id);
   const [selectedDifficulty, setSelectedDifficulty] = useState<string>('all');
@@ -208,11 +209,15 @@ export function TricksScreen({ selectedDogId, onDogChange }: TricksScreenProps) 
 
   return (
     <div className="flex flex-col h-full bg-gradient-to-br from-primary/5 via-accent/5 to-secondary/10 overflow-hidden safe-top relative">
-      <div className="pt-24 pb-2">
-        <DogDropdown selectedDogId={selectedDogId} onDogChange={onDogChange} />
-        <PageLogo />
-        <ClickerButton onClick={() => setIsClickerOpen(true)} />
-      </div>
+      <HomeHeader
+        selectedDogId={selectedDogId}
+        onDogChange={onDogChange}
+        userImage={profile?.avatar_url || undefined}
+        userName={profile?.display_name}
+        extraActions={
+          <ClickerButton onClick={() => setIsClickerOpen(true)} />
+        }
+      />
       
       {/* Stats Header */}
       <div className="bg-white/80 dark:bg-card/80 backdrop-blur-sm border-b p-2.5 flex-shrink-0">
