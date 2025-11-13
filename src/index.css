@@ -647,4 +647,10 @@
   .preview-toolbar[data-preview-ui="true"] * {
     pointer-events: auto;
   }
+
+  /* Ensure dropdown/select content appears above preview background */
+  [data-radix-select-content],
+  [data-radix-popper-content-wrapper] {
+    z-index: 10000 !important;
+  }
 }
