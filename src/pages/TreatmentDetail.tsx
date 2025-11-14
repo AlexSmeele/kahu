@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { ArrowLeft, Edit3, Heart, Pill, Calendar, Check, Clock, FileText, CheckCircle, BookOpen, AlertTriangle } from "lucide-react";
+import { useDevicePreview } from "@/preview/DevicePreviewProvider";
+import { IOSStatusBar } from "@/components/headers/IOSStatusBar";
+import { DynamicIsland } from "@/components/headers/DynamicIsland";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -21,6 +24,7 @@ export default function TreatmentDetail() {
   const navigate = useNavigate();
   const location = useLocation();
   const { toast } = useToast();
+  const { isMobileDevice } = useDevicePreview();
   
   const dogId = location.state?.dogId || localStorage.getItem("selectedDogId") || "";
   
@@ -214,7 +218,15 @@ export default function TreatmentDetail() {
   if (isEditing) {
     return (
       <div className="min-h-screen bg-background flex flex-col">
-        <div className="sticky top-0 z-10 bg-background/95 backdrop-blur border-b safe-top">
+        <div className="sticky top-0 z-20 bg-background/95 backdrop-blur border-b">
+          {!isMobileDevice && (
+            <div className="relative h-[54px]">
+              <DynamicIsland />
+              <IOSStatusBar />
+            </div>
+          )}
+          {isMobileDevice && <div className="safe-top" />}
+          
           <div className="container max-w-2xl mx-auto px-4 py-4">
             <div className="flex items-center justify-between">
               <Button 
@@ -322,7 +334,15 @@ export default function TreatmentDetail() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       {/* Header */}
-      <div className="sticky top-0 z-10 bg-background/95 backdrop-blur border-b safe-top">
+      <div className="sticky top-0 z-20 bg-background/95 backdrop-blur border-b">
+        {!isMobileDevice && (
+          <div className="relative h-[54px]">
+            <DynamicIsland />
+            <IOSStatusBar />
+          </div>
+        )}
+        {isMobileDevice && <div className="safe-top" />}
+        
         <div className="container max-w-2xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between gap-4">
             <Button 
