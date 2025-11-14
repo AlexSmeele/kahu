@@ -73,13 +73,7 @@ export function useVetClinics(dogId?: string) {
             website,
             latitude,
             longitude,
-            google_place_id,
-            google_types,
-            services,
-            verified,
-            rating,
-            user_ratings_total,
-            opening_hours
+            verified
           )
         `)
         .eq('dog_id', id);
