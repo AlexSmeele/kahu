@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Stethoscope, Search, MapPin, Loader2, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -29,6 +29,47 @@ export function VetClinicsSection({ dogId }: VetClinicsSectionProps) {
   const [isGettingLocation, setIsGettingLocation] = useState(false);
 
   const currentDog = dogs.find(d => d.id === dogId);
+
+  // Auto-search with debounce
+  useEffect(() => {
+    if (!searchQuery.trim()) {
+      setIsSearchMode(false);
+      setSearchResults([]);
+      return;
+    }
+
+    const timeoutId = setTimeout(async () => {
+      setIsSearching(true);
+      setIsSearchMode(true);
+      
+      try {
+        const results = await searchVetClinics(
+          searchQuery,
+          userLocation?.latitude,
+          userLocation?.longitude
+        );
+        setSearchResults(results);
+        
+        if (results.length === 0) {
+          toast({
+            title: "No results found",
+            description: "Try a different search term or location.",
+          });
+        }
+      } catch (error) {
+        console.error('Search error:', error);
+        toast({
+          title: "Search failed",
+          description: "Could not search. Please try again.",
+          variant: "destructive",
+        });
+      } finally {
+        setIsSearching(false);
+      }
+    }, 500);
+
+    return () => clearTimeout(timeoutId);
+  }, [searchQuery, userLocation]);
 
   // Location handling
   const requestLocation = () => {
@@ -65,36 +106,6 @@ export function VetClinicsSection({ dogId }: VetClinicsSectionProps) {
     );
   };
 
-  // Search handling
-  const handleSearch = async () => {
-    if (!searchQuery.trim()) return;
-
-    setIsSearching(true);
-    setIsSearchMode(true);
-    try {
-      const results = await searchVetClinics(
-        searchQuery,
-        userLocation?.latitude,
-        userLocation?.longitude
-      );
-      setSearchResults(results);
-      
-      if (results.length === 0) {
-        toast({
-          title: "No results found",
-          description: "Try a different search term or location.",
-        });
-      }
-    } catch (error) {
-      toast({
-        title: "Search failed",
-        description: "Could not search for vet clinics. Please try again.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsSearching(false);
-    }
-  };
 
   const handleClearSearch = () => {
     setSearchQuery('');
@@ -171,15 +182,6 @@ export function VetClinicsSection({ dogId }: VetClinicsSectionProps) {
   // Main render
   return (
     <div className="space-y-4">
-      {/* Helpful intro text when no saved clinics AND not searching */}
-      {dogVetClinics.length === 0 && !isSearchMode && (
-        <div className="text-center py-6 bg-muted/30 rounded-lg border border-dashed">
-          <Stethoscope className="w-8 h-8 mx-auto mb-2 text-muted-foreground" />
-          <p className="text-sm text-muted-foreground">
-            Search below to find vet clinics for {currentDog?.name}
-          </p>
-        </div>
-      )}
 
       {/* Search bar - ALWAYS visible */}
       <div className="flex gap-2">
@@ -189,9 +191,11 @@ export function VetClinicsSection({ dogId }: VetClinicsSectionProps) {
             placeholder="Search for vet clinics..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-            className="pl-9"
+            className="pl-9 pr-9"
           />
+          {isSearching && (
+            <Loader2 className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 animate-spin text-muted-foreground" />
+          )}
         </div>
         <Button
           variant="outline"
@@ -204,16 +208,6 @@ export function VetClinicsSection({ dogId }: VetClinicsSectionProps) {
             <Loader2 className="w-4 h-4 animate-spin" />
           ) : (
             <MapPin className={`w-4 h-4 ${userLocation ? 'text-primary' : ''}`} />
-          )}
-        </Button>
-        <Button
-          onClick={handleSearch}
-          disabled={isSearching || !searchQuery.trim()}
-        >
-          {isSearching ? (
-            <Loader2 className="w-4 h-4 animate-spin" />
-          ) : (
-            'Search'
           )}
         </Button>
       </div>

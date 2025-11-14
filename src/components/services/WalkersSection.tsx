@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Footprints, Search, MapPin, Loader2, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -30,6 +30,47 @@ export function WalkersSection({ dogId }: WalkersSectionProps) {
   const [isGettingLocation, setIsGettingLocation] = useState(false);
 
   const currentDog = dogs.find(d => d.id === dogId);
+
+  // Auto-search with debounce
+  useEffect(() => {
+    if (!searchQuery.trim()) {
+      setIsSearchMode(false);
+      setSearchResults([]);
+      return;
+    }
+
+    const timeoutId = setTimeout(async () => {
+      setIsSearching(true);
+      setIsSearchMode(true);
+      
+      try {
+        const results = await searchWalkers(
+          searchQuery,
+          userLocation?.latitude,
+          userLocation?.longitude
+        );
+        setSearchResults(results);
+        
+        if (results.length === 0) {
+          toast({
+            title: "No results found",
+            description: "Try a different search term or location.",
+          });
+        }
+      } catch (error) {
+        console.error('Search error:', error);
+        toast({
+          title: "Search failed",
+          description: "Could not search. Please try again.",
+          variant: "destructive",
+        });
+      } finally {
+        setIsSearching(false);
+      }
+    }, 500);
+
+    return () => clearTimeout(timeoutId);
+  }, [searchQuery, userLocation]);
 
   const requestLocation = () => {
     if (!navigator.geolocation) {
@@ -65,35 +106,6 @@ export function WalkersSection({ dogId }: WalkersSectionProps) {
     );
   };
 
-  const handleSearch = async () => {
-    if (!searchQuery.trim()) return;
-
-    setIsSearching(true);
-    setIsSearchMode(true);
-    try {
-      const results = await searchWalkers(
-        searchQuery,
-        userLocation?.latitude,
-        userLocation?.longitude
-      );
-      setSearchResults(results);
-      
-      if (results.length === 0) {
-        toast({
-          title: "No results found",
-          description: "Try a different search term or location.",
-        });
-      }
-    } catch (error) {
-      toast({
-        title: "Search failed",
-        description: "Could not search for dog walkers. Please try again.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsSearching(false);
-    }
-  };
 
   const handleClearSearch = () => {
     setSearchQuery('');
@@ -165,15 +177,6 @@ export function WalkersSection({ dogId }: WalkersSectionProps) {
 
   return (
     <div className="space-y-4">
-      {/* Show helpful text when no saved walkers AND not searching */}
-      {dogWalkers.length === 0 && !isSearchMode && (
-        <div className="text-center py-6 bg-muted/30 rounded-lg border border-dashed">
-          <Footprints className="w-8 h-8 mx-auto mb-2 text-muted-foreground" />
-          <p className="text-sm text-muted-foreground">
-            Search below to find reliable dog walkers for {currentDog?.name}
-          </p>
-        </div>
-      )}
 
       {/* Search bar - ALWAYS visible */}
       <div className="flex gap-2">
@@ -183,9 +186,11 @@ export function WalkersSection({ dogId }: WalkersSectionProps) {
             placeholder="Search for dog walkers..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-            className="pl-10"
+            className="pl-10 pr-9"
           />
+          {isSearching && (
+            <Loader2 className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 animate-spin text-muted-foreground" />
+          )}
         </div>
         <Button
           variant={userLocation ? "secondary" : "outline"}
@@ -198,18 +203,6 @@ export function WalkersSection({ dogId }: WalkersSectionProps) {
             <Loader2 className="w-4 h-4 animate-spin" />
           ) : (
             <MapPin className={`w-4 h-4 ${userLocation ? 'text-primary' : ''}`} />
-          )}
-        </Button>
-        <Button
-          variant="primary"
-          size="md"
-          onClick={handleSearch}
-          disabled={isSearching || !searchQuery.trim()}
-        >
-          {isSearching ? (
-            <Loader2 className="w-4 h-4 animate-spin" />
-          ) : (
-            <Search className="w-4 h-4" />
           )}
         </Button>
       </div>
