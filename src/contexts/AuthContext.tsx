@@ -23,6 +23,43 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     logger.info('AuthProvider: Initializing auth state listener');
     
+    // Check if auth bypass is enabled
+    const authDisabled = import.meta.env.VITE_DISABLE_AUTH === 'true';
+    
+    if (authDisabled) {
+      logger.info('🔓 AuthProvider: Auth bypass enabled via VITE_DISABLE_AUTH');
+      console.log('🔓 Auth bypass enabled - using mock user');
+      
+      // Create mock user immediately
+      const mockUser = {
+        id: '00000000-0000-0000-0000-000000000001',
+        email: 'dev@example.com',
+        user_metadata: { display_name: 'Dev User' },
+        app_metadata: {},
+        aud: 'authenticated',
+        created_at: new Date().toISOString(),
+      } as User;
+      
+      const mockSession = {
+        access_token: 'mock-access-token',
+        refresh_token: 'mock-refresh-token',
+        expires_in: 3600,
+        token_type: 'bearer',
+        user: mockUser,
+      } as Session;
+      
+      setUser(mockUser);
+      setSession(mockSession);
+      setLoading(false);
+
+      // Update last access date for mock data generation
+      import('@/lib/mockDataStorage').then(({ setLastAccessDate }) => {
+        setLastAccessDate(new Date());
+      });
+      
+      return; // Skip setting up real auth listeners
+    }
+    
     // Set up auth state listener FIRST
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {

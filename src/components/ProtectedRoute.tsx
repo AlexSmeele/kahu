@@ -6,6 +6,14 @@ interface ProtectedRouteProps {
 }
 
 export function ProtectedRoute({ children }: ProtectedRouteProps) {
+  // Check if auth is disabled via environment variable
+  const authDisabled = import.meta.env.VITE_DISABLE_AUTH === 'true';
+  
+  if (authDisabled) {
+    console.log('🔓 Auth disabled via VITE_DISABLE_AUTH - bypassing authentication');
+    return <>{children}</>;
+  }
+
   const { user, loading } = useAuth();
 
   if (loading) {
