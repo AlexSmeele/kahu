@@ -193,7 +193,7 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
 
             <div className="sticky bottom-0 left-0 right-0 pt-4">
               <Button 
-                size="touch"
+                size="lg"
                 onClick={() => setStep(2)}
                 disabled={!isStepValid()}
                 className="w-full btn-primary hover-scale"
@@ -223,7 +223,7 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
           <div className="flex gap-3 max-w-md mx-auto">
             <Button 
               variant="outline"
-              size="touch"
+              size="lg"
               onClick={() => setStep(1)}
               className="flex-1"
             >
@@ -231,7 +231,7 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
               Back
             </Button>
             <Button 
-              size="touch"
+              size="lg"
               onClick={() => setStep(3)}
               disabled={!isStepValid()}
               className="flex-1 btn-primary"
@@ -340,7 +340,7 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
           <div className="flex gap-3 max-w-md mx-auto">
             <Button 
               variant="outline"
-              size="touch"
+              size="lg"
               onClick={() => setStep(2)}
               className="flex-1"
             >
@@ -348,7 +348,7 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
               Back
             </Button>
             <Button 
-              size="touch"
+              size="lg"
               onClick={() => setStep(4)}
               disabled={!isStepValid()}
               className="flex-1 btn-primary"
@@ -437,7 +437,7 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
           <div className="flex gap-3 max-w-md mx-auto">
             <Button 
               variant="outline"
-              size="touch"
+              size="lg"
               onClick={() => setStep(3)}
               className="flex-1"
             >
@@ -445,7 +445,7 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
               Back
             </Button>
             <Button 
-              size="touch"
+              size="lg"
               onClick={() => setStep(5)}
               className="flex-1 btn-primary"
             >
@@ -496,7 +496,7 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
           <div className="flex gap-3 max-w-md mx-auto">
             <Button 
               variant="outline"
-              size="touch"
+              size="lg"
               onClick={() => setStep(4)}
               className="flex-1"
             >
@@ -504,7 +504,7 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
               Back
             </Button>
             <Button 
-              size="touch"
+              size="lg"
               onClick={() => setStep(6)}
               className="flex-1 btn-primary"
             >
@@ -558,7 +558,7 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
           <div className="flex gap-3 max-w-md mx-auto">
             <Button 
               variant="outline"
-              size="touch"
+              size="lg"
               onClick={() => setStep(5)}
               className="flex-1"
             >
@@ -566,7 +566,7 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
               Back
             </Button>
             <Button 
-              size="touch"
+              size="lg"
               onClick={() => setStep(7)}
               disabled={!isStepValid()}
               className="flex-1 btn-primary"
@@ -691,7 +691,7 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
           <div className="flex gap-3 max-w-md mx-auto">
             <Button 
               variant="outline"
-              size="touch"
+              size="lg"
               onClick={() => setStep(6)}
               className="flex-1"
               disabled={loading}
@@ -700,7 +700,7 @@ export function DogOnboarding({ onComplete }: DogOnboardingProps) {
               Back
             </Button>
             <Button 
-              size="touch"
+              size="lg"
               onClick={handleSubmit}
               className="flex-1 btn-primary hover-scale"
               disabled={loading}
