@@ -13,7 +13,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Card, CardContent } from '@/components/ui/card';
-import { useDogWalkers, type DogWalker } from '@/hooks/useDogWalkers';
+import { useDogWalkers, type Walker } from '@/hooks/useDogWalkers';
 import { useToast } from '@/hooks/use-toast';
 
 interface AddWalkerModalProps {
@@ -27,8 +27,8 @@ export function AddWalkerModal({ isOpen, onClose, dogId, dogName }: AddWalkerMod
   const { addWalker, searchWalkers } = useDogWalkers(dogId);
   const { toast } = useToast();
   const [searchQuery, setSearchQuery] = useState('');
-  const [searchResults, setSearchResults] = useState<DogWalker[]>([]);
-  const [selectedWalker, setSelectedWalker] = useState<DogWalker | null>(null);
+  const [searchResults, setSearchResults] = useState<Walker[]>([]);
+  const [selectedWalker, setSelectedWalker] = useState<Walker | null>(null);
   const [isPreferred, setIsPreferred] = useState(false);
   const [relationshipNotes, setRelationshipNotes] = useState('');
   const [preferredDays, setPreferredDays] = useState('');

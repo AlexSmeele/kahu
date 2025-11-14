@@ -6,7 +6,7 @@ import { EmptyState } from '@/components/ui/empty-state';
 import { ServiceCard } from './ServiceCard';
 import { AddWalkerModal } from './AddWalkerModal';
 import { EditWalkerModal } from './EditWalkerModal';
-import { useDogWalkers, type DogDogWalker } from '@/hooks/useDogWalkers';
+import { useDogWalkers, type DogWalker } from '@/hooks/useDogWalkers';
 import { useDogs } from '@/hooks/useDogs';
 import { useToast } from '@/hooks/use-toast';
 
@@ -19,7 +19,7 @@ export function WalkersSection({ dogId }: WalkersSectionProps) {
   const { dogs } = useDogs();
   const { toast } = useToast();
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  const [editingWalker, setEditingWalker] = useState<DogDogWalker | null>(null);
+  const [editingWalker, setEditingWalker] = useState<DogWalker | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
 
   const currentDog = dogs.find(d => d.id === dogId);

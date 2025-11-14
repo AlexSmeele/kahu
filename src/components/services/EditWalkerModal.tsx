@@ -12,13 +12,13 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
-import { useDogWalkers, type DogDogWalker } from '@/hooks/useDogWalkers';
+import { useDogWalkers, type DogWalker } from '@/hooks/useDogWalkers';
 import { useToast } from '@/hooks/use-toast';
 
 interface EditWalkerModalProps {
   isOpen: boolean;
   onClose: () => void;
-  dogWalker: DogDogWalker;
+  dogWalker: DogWalker;
   dogName: string;
 }
 

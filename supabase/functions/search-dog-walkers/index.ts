@@ -34,9 +34,9 @@ Deno.serve(async (req) => {
 
     console.log('Searching for dog walkers:', { query, service_area });
 
-    // Search existing dog walkers in database
+    // Search existing walkers in database
     let dbQuery = supabase
-      .from('dog_walkers')
+      .from('walkers')
       .select('*')
       .ilike('name', `%${query}%`)
       .limit(10);
