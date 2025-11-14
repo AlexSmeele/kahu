@@ -13,6 +13,9 @@ import { format, addWeeks, isPast, differenceInDays } from "date-fns";
 import { useToast } from "@/hooks/use-toast";
 import { CompleteTreatmentModal } from "@/components/health/CompleteTreatmentModal";
 import { VetClinicAutocomplete } from "@/components/ui/vet-clinic-autocomplete";
+import { useDevicePreview } from "@/preview/DevicePreviewProvider";
+import { IOSStatusBar } from "@/components/headers/IOSStatusBar";
+import { DynamicIsland } from "@/components/headers/DynamicIsland";
 
 export default function TreatmentDetail() {
   const { treatmentId } = useParams();
@@ -20,6 +23,7 @@ export default function TreatmentDetail() {
   const location = useLocation();
   const { toast } = useToast();
   const { theme } = useTheme();
+  const { isDesktop } = useDevicePreview();
   
   const dogId = location.state?.dogId || localStorage.getItem("selectedDogId") || "";
   
@@ -189,6 +193,14 @@ export default function TreatmentDetail() {
   if (isEditing) {
     return (
       <div className={`min-h-screen ${isDark ? 'bg-[#1a1a1a]' : 'bg-gray-50'} isolate`}>
+        {/* Status Bar - Desktop Preview Only */}
+        {isDesktop && (
+          <div className={`fixed top-0 left-0 right-0 h-[54px] z-50 ${isDark ? 'bg-[#1a1a1a]' : 'bg-gray-50'}`}>
+            <DynamicIsland />
+            <IOSStatusBar />
+          </div>
+        )}
+        
         {/* Fixed Header */}
         <div className={`fixed top-[54px] left-0 right-0 z-50 ${isDark ? 'bg-[#1a1a1a]/95' : 'bg-white/95'} backdrop-blur-sm ${isDark ? 'border-white/5' : 'border-gray-200'} border-b`}>
           <div className="container max-w-2xl mx-auto px-4 py-4">
@@ -208,7 +220,7 @@ export default function TreatmentDetail() {
         </div>
         
         {/* Content */}
-        <div className="pt-[118px] px-4 pb-[180px] space-y-4">
+        <div className="pt-[118px] px-4 pb-24 space-y-4">
           <div className={`bg-gradient-to-br ${isDark ? 'from-white/10 to-white/5 border-white/10' : 'from-white to-gray-50 border-gray-200 shadow-md'} border rounded-2xl p-5 space-y-4`}>
             <div>
               <Label className={isDark ? 'text-white/60' : 'text-gray-600'}>Treatment Name</Label>
@@ -311,6 +323,14 @@ export default function TreatmentDetail() {
   // View Mode
   return (
     <div className={`min-h-screen ${isDark ? 'bg-[#1a1a1a]' : 'bg-gray-50'} isolate`}>
+      {/* Status Bar - Desktop Preview Only */}
+      {isDesktop && (
+        <div className={`fixed top-0 left-0 right-0 h-[54px] z-50 ${isDark ? 'bg-[#1a1a1a]' : 'bg-gray-50'}`}>
+          <DynamicIsland />
+          <IOSStatusBar />
+        </div>
+      )}
+      
       {/* Fixed Header */}
       <div className={`fixed top-[54px] left-0 right-0 z-50 ${isDark ? 'bg-[#1a1a1a]/95' : 'bg-white/95'} backdrop-blur-sm ${isDark ? 'border-white/5' : 'border-gray-200'} border-b`}>
         <div className="container max-w-2xl mx-auto px-4 py-4">
@@ -342,7 +362,7 @@ export default function TreatmentDetail() {
       </div>
       
       {/* Scrollable Content */}
-      <div className="pt-[118px] px-4 pb-[180px] space-y-3">
+      <div className="pt-[118px] px-4 pb-24 space-y-3">
         {/* Due Date Card */}
         <div className={`bg-gradient-to-br ${isDark ? 'from-white/10 to-white/5 border-white/10' : 'from-white to-gray-50 border-gray-200 shadow-md'} border rounded-2xl p-4 flex items-center gap-3`}>
           <Calendar className={`w-5 h-5 ${isOverdue ? 'text-orange-500' : isDark ? 'text-emerald-400' : 'text-emerald-500'} flex-shrink-0`} />

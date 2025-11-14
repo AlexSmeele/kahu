@@ -51,23 +51,6 @@ export function DeviceFrame({ preset, zoom, orientation, children }: DeviceFrame
         />
       </svg>
       
-      {preset.notch === 'dynamic-island' && (
-        <div 
-          className="device-notch dynamic-island"
-          style={{
-            position: 'absolute',
-            top: 11,
-            left: '50%',
-            transform: 'translateX(-50%)',
-            width: 126,
-            height: 37,
-            borderRadius: 19,
-            background: '#1a1a1a',
-            zIndex: 100
-          }}
-        />
-      )}
-      
       {preset.notch === 'standard' && (
         <div 
           className="device-notch standard"
