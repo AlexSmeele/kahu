@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Search, MapPin, Phone, Globe, ChevronDown } from 'lucide-react';
+import { Search, MapPin, Phone, Globe, ChevronDown, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -19,9 +19,14 @@ interface VetClinic {
   website?: string;
   latitude?: number;
   longitude?: number;
-  osm_place_id?: string;
+  google_place_id?: string;
+  google_types?: string[];
   services?: string[];
   verified: boolean;
+  rating?: number;
+  user_ratings_total?: number;
+  opening_hours?: string;
+  business_status?: string;
   has_contact_access?: boolean;
 }
 
@@ -214,17 +219,40 @@ export function VetClinicAutocomplete({
                 Showing results near your location
               </div>
             )}
-            {results.map((clinic) => (
+            {results.map((clinic, index) => (
               <button
-                key={clinic.id}
+                key={clinic.id || `${clinic.name}-${index}`}
                 onClick={() => handleSelectClinic(clinic)}
                 className="w-full text-left p-3 hover:bg-accent rounded-md transition-colors"
               >
                 <div className="flex items-start gap-2">
                   <MapPin className="h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0" />
                   <div className="min-w-0 flex-1">
-                    <div className="font-medium text-sm">{clinic.name}</div>
-                    <div className="text-xs text-muted-foreground truncate">{clinic.address}</div>
+                    <div className="flex items-center gap-2">
+                      <div className="font-medium text-sm">{clinic.name}</div>
+                      {clinic.opening_hours && (
+                        <span className={cn(
+                          "text-xs px-1.5 py-0.5 rounded",
+                          clinic.opening_hours === 'Open Now' 
+                            ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300"
+                            : "bg-muted text-muted-foreground"
+                        )}>
+                          {clinic.opening_hours}
+                        </span>
+                      )}
+                    </div>
+                    {clinic.rating && (
+                      <div className="flex items-center gap-1 mt-1">
+                        <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
+                        <span className="text-xs font-medium">{clinic.rating.toFixed(1)}</span>
+                        {clinic.user_ratings_total && (
+                          <span className="text-xs text-muted-foreground">
+                            ({clinic.user_ratings_total})
+                          </span>
+                        )}
+                      </div>
+                    )}
+                    <div className="text-xs text-muted-foreground truncate mt-1">{clinic.address}</div>
                     <div className="flex items-center gap-2 mt-1">
                       {clinic.phone && (
                         <div className="flex items-center gap-1 text-xs text-muted-foreground">
