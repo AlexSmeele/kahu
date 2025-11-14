@@ -76,7 +76,7 @@ export default function Services() {
             <TabsList className="grid w-full grid-cols-3 mb-4">
               <TabsTrigger value="vets" className="gap-2">
                 <Stethoscope className="w-4 h-4" />
-                <span className="hidden sm:inline">Vet Clinics</span>
+                <span className="hidden sm:inline">Clinics</span>
                 <span className="sm:hidden">Vets</span>
               </TabsTrigger>
               <TabsTrigger value="groomers" className="gap-2">
@@ -86,7 +86,7 @@ export default function Services() {
               </TabsTrigger>
               <TabsTrigger value="walkers" className="gap-2">
                 <Footprints className="w-4 h-4" />
-                <span className="hidden sm:inline">Dog Walkers</span>
+                <span className="hidden sm:inline">Walkers</span>
                 <span className="sm:hidden">Walk</span>
               </TabsTrigger>
             </TabsList>
