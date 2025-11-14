@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { MapPin, Phone, Globe, Plus, Edit2, Trash2, Star, StarOff } from 'lucide-react';
+import { MapPin, Phone, Globe, Plus, Edit2, Trash2, Star as StarIcon, StarOff } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
@@ -27,6 +27,9 @@ interface VetClinic {
   email?: string;
   website?: string;
   verified: boolean;
+  rating?: number;
+  user_ratings_total?: number;
+  opening_hours?: string;
 }
 
 interface VetClinicsModalProps {
@@ -176,7 +179,7 @@ export function VetClinicsModal({ isOpen, onClose, dogId, dogName }: VetClinicsM
                         onClick={() => handleSetPrimary(relationship.id)}
                         className="text-xs"
                       >
-                        <Star className="h-3 w-3 mr-1" />
+                        <StarIcon className="h-3 w-3 mr-1" />
                         Set Primary
                       </Button>
                     )}

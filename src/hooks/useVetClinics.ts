@@ -12,9 +12,14 @@ interface VetClinic {
   website?: string;
   latitude?: number;
   longitude?: number;
-  osm_place_id?: string;
+  google_place_id?: string;
+  google_types?: string[];
   services?: string[];
   verified: boolean;
+  rating?: number;
+  user_ratings_total?: number;
+  opening_hours?: string;
+  business_status?: string;
   has_contact_access?: boolean;
 }
 
@@ -68,9 +73,13 @@ export function useVetClinics(dogId?: string) {
             website,
             latitude,
             longitude,
-            osm_place_id,
+            google_place_id,
+            google_types,
             services,
-            verified
+            verified,
+            rating,
+            user_ratings_total,
+            opening_hours
           )
         `)
         .eq('dog_id', id);
@@ -267,10 +276,10 @@ export function useVetClinics(dogId?: string) {
       // Combine results, prioritizing secure results (which may have full contact access)
       const combinedResults = [...secureResults, ...edgeFunctionClinics];
       
-      // Remove duplicates based on OSM place ID or name+address combination
+      // Remove duplicates based on Google place ID or name+address combination
       const uniqueResults = combinedResults.reduce((acc: VetClinic[], clinic) => {
         const isDuplicate = acc.some(existing => 
-          (clinic.osm_place_id && existing.osm_place_id === clinic.osm_place_id) ||
+          (clinic.google_place_id && existing.google_place_id === clinic.google_place_id) ||
           (existing.name === clinic.name && existing.address === clinic.address)
         );
         

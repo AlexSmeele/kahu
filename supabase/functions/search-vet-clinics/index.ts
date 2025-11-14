@@ -15,19 +15,15 @@ interface VetClinic {
   website?: string;
   latitude?: number;
   longitude?: number;
-  osm_place_id?: string;
-  osm_type?: string;
+  google_place_id?: string;
+  google_types?: string[];
   services?: string[];
   verified: boolean;
+  rating?: number;
+  user_ratings_total?: number;
+  opening_hours?: string;
+  business_status?: string;
 }
-
-// Expanded veterinary-related keywords for better OSM filtering
-const VET_KEYWORDS = [
-  'veterinary', 'veterinarian', 'vet', 'animal hospital', 'pet clinic', 
-  'animal clinic', 'pet hospital', 'animal care', 'pet care', 'animal health',
-  'veterinary surgery', 'veterinary clinic', 'small animal', 'companion animal',
-  'animal emergency', 'pet emergency', 'animal medicine', 'veterinary practice'
-];
 
 // Helper function to calculate distance between two points
 function calculateDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
@@ -42,8 +38,8 @@ function calculateDistance(lat1: number, lon1: number, lat2: number, lon2: numbe
   return R * c; // Distance in km
 }
 
-// Helper function to calculate name relevance score
-function calculateRelevanceScore(clinicName: string, searchQuery: string): number {
+// Helper function to calculate relevance score (now includes rating)
+function calculateRelevanceScore(clinicName: string, searchQuery: string, rating?: number): number {
   const clinic = clinicName.toLowerCase();
   const query = searchQuery.toLowerCase();
   
@@ -61,47 +57,35 @@ function calculateRelevanceScore(clinicName: string, searchQuery: string): numbe
   let exactWordMatches = 0;
   
   for (const queryWord of queryWords) {
-    // Check for exact word matches
     if (clinicWords.some(word => word === queryWord)) {
       exactWordMatches++;
       matchingWords++;
-    }
-    // Check for partial matches
-    else if (clinicWords.some(word => word.includes(queryWord))) {
+    } else if (clinicWords.some(word => word.includes(queryWord))) {
       matchingWords++;
     }
   }
   
-  // Calculate score based on word matches
   const wordMatchRatio = matchingWords / queryWords.length;
   const exactMatchRatio = exactWordMatches / queryWords.length;
   
-  // Bonus for exact word matches
   const baseScore = wordMatchRatio * 70;
   const exactBonus = exactMatchRatio * 20;
-  
-  // Check for query as substring
   const substringBonus = clinic.includes(query) ? 10 : 0;
   
-  return baseScore + exactBonus + substringBonus;
+  // Add rating bonus (up to 10 points for 5-star rating)
+  const ratingBonus = rating ? (rating / 5) * 10 : 0;
+  
+  return baseScore + exactBonus + substringBonus + ratingBonus;
 }
 
-// Helper function to extract services from OSM tags
-function extractServices(tags: any): string[] {
+// Helper function to extract services from Google types
+function extractServicesFromTypes(types: string[]): string[] {
   const services = [];
   
-  if (tags.emergency === 'yes' || tags['emergency:veterinary'] === 'yes') {
-    services.push('emergency');
-  }
-  if (tags.surgery === 'yes') {
-    services.push('surgery');
-  }
-  if (tags.dentistry === 'yes') {
-    services.push('dentistry');
-  }
-  if (tags['healthcare:speciality'] && tags['healthcare:speciality'].includes('veterinary')) {
-    services.push('specialist');
-  }
+  if (types.includes('veterinary_care')) services.push('general-care');
+  if (types.includes('pet_store')) services.push('pet-supplies');
+  if (types.includes('pharmacy')) services.push('pharmacy');
+  
   if (services.length === 0) {
     services.push('general-care');
   }
@@ -115,7 +99,7 @@ async function logSearchAnalytics(
   searchQuery: string,
   userLocationProvided: boolean,
   dbResults: number,
-  osmResults: number,
+  googleResults: number,
   totalResults: number,
   errorMessage?: string,
   responseTimeMs?: number,
@@ -123,379 +107,278 @@ async function logSearchAnalytics(
 ) {
   try {
     await supabase.from('vet_search_analytics').insert({
+      user_id: userId || null,
       search_query: searchQuery,
       user_location_provided: userLocationProvided,
       database_results_count: dbResults,
-      osm_results_count: osmResults,
+      osm_results_count: googleResults, // Reusing column name for Google results
       total_results_count: totalResults,
-      error_message: errorMessage,
-      response_time_ms: responseTimeMs,
-      user_id: userId
+      error_message: errorMessage || null,
+      response_time_ms: responseTimeMs || null,
     });
-  } catch (error) {
-    console.error('Failed to log analytics:', error);
+  } catch (analyticsError) {
+    console.error('Failed to log search analytics:', analyticsError);
   }
 }
 
 serve(async (req) => {
-  const startTime = Date.now();
-  
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
 
+  const startTime = Date.now();
+  const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+  const supabaseKey = Deno.env.get('SUPABASE_ANON_KEY')!;
+  const googleMapsKey = Deno.env.get('GOOGLE_MAPS_API_KEY');
+
+  if (!googleMapsKey) {
+    console.error('GOOGLE_MAPS_API_KEY not configured');
+    return new Response(
+      JSON.stringify({ error: 'Google Maps API not configured' }),
+      { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    );
+  }
+
+  const supabase = createClient(supabaseUrl, supabaseKey, {
+    auth: {
+      autoRefreshToken: false,
+      persistSession: false,
+    },
+    global: {
+      headers: {
+        Authorization: req.headers.get('Authorization') || '',
+      },
+    },
+  });
+
+  // Get user ID from the authorization header
+  const authHeader = req.headers.get('Authorization');
+  let userId: string | undefined;
+  
+  if (authHeader) {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      userId = user?.id;
+    } catch (error) {
+      console.error('Error getting user:', error);
+    }
+  }
+
   try {
     const { query, latitude, longitude, radius = 50, country } = await req.json();
-    
-    console.log('Searching vet clinics:', { query, latitude, longitude, radius, country });
-    
-    if (!query || query.trim().length < 1) {
+
+    console.log('Search request:', { query, hasLocation: !!(latitude && longitude), radius, country });
+
+    if (!query || query.trim() === '') {
       return new Response(
-        JSON.stringify({ error: 'Query must be at least 1 character long' }),
-        { 
-          status: 400, 
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
-        }
+        JSON.stringify({ error: 'Query parameter is required' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
-    // Initialize Supabase client
-    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-    const supabase = createClient(supabaseUrl, supabaseKey);
+    const hasLocation = latitude && longitude;
 
-    // Get user ID from auth header if available
-    const authHeader = req.headers.get('authorization');
-    let userId: string | undefined;
-    if (authHeader) {
-      try {
-        const { data: { user } } = await supabase.auth.getUser(authHeader.replace('Bearer ', ''));
-        userId = user?.id;
-      } catch (e) {
-        // Ignore auth errors, continue as anonymous
-      }
-    }
-
-    // Search existing database with improved similarity search
-    console.log('Searching existing clinics in database');
-    let dbQuery = supabase
-      .from('vet_clinics')
-      .select('*')
-      .or(`name.ilike.%${query}%,address.ilike.%${query}%`);
-    
-    // Filter by country if provided
-    if (country) {
-      dbQuery = dbQuery.ilike('address', `%${country}%`);
-    }
-    
-    const { data: existingClinics, error: dbError } = await dbQuery.limit(10);
+    // Step 1: Query database for existing clinics
+    console.log('Searching database...');
+    const { data: dbClinics, error: dbError } = await supabase
+      .rpc('get_accessible_vet_clinics', {
+        search_query: query,
+        include_contact_info: false
+      });
 
     if (dbError) {
-      console.error('Database error:', dbError);
-      await logSearchAnalytics(supabase, query, !!latitude, 0, 0, 0, `Database error: ${dbError.message}`, Date.now() - startTime, userId);
-      return new Response(
-        JSON.stringify({ error: 'Database search failed' }),
-        { 
-          status: 500, 
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
-        }
-      );
+      console.error('Database search error:', dbError);
     }
 
-    let results: VetClinic[] = existingClinics?.map(clinic => ({
-      id: clinic.id,
-      name: clinic.name,
-      address: clinic.address,
-      phone: clinic.phone,
-      email: clinic.email,
-      website: clinic.website,
-      latitude: clinic.latitude ? parseFloat(clinic.latitude) : undefined,
-      longitude: clinic.longitude ? parseFloat(clinic.longitude) : undefined,
-      osm_place_id: clinic.osm_place_id,
-      osm_type: clinic.osm_type,
-      services: clinic.services || [],
-      verified: clinic.verified || false
-    })) || [];
+    const dbResults = (dbClinics || []).map((clinic: any) => ({
+      ...clinic,
+      distance: hasLocation ? calculateDistance(latitude, longitude, clinic.latitude, clinic.longitude) : undefined
+    }));
 
-    let osmResultsCount = 0;
+    console.log(`Found ${dbResults.length} results in database`);
 
-    // If we don't have enough results, query OpenStreetMap
-    if (results.length < 5) {
-      console.log('Searching OpenStreetMap Nominatim API');
-      
-      try {
-      // Build improved Nominatim query
-        const nominatimBase = `https://nominatim.openstreetmap.org/search?format=json&limit=20&addressdetails=1&extratags=1&namedetails=1`;
-        let nominatimUrl = nominatimBase;
+    // Step 2: Query Google Places API
+    console.log('Searching Google Places API...');
+    let googleClinics: VetClinic[] = [];
+    let googleError: string | undefined;
 
-        // Use different query strategies based on location availability
-        let searchResults = [];
-        
-        if (latitude && longitude) {
-          // First try: Location-based search with user's query and country
-          let localSearchTerms = `${query} veterinary`;
-          if (country) {
-            localSearchTerms += ` ${country}`;
-          }
-          
-          const localUrl = nominatimUrl + `&q=${encodeURIComponent(localSearchTerms)}&` +
-            `lat=${latitude}&lon=${longitude}&radius=10000`; // 10km radius first
-          
-          console.log('Trying local search:', localUrl);
-          
-          try {
-            const localResponse = await fetch(localUrl, {
-              headers: { 'User-Agent': 'PetCare App/1.0 (https://petcare.app)' }
-            });
-            
-            if (localResponse.ok) {
-              searchResults = await localResponse.json();
-              console.log('Local search results:', searchResults.length);
-            }
-          } catch (e) {
-            console.log('Local search failed, will try broader search');
-          }
-          
-          // If no local results with specific query, try broader local search
-          if (searchResults.length === 0) {
-            const broadLocalUrl = nominatimUrl + `&q=${encodeURIComponent('veterinary')}&` +
-              `lat=${latitude}&lon=${longitude}&radius=25000`; // 25km radius
-              
-            console.log('Trying broader local search:', broadLocalUrl);
-            
-            try {
-              const broadResponse = await fetch(broadLocalUrl, {
-                headers: { 'User-Agent': 'PetCare App/1.0 (https://petcare.app)' }
-              });
-              
-              if (broadResponse.ok) {
-                searchResults = await broadResponse.json();
-                console.log('Broad local search results:', searchResults.length);
-              }
-            } catch (e) {
-              console.log('Broad local search also failed');
-            }
-          }
-        } else {
-          // Text-based search with broader terms (no location)
-          let searchTerms = `${query} veterinary animal hospital vet clinic animal care`;
-          if (country) {
-            searchTerms += ` ${country}`;
-          }
-          nominatimUrl += `&q=${encodeURIComponent(searchTerms)}`;
-        }
+    try {
+      let googleUrl: string;
 
-        console.log('Querying Nominatim:', searchResults.length > 0 ? 'Using search results' : nominatimUrl);
-        
-        // If we don't have search results yet (no location provided or previous attempts), fetch them
-        if (searchResults.length === 0) {
-          const response = await fetch(nominatimUrl, {
-            headers: {
-              'User-Agent': 'PetCare App/1.0 (https://petcare.app)'
-            }
-          });
-
-          if (!response.ok) {
-            throw new Error(`Nominatim API error: ${response.status}`);
-          }
-
-          searchResults = await response.json();
-        }
-
-        // Extra fallback: try exact name search without category terms
-        if (searchResults.length === 0) {
-          let nameOnlyUrl = nominatimBase + `&q=${encodeURIComponent(query)}`;
-          if (latitude && longitude) {
-            nameOnlyUrl += `&lat=${latitude}&lon=${longitude}&radius=25000`;
-          }
-          console.log('Trying name-only search fallback:', nameOnlyUrl);
-          try {
-            const nameOnlyResp = await fetch(nameOnlyUrl, {
-              headers: { 'User-Agent': 'PetCare App/1.0 (https://petcare.app)' }
-            });
-            if (nameOnlyResp.ok) {
-              const nameOnlyResults = await nameOnlyResp.json();
-              if (Array.isArray(nameOnlyResults) && nameOnlyResults.length > 0) {
-                searchResults = nameOnlyResults;
-              }
-            }
-          } catch (e) {
-            console.log('Name-only search fallback failed');
-          }
-        }
-        console.log('OSM Results found:', searchResults.length);
-
-        // Filter and process OSM results with comprehensive animal care facility detection
-        const processedResults = searchResults
-          .filter((place: any) => {
-            const name = (place.display_name || '').toLowerCase();
-            const tags = place.extratags || {};
-            const placeName = (tags.name || place.name || '').toLowerCase();
-            const type = (place.type || '').toLowerCase();
-            const category = (place.category || '').toLowerCase();
-            const placeClass = (place.class || '').toLowerCase();
-
-            // Check for veterinary keywords in name, display name, or place name
-            const hasVetKeyword = VET_KEYWORDS.some(keyword => 
-              name.includes(keyword) || 
-              placeName.includes(keyword) ||
-              type.includes(keyword)
-            );
-
-            // Comprehensive animal care facility tag detection
-            const hasAnimalCareTags = 
-              // Primary veterinary tags
-              tags.amenity === 'veterinary' ||
-              tags.healthcare === 'veterinary' ||
-              tags.healthcare === 'animal' ||
-              // Animal care facilities
-              tags.amenity === 'animal_shelter' ||
-              tags.amenity === 'animal_boarding' ||
-              tags.amenity === 'animal_training' ||
-              // Pet services
-              tags.shop === 'pet' ||
-              tags.shop === 'pet_grooming' ||
-              // Healthcare facilities (with animal context)
-              tags.healthcare === 'clinic' ||
-              tags.healthcare === 'centre' ||
-              // Hospitals (need animal keyword in name)
-              (tags.amenity === 'hospital' && hasVetKeyword);
-
-            // Check for general categories that might contain animal facilities
-            const isPotentialAnimalFacility = 
-              (placeClass === 'amenity' && (category === 'amenity' || category === 'shop')) ||
-              (placeClass === 'shop' && category === 'shop') ||
-              (placeClass === 'healthcare' && category === 'healthcare') ||
-              type.includes('hospital') ||
-              type.includes('clinic');
-
-            return hasVetKeyword || hasAnimalCareTags || (isPotentialAnimalFacility && hasVetKeyword);
-          })
-          .filter((place: any) => {
-            // If country is specified, filter results to only include that country
-            if (country) {
-              const address = place.display_name.toLowerCase();
-              return address.includes(country.toLowerCase());
-            }
-            return true;
-          })
-          .slice(0, 10)
-          .map((place: any) => {
-            const tags = place.extratags || {};
-            const name = place.display_name.split(',')[0].trim();
-            
-            return {
-              id: `osm_${place.place_id}`,
-              name: tags.name || name,
-              address: place.display_name,
-              latitude: parseFloat(place.lat),
-              longitude: parseFloat(place.lon),
-              osm_place_id: place.place_id?.toString(),
-              osm_type: place.osm_type,
-              phone: tags.phone || tags['contact:phone'],
-              email: tags.email || tags['contact:email'],
-              website: tags.website || tags['contact:website'],
-              services: extractServices(tags),
-              verified: false
-            };
-          });
-
-        osmResultsCount = processedResults.length;
-        console.log('Processed OSM results:', osmResultsCount);
-
-        // Remove duplicates and add OSM results
-        const existingOsmIds = new Set(results.map(r => r.osm_place_id).filter(Boolean));
-        const newOsmResults = processedResults.filter(result => 
-          !existingOsmIds.has(result.osm_place_id)
-        );
-
-        results = [...results, ...newOsmResults].slice(0, 10);
-        
-      } catch (osmError) {
-        console.error('OSM API error:', osmError);
-        await logSearchAnalytics(supabase, query, !!latitude, results.length, 0, results.length, `OSM error: ${osmError.message}`, Date.now() - startTime, userId);
-      }
-    }
-
-    // Sort by relevance and distance with improved scoring
-    results.sort((a, b) => {
-      const aIsExisting = !a.id?.startsWith('osm_');
-      const bIsExisting = !b.id?.startsWith('osm_');
-      
-      // Calculate relevance scores
-      const aRelevance = calculateRelevanceScore(a.name, query);
-      const bRelevance = calculateRelevanceScore(b.name, query);
-      
-      // High relevance matches (>80) get priority regardless of source
-      if (aRelevance > 80 || bRelevance > 80) {
-        if (aRelevance !== bRelevance) {
-          return bRelevance - aRelevance; // Higher relevance first
-        }
-      }
-      
-      // For medium relevance (50-80), prefer existing clinics
-      if (aRelevance >= 50 && bRelevance >= 50) {
-        if (aIsExisting !== bIsExisting) {
-          return aIsExisting ? -1 : 1;
-        }
-        // Both same source, sort by relevance
-        if (aRelevance !== bRelevance) {
-          return bRelevance - aRelevance;
-        }
+      if (hasLocation) {
+        // Use Nearby Search for location-based queries
+        googleUrl = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?` +
+          `location=${latitude},${longitude}&` +
+          `radius=${radius * 1000}&` + // Convert km to meters
+          `type=veterinary_care&` +
+          `keyword=${encodeURIComponent(query)}&` +
+          `key=${googleMapsKey}`;
       } else {
-        // Standard priority: existing clinics first for low relevance matches
-        if (aIsExisting !== bIsExisting) {
-          return aIsExisting ? -1 : 1;
-        }
-      }
-      
-      // If location is available, sort by distance
-      if (latitude && longitude && a.latitude && a.longitude && b.latitude && b.longitude) {
-        const aDistance = calculateDistance(latitude, longitude, a.latitude, a.longitude);
-        const bDistance = calculateDistance(latitude, longitude, b.latitude, b.longitude);
-        
-        // For similar relevance scores, prioritize closer results
-        if (Math.abs(aRelevance - bRelevance) < 10) {
-          // Prioritize results within 15km, then by distance
-          const aIsLocal = aDistance <= 15;
-          const bIsLocal = bDistance <= 15;
-          
-          if (aIsLocal !== bIsLocal) {
-            return aIsLocal ? -1 : 1;
-          }
-          
-          return aDistance - bDistance;
+        // Use Text Search for general queries
+        let searchQuery = query;
+        if (country) {
+          searchQuery += ` veterinary clinic in ${country}`;
+        } else {
+          searchQuery += ' veterinary clinic';
         }
         
-        // Different relevance scores, use relevance as primary
-        return bRelevance - aRelevance;
+        googleUrl = `https://maps.googleapis.com/maps/api/place/textsearch/json?` +
+          `query=${encodeURIComponent(searchQuery)}&` +
+          `key=${googleMapsKey}`;
       }
-      
-      // Fallback to relevance score
-      if (aRelevance !== bRelevance) {
-        return bRelevance - aRelevance;
+
+      console.log('Google Places API request:', googleUrl.replace(googleMapsKey, 'REDACTED'));
+      const googleResponse = await fetch(googleUrl);
+      const googleData = await googleResponse.json();
+
+      if (googleData.status === 'OK' && googleData.results) {
+        console.log(`Found ${googleData.results.length} results from Google Places`);
+        
+        googleClinics = googleData.results
+          .filter((place: any) => 
+            place.business_status === 'OPERATIONAL' || !place.business_status
+          )
+          .map((place: any) => {
+            const clinic: VetClinic = {
+              name: place.name,
+              address: place.vicinity || place.formatted_address || '',
+              latitude: place.geometry?.location?.lat,
+              longitude: place.geometry?.location?.lng,
+              google_place_id: place.place_id,
+              google_types: place.types || [],
+              services: extractServicesFromTypes(place.types || []),
+              verified: true,
+              rating: place.rating,
+              user_ratings_total: place.user_ratings_total,
+              opening_hours: place.opening_hours?.open_now !== undefined 
+                ? (place.opening_hours.open_now ? 'Open Now' : 'Closed') 
+                : undefined,
+              business_status: place.business_status,
+            };
+
+            // Calculate distance if user location is available
+            if (hasLocation && clinic.latitude && clinic.longitude) {
+              (clinic as any).distance = calculateDistance(
+                latitude, 
+                longitude, 
+                clinic.latitude, 
+                clinic.longitude
+              );
+            }
+
+            return clinic;
+          });
+      } else if (googleData.status === 'ZERO_RESULTS') {
+        console.log('Google Places returned zero results');
+      } else {
+        console.error('Google Places API error:', googleData.status, googleData.error_message);
+        googleError = googleData.error_message || 'Google Places API error';
       }
-      
-      // Final fallback to name comparison
-      return a.name.localeCompare(b.name);
+    } catch (error) {
+      console.error('Error fetching from Google Places:', error);
+      googleError = 'Failed to search Google Places';
+    }
+
+    // Step 3: Combine and deduplicate results
+    const combinedClinics = [...dbResults];
+    const existingNames = new Set(dbResults.map((c: any) => c.name.toLowerCase()));
+    const existingPlaceIds = new Set(
+      dbResults
+        .filter((c: any) => c.google_place_id)
+        .map((c: any) => c.google_place_id)
+    );
+
+    for (const googleClinic of googleClinics) {
+      // Skip if already in database
+      if (existingPlaceIds.has(googleClinic.google_place_id) || 
+          existingNames.has(googleClinic.name.toLowerCase())) {
+        continue;
+      }
+
+      combinedClinics.push(googleClinic);
+    }
+
+    // Step 4: Sort results by relevance and distance
+    combinedClinics.sort((a: any, b: any) => {
+      // Prioritize verified clinics from database
+      if (a.verified && !b.verified) return -1;
+      if (!a.verified && b.verified) return 1;
+
+      // Calculate relevance scores
+      const scoreA = calculateRelevanceScore(a.name, query, a.rating);
+      const scoreB = calculateRelevanceScore(b.name, query, b.rating);
+
+      // If scores are very close, sort by distance (if available)
+      if (Math.abs(scoreA - scoreB) < 5 && hasLocation) {
+        const distA = a.distance || 999999;
+        const distB = b.distance || 999999;
+        return distA - distB;
+      }
+
+      // Otherwise sort by relevance score
+      return scoreB - scoreA;
     });
 
-    console.log(`Returning ${results.length} total results`);
+    // Return top 10 results
+    const finalResults = combinedClinics.slice(0, 10);
 
-    // Log successful search analytics
-    await logSearchAnalytics(supabase, query, !!latitude, (existingClinics || []).length, osmResultsCount, results.length, undefined, Date.now() - startTime, userId);
+    const responseTime = Date.now() - startTime;
+    console.log(`Search completed in ${responseTime}ms with ${finalResults.length} results`);
+
+    // Log analytics
+    await logSearchAnalytics(
+      supabase,
+      query,
+      hasLocation,
+      dbResults.length,
+      googleClinics.length,
+      finalResults.length,
+      googleError,
+      responseTime,
+      userId
+    );
 
     return new Response(
-      JSON.stringify({ clinics: results.slice(0, 10) }),
-      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      JSON.stringify({
+        clinics: finalResults,
+        sources: {
+          database: dbResults.length,
+          google: googleClinics.length,
+          total: finalResults.length
+        }
+      }),
+      {
+        status: 200,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      }
     );
 
   } catch (error) {
-    console.error('Error in search-vet-clinics function:', error);
+    console.error('Search error:', error);
+    
+    const responseTime = Date.now() - startTime;
+    await logSearchAnalytics(
+      supabase,
+      '',
+      false,
+      0,
+      0,
+      0,
+      error.message,
+      responseTime,
+      userId
+    );
+
     return new Response(
-      JSON.stringify({ error: error.message }),
-      { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      JSON.stringify({ 
+        error: 'Internal server error',
+        details: error.message 
+      }),
+      {
+        status: 500,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      }
     );
   }
 });
