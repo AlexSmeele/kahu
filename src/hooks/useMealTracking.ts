@@ -158,6 +158,7 @@ export function useMealTracking(dogId?: string, nutritionPlanId?: string) {
     if (!mealSchedule || mealSchedule.length === 0) return [];
     
     const todayStr = format(new Date(), 'yyyy-MM-dd');
+    const now = new Date();
 
     return mealSchedule.map((meal: any, index: number) => {
       // Only match records from today
@@ -167,11 +168,16 @@ export function useMealTracking(dogId?: string, nutritionPlanId?: string) {
         record.scheduled_date === todayStr
       );
 
-      // Determine if the scheduled time has passed
+      // Determine if the scheduled time has passed (for UI indication)
       const [h, m] = (meal.time || '00:00').split(':').map((n: string) => parseInt(n, 10));
       const scheduledDT = new Date();
       scheduledDT.setHours(isNaN(h) ? 0 : h, isNaN(m) ? 0 : m, 0, 0);
-      const scheduledHasPassed = new Date() >= scheduledDT;
+      const scheduledHasPassed = now >= scheduledDT;
+
+      // FIX: A meal is completed if it has a completed_at timestamp,
+      // regardless of whether the scheduled time has passed.
+      // This allows guardians to mark meals complete early without confusion.
+      const isCompleted = !!existingRecord?.completed_at;
 
       return {
         id: existingRecord?.id || `meal-${index}`,
@@ -182,7 +188,7 @@ export function useMealTracking(dogId?: string, nutritionPlanId?: string) {
         name: meal.name || `Meal ${index + 1}`,
         amount: meal.amount || 1,
         reminder_enabled: meal.reminder_enabled || false,
-        completed: !!existingRecord?.completed_at && scheduledHasPassed,
+        completed: isCompleted,
         meal_record: existingRecord,
       };
     });
