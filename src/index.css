@@ -614,7 +614,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 40px;
+    padding: 40px 304px 40px 40px; /* Extra right padding for toolbar (240px + 24px + 40px) */
   }
 
   .device-frame-container {
