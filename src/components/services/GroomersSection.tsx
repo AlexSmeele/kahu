@@ -1,12 +1,13 @@
 import { useState } from 'react';
-import { Scissors, Plus, Search } from 'lucide-react';
+import { Scissors, Search, MapPin, Loader2, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { EmptyState } from '@/components/ui/empty-state';
 import { ServiceCard } from './ServiceCard';
-import { AddGroomerModal } from './AddGroomerModal';
+import { SearchResultCard } from './SearchResultCard';
+import { AddServiceDrawer } from './AddServiceDrawer';
 import { EditGroomerModal } from './EditGroomerModal';
-import { useGroomers, type DogGroomer } from '@/hooks/useGroomers';
+import { useGroomers, type DogGroomer, type Groomer } from '@/hooks/useGroomers';
 import { useDogs } from '@/hooks/useDogs';
 import { useToast } from '@/hooks/use-toast';
 
@@ -15,14 +16,108 @@ interface GroomersSectionProps {
 }
 
 export function GroomersSection({ dogId }: GroomersSectionProps) {
-  const { dogGroomers, isLoading, updateGroomerRelationship, removeGroomer } = useGroomers(dogId);
+  const { dogGroomers, isLoading, updateGroomerRelationship, removeGroomer, addGroomer, searchGroomers } = useGroomers(dogId);
   const { dogs } = useDogs();
   const { toast } = useToast();
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  
   const [editingGroomer, setEditingGroomer] = useState<DogGroomer | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState<Groomer[]>([]);
+  const [isSearching, setIsSearching] = useState(false);
+  const [isSearchMode, setIsSearchMode] = useState(false);
+  const [selectedToAdd, setSelectedToAdd] = useState<Groomer | null>(null);
+  const [userLocation, setUserLocation] = useState<{ latitude: number; longitude: number } | null>(null);
+  const [isGettingLocation, setIsGettingLocation] = useState(false);
 
   const currentDog = dogs.find(d => d.id === dogId);
+
+  const requestLocation = () => {
+    if (!navigator.geolocation) {
+      toast({
+        title: "Location not supported",
+        description: "Your browser doesn't support geolocation.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsGettingLocation(true);
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setUserLocation({
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+        });
+        setIsGettingLocation(false);
+        toast({
+          title: "Location enabled",
+          description: "Search results will be sorted by proximity.",
+        });
+      },
+      (error) => {
+        setIsGettingLocation(false);
+        toast({
+          title: "Location access denied",
+          description: "Unable to access your location. Searching without location.",
+          variant: "destructive",
+        });
+      }
+    );
+  };
+
+  const handleSearch = async () => {
+    if (!searchQuery.trim()) return;
+
+    setIsSearching(true);
+    setIsSearchMode(true);
+    try {
+      const results = await searchGroomers(
+        searchQuery,
+        userLocation?.latitude,
+        userLocation?.longitude
+      );
+      setSearchResults(results);
+      
+      if (results.length === 0) {
+        toast({
+          title: "No results found",
+          description: "Try a different search term or location.",
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Search failed",
+        description: "Could not search for groomers. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSearching(false);
+    }
+  };
+
+  const handleClearSearch = () => {
+    setSearchQuery('');
+    setSearchResults([]);
+    setIsSearchMode(false);
+  };
+
+  const handleAddGroomer = async (groomer: Groomer, data: { isPreferred: boolean; notes: string }) => {
+    try {
+      await addGroomer(dogId, groomer, data.isPreferred, data.notes);
+      toast({
+        title: "Groomer added",
+        description: `${groomer.name} has been added to ${currentDog?.name}'s profile.`,
+      });
+      setSelectedToAdd(null);
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to add groomer. Please try again.",
+        variant: "destructive",
+      });
+      throw error;
+    }
+  };
 
   const handleSetPreferred = async (relationshipId: string) => {
     try {
@@ -56,6 +151,10 @@ export function GroomersSection({ dogId }: GroomersSectionProps) {
     }
   };
 
+  const isGroomerAlreadyAdded = (groomerId: string) => {
+    return dogGroomers.some(dg => dg.groomer.id === groomerId);
+  };
+
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-12">
@@ -64,25 +163,13 @@ export function GroomersSection({ dogId }: GroomersSectionProps) {
     );
   }
 
-  if (dogGroomers.length === 0) {
+  if (dogGroomers.length === 0 && !isSearchMode) {
     return (
-      <>
-        <EmptyState
-          icon={<Scissors className="w-8 h-8" />}
-          title="No groomers yet"
-          description={`Find trusted groomers for ${currentDog?.name}'s coat care and hygiene needs.`}
-          action={{
-            label: "Find groomers",
-            onClick: () => setIsAddModalOpen(true),
-          }}
-        />
-        <AddGroomerModal
-          isOpen={isAddModalOpen}
-          onClose={() => setIsAddModalOpen(false)}
-          dogId={dogId}
-          dogName={currentDog?.name || ''}
-        />
-      </>
+      <EmptyState
+        icon={<Scissors className="w-8 h-8" />}
+        title="No groomers yet"
+        description={`Find trusted groomers for ${currentDog?.name}'s coat care and hygiene needs. Search below to get started.`}
+      />
     );
   }
 
@@ -95,44 +182,115 @@ export function GroomersSection({ dogId }: GroomersSectionProps) {
             placeholder="Search for groomers..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
             className="pl-10"
           />
         </div>
         <Button
+          variant={userLocation ? "secondary" : "outline"}
+          size="icon"
+          onClick={requestLocation}
+          disabled={isGettingLocation}
+          title={userLocation ? "Location enabled" : "Enable location"}
+        >
+          {isGettingLocation ? (
+            <Loader2 className="w-4 h-4 animate-spin" />
+          ) : (
+            <MapPin className={`w-4 h-4 ${userLocation ? 'text-primary' : ''}`} />
+          )}
+        </Button>
+        <Button
           variant="primary"
           size="md"
-          onClick={() => setIsAddModalOpen(true)}
+          onClick={handleSearch}
+          disabled={isSearching || !searchQuery.trim()}
         >
-          <Plus className="w-4 h-4 mr-2" />
-          Add
+          {isSearching ? (
+            <Loader2 className="w-4 h-4 animate-spin" />
+          ) : (
+            <Search className="w-4 h-4" />
+          )}
         </Button>
       </div>
 
-      {dogGroomers.map((dg) => (
-        <ServiceCard
-          key={dg.id}
-          name={dg.groomer.name}
-          businessName={dg.groomer.business_name}
-          address={dg.groomer.address}
-          phone={dg.groomer.phone}
-          website={dg.groomer.website}
-          rating={dg.groomer.rating}
-          userRatingsTotal={dg.groomer.user_ratings_total}
-          isPreferred={dg.is_preferred}
-          specialties={dg.groomer.specialties}
-          services={dg.groomer.services}
-          onSetPreferred={() => handleSetPreferred(dg.id)}
-          onEdit={() => setEditingGroomer(dg)}
-          onRemove={() => handleRemove(dg.id, dg.groomer.name)}
-        />
-      ))}
+      {isSearchMode && (
+        <>
+          <div className="flex items-center justify-between">
+            <h3 className="text-sm font-medium text-muted-foreground">
+              Search Results ({searchResults.length})
+            </h3>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleClearSearch}
+            >
+              <X className="w-4 h-4 mr-1" />
+              Clear Search
+            </Button>
+          </div>
 
-      <AddGroomerModal
-        isOpen={isAddModalOpen}
-        onClose={() => setIsAddModalOpen(false)}
-        dogId={dogId}
-        dogName={currentDog?.name || ''}
-      />
+          {searchResults.length > 0 && (
+            <div className="space-y-3">
+              {searchResults.map((groomer) => (
+                <SearchResultCard
+                  key={groomer.id}
+                  name={groomer.name}
+                  businessName={groomer.business_name}
+                  address={groomer.address}
+                  phone={groomer.phone}
+                  website={groomer.website}
+                  rating={groomer.rating}
+                  userRatingsTotal={groomer.user_ratings_total}
+                  distance={groomer.distance}
+                  source={groomer.source || 'database'}
+                  services={groomer.services}
+                  specialties={groomer.specialties}
+                  onAdd={() => setSelectedToAdd(groomer)}
+                  isAlreadyAdded={isGroomerAlreadyAdded(groomer.id)}
+                />
+              ))}
+            </div>
+          )}
+
+          {dogGroomers.length > 0 && (
+            <div className="border-t pt-4 mt-6">
+              <h3 className="text-sm font-medium text-muted-foreground mb-3">
+                Your Saved Groomers
+              </h3>
+            </div>
+          )}
+        </>
+      )}
+
+      {(!isSearchMode || (isSearchMode && dogGroomers.length > 0)) && (
+        <>
+          {!isSearchMode && dogGroomers.length > 0 && (
+            <h3 className="text-sm font-medium text-muted-foreground">
+              Your Saved Groomers
+            </h3>
+          )}
+          <div className="space-y-3">
+            {dogGroomers.map((dg) => (
+              <ServiceCard
+                key={dg.id}
+                name={dg.groomer.name}
+                businessName={dg.groomer.business_name}
+                address={dg.groomer.address}
+                phone={dg.groomer.phone}
+                website={dg.groomer.website}
+                rating={dg.groomer.rating}
+                userRatingsTotal={dg.groomer.user_ratings_total}
+                isPreferred={dg.is_preferred}
+                specialties={dg.groomer.specialties}
+                services={dg.groomer.services}
+                onSetPreferred={() => handleSetPreferred(dg.id)}
+                onEdit={() => setEditingGroomer(dg)}
+                onRemove={() => handleRemove(dg.id, dg.groomer.name)}
+              />
+            ))}
+          </div>
+        </>
+      )}
 
       {editingGroomer && (
         <EditGroomerModal
@@ -140,6 +298,17 @@ export function GroomersSection({ dogId }: GroomersSectionProps) {
           onClose={() => setEditingGroomer(null)}
           dogGroomer={editingGroomer}
           dogName={currentDog?.name || ''}
+        />
+      )}
+
+      {selectedToAdd && (
+        <AddServiceDrawer
+          isOpen={!!selectedToAdd}
+          onClose={() => setSelectedToAdd(null)}
+          serviceName={selectedToAdd.name}
+          serviceType="groomer"
+          dogName={currentDog?.name || ''}
+          onConfirm={(data) => handleAddGroomer(selectedToAdd, data)}
         />
       )}
     </div>

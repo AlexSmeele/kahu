@@ -1,12 +1,13 @@
 import { useState } from 'react';
-import { Footprints, Plus, Search } from 'lucide-react';
+import { Footprints, Search, MapPin, Loader2, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { EmptyState } from '@/components/ui/empty-state';
 import { ServiceCard } from './ServiceCard';
-import { AddWalkerModal } from './AddWalkerModal';
+import { SearchResultCard } from './SearchResultCard';
+import { AddServiceDrawer } from './AddServiceDrawer';
 import { EditWalkerModal } from './EditWalkerModal';
-import { useDogWalkers, type DogWalker } from '@/hooks/useDogWalkers';
+import { useDogWalkers, type DogWalker, type Walker } from '@/hooks/useDogWalkers';
 import { useDogs } from '@/hooks/useDogs';
 import { useToast } from '@/hooks/use-toast';
 
@@ -15,14 +16,108 @@ interface WalkersSectionProps {
 }
 
 export function WalkersSection({ dogId }: WalkersSectionProps) {
-  const { dogWalkers, isLoading, updateWalkerRelationship, removeWalker } = useDogWalkers(dogId);
+  const { dogWalkers, isLoading, updateWalkerRelationship, removeWalker, addWalker, searchWalkers } = useDogWalkers(dogId);
   const { dogs } = useDogs();
   const { toast } = useToast();
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  
   const [editingWalker, setEditingWalker] = useState<DogWalker | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState<Walker[]>([]);
+  const [isSearching, setIsSearching] = useState(false);
+  const [isSearchMode, setIsSearchMode] = useState(false);
+  const [selectedToAdd, setSelectedToAdd] = useState<Walker | null>(null);
+  const [userLocation, setUserLocation] = useState<{ latitude: number; longitude: number } | null>(null);
+  const [isGettingLocation, setIsGettingLocation] = useState(false);
 
   const currentDog = dogs.find(d => d.id === dogId);
+
+  const requestLocation = () => {
+    if (!navigator.geolocation) {
+      toast({
+        title: "Location not supported",
+        description: "Your browser doesn't support geolocation.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsGettingLocation(true);
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setUserLocation({
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+        });
+        setIsGettingLocation(false);
+        toast({
+          title: "Location enabled",
+          description: "Search results will be sorted by proximity.",
+        });
+      },
+      (error) => {
+        setIsGettingLocation(false);
+        toast({
+          title: "Location access denied",
+          description: "Unable to access your location. Searching without location.",
+          variant: "destructive",
+        });
+      }
+    );
+  };
+
+  const handleSearch = async () => {
+    if (!searchQuery.trim()) return;
+
+    setIsSearching(true);
+    setIsSearchMode(true);
+    try {
+      const results = await searchWalkers(
+        searchQuery,
+        userLocation?.latitude,
+        userLocation?.longitude
+      );
+      setSearchResults(results);
+      
+      if (results.length === 0) {
+        toast({
+          title: "No results found",
+          description: "Try a different search term or location.",
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Search failed",
+        description: "Could not search for dog walkers. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSearching(false);
+    }
+  };
+
+  const handleClearSearch = () => {
+    setSearchQuery('');
+    setSearchResults([]);
+    setIsSearchMode(false);
+  };
+
+  const handleAddWalker = async (walker: Walker, data: { isPreferred: boolean; notes: string }) => {
+    try {
+      await addWalker(dogId, walker, data.isPreferred, data.notes);
+      toast({
+        title: "Dog walker added",
+        description: `${walker.name} has been added to ${currentDog?.name}'s profile.`,
+      });
+      setSelectedToAdd(null);
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to add dog walker. Please try again.",
+        variant: "destructive",
+      });
+      throw error;
+    }
+  };
 
   const handleSetPreferred = async (relationshipId: string) => {
     try {
@@ -56,6 +151,10 @@ export function WalkersSection({ dogId }: WalkersSectionProps) {
     }
   };
 
+  const isWalkerAlreadyAdded = (walkerId: string) => {
+    return dogWalkers.some(dw => dw.walker.id === walkerId);
+  };
+
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-12">
@@ -64,25 +163,13 @@ export function WalkersSection({ dogId }: WalkersSectionProps) {
     );
   }
 
-  if (dogWalkers.length === 0) {
+  if (dogWalkers.length === 0 && !isSearchMode) {
     return (
-      <>
-        <EmptyState
-          icon={<Footprints className="w-8 h-8" />}
-          title="No dog walkers yet"
-          description={`Find reliable dog walkers to keep ${currentDog?.name} active and happy when you're busy.`}
-          action={{
-            label: "Find walkers",
-            onClick: () => setIsAddModalOpen(true),
-          }}
-        />
-        <AddWalkerModal
-          isOpen={isAddModalOpen}
-          onClose={() => setIsAddModalOpen(false)}
-          dogId={dogId}
-          dogName={currentDog?.name || ''}
-        />
-      </>
+      <EmptyState
+        icon={<Footprints className="w-8 h-8" />}
+        title="No dog walkers yet"
+        description={`Find reliable dog walkers to keep ${currentDog?.name} active and happy when you're busy. Search below to get started.`}
+      />
     );
   }
 
@@ -95,42 +182,112 @@ export function WalkersSection({ dogId }: WalkersSectionProps) {
             placeholder="Search for dog walkers..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
             className="pl-10"
           />
         </div>
         <Button
+          variant={userLocation ? "secondary" : "outline"}
+          size="icon"
+          onClick={requestLocation}
+          disabled={isGettingLocation}
+          title={userLocation ? "Location enabled" : "Enable location"}
+        >
+          {isGettingLocation ? (
+            <Loader2 className="w-4 h-4 animate-spin" />
+          ) : (
+            <MapPin className={`w-4 h-4 ${userLocation ? 'text-primary' : ''}`} />
+          )}
+        </Button>
+        <Button
           variant="primary"
           size="md"
-          onClick={() => setIsAddModalOpen(true)}
+          onClick={handleSearch}
+          disabled={isSearching || !searchQuery.trim()}
         >
-          <Plus className="w-4 h-4 mr-2" />
-          Add
+          {isSearching ? (
+            <Loader2 className="w-4 h-4 animate-spin" />
+          ) : (
+            <Search className="w-4 h-4" />
+          )}
         </Button>
       </div>
 
-      {dogWalkers.map((dw) => (
-        <ServiceCard
-          key={dw.id}
-          name={dw.walker.name}
-          businessName={dw.walker.business_name}
-          phone={dw.walker.phone}
-          website={dw.walker.website}
-          rating={dw.walker.rating}
-          userRatingsTotal={dw.walker.user_ratings_total}
-          isPreferred={dw.is_preferred}
-          services={dw.walker.services}
-          onSetPreferred={() => handleSetPreferred(dw.id)}
-          onEdit={() => setEditingWalker(dw)}
-          onRemove={() => handleRemove(dw.id, dw.walker.name)}
-        />
-      ))}
+      {isSearchMode && (
+        <>
+          <div className="flex items-center justify-between">
+            <h3 className="text-sm font-medium text-muted-foreground">
+              Search Results ({searchResults.length})
+            </h3>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleClearSearch}
+            >
+              <X className="w-4 h-4 mr-1" />
+              Clear Search
+            </Button>
+          </div>
 
-      <AddWalkerModal
-        isOpen={isAddModalOpen}
-        onClose={() => setIsAddModalOpen(false)}
-        dogId={dogId}
-        dogName={currentDog?.name || ''}
-      />
+          {searchResults.length > 0 && (
+            <div className="space-y-3">
+              {searchResults.map((walker) => (
+                <SearchResultCard
+                  key={walker.id}
+                  name={walker.name}
+                  businessName={walker.business_name}
+                  phone={walker.phone}
+                  website={walker.website}
+                  rating={walker.rating}
+                  userRatingsTotal={walker.user_ratings_total}
+                  distance={walker.distance}
+                  source={walker.source || 'database'}
+                  services={walker.services}
+                  serviceArea={walker.service_area}
+                  onAdd={() => setSelectedToAdd(walker)}
+                  isAlreadyAdded={isWalkerAlreadyAdded(walker.id)}
+                />
+              ))}
+            </div>
+          )}
+
+          {dogWalkers.length > 0 && (
+            <div className="border-t pt-4 mt-6">
+              <h3 className="text-sm font-medium text-muted-foreground mb-3">
+                Your Saved Dog Walkers
+              </h3>
+            </div>
+          )}
+        </>
+      )}
+
+      {(!isSearchMode || (isSearchMode && dogWalkers.length > 0)) && (
+        <>
+          {!isSearchMode && dogWalkers.length > 0 && (
+            <h3 className="text-sm font-medium text-muted-foreground">
+              Your Saved Dog Walkers
+            </h3>
+          )}
+          <div className="space-y-3">
+            {dogWalkers.map((dw) => (
+              <ServiceCard
+                key={dw.id}
+                name={dw.walker.name}
+                businessName={dw.walker.business_name}
+                phone={dw.walker.phone}
+                website={dw.walker.website}
+                rating={dw.walker.rating}
+                userRatingsTotal={dw.walker.user_ratings_total}
+                isPreferred={dw.is_preferred}
+                services={dw.walker.services}
+                onSetPreferred={() => handleSetPreferred(dw.id)}
+                onEdit={() => setEditingWalker(dw)}
+                onRemove={() => handleRemove(dw.id, dw.walker.name)}
+              />
+            ))}
+          </div>
+        </>
+      )}
 
       {editingWalker && (
         <EditWalkerModal
@@ -138,6 +295,17 @@ export function WalkersSection({ dogId }: WalkersSectionProps) {
           onClose={() => setEditingWalker(null)}
           dogWalker={editingWalker}
           dogName={currentDog?.name || ''}
+        />
+      )}
+
+      {selectedToAdd && (
+        <AddServiceDrawer
+          isOpen={!!selectedToAdd}
+          onClose={() => setSelectedToAdd(null)}
+          serviceName={selectedToAdd.name}
+          serviceType="walker"
+          dogName={currentDog?.name || ''}
+          onConfirm={(data) => handleAddWalker(selectedToAdd, data)}
         />
       )}
     </div>
