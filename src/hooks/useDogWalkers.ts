@@ -49,7 +49,7 @@ export function useDogWalkers(dogId?: string) {
     
     try {
       const { data, error: fetchError } = await supabase
-        .from('dog_walkers')
+        .from('dog_walkers' as any)
         .select(`
           id,
           dog_id,
@@ -80,7 +80,7 @@ export function useDogWalkers(dogId?: string) {
 
       if (fetchError) throw fetchError;
 
-      setDogWalkers(data || []);
+      setDogWalkers(data as any || []);
     } catch (err) {
       console.error('Error fetching dog walkers:', err);
       setError(err instanceof Error ? err : new Error('Failed to fetch dog walkers'));
@@ -101,7 +101,7 @@ export function useDogWalkers(dogId?: string) {
     try {
       // First, insert or get the walker
       const { data: walker, error: walkerError } = await supabase
-        .from('walkers')
+        .from('walkers' as any)
         .upsert({
           name: walkerData.name,
           business_name: walkerData.business_name,
@@ -123,20 +123,20 @@ export function useDogWalkers(dogId?: string) {
       // If setting as preferred, unset other preferred walkers for this dog
       if (isPreferred) {
         await supabase
-          .from('dog_walkers')
-          .update({ is_preferred: false })
+          .from('dog_walkers' as any)
+          .update({ is_preferred: false } as any)
           .eq('dog_id', dogId);
       }
 
       // Create the relationship
       const { error: relationshipError } = await supabase
-        .from('dog_walkers')
+        .from('dog_walkers' as any)
         .insert({
           dog_id: dogId,
-          walker_id: walker.id,
+          walker_id: (walker as any).id,
           is_preferred: isPreferred,
           relationship_notes: relationshipNotes,
-        });
+        } as any);
 
       if (relationshipError) throw relationshipError;
 
@@ -165,22 +165,22 @@ export function useDogWalkers(dogId?: string) {
       // If setting as preferred, get the dog_id and unset others
       if (updates.is_preferred) {
         const { data: relationship } = await supabase
-          .from('dog_walkers')
+          .from('dog_walkers' as any)
           .select('dog_id')
           .eq('id', relationshipId)
           .single();
 
         if (relationship) {
           await supabase
-            .from('dog_walkers')
-            .update({ is_preferred: false })
-            .eq('dog_id', relationship.dog_id);
+            .from('dog_walkers' as any)
+            .update({ is_preferred: false } as any)
+            .eq('dog_id', (relationship as any).dog_id);
         }
       }
 
       const { error: updateError } = await supabase
-        .from('dog_walkers')
-        .update(updates)
+        .from('dog_walkers' as any)
+        .update(updates as any)
         .eq('id', relationshipId);
 
       if (updateError) throw updateError;
@@ -207,7 +207,7 @@ export function useDogWalkers(dogId?: string) {
       const currentWalker = dogWalkers.find(dw => dw.id === relationshipId);
       
       const { error: deleteError } = await supabase
-        .from('dog_walkers')
+        .from('dog_walkers' as any)
         .delete()
         .eq('id', relationshipId);
 

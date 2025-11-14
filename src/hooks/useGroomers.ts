@@ -52,7 +52,7 @@ export function useGroomers(dogId?: string) {
     
     try {
       const { data, error: fetchError } = await supabase
-        .from('dog_groomers')
+        .from('dog_groomers' as any)
         .select(`
           id,
           dog_id,
@@ -86,7 +86,7 @@ export function useGroomers(dogId?: string) {
 
       if (fetchError) throw fetchError;
 
-      setDogGroomers(data || []);
+      setDogGroomers(data as any || []);
     } catch (err) {
       console.error('Error fetching dog groomers:', err);
       setError(err instanceof Error ? err : new Error('Failed to fetch groomers'));
@@ -107,7 +107,7 @@ export function useGroomers(dogId?: string) {
     try {
       // First, insert or get the groomer
       const { data: groomer, error: groomerError } = await supabase
-        .from('groomers')
+        .from('groomers' as any)
         .upsert({
           name: groomerData.name,
           business_name: groomerData.business_name,
@@ -132,20 +132,20 @@ export function useGroomers(dogId?: string) {
       // If setting as preferred, unset other preferred groomers for this dog
       if (isPreferred) {
         await supabase
-          .from('dog_groomers')
-          .update({ is_preferred: false })
+          .from('dog_groomers' as any)
+          .update({ is_preferred: false } as any)
           .eq('dog_id', dogId);
       }
 
       // Create the relationship
       const { error: relationshipError } = await supabase
-        .from('dog_groomers')
+        .from('dog_groomers' as any)
         .insert({
           dog_id: dogId,
-          groomer_id: groomer.id,
+          groomer_id: (groomer as any).id,
           is_preferred: isPreferred,
           relationship_notes: relationshipNotes,
-        });
+        } as any);
 
       if (relationshipError) throw relationshipError;
 
@@ -174,22 +174,22 @@ export function useGroomers(dogId?: string) {
       // If setting as preferred, get the dog_id and unset others
       if (updates.is_preferred) {
         const { data: relationship } = await supabase
-          .from('dog_groomers')
+          .from('dog_groomers' as any)
           .select('dog_id')
           .eq('id', relationshipId)
           .single();
 
         if (relationship) {
           await supabase
-            .from('dog_groomers')
-            .update({ is_preferred: false })
-            .eq('dog_id', relationship.dog_id);
+            .from('dog_groomers' as any)
+            .update({ is_preferred: false } as any)
+            .eq('dog_id', (relationship as any).dog_id);
         }
       }
 
       const { error: updateError } = await supabase
-        .from('dog_groomers')
-        .update(updates)
+        .from('dog_groomers' as any)
+        .update(updates as any)
         .eq('id', relationshipId);
 
       if (updateError) throw updateError;
@@ -216,7 +216,7 @@ export function useGroomers(dogId?: string) {
       const currentGroomer = dogGroomers.find(dg => dg.id === relationshipId);
       
       const { error: deleteError } = await supabase
-        .from('dog_groomers')
+        .from('dog_groomers' as any)
         .delete()
         .eq('id', relationshipId);
 
