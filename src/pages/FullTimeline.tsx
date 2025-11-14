@@ -337,7 +337,7 @@ export default function FullTimeline() {
   return (
     <div className="flex flex-col h-full safe-top bg-background">
       {/* Header with Glass Morphism */}
-      <div className="sticky top-0 z-40 bg-background/80 backdrop-blur-xl supports-[backdrop-filter]:bg-background/70 border-b shadow-sm">
+      <div className="sticky top-0 z-40 bg-background/80 backdrop-blur-xl supports-[backdrop-filter]:bg-background/70 border-b shadow-sm safe-top">
         <div className="flex items-center gap-3 p-4">
           <Button
             variant="ghost"

@@ -33,7 +33,7 @@ export default function MealPlanning({ selectedDogId }: MealPlanningProps) {
   return (
     <div className="flex flex-col h-full safe-top">
       {/* Header */}
-      <div className="sticky top-0 z-40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b">
+      <div className="sticky top-0 z-40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b safe-top">
         <div className="flex items-center gap-3 p-4">
           <Button
             variant="ghost"
