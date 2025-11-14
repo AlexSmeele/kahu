@@ -111,7 +111,6 @@ export function GroomersSection({ dogId }: GroomersSectionProps) {
     setIsSearchMode(false);
   };
 
-  const handleAddGroomer = async (groomer: Groomer, data: { isPreferred: boolean; notes: string }) => {
   const handleAddGroomer = async (groomer: Groomer) => {
     try {
       // Auto-set first groomer as preferred
