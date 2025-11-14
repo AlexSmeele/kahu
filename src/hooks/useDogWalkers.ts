@@ -11,6 +11,9 @@ export interface Walker {
   services?: string[];
   availability?: string;
   service_area?: string;
+  latitude?: number;
+  longitude?: number;
+  google_place_id?: string;
   rating?: number;
   user_ratings_total?: number;
   verified: boolean;
@@ -227,11 +230,12 @@ export function useDogWalkers(dogId?: string) {
 
   const searchWalkers = async (
     query: string,
-    serviceArea?: string
+    latitude?: number,
+    longitude?: number
   ): Promise<Walker[]> => {
     try {
       const { data, error } = await supabase.functions.invoke('search-dog-walkers', {
-        body: { query, serviceArea }
+        body: { query, latitude, longitude }
       });
 
       if (error) throw error;

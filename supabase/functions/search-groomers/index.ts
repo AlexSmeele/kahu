@@ -21,6 +21,71 @@ interface GroomerSearchResult {
   rating?: number;
   user_ratings_total?: number;
   verified: boolean;
+  distance?: number;
+  source?: 'database' | 'google';
+}
+
+function calculateDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
+  const R = 6371; // Earth's radius in km
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLon = (lon2 - lon1) * Math.PI / 180;
+  const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+    Math.sin(dLon / 2) * Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return R * c;
+}
+
+async function searchGooglePlaces(query: string, latitude?: number, longitude?: number, apiKey?: string): Promise<GroomerSearchResult[]> {
+  if (!apiKey) {
+    console.log('Google Maps API key not configured, skipping Google Places search');
+    return [];
+  }
+
+  try {
+    const searchQuery = `dog grooming ${query}`;
+    let url = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURIComponent(searchQuery)}&key=${apiKey}`;
+    
+    if (latitude && longitude) {
+      url += `&location=${latitude},${longitude}&radius=25000`;
+    }
+
+    console.log('Calling Google Places API for groomers');
+    const response = await fetch(url);
+    const data = await response.json();
+
+    if (data.status !== 'OK' && data.status !== 'ZERO_RESULTS') {
+      console.error('Google Places API error:', data.status, data.error_message);
+      return [];
+    }
+
+    if (!data.results || data.results.length === 0) {
+      console.log('No results from Google Places');
+      return [];
+    }
+
+    const results: GroomerSearchResult[] = data.results.map((place: any) => ({
+      name: place.name,
+      business_name: place.name,
+      address: place.formatted_address || place.vicinity,
+      latitude: place.geometry?.location?.lat,
+      longitude: place.geometry?.location?.lng,
+      google_place_id: place.place_id,
+      rating: place.rating,
+      user_ratings_total: place.user_ratings_total,
+      verified: true,
+      source: 'google' as const,
+      distance: latitude && longitude && place.geometry?.location
+        ? calculateDistance(latitude, longitude, place.geometry.location.lat, place.geometry.location.lng)
+        : undefined,
+    }));
+
+    console.log(`Found ${results.length} groomers from Google Places`);
+    return results;
+  } catch (error) {
+    console.error('Error calling Google Places API:', error);
+    return [];
+  }
 }
 
 Deno.serve(async (req) => {
@@ -31,6 +96,7 @@ Deno.serve(async (req) => {
   try {
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+    const googleApiKey = Deno.env.get('GOOGLE_MAPS_API_KEY');
     const supabase = createClient(supabaseUrl, supabaseKey);
 
     const { query, latitude, longitude } = await req.json();
@@ -51,20 +117,45 @@ Deno.serve(async (req) => {
       throw dbError;
     }
 
-    // TODO: Integrate with Google Places API
-    // For now, return database results only
-    // When Google Places API is integrated:
-    // 1. Call Google Places Text Search API with "dog grooming" + query
-    // 2. Filter by location if latitude/longitude provided
-    // 3. Merge results with database results (dedupe by google_place_id)
-    // 4. Return combined, sorted list
+    // Mark database results and calculate distance if location provided
+    const dbResults: GroomerSearchResult[] = (dbGroomers || []).map((groomer: any) => ({
+      ...groomer,
+      source: 'database' as const,
+      distance: latitude && longitude && groomer.latitude && groomer.longitude
+        ? calculateDistance(latitude, longitude, groomer.latitude, groomer.longitude)
+        : undefined,
+    }));
 
-    const results: GroomerSearchResult[] = dbGroomers || [];
+    // Search Google Places
+    const googleResults = await searchGooglePlaces(query, latitude, longitude, googleApiKey);
 
-    console.log(`Found ${results.length} groomers`);
+    // Merge and deduplicate results
+    const allResults = [...dbResults];
+    const existingPlaceIds = new Set(dbResults.map(r => r.google_place_id).filter(Boolean));
+
+    for (const googleResult of googleResults) {
+      if (!googleResult.google_place_id || !existingPlaceIds.has(googleResult.google_place_id)) {
+        allResults.push(googleResult);
+      }
+    }
+
+    // Sort results: database first, then by distance (if available), then by rating
+    allResults.sort((a, b) => {
+      if (a.source === 'database' && b.source !== 'database') return -1;
+      if (b.source === 'database' && a.source !== 'database') return 1;
+      if (a.distance !== undefined && b.distance !== undefined) {
+        return a.distance - b.distance;
+      }
+      if (a.rating && b.rating) {
+        return b.rating - a.rating;
+      }
+      return 0;
+    });
+
+    console.log(`Found ${allResults.length} total groomers (${dbResults.length} database, ${googleResults.length} Google)`);
 
     return new Response(
-      JSON.stringify({ results }),
+      JSON.stringify({ results: allResults }),
       { 
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
         status: 200,
