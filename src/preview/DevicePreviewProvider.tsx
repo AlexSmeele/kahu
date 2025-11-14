@@ -50,9 +50,13 @@ function detectMobileDevice(): boolean {
 function calculateFitZoom(deviceWidth: number, deviceHeight: number): number {
   if (typeof window === 'undefined') return 1;
   
-  const toolbarHeight = 120;
-  const availableWidth = window.innerWidth - 80;
-  const availableHeight = window.innerHeight - toolbarHeight - 40;
+  // Toolbar is now on the right side (304px: 240px width + 24px offset + 40px padding)
+  const toolbarWidth = 304;
+  const topPadding = 80;
+  const sidePadding = 80;
+  
+  const availableWidth = window.innerWidth - toolbarWidth - sidePadding;
+  const availableHeight = window.innerHeight - topPadding;
   
   const widthScale = availableWidth / deviceWidth;
   const heightScale = availableHeight / deviceHeight;
