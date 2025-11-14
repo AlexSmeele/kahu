@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { supabase } from '@/integrations/supabase/client';
 
 export interface Walker {
   id: string;
@@ -29,15 +30,63 @@ export interface DogWalker {
   walker: Walker;
 }
 
-// STUB IMPLEMENTATION - Will be activated after database migration is approved
 export function useDogWalkers(dogId?: string) {
-  const [dogWalkers] = useState<DogWalker[]>([]);
-  const [isLoading] = useState(false);
-  const [error] = useState<Error | null>(null);
+  const [dogWalkers, setDogWalkers] = useState<DogWalker[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
+
+  useEffect(() => {
+    if (dogId) {
+      fetchDogWalkers(dogId);
+    }
+  }, [dogId]);
 
   const fetchDogWalkers = async (id: string) => {
-    console.log('useDogWalkers: Waiting for database migration to be approved', id);
-    // Will be implemented after migration
+    if (!id) return;
+    
+    setIsLoading(true);
+    setError(null);
+    
+    try {
+      const { data, error: fetchError } = await supabase
+        .from('dog_walkers')
+        .select(`
+          id,
+          dog_id,
+          walker_id,
+          is_preferred,
+          relationship_notes,
+          preferred_days,
+          created_at,
+          updated_at,
+          walker:walkers (
+            id,
+            name,
+            business_name,
+            phone,
+            email,
+            website,
+            services,
+            availability,
+            service_area,
+            rating,
+            user_ratings_total,
+            verified,
+            created_at,
+            updated_at
+          )
+        `)
+        .eq('dog_id', id);
+
+      if (fetchError) throw fetchError;
+
+      setDogWalkers(data || []);
+    } catch (err) {
+      console.error('Error fetching dog walkers:', err);
+      setError(err instanceof Error ? err : new Error('Failed to fetch dog walkers'));
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const addWalker = async (
@@ -46,8 +95,59 @@ export function useDogWalkers(dogId?: string) {
     isPreferred: boolean = false,
     relationshipNotes?: string
   ) => {
-    console.log('useDogWalkers: Waiting for database migration to be approved', { dogId, walkerData, isPreferred, relationshipNotes });
-    throw new Error('Please approve the database migration to enable dog walker management');
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      // First, insert or get the walker
+      const { data: walker, error: walkerError } = await supabase
+        .from('walkers')
+        .upsert({
+          name: walkerData.name,
+          business_name: walkerData.business_name,
+          phone: walkerData.phone,
+          email: walkerData.email,
+          website: walkerData.website,
+          services: walkerData.services,
+          availability: walkerData.availability,
+          service_area: walkerData.service_area,
+          rating: walkerData.rating,
+          user_ratings_total: walkerData.user_ratings_total,
+          verified: walkerData.verified || false,
+        })
+        .select()
+        .single();
+
+      if (walkerError) throw walkerError;
+
+      // If setting as preferred, unset other preferred walkers for this dog
+      if (isPreferred) {
+        await supabase
+          .from('dog_walkers')
+          .update({ is_preferred: false })
+          .eq('dog_id', dogId);
+      }
+
+      // Create the relationship
+      const { error: relationshipError } = await supabase
+        .from('dog_walkers')
+        .insert({
+          dog_id: dogId,
+          walker_id: walker.id,
+          is_preferred: isPreferred,
+          relationship_notes: relationshipNotes,
+        });
+
+      if (relationshipError) throw relationshipError;
+
+      await fetchDogWalkers(dogId);
+    } catch (err) {
+      console.error('Error adding walker:', err);
+      setError(err instanceof Error ? err : new Error('Failed to add walker'));
+      throw err;
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const updateWalkerRelationship = async (
@@ -58,21 +158,89 @@ export function useDogWalkers(dogId?: string) {
       preferred_days?: string;
     }
   ) => {
-    console.log('useDogWalkers: Waiting for database migration to be approved', { relationshipId, updates });
-    throw new Error('Please approve the database migration to enable dog walker management');
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      // If setting as preferred, get the dog_id and unset others
+      if (updates.is_preferred) {
+        const { data: relationship } = await supabase
+          .from('dog_walkers')
+          .select('dog_id')
+          .eq('id', relationshipId)
+          .single();
+
+        if (relationship) {
+          await supabase
+            .from('dog_walkers')
+            .update({ is_preferred: false })
+            .eq('dog_id', relationship.dog_id);
+        }
+      }
+
+      const { error: updateError } = await supabase
+        .from('dog_walkers')
+        .update(updates)
+        .eq('id', relationshipId);
+
+      if (updateError) throw updateError;
+
+      // Refresh the list
+      const currentWalker = dogWalkers.find(dw => dw.id === relationshipId);
+      if (currentWalker) {
+        await fetchDogWalkers(currentWalker.dog_id);
+      }
+    } catch (err) {
+      console.error('Error updating walker relationship:', err);
+      setError(err instanceof Error ? err : new Error('Failed to update walker relationship'));
+      throw err;
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const removeWalker = async (relationshipId: string) => {
-    console.log('useDogWalkers: Waiting for database migration to be approved', relationshipId);
-    throw new Error('Please approve the database migration to enable dog walker management');
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const currentWalker = dogWalkers.find(dw => dw.id === relationshipId);
+      
+      const { error: deleteError } = await supabase
+        .from('dog_walkers')
+        .delete()
+        .eq('id', relationshipId);
+
+      if (deleteError) throw deleteError;
+
+      if (currentWalker) {
+        await fetchDogWalkers(currentWalker.dog_id);
+      }
+    } catch (err) {
+      console.error('Error removing walker:', err);
+      setError(err instanceof Error ? err : new Error('Failed to remove walker'));
+      throw err;
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const searchWalkers = async (
     query: string,
     serviceArea?: string
   ): Promise<Walker[]> => {
-    console.log('useDogWalkers: Waiting for database migration to be approved', { query, serviceArea });
-    return [];
+    try {
+      const { data, error } = await supabase.functions.invoke('search-dog-walkers', {
+        body: { query, serviceArea }
+      });
+
+      if (error) throw error;
+
+      return data?.results || [];
+    } catch (err) {
+      console.error('Error searching dog walkers:', err);
+      return [];
+    }
   };
 
   const preferredWalker = dogWalkers.find(dw => dw.is_preferred);
