@@ -46,6 +46,7 @@ export function useTricks(dogId?: string) {
     if (dogId && isMockDogId(dogId)) {
       const { MOCK_TRICKS } = await import('@/lib/mockData');
       setTricks(MOCK_TRICKS as Trick[]);
+      setLoading(false);
       return;
     }
 
@@ -65,6 +66,8 @@ export function useTricks(dogId?: string) {
         description: 'Please try refreshing the page',
         variant: 'destructive',
       });
+    } finally {
+      setLoading(false);
     }
   };
 
