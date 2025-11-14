@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { useMedicalTreatments } from "@/hooks/useMedicalTreatments";
@@ -34,6 +35,8 @@ export default function TreatmentDetail() {
   const [showRescheduleDialog, setShowRescheduleDialog] = useState(false);
   const [rescheduleDate, setRescheduleDate] = useState("");
   const [selectedVetClinic, setSelectedVetClinic] = useState<any>(null);
+  const [frequencyValue, setFrequencyValue] = useState(1);
+  const [frequencyUnit, setFrequencyUnit] = useState("week");
   const [editForm, setEditForm] = useState({
     treatment_name: "",
     last_administered_date: "",
@@ -63,6 +66,20 @@ export default function TreatmentDetail() {
       if (found) {
         setTreatment(found);
         setSelectedVetClinic((found as any).vet_clinic || null);
+        
+        // Convert frequency_weeks to value and unit for display
+        const weeks = found.frequency_weeks || 4;
+        if (weeks % 52 === 0 && weeks >= 52) {
+          setFrequencyValue(weeks / 52);
+          setFrequencyUnit("year");
+        } else if (weeks % 4 === 0 && weeks >= 4) {
+          setFrequencyValue(weeks / 4);
+          setFrequencyUnit("month");
+        } else {
+          setFrequencyValue(weeks);
+          setFrequencyUnit("week");
+        }
+        
         setEditForm({
           treatment_name: found.treatment_name,
           last_administered_date: found.last_administered_date,
@@ -95,10 +112,17 @@ export default function TreatmentDetail() {
   const handleSave = async () => {
     if (!treatment) return;
     
+    // Convert frequency to weeks based on unit
+    const frequencyInWeeks = 
+      frequencyUnit === "day" ? frequencyValue / 7 :
+      frequencyUnit === "week" ? frequencyValue :
+      frequencyUnit === "month" ? frequencyValue * 4 :
+      frequencyValue * 52; // year
+    
     const success = await updateTreatment(treatment.id, {
       treatment_name: editForm.treatment_name,
       last_administered_date: editForm.last_administered_date,
-      frequency_weeks: parseInt(editForm.frequency_weeks) || null,
+      frequency_weeks: frequencyInWeeks,
       next_due_date: editForm.next_due_date,
       notes: editForm.notes,
       vet_clinic_id: editForm.vet_clinic_id || null,
@@ -256,14 +280,38 @@ export default function TreatmentDetail() {
             </div>
             
             <div>
-              <Label className={isDark ? 'text-white/60' : 'text-gray-600'}>Frequency (weeks)</Label>
-              <Input
-                type="number"
-                value={editForm.frequency_weeks}
-                onChange={(e) => setEditForm({ ...editForm, frequency_weeks: e.target.value })}
-                className="mt-1"
-                placeholder="e.g., 4 for monthly"
-              />
+              <Label className={isDark ? 'text-white/60' : 'text-gray-600'}>Frequency</Label>
+              <div className="grid grid-cols-2 gap-2 mt-1">
+                <Select
+                  value={frequencyValue.toString()}
+                  onValueChange={(value) => setFrequencyValue(Number(value))}
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {Array.from({ length: 24 }, (_, i) => i + 1).map((num) => (
+                      <SelectItem key={num} value={num.toString()}>
+                        {num}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <Select
+                  value={frequencyUnit}
+                  onValueChange={setFrequencyUnit}
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="day">Day(s)</SelectItem>
+                    <SelectItem value="week">Week(s)</SelectItem>
+                    <SelectItem value="month">Month(s)</SelectItem>
+                    <SelectItem value="year">Year(s)</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
             
             <div>
