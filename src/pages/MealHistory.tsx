@@ -1,15 +1,23 @@
 import { useState, useEffect } from 'react';
-import { ArrowLeft, Calendar, TrendingUp, TrendingDown, AlertCircle, CheckCircle2, Clock, Utensils, Activity } from 'lucide-react';
+import { ArrowLeft, Calendar, TrendingUp, TrendingDown, AlertCircle, CheckCircle2, Clock, Utensils, Activity, Download, FileText } from 'lucide-react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { useDogs } from '@/hooks/useDogs';
 import { useNutrition } from '@/hooks/useNutrition';
+import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { format, subDays, startOfDay, endOfDay, differenceInDays } from 'date-fns';
 import { MealRecord } from '@/hooks/useMealTracking';
+import { generateMealCSV, downloadCSV, generatePrintableHTML, printToPDF } from '@/lib/mealExport';
 
 export default function MealHistory() {
   const navigate = useNavigate();
@@ -17,6 +25,7 @@ export default function MealHistory() {
   const { dogs } = useDogs();
   const currentDog = dogs.find(d => d.id === dogId) || dogs[0];
   const { nutritionPlan } = useNutrition(currentDog?.id || '');
+  const { toast } = useToast();
   
   const [mealRecords, setMealRecords] = useState<MealRecord[]>([]);
   const [loading, setLoading] = useState(true);
@@ -53,6 +62,57 @@ export default function MealHistory() {
       console.error('Error fetching meal history:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleExportCSV = () => {
+    try {
+      const csvContent = generateMealCSV(mealRecords, {
+        dogName: currentDog?.name || 'Unknown',
+        dogBreed: currentDog?.breed?.breed,
+        dateRange: `${format(subDays(new Date(), dateRange), 'MMM d, yyyy')} - ${format(new Date(), 'MMM d, yyyy')}`,
+        exportDate: format(new Date(), 'MMM d, yyyy h:mm a')
+      });
+
+      const filename = `${currentDog?.name || 'dog'}_meal_history_${format(new Date(), 'yyyy-MM-dd')}.csv`;
+      downloadCSV(csvContent, filename);
+
+      toast({
+        title: 'CSV Downloaded',
+        description: `Meal history exported as ${filename}`,
+      });
+    } catch (error) {
+      console.error('Error exporting CSV:', error);
+      toast({
+        title: 'Export Failed',
+        description: 'Unable to export meal history. Please try again.',
+        variant: 'destructive',
+      });
+    }
+  };
+
+  const handleExportPDF = () => {
+    try {
+      const htmlContent = generatePrintableHTML(mealRecords, {
+        dogName: currentDog?.name || 'Unknown',
+        dogBreed: currentDog?.breed?.breed,
+        dateRange: `${format(subDays(new Date(), dateRange), 'MMM d, yyyy')} - ${format(new Date(), 'MMM d, yyyy')}`,
+        exportDate: format(new Date(), 'MMM d, yyyy h:mm a')
+      });
+
+      printToPDF(htmlContent);
+
+      toast({
+        title: 'PDF Ready',
+        description: 'Print dialog opened. Choose "Save as PDF" to export.',
+      });
+    } catch (error) {
+      console.error('Error exporting PDF:', error);
+      toast({
+        title: 'Export Failed',
+        description: error instanceof Error ? error.message : 'Unable to export to PDF',
+        variant: 'destructive',
+      });
     }
   };
 
@@ -135,6 +195,24 @@ export default function MealHistory() {
             <h1 className="text-lg font-bold text-foreground">Meal History</h1>
             <p className="text-xs text-muted-foreground">{currentDog.name} • Last {dateRange} days</p>
           </div>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" size="sm">
+                <Download className="w-4 h-4 mr-2" />
+                Export
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem onClick={handleExportCSV}>
+                <FileText className="w-4 h-4 mr-2" />
+                Download as CSV
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={handleExportPDF}>
+                <FileText className="w-4 h-4 mr-2" />
+                Print as PDF
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </header>
 
