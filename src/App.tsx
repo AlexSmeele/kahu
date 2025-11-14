@@ -51,6 +51,7 @@ import Services from "./pages/Services";
 import MealPlanning from "./pages/MealPlanning";
 import Relaxation from "./pages/Relaxation";
 import VaccineSchedule from "./pages/VaccineSchedule";
+import MealHistory from "./pages/MealHistory";
 import { PasswordGate } from "@/components/PasswordGate";
 import { logger } from "@/lib/logger";
 
@@ -142,6 +143,11 @@ const App = () => {
                     <Route path="/vaccine-schedule/:dogId" element={
                       <ProtectedRoute>
                         <VaccineSchedule />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="/meal-history/:dogId" element={
+                      <ProtectedRoute>
+                        <MealHistory />
                       </ProtectedRoute>
                     } />
                     <Route path="/nutrition/:dogId" element={
