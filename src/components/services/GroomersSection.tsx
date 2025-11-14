@@ -1,10 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Scissors, Search, MapPin, Loader2, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { EmptyState } from '@/components/ui/empty-state';
 import { ServiceCard } from './ServiceCard';
 import { SearchResultCard } from './SearchResultCard';
+import { SearchFilters, type SortOption, type MinRatingOption } from './SearchFilters';
 import { EditGroomerModal } from './EditGroomerModal';
 import { useGroomers, type DogGroomer, type Groomer } from '@/hooks/useGroomers';
 import { useDogs } from '@/hooks/useDogs';
@@ -26,6 +27,8 @@ export function GroomersSection({ dogId }: GroomersSectionProps) {
   const [isSearchMode, setIsSearchMode] = useState(false);
   const [userLocation, setUserLocation] = useState<{ latitude: number; longitude: number } | null>(null);
   const [isGettingLocation, setIsGettingLocation] = useState(false);
+  const [sortBy, setSortBy] = useState<SortOption>('distance');
+  const [minRating, setMinRating] = useState<MinRatingOption>('all');
 
   const currentDog = dogs.find(d => d.id === dogId);
 
@@ -34,10 +37,14 @@ export function GroomersSection({ dogId }: GroomersSectionProps) {
     if (!searchQuery.trim()) {
       setIsSearchMode(false);
       setSearchResults([]);
+      setSortBy('distance');
+      setMinRating('all');
       return;
     }
 
     const timeoutId = setTimeout(async () => {
+      setSortBy('distance');
+      setMinRating('all');
       setIsSearching(true);
       setIsSearchMode(true);
       
@@ -109,7 +116,39 @@ export function GroomersSection({ dogId }: GroomersSectionProps) {
     setSearchQuery('');
     setSearchResults([]);
     setIsSearchMode(false);
+    setSortBy('distance');
+    setMinRating('all');
   };
+
+  // Filter and sort search results
+  const filteredAndSortedResults = useMemo(() => {
+    let results = [...searchResults];
+
+    // Apply minimum rating filter
+    if (minRating !== 'all') {
+      const threshold = parseFloat(minRating);
+      results = results.filter(result => 
+        result.rating ? result.rating >= threshold : false
+      );
+    }
+
+    // Apply sorting
+    if (sortBy === 'distance' && userLocation) {
+      results.sort((a, b) => {
+        const distA = a.distance ?? Infinity;
+        const distB = b.distance ?? Infinity;
+        return distA - distB;
+      });
+    } else if (sortBy === 'rating') {
+      results.sort((a, b) => {
+        const ratingA = a.rating ?? 0;
+        const ratingB = b.rating ?? 0;
+        return ratingB - ratingA;
+      });
+    }
+
+    return results;
+  }, [searchResults, sortBy, minRating, userLocation]);
 
   const handleAddGroomer = async (groomer: Groomer) => {
     try {
@@ -209,6 +248,26 @@ export function GroomersSection({ dogId }: GroomersSectionProps) {
         </Button>
       </div>
 
+      {/* Filter controls */}
+      {isSearchMode && searchResults.length > 0 && (
+        <div className="mb-4">
+          <SearchFilters
+            sortBy={sortBy}
+            onSortChange={setSortBy}
+            minRating={minRating}
+            onMinRatingChange={setMinRating}
+            hasLocation={!!userLocation}
+          />
+            </div>
+          )}
+
+          {searchResults.length > 0 && filteredAndSortedResults.length === 0 && (
+            <div className="text-center py-8 text-muted-foreground">
+              <p>No results match your filters.</p>
+              <p className="text-sm mt-1">Try adjusting the minimum rating or sort options.</p>
+            </div>
+          )}
+
       {isSearchMode && (
         <>
           <div className="flex items-center justify-between">
@@ -225,9 +284,9 @@ export function GroomersSection({ dogId }: GroomersSectionProps) {
             </Button>
           </div>
 
-          {searchResults.length > 0 && (
+          {searchResults.length > 0 && filteredAndSortedResults.length > 0 && (
             <div className="space-y-3">
-              {searchResults.map((groomer) => (
+              {filteredAndSortedResults.map((groomer) => (
                 <SearchResultCard
                   key={groomer.id}
                   name={groomer.name}
