@@ -111,7 +111,6 @@ export function WalkersSection({ dogId }: WalkersSectionProps) {
     setIsSearchMode(false);
   };
 
-  const handleAddWalker = async (walker: Walker, data: { isPreferred: boolean; notes: string }) => {
   const handleAddWalker = async (walker: Walker) => {
     try {
       // Auto-set first walker as preferred
