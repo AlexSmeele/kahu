@@ -21,6 +21,21 @@ export function NutritionOverviewCard({ dogId, className = "" }: NutritionOvervi
   const completedMeals = todayMeals?.filter(m => m.completed).length || 0;
   const totalMeals = todayMeals?.length || 0;
   
+  // Debug logging for meal counting issue
+  console.log('🍎 NutritionOverviewCard Debug:', {
+    dogId,
+    nutritionPlanExists: !!nutritionPlan,
+    nutritionPlanId: nutritionPlan?.id,
+    mealSchedule,
+    mealScheduleLength: mealSchedule.length,
+    mealRecordsCount: mealRecords?.length || 0,
+    todayMeals,
+    todayMealsLength: todayMeals?.length || 0,
+    completedMeals,
+    totalMeals,
+    calculation: `${completedMeals} of ${totalMeals} meals`
+  });
+  
   // Find next meal
   const now = new Date();
   const nextMeal = todayMeals
