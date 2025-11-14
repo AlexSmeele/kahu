@@ -176,7 +176,7 @@ export default function GuideCertificate() {
   if (!certificate) {
     return (
       <main className="content-frame bg-background">
-        <header className="sticky top-0 z-10 bg-background/95 backdrop-blur-sm border-b">
+        <header className="sticky top-0 z-10 bg-background/95 backdrop-blur-sm border-b safe-top">
           <div className="flex items-center justify-between p-4 max-w-4xl mx-auto">
             <Button variant="ghost" size="icon" onClick={() => navigate('/guide/modules')}>
               <ArrowLeft className="w-5 h-5" />
@@ -216,7 +216,7 @@ export default function GuideCertificate() {
   return (
     <main className="content-frame bg-background">
       {/* Header */}
-      <header className="sticky top-0 z-10 bg-background/95 backdrop-blur-sm border-b">
+      <header className="sticky top-0 z-10 bg-background/95 backdrop-blur-sm border-b safe-top">
         <div className="flex items-center justify-between p-4 max-w-4xl mx-auto">
           <Button variant="ghost" size="icon" onClick={() => navigate('/guide/modules')}>
             <ArrowLeft className="w-5 h-5" />
