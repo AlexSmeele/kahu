@@ -188,9 +188,9 @@ export default function TreatmentDetail() {
   // Edit Mode
   if (isEditing) {
     return (
-      <div className={`min-h-screen ${isDark ? 'bg-[#1a1a1a]' : 'bg-gray-50'}`}>
+      <div className={`min-h-screen ${isDark ? 'bg-[#1a1a1a]' : 'bg-gray-50'} isolate`}>
         {/* Fixed Header */}
-        <div className={`fixed top-[54px] left-0 right-0 z-20 ${isDark ? 'bg-[#1a1a1a]/95' : 'bg-white/95'} backdrop-blur-sm ${isDark ? 'border-white/5' : 'border-gray-200'} border-b`}>
+        <div className={`fixed top-[54px] left-0 right-0 z-50 ${isDark ? 'bg-[#1a1a1a]/95' : 'bg-white/95'} backdrop-blur-sm ${isDark ? 'border-white/5' : 'border-gray-200'} border-b`}>
           <div className="container max-w-2xl mx-auto px-4 py-4">
             <div className="flex items-center justify-between">
               <button
@@ -310,9 +310,9 @@ export default function TreatmentDetail() {
   
   // View Mode
   return (
-    <div className={`min-h-screen ${isDark ? 'bg-[#1a1a1a]' : 'bg-gray-50'}`}>
+    <div className={`min-h-screen ${isDark ? 'bg-[#1a1a1a]' : 'bg-gray-50'} isolate`}>
       {/* Fixed Header */}
-      <div className={`fixed top-[54px] left-0 right-0 z-20 ${isDark ? 'bg-[#1a1a1a]/95' : 'bg-white/95'} backdrop-blur-sm ${isDark ? 'border-white/5' : 'border-gray-200'} border-b`}>
+      <div className={`fixed top-[54px] left-0 right-0 z-50 ${isDark ? 'bg-[#1a1a1a]/95' : 'bg-white/95'} backdrop-blur-sm ${isDark ? 'border-white/5' : 'border-gray-200'} border-b`}>
         <div className="container max-w-2xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between gap-4">
             <button
