@@ -5,7 +5,6 @@ import { Input } from '@/components/ui/input';
 import { EmptyState } from '@/components/ui/empty-state';
 import { ServiceCard } from './ServiceCard';
 import { SearchResultCard } from './SearchResultCard';
-import { AddServiceDrawer } from './AddServiceDrawer';
 import { EditGroomerModal } from './EditGroomerModal';
 import { useGroomers, type DogGroomer, type Groomer } from '@/hooks/useGroomers';
 import { useDogs } from '@/hooks/useDogs';
@@ -25,7 +24,6 @@ export function GroomersSection({ dogId }: GroomersSectionProps) {
   const [searchResults, setSearchResults] = useState<Groomer[]>([]);
   const [isSearching, setIsSearching] = useState(false);
   const [isSearchMode, setIsSearchMode] = useState(false);
-  const [selectedToAdd, setSelectedToAdd] = useState<Groomer | null>(null);
   const [userLocation, setUserLocation] = useState<{ latitude: number; longitude: number } | null>(null);
   const [isGettingLocation, setIsGettingLocation] = useState(false);
 
@@ -114,20 +112,25 @@ export function GroomersSection({ dogId }: GroomersSectionProps) {
   };
 
   const handleAddGroomer = async (groomer: Groomer, data: { isPreferred: boolean; notes: string }) => {
+  const handleAddGroomer = async (groomer: Groomer) => {
     try {
-      await addGroomer(dogId, groomer, data.isPreferred, data.notes);
+      // Auto-set first groomer as preferred
+      const isFirstGroomer = dogGroomers.length === 0;
+      
+      await addGroomer(dogId, groomer, isFirstGroomer, '');
+      
       toast({
         title: "Groomer added",
-        description: `${groomer.name} has been added to ${currentDog?.name}'s profile.`,
+        description: isFirstGroomer
+          ? `${groomer.name} has been added as ${currentDog?.name}'s preferred groomer.`
+          : `${groomer.name} has been added to ${currentDog?.name}'s profile.`,
       });
-      setSelectedToAdd(null);
     } catch (error) {
       toast({
         title: "Error",
         description: "Failed to add groomer. Please try again.",
         variant: "destructive",
       });
-      throw error;
     }
   };
 
@@ -239,7 +242,7 @@ export function GroomersSection({ dogId }: GroomersSectionProps) {
                   source={groomer.source || 'database'}
                   services={groomer.services}
                   specialties={groomer.specialties}
-                  onAdd={() => setSelectedToAdd(groomer)}
+                  onAdd={() => handleAddGroomer(groomer)}
                   isAlreadyAdded={isGroomerAlreadyAdded(groomer.id)}
                 />
               ))}
@@ -292,17 +295,6 @@ export function GroomersSection({ dogId }: GroomersSectionProps) {
           onClose={() => setEditingGroomer(null)}
           dogGroomer={editingGroomer}
           dogName={currentDog?.name || ''}
-        />
-      )}
-
-      {selectedToAdd && (
-        <AddServiceDrawer
-          isOpen={!!selectedToAdd}
-          onClose={() => setSelectedToAdd(null)}
-          serviceName={selectedToAdd.name}
-          serviceType="groomer"
-          dogName={currentDog?.name || ''}
-          onConfirm={(data) => handleAddGroomer(selectedToAdd, data)}
         />
       )}
     </div>
