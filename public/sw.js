@@ -1,9 +1,7 @@
 // Kahu PWA Service Worker
-const CACHE_NAME = 'kahu-v1';
+const CACHE_NAME = 'kahu-v2';
 const urlsToCache = [
   '/',
-  '/static/js/bundle.js',
-  '/static/css/main.css',
   '/manifest.json'
 ];
 
@@ -15,20 +13,34 @@ self.addEventListener('install', (event) => {
         return cache.addAll(urlsToCache);
       })
   );
+  self.skipWaiting();
 });
 
-// Fetch
+// Fetch - Network first for auth routes
 self.addEventListener('fetch', (event) => {
+  const url = new URL(event.request.url);
+  
+  // Always use network for auth routes and callbacks
+  if (url.pathname.includes('/auth') || url.hash.includes('access_token')) {
+    event.respondWith(fetch(event.request));
+    return;
+  }
+
+  // Network first strategy for main app
   event.respondWith(
-    caches.match(event.request)
+    fetch(event.request)
       .then((response) => {
-        // Cache hit - return response
-        if (response) {
-          return response;
-        }
-        return fetch(event.request);
-      }
-    )
+        // Clone the response before caching
+        const responseToCache = response.clone();
+        caches.open(CACHE_NAME).then((cache) => {
+          cache.put(event.request, responseToCache);
+        });
+        return response;
+      })
+      .catch(() => {
+        // Fallback to cache if network fails
+        return caches.match(event.request);
+      })
   );
 });
 

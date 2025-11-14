@@ -17,10 +17,56 @@ export default function Auth() {
   const [displayName, setDisplayName] = useState('');
   const [loading, setLoading] = useState(false);
   const [showMockFlow, setShowMockFlow] = useState(false);
+  const [isProcessingOAuth, setIsProcessingOAuth] = useState(false);
   
   const { signUp, signIn, user, devBypass } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
+
+  // Handle OAuth callback
+  useEffect(() => {
+    const handleOAuthCallback = async () => {
+      // Check if URL contains OAuth tokens
+      const hashParams = new URLSearchParams(window.location.hash.substring(1));
+      const accessToken = hashParams.get('access_token');
+      
+      if (accessToken && !isProcessingOAuth) {
+        setIsProcessingOAuth(true);
+        console.log('Processing OAuth callback...');
+        
+        try {
+          // Get the session from Supabase
+          const { data: { session }, error } = await supabase.auth.getSession();
+          
+          if (error) {
+            console.error('OAuth callback error:', error);
+            toast({
+              variant: "destructive",
+              title: "Authentication failed",
+              description: error.message || "Failed to complete sign in. Please try again.",
+            });
+            setIsProcessingOAuth(false);
+            // Clear the hash to prevent retry loops
+            window.location.hash = '';
+          } else if (session) {
+            console.log('OAuth session established successfully');
+            // The AuthContext will handle the redirect via the user effect below
+          }
+        } catch (err) {
+          console.error('Unexpected OAuth error:', err);
+          toast({
+            variant: "destructive",
+            title: "Authentication failed",
+            description: "An unexpected error occurred. Please try again.",
+          });
+          setIsProcessingOAuth(false);
+          window.location.hash = '';
+        }
+      }
+    };
+
+    handleOAuthCallback();
+  }, [toast, isProcessingOAuth]);
 
   // Redirect if already authenticated
   useEffect(() => {
@@ -201,6 +247,18 @@ export default function Auth() {
   // Show mock flow if requested
   if (showMockFlow) {
     return <PreSignupJourney onComplete={handleMockFlowComplete} />;
+  }
+
+  // Show loading state while processing OAuth
+  if (isProcessingOAuth) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="text-center space-y-4">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+          <p className="text-foreground/70">Completing sign in...</p>
+        </div>
+      </div>
+    );
   }
 
   return (
