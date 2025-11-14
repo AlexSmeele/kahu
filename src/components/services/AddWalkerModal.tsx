@@ -206,20 +206,6 @@ export function AddWalkerModal({ isOpen, onClose, dogId, dogName }: AddWalkerMod
               ))}
             </div>
           )}
-                    <p className="font-medium">{walker.name}</p>
-                    {walker.service_area && (
-                      <p className="text-sm text-muted-foreground">Service area: {walker.service_area}</p>
-                    )}
-                    {walker.rating && (
-                      <p className="text-xs text-muted-foreground mt-1">
-                        ⭐ {walker.rating.toFixed(1)} ({walker.user_ratings_total} reviews)
-                      </p>
-                    )}
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          )}
 
           {/* Selected Walker Details */}
           {selectedWalker && (
