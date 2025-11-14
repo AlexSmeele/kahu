@@ -19,6 +19,8 @@ export interface Groomer {
   verified: boolean;
   created_at?: string;
   updated_at?: string;
+  distance?: number; // Distance in km (from search results)
+  source?: 'google' | 'database'; // Source of the result (from search)
 }
 
 export interface DogGroomer {
