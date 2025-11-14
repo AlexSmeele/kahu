@@ -48,7 +48,9 @@ import TroubleshootingDetailPage from "./pages/training/TroubleshootingDetailPag
 import Marketplace from "./pages/Marketplace";
 import Insurance from "./pages/Insurance";
 import Services from "./pages/Services";
+import MealPlanning from "./pages/MealPlanning";
 import Relaxation from "./pages/Relaxation";
+import VaccineSchedule from "./pages/VaccineSchedule";
 import { PasswordGate } from "@/components/PasswordGate";
 import { logger } from "@/lib/logger";
 
@@ -137,6 +139,11 @@ const App = () => {
                     <Route path="/injury/:injuryId" element={<ProtectedRoute><InjuryDetail /></ProtectedRoute>} />
                     <Route path="/analytics" element={<ProtectedRoute><Analytics /></ProtectedRoute>} />
                     <Route path="/record-activity" element={<ProtectedRoute><RecordActivity /></ProtectedRoute>} />
+                    <Route path="/vaccine-schedule/:dogId" element={
+                      <ProtectedRoute>
+                        <VaccineSchedule />
+                      </ProtectedRoute>
+                    } />
                     <Route path="/nutrition/:dogId" element={
                       <ProtectedRoute>
                         <Nutrition />

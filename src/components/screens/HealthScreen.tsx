@@ -129,6 +129,7 @@ export function WellnessScreen({ selectedDogId, onDogChange }: WellnessScreenPro
         <div className="p-4 space-y-6">
           {/* Quick Actions - Horizontal scrollable */}
           <TimelineQuickActions
+            dogId={selectedDogId}
             onAddActivity={() => setIsActivityModalOpen(true)}
             onLogMeal={() => setIsMealLogModalOpen(true)}
             onRecordWeight={() => setIsWeightTrackerOpen(true)}
