@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useLayoutEffect } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { ArrowLeft, Edit3, Heart, Calendar, Check, Clock, FileText, CheckCircle, AlertTriangle, Building2, Pill } from "lucide-react";
 import { useTheme } from "next-themes";
@@ -43,11 +43,6 @@ export default function TreatmentDetail() {
     vet_clinic_id: "",
   });
   
-  // Refs for dynamic spacing
-  const headerRef = useRef<HTMLDivElement>(null);
-  const footerRef = useRef<HTMLDivElement>(null);
-  const [topOffset, setTopOffset] = useState(0);
-  const [bottomOffset, setBottomOffset] = useState(0);
   
   const { treatments, loading: treatmentsLoading, updateTreatment, deleteTreatment } = useMedicalTreatments(dogId);
   
@@ -55,20 +50,6 @@ export default function TreatmentDetail() {
     fetchTreatmentData();
   }, [treatmentId, dogId, treatments]);
   
-  // Measure header and footer heights for dynamic spacing
-  useLayoutEffect(() => {
-    const measure = () => {
-      const statusBarHeight = isDesktop ? 54 : 0;
-      const headerHeight = headerRef.current?.offsetHeight ?? 0;
-      const footerHeight = footerRef.current?.offsetHeight ?? 0;
-      setTopOffset(statusBarHeight + headerHeight);
-      setBottomOffset(footerHeight);
-    };
-    
-    measure();
-    window.addEventListener('resize', measure);
-    return () => window.removeEventListener('resize', measure);
-  }, [isDesktop, isEditing, theme, showCompleteModal, showRescheduleDialog]);
   
   const fetchTreatmentData = async () => {
     if (treatmentsLoading) {
@@ -216,14 +197,14 @@ export default function TreatmentDetail() {
       <div className={`min-h-screen ${isDark ? 'bg-[#1a1a1a]' : 'bg-gray-50'} isolate`}>
         {/* Status Bar - Desktop Preview Only */}
         {isDesktop && (
-          <div className={`fixed top-0 left-0 right-0 h-[54px] z-50 ${isDark ? 'bg-[#1a1a1a]' : 'bg-gray-50'} pointer-events-none`}>
+          <div className={`fixed top-0 left-0 right-0 h-[54px] z-40 ${isDark ? 'bg-[#1a1a1a]' : 'bg-gray-50'} pointer-events-none`}>
             <DynamicIsland />
             <IOSStatusBar />
           </div>
         )}
         
-        {/* Fixed Header */}
-        <div ref={headerRef} className={`fixed top-[54px] left-0 right-0 z-[60] ${isDark ? 'bg-[#1a1a1a]/95' : 'bg-white/95'} backdrop-blur-sm ${isDark ? 'border-white/5' : 'border-gray-200'} border-b`}>
+      {/* Sticky Header */}
+      <div className={`sticky top-0 z-50 ${isDark ? 'bg-[#1a1a1a]/95' : 'bg-white/95'} backdrop-blur-sm ${isDark ? 'border-white/5' : 'border-gray-200'} border-b safe-top`}>
           <div className="container max-w-2xl mx-auto px-4 py-4">
             <div className="flex items-center justify-between">
               <button
@@ -240,14 +221,8 @@ export default function TreatmentDetail() {
           </div>
         </div>
         
-        {/* Content */}
-        <div 
-          className="px-4 space-y-4 overflow-y-auto"
-          style={{
-            marginTop: `${topOffset}px`,
-            height: `calc(100vh - ${topOffset + bottomOffset}px)`
-          }}
-        >
+      {/* Content */}
+      <div className="container max-w-2xl mx-auto px-4 py-6 space-y-4 pb-[200px]">
           <div className={`bg-gradient-to-br ${isDark ? 'from-white/10 to-white/5 border-white/10' : 'from-white to-gray-50 border-gray-200 shadow-md'} border rounded-2xl p-5 space-y-4`}>
             <div>
               <Label className={isDark ? 'text-white/60' : 'text-gray-600'}>Treatment Name</Label>
@@ -315,8 +290,8 @@ export default function TreatmentDetail() {
           </div>
         </div>
         
-        {/* Bottom Actions */}
-        <div ref={footerRef} className={`fixed bottom-0 left-0 right-0 ${isDark ? 'bg-[#1a1a1a]/95' : 'bg-white/95'} backdrop-blur-sm ${isDark ? 'border-white/5' : 'border-gray-200'} border-t p-4 space-y-3 safe-bottom`}>
+      {/* Bottom Actions */}
+      <div className={`fixed bottom-0 left-0 right-0 ${isDark ? 'bg-[#1a1a1a]/95' : 'bg-white/95'} backdrop-blur-sm ${isDark ? 'border-white/5' : 'border-gray-200'} border-t p-4 space-y-3 safe-bottom`}>
           <div className="flex gap-3">
             <button
               onClick={() => setIsEditing(false)}
@@ -358,8 +333,8 @@ export default function TreatmentDetail() {
         </div>
       )}
       
-      {/* Fixed Header */}
-      <div ref={headerRef} className={`fixed top-[54px] left-0 right-0 z-[60] ${isDark ? 'bg-[#1a1a1a]/95' : 'bg-white/95'} backdrop-blur-sm ${isDark ? 'border-white/5' : 'border-gray-200'} border-b`}>
+      {/* Sticky Header */}
+      <div className={`sticky top-0 z-50 ${isDark ? 'bg-[#1a1a1a]/95' : 'bg-white/95'} backdrop-blur-sm ${isDark ? 'border-white/5' : 'border-gray-200'} border-b safe-top`}>
         <div className="container max-w-2xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between gap-4">
             <button
@@ -392,13 +367,7 @@ export default function TreatmentDetail() {
       </div>
       
       {/* Scrollable Content */}
-      <div 
-        className="px-4 space-y-3 overflow-y-auto"
-        style={{
-          marginTop: `${topOffset}px`,
-          height: `calc(100vh - ${topOffset + bottomOffset}px)`
-        }}
-      >
+      <div className="container max-w-2xl mx-auto px-4 py-6 space-y-3 pb-[200px]">
         {/* Due Date Card */}
         <div className={`bg-gradient-to-br ${isDark ? 'from-white/10 to-white/5 border-white/10' : 'from-white to-gray-50 border-gray-200 shadow-md'} border rounded-2xl p-4 flex items-center gap-3`}>
           <Calendar className={`w-5 h-5 ${isOverdue ? 'text-orange-500' : isDark ? 'text-emerald-400' : 'text-emerald-500'} flex-shrink-0`} />
@@ -491,7 +460,7 @@ export default function TreatmentDetail() {
       </div>
       
       {/* Fixed Bottom Actions Bar */}
-      <div ref={footerRef} className={`fixed bottom-0 left-0 right-0 ${isDark ? 'bg-[#1a1a1a]/95' : 'bg-white/95'} backdrop-blur-sm ${isDark ? 'border-white/5' : 'border-gray-200'} border-t p-4 space-y-3 safe-bottom`}>
+      <div className={`fixed bottom-0 left-0 right-0 ${isDark ? 'bg-[#1a1a1a]/95' : 'bg-white/95'} backdrop-blur-sm ${isDark ? 'border-white/5' : 'border-gray-200'} border-t p-4 space-y-3 safe-bottom`}>
         {/* Book with Vets Button */}
         <button 
           disabled
