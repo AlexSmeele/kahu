@@ -220,7 +220,7 @@ export default function TreatmentDetail() {
         </div>
         
         {/* Content */}
-        <div className="pt-[118px] px-4 pb-24 space-y-4">
+        <div className="pt-36 px-4 pb-52 space-y-4">
           <div className={`bg-gradient-to-br ${isDark ? 'from-white/10 to-white/5 border-white/10' : 'from-white to-gray-50 border-gray-200 shadow-md'} border rounded-2xl p-5 space-y-4`}>
             <div>
               <Label className={isDark ? 'text-white/60' : 'text-gray-600'}>Treatment Name</Label>
@@ -362,7 +362,7 @@ export default function TreatmentDetail() {
       </div>
       
       {/* Scrollable Content */}
-      <div className="pt-[118px] px-4 pb-24 space-y-3">
+      <div className="pt-36 px-4 pb-52 space-y-3">
         {/* Due Date Card */}
         <div className={`bg-gradient-to-br ${isDark ? 'from-white/10 to-white/5 border-white/10' : 'from-white to-gray-50 border-gray-200 shadow-md'} border rounded-2xl p-4 flex items-center gap-3`}>
           <Calendar className={`w-5 h-5 ${isOverdue ? 'text-orange-500' : isDark ? 'text-emerald-400' : 'text-emerald-500'} flex-shrink-0`} />
