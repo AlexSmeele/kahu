@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
-import { Apple, Calendar, TrendingUp, Clock, Edit2, Plus, Bell, Package, X } from "lucide-react";
+import { Apple, Calendar, TrendingUp, Clock, Edit2, Plus, Bell, Package, X, History } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useDogs, calculateAge } from "@/hooks/useDogs";
@@ -120,15 +120,27 @@ export default function NutritionScreen() {
       <div className="sticky top-0 z-50 bg-background border-b shadow-sm safe-top">
         <div className="flex items-center justify-between px-4 py-3">
           <DogDropdown selectedDogId={selectedDogId} onDogChange={handleDogChange} variant="inline" />
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={handleBackClick}
-            className="flex items-center gap-2 hover:bg-accent"
-            aria-label="Close"
-          >
-            <X className="w-5 h-5" />
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => navigate(`/meal-history/${selectedDogId}`)}
+              className="flex items-center gap-2 hover:bg-accent"
+              aria-label="Meal History"
+            >
+              <History className="w-4 h-4" />
+              <span className="text-sm">History</span>
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleBackClick}
+              className="flex items-center gap-2 hover:bg-accent"
+              aria-label="Close"
+            >
+              <X className="w-5 h-5" />
+            </Button>
+          </div>
         </div>
       </div>
       
