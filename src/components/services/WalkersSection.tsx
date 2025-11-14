@@ -163,18 +163,19 @@ export function WalkersSection({ dogId }: WalkersSectionProps) {
     );
   }
 
-  if (dogWalkers.length === 0 && !isSearchMode) {
-    return (
-      <EmptyState
-        icon={<Footprints className="w-8 h-8" />}
-        title="No dog walkers yet"
-        description={`Find reliable dog walkers to keep ${currentDog?.name} active and happy when you're busy. Search below to get started.`}
-      />
-    );
-  }
-
   return (
     <div className="space-y-4">
+      {/* Show helpful text when no saved walkers AND not searching */}
+      {dogWalkers.length === 0 && !isSearchMode && (
+        <div className="text-center py-6 bg-muted/30 rounded-lg border border-dashed">
+          <Footprints className="w-8 h-8 mx-auto mb-2 text-muted-foreground" />
+          <p className="text-sm text-muted-foreground">
+            Search below to find reliable dog walkers for {currentDog?.name}
+          </p>
+        </div>
+      )}
+
+      {/* Search bar - ALWAYS visible */}
       <div className="flex gap-2">
         <div className="flex-1 relative">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />

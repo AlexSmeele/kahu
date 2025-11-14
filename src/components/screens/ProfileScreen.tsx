@@ -19,7 +19,6 @@ import InviteFamilyModal from "@/components/profile/InviteFamilyModal";
 import { BillingModal } from "@/components/profile/BillingModal";
 import { ExportDataModal } from "@/components/profile/ExportDataModal";
 import { FeedbackModal } from "@/components/profile/FeedbackModal";
-import { VetClinicsModal } from "@/components/health/VetClinicsModal";
 import { NotificationPreferencesModal } from "@/components/profile/NotificationPreferencesModal";
 import type { Dog as DogType } from "@/hooks/useDogs";
 
@@ -50,7 +49,6 @@ export function ProfileScreen() {
   const [isBillingOpen, setIsBillingOpen] = useState(false);
   const [isExportDataOpen, setIsExportDataOpen] = useState(false);
   const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
-  const [isVetClinicsOpen, setIsVetClinicsOpen] = useState(false);
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
   const [isReordering, setIsReordering] = useState(false);
 
@@ -107,7 +105,7 @@ export function ProfileScreen() {
         setIsOrderHistoryOpen(true);
         break;
       case "vet-clinics":
-        setIsVetClinicsOpen(true);
+        navigate('/services');
         break;
       case "notifications":
         setIsNotificationsOpen(true);
@@ -403,13 +401,6 @@ export function ProfileScreen() {
       <FeedbackModal
         isOpen={isFeedbackOpen}
         onClose={() => setIsFeedbackOpen(false)}
-      />
-      
-      <VetClinicsModal
-        isOpen={isVetClinicsOpen}
-        onClose={() => setIsVetClinicsOpen(false)}
-        dogId={dogs[0]?.id || ''}
-        dogName={dogs[0]?.name || 'Your dog'}
       />
 
       <NotificationPreferencesModal

@@ -163,18 +163,19 @@ export function GroomersSection({ dogId }: GroomersSectionProps) {
     );
   }
 
-  if (dogGroomers.length === 0 && !isSearchMode) {
-    return (
-      <EmptyState
-        icon={<Scissors className="w-8 h-8" />}
-        title="No groomers yet"
-        description={`Find trusted groomers for ${currentDog?.name}'s coat care and hygiene needs. Search below to get started.`}
-      />
-    );
-  }
-
   return (
     <div className="space-y-4">
+      {/* Show helpful text when no saved groomers AND not searching */}
+      {dogGroomers.length === 0 && !isSearchMode && (
+        <div className="text-center py-6 bg-muted/30 rounded-lg border border-dashed">
+          <Scissors className="w-8 h-8 mx-auto mb-2 text-muted-foreground" />
+          <p className="text-sm text-muted-foreground">
+            Search below to find trusted groomers for {currentDog?.name}
+          </p>
+        </div>
+      )}
+
+      {/* Search bar - ALWAYS visible */}
       <div className="flex gap-2">
         <div className="flex-1 relative">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />

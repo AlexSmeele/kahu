@@ -3,7 +3,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useProfile } from '@/hooks/useProfile';
 
-interface VetClinic {
+export interface VetClinic {
   id: string;
   name: string;
   address: string;
@@ -21,6 +21,8 @@ interface VetClinic {
   opening_hours?: string;
   business_status?: string;
   has_contact_access?: boolean;
+  distance?: number;
+  source?: 'google' | 'database';
 }
 
 interface DogVetClinic {
