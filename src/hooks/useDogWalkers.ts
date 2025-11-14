@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-export interface DogWalker {
+export interface Walker {
   id: string;
   name: string;
   business_name?: string;
@@ -17,7 +17,7 @@ export interface DogWalker {
   updated_at?: string;
 }
 
-export interface DogDogWalker {
+export interface DogWalker {
   id: string;
   dog_id: string;
   walker_id: string;
@@ -26,12 +26,12 @@ export interface DogDogWalker {
   preferred_days?: string;
   created_at: string;
   updated_at: string;
-  walker: DogWalker;
+  walker: Walker;
 }
 
 // STUB IMPLEMENTATION - Will be activated after database migration is approved
 export function useDogWalkers(dogId?: string) {
-  const [dogWalkers] = useState<DogDogWalker[]>([]);
+  const [dogWalkers] = useState<DogWalker[]>([]);
   const [isLoading] = useState(false);
   const [error] = useState<Error | null>(null);
 
@@ -42,7 +42,7 @@ export function useDogWalkers(dogId?: string) {
 
   const addWalker = async (
     dogId: string,
-    walkerData: Omit<DogWalker, 'id' | 'created_at' | 'updated_at'>,
+    walkerData: Omit<Walker, 'id' | 'created_at' | 'updated_at'>,
     isPreferred: boolean = false,
     relationshipNotes?: string
   ) => {
@@ -70,7 +70,7 @@ export function useDogWalkers(dogId?: string) {
   const searchWalkers = async (
     query: string,
     serviceArea?: string
-  ): Promise<DogWalker[]> => {
+  ): Promise<Walker[]> => {
     console.log('useDogWalkers: Waiting for database migration to be approved', { query, serviceArea });
     return [];
   };
