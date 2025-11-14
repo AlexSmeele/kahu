@@ -5,7 +5,6 @@ import { Input } from '@/components/ui/input';
 import { EmptyState } from '@/components/ui/empty-state';
 import { ServiceCard } from './ServiceCard';
 import { SearchResultCard } from './SearchResultCard';
-import { AddServiceDrawer } from './AddServiceDrawer';
 import { EditWalkerModal } from './EditWalkerModal';
 import { useDogWalkers, type DogWalker, type Walker } from '@/hooks/useDogWalkers';
 import { useDogs } from '@/hooks/useDogs';
@@ -25,7 +24,6 @@ export function WalkersSection({ dogId }: WalkersSectionProps) {
   const [searchResults, setSearchResults] = useState<Walker[]>([]);
   const [isSearching, setIsSearching] = useState(false);
   const [isSearchMode, setIsSearchMode] = useState(false);
-  const [selectedToAdd, setSelectedToAdd] = useState<Walker | null>(null);
   const [userLocation, setUserLocation] = useState<{ latitude: number; longitude: number } | null>(null);
   const [isGettingLocation, setIsGettingLocation] = useState(false);
 
@@ -114,20 +112,25 @@ export function WalkersSection({ dogId }: WalkersSectionProps) {
   };
 
   const handleAddWalker = async (walker: Walker, data: { isPreferred: boolean; notes: string }) => {
+  const handleAddWalker = async (walker: Walker) => {
     try {
-      await addWalker(dogId, walker, data.isPreferred, data.notes);
+      // Auto-set first walker as preferred
+      const isFirstWalker = dogWalkers.length === 0;
+      
+      await addWalker(dogId, walker, isFirstWalker, '');
+      
       toast({
         title: "Dog walker added",
-        description: `${walker.name} has been added to ${currentDog?.name}'s profile.`,
+        description: isFirstWalker
+          ? `${walker.name} has been added as ${currentDog?.name}'s preferred walker.`
+          : `${walker.name} has been added to ${currentDog?.name}'s profile.`,
       });
-      setSelectedToAdd(null);
     } catch (error) {
       toast({
         title: "Error",
         description: "Failed to add dog walker. Please try again.",
         variant: "destructive",
       });
-      throw error;
     }
   };
 
@@ -238,7 +241,7 @@ export function WalkersSection({ dogId }: WalkersSectionProps) {
                   source={walker.source || 'database'}
                   services={walker.services}
                   serviceArea={walker.service_area}
-                  onAdd={() => setSelectedToAdd(walker)}
+                  onAdd={() => handleAddWalker(walker)}
                   isAlreadyAdded={isWalkerAlreadyAdded(walker.id)}
                 />
               ))}
@@ -289,17 +292,6 @@ export function WalkersSection({ dogId }: WalkersSectionProps) {
           onClose={() => setEditingWalker(null)}
           dogWalker={editingWalker}
           dogName={currentDog?.name || ''}
-        />
-      )}
-
-      {selectedToAdd && (
-        <AddServiceDrawer
-          isOpen={!!selectedToAdd}
-          onClose={() => setSelectedToAdd(null)}
-          serviceName={selectedToAdd.name}
-          serviceType="walker"
-          dogName={currentDog?.name || ''}
-          onConfirm={(data) => handleAddWalker(selectedToAdd, data)}
         />
       )}
     </div>

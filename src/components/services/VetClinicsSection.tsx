@@ -4,7 +4,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ServiceCard } from './ServiceCard';
 import { SearchResultCard } from './SearchResultCard';
-import { AddServiceDrawer } from './AddServiceDrawer';
 import { useVetClinics, type VetClinic } from '@/hooks/useVetClinics';
 import { useDogs } from '@/hooks/useDogs';
 import { useToast } from '@/hooks/use-toast';
@@ -24,7 +23,6 @@ export function VetClinicsSection({ dogId }: VetClinicsSectionProps) {
   const [searchResults, setSearchResults] = useState<VetClinic[]>([]);
   const [isSearching, setIsSearching] = useState(false);
   const [isSearchMode, setIsSearchMode] = useState(false);
-  const [selectedToAdd, setSelectedToAdd] = useState<VetClinic | null>(null);
   const [userLocation, setUserLocation] = useState<{ latitude: number; longitude: number } | null>(null);
   const [isGettingLocation, setIsGettingLocation] = useState(false);
 
@@ -114,14 +112,19 @@ export function VetClinicsSection({ dogId }: VetClinicsSectionProps) {
   };
 
   // Add clinic
-  const handleAddClinic = async (clinic: VetClinic, data: { isPreferred: boolean; notes: string }) => {
+  const handleAddClinic = async (clinic: VetClinic) => {
     try {
-      await addVetClinic(dogId, clinic, data.isPreferred, data.notes);
+      // Auto-set first clinic as preferred
+      const isFirstClinic = dogVetClinics.length === 0;
+      
+      await addVetClinic(dogId, clinic, isFirstClinic, '');
+      
       toast({
         title: "Vet clinic added",
-        description: `${clinic.name} has been added to ${currentDog?.name}'s profile.`,
+        description: isFirstClinic 
+          ? `${clinic.name} has been added as ${currentDog?.name}'s primary vet.`
+          : `${clinic.name} has been added to ${currentDog?.name}'s profile.`,
       });
-      setSelectedToAdd(null);
     } catch (error) {
       toast({
         title: "Error",
@@ -242,7 +245,7 @@ export function VetClinicsSection({ dogId }: VetClinicsSectionProps) {
                   userRatingsTotal={clinic.user_ratings_total}
                   distance={clinic.distance}
                   source={clinic.source || 'database'}
-                  onAdd={() => setSelectedToAdd(clinic)}
+                  onAdd={() => handleAddClinic(clinic)}
                   isAlreadyAdded={isClinicAlreadyAdded(clinic.id)}
                 />
               ))}
@@ -281,18 +284,6 @@ export function VetClinicsSection({ dogId }: VetClinicsSectionProps) {
             ))}
           </div>
         </>
-      )}
-
-      {/* Add confirmation drawer */}
-      {selectedToAdd && (
-        <AddServiceDrawer
-          isOpen={!!selectedToAdd}
-          onClose={() => setSelectedToAdd(null)}
-          serviceName={selectedToAdd.name}
-          serviceType="vet"
-          dogName={currentDog?.name || ''}
-          onConfirm={(data) => handleAddClinic(selectedToAdd, data)}
-        />
       )}
     </div>
   );
