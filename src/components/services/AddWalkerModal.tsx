@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Search, Plus } from 'lucide-react';
+import { Search, Plus, MapPin } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
@@ -13,6 +13,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Card, CardContent } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 import { useDogWalkers, type Walker } from '@/hooks/useDogWalkers';
 import { useToast } from '@/hooks/use-toast';
 
@@ -34,13 +35,49 @@ export function AddWalkerModal({ isOpen, onClose, dogId, dogName }: AddWalkerMod
   const [preferredDays, setPreferredDays] = useState('');
   const [isSearching, setIsSearching] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
+  const [userLocation, setUserLocation] = useState<{ latitude: number; longitude: number } | null>(null);
+  const [isGettingLocation, setIsGettingLocation] = useState(false);
+
+  const requestLocation = () => {
+    if (!navigator.geolocation) {
+      toast({
+        title: "Location not supported",
+        description: "Your browser doesn't support geolocation.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsGettingLocation(true);
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setUserLocation({
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+        });
+        setIsGettingLocation(false);
+        toast({
+          title: "Location enabled",
+          description: "Search results will be sorted by proximity.",
+        });
+      },
+      (error) => {
+        setIsGettingLocation(false);
+        toast({
+          title: "Location access denied",
+          description: "Unable to access your location. Searching without location.",
+          variant: "destructive",
+        });
+      }
+    );
+  };
 
   const handleSearch = async () => {
     if (!searchQuery.trim()) return;
 
     setIsSearching(true);
     try {
-      const results = await searchWalkers(searchQuery);
+      const results = await searchWalkers(searchQuery, userLocation?.latitude, userLocation?.longitude);
       setSearchResults(results);
     } catch (error) {
       toast({
@@ -95,7 +132,26 @@ export function AddWalkerModal({ isOpen, onClose, dogId, dogName }: AddWalkerMod
         <div className="space-y-4">
           {/* Search */}
           <div className="space-y-2">
-            <Label>Search for dog walkers</Label>
+            <div className="flex items-center justify-between">
+              <Label>Search for dog walkers</Label>
+              {!userLocation && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={requestLocation}
+                  disabled={isGettingLocation}
+                >
+                  <MapPin className="w-3 h-3 mr-1" />
+                  {isGettingLocation ? 'Getting location...' : 'Search near me'}
+                </Button>
+              )}
+              {userLocation && (
+                <Badge variant="secondary" className="gap-1">
+                  <MapPin className="w-3 h-3" />
+                  Location enabled
+                </Badge>
+              )}
+            </div>
             <div className="flex gap-2">
               <Input
                 placeholder="Enter walker name or location..."
@@ -121,6 +177,35 @@ export function AddWalkerModal({ isOpen, onClose, dogId, dogName }: AddWalkerMod
                   onClick={() => setSelectedWalker(walker)}
                 >
                   <CardContent className="p-3">
+                    <div className="flex items-start justify-between">
+                      <div className="flex-1">
+                        <p className="font-medium">{walker.name}</p>
+                        <p className="text-sm text-muted-foreground">{walker.service_area}</p>
+                        {walker.rating && (
+                          <p className="text-xs text-muted-foreground mt-1">
+                            ⭐ {walker.rating.toFixed(1)} ({walker.user_ratings_total} reviews)
+                          </p>
+                        )}
+                      </div>
+                      <div className="flex flex-col items-end gap-1">
+                        {(walker as any).distance && (
+                          <Badge variant="secondary" className="text-xs">
+                            {(walker as any).distance < 1 
+                              ? `${((walker as any).distance * 1000).toFixed(0)}m`
+                              : `${(walker as any).distance.toFixed(1)}km`
+                            }
+                          </Badge>
+                        )}
+                        {(walker as any).source === 'google' && (
+                          <Badge variant="outline" className="text-xs">Google</Badge>
+                        )}
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
                     <p className="font-medium">{walker.name}</p>
                     {walker.service_area && (
                       <p className="text-sm text-muted-foreground">Service area: {walker.service_area}</p>
