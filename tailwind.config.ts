@@ -216,6 +216,10 @@ export default {
 				'fade-in': 'fadeIn 0.3s ease-in-out',
 				'scale-in': 'scaleIn 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
 				'slide-up': 'slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
+			},
+			height: {
+				'13': '3.25rem', // 52px for button lg
+				'15': '3.75rem', // 60px for button xl
 			}
 		}
 	},

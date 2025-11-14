@@ -120,6 +120,25 @@
     --transition-slow: 500ms cubic-bezier(0.4, 0, 0.2, 1);
     --transition-bounce: 300ms cubic-bezier(0.68, -0.55, 0.265, 1.55);
 
+    /* Typography roles for buttons */
+    --typography-button-small-size: 14px;
+    --typography-button-small-line-height: 20px;
+    --typography-button-small-weight: 600;
+    
+    --typography-button-size: 16px;
+    --typography-button-line-height: 24px;
+    --typography-button-weight: 600;
+    
+    --typography-button-large-size: 18px;
+    --typography-button-large-line-height: 28px;
+    --typography-button-large-weight: 600;
+
+    /* State transforms */
+    --state-hover-scale: 1.02;
+    --state-pressed-scale: 0.98;
+    --state-hover-opacity: 0.9;
+    --state-pressed-opacity: 0.95;
+
     /* Layout & Spacing */
     --safe-area-top: 44px;
     --safe-area-bottom: 34px;
