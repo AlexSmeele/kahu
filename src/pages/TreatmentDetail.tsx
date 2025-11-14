@@ -188,9 +188,9 @@ export default function TreatmentDetail() {
   // Edit Mode
   if (isEditing) {
     return (
-      <div className={`min-h-screen ${isDark ? 'bg-[#1a1a1a]' : 'bg-gray-50'} flex flex-col`}>
-        {/* Header */}
-        <div className={`sticky top-[54px] z-20 ${isDark ? 'bg-[#1a1a1a]/95' : 'bg-white/95'} backdrop-blur-sm ${isDark ? 'border-white/5' : 'border-gray-200'} border-b`}>
+      <div className={`min-h-screen ${isDark ? 'bg-[#1a1a1a]' : 'bg-gray-50'}`}>
+        {/* Fixed Header */}
+        <div className={`fixed top-[54px] left-0 right-0 z-20 ${isDark ? 'bg-[#1a1a1a]/95' : 'bg-white/95'} backdrop-blur-sm ${isDark ? 'border-white/5' : 'border-gray-200'} border-b`}>
           <div className="container max-w-2xl mx-auto px-4 py-4">
             <div className="flex items-center justify-between">
               <button
@@ -208,7 +208,7 @@ export default function TreatmentDetail() {
         </div>
         
         {/* Content */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-4">
+        <div className="pt-[118px] px-4 pb-[180px] space-y-4">
           <div className={`bg-gradient-to-br ${isDark ? 'from-white/10 to-white/5 border-white/10' : 'from-white to-gray-50 border-gray-200 shadow-md'} border rounded-2xl p-5 space-y-4`}>
             <div>
               <Label className={isDark ? 'text-white/60' : 'text-gray-600'}>Treatment Name</Label>
@@ -310,9 +310,9 @@ export default function TreatmentDetail() {
   
   // View Mode
   return (
-    <div className={`min-h-screen ${isDark ? 'bg-[#1a1a1a]' : 'bg-gray-50'} flex flex-col`}>
-      {/* Header */}
-      <div className={`sticky top-[54px] z-20 ${isDark ? 'bg-[#1a1a1a]/95' : 'bg-white/95'} backdrop-blur-sm ${isDark ? 'border-white/5' : 'border-gray-200'} border-b`}>
+    <div className={`min-h-screen ${isDark ? 'bg-[#1a1a1a]' : 'bg-gray-50'}`}>
+      {/* Fixed Header */}
+      <div className={`fixed top-[54px] left-0 right-0 z-20 ${isDark ? 'bg-[#1a1a1a]/95' : 'bg-white/95'} backdrop-blur-sm ${isDark ? 'border-white/5' : 'border-gray-200'} border-b`}>
         <div className="container max-w-2xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between gap-4">
             <button
@@ -342,7 +342,7 @@ export default function TreatmentDetail() {
       </div>
       
       {/* Scrollable Content */}
-      <div className="flex-1 overflow-y-auto p-4 pb-[180px] space-y-3">
+      <div className="pt-[118px] px-4 pb-[180px] space-y-3">
         {/* Due Date Card */}
         <div className={`bg-gradient-to-br ${isDark ? 'from-white/10 to-white/5 border-white/10' : 'from-white to-gray-50 border-gray-200 shadow-md'} border rounded-2xl p-4 flex items-center gap-3`}>
           <Calendar className={`w-5 h-5 ${isOverdue ? 'text-orange-500' : isDark ? 'text-emerald-400' : 'text-emerald-500'} flex-shrink-0`} />
