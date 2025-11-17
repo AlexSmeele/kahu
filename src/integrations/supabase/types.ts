@@ -475,6 +475,54 @@ export type Database = {
         }
         Relationships: []
       }
+      dog_groomers: {
+        Row: {
+          created_at: string | null
+          dog_id: string
+          groomer_id: string
+          id: string
+          is_preferred: boolean | null
+          preferred_groomer_name: string | null
+          relationship_notes: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          dog_id: string
+          groomer_id: string
+          id?: string
+          is_preferred?: boolean | null
+          preferred_groomer_name?: string | null
+          relationship_notes?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          dog_id?: string
+          groomer_id?: string
+          id?: string
+          is_preferred?: boolean | null
+          preferred_groomer_name?: string | null
+          relationship_notes?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "dog_groomers_dog_id_fkey"
+            columns: ["dog_id"]
+            isOneToOne: false
+            referencedRelation: "dogs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "dog_groomers_groomer_id_fkey"
+            columns: ["groomer_id"]
+            isOneToOne: false
+            referencedRelation: "groomers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       dog_health_issues: {
         Row: {
           category: string | null
@@ -665,6 +713,54 @@ export type Database = {
             columns: ["vet_clinic_id"]
             isOneToOne: false
             referencedRelation: "vet_clinics"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      dog_walkers: {
+        Row: {
+          created_at: string | null
+          dog_id: string
+          id: string
+          is_preferred: boolean | null
+          preferred_days: string | null
+          relationship_notes: string | null
+          updated_at: string | null
+          walker_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          dog_id: string
+          id?: string
+          is_preferred?: boolean | null
+          preferred_days?: string | null
+          relationship_notes?: string | null
+          updated_at?: string | null
+          walker_id: string
+        }
+        Update: {
+          created_at?: string | null
+          dog_id?: string
+          id?: string
+          is_preferred?: boolean | null
+          preferred_days?: string | null
+          relationship_notes?: string | null
+          updated_at?: string | null
+          walker_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "dog_dog_walkers_dog_id_fkey"
+            columns: ["dog_id"]
+            isOneToOne: false
+            referencedRelation: "dogs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "dog_walkers_walker_id_fkey"
+            columns: ["walker_id"]
+            isOneToOne: false
+            referencedRelation: "walkers"
             referencedColumns: ["id"]
           },
         ]
@@ -945,6 +1041,66 @@ export type Database = {
         }
         Relationships: []
       }
+      groomers: {
+        Row: {
+          address: string
+          business_name: string | null
+          created_at: string | null
+          email: string | null
+          google_place_id: string | null
+          id: string
+          latitude: number | null
+          longitude: number | null
+          name: string
+          phone: string | null
+          rating: number | null
+          services: string[] | null
+          specialties: string[] | null
+          updated_at: string | null
+          user_ratings_total: number | null
+          verified: boolean | null
+          website: string | null
+        }
+        Insert: {
+          address: string
+          business_name?: string | null
+          created_at?: string | null
+          email?: string | null
+          google_place_id?: string | null
+          id?: string
+          latitude?: number | null
+          longitude?: number | null
+          name: string
+          phone?: string | null
+          rating?: number | null
+          services?: string[] | null
+          specialties?: string[] | null
+          updated_at?: string | null
+          user_ratings_total?: number | null
+          verified?: boolean | null
+          website?: string | null
+        }
+        Update: {
+          address?: string
+          business_name?: string | null
+          created_at?: string | null
+          email?: string | null
+          google_place_id?: string | null
+          id?: string
+          latitude?: number | null
+          longitude?: number | null
+          name?: string
+          phone?: string | null
+          rating?: number | null
+          services?: string[] | null
+          specialties?: string[] | null
+          updated_at?: string | null
+          user_ratings_total?: number | null
+          verified?: boolean | null
+          website?: string | null
+        }
+        Relationships: []
+      }
       grooming_completions: {
         Row: {
           completed_at: string
@@ -1138,6 +1294,21 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      kv_store_40e514ed: {
+        Row: {
+          key: string
+          value: Json
+        }
+        Insert: {
+          key: string
+          value: Json
+        }
+        Update: {
+          key?: string
+          value?: Json
+        }
+        Relationships: []
       }
       lessons: {
         Row: {
@@ -2568,52 +2739,64 @@ export type Database = {
       vet_clinics: {
         Row: {
           address: string
+          business_status: string | null
           created_at: string
           email: string | null
+          google_place_id: string | null
+          google_types: string[] | null
           hours: Json | null
           id: string
           latitude: number | null
           longitude: number | null
           name: string
-          osm_place_id: string | null
-          osm_type: string | null
+          opening_hours: string | null
           phone: string | null
+          rating: number | null
           services: string[] | null
           updated_at: string
+          user_ratings_total: number | null
           verified: boolean | null
           website: string | null
         }
         Insert: {
           address: string
+          business_status?: string | null
           created_at?: string
           email?: string | null
+          google_place_id?: string | null
+          google_types?: string[] | null
           hours?: Json | null
           id?: string
           latitude?: number | null
           longitude?: number | null
           name: string
-          osm_place_id?: string | null
-          osm_type?: string | null
+          opening_hours?: string | null
           phone?: string | null
+          rating?: number | null
           services?: string[] | null
           updated_at?: string
+          user_ratings_total?: number | null
           verified?: boolean | null
           website?: string | null
         }
         Update: {
           address?: string
+          business_status?: string | null
           created_at?: string
           email?: string | null
+          google_place_id?: string | null
+          google_types?: string[] | null
           hours?: Json | null
           id?: string
           latitude?: number | null
           longitude?: number | null
           name?: string
-          osm_place_id?: string | null
-          osm_type?: string | null
+          opening_hours?: string | null
           phone?: string | null
+          rating?: number | null
           services?: string[] | null
           updated_at?: string
+          user_ratings_total?: number | null
           verified?: boolean | null
           website?: string | null
         }
@@ -2668,6 +2851,57 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      walkers: {
+        Row: {
+          availability: string | null
+          business_name: string | null
+          created_at: string | null
+          email: string | null
+          id: string
+          name: string
+          phone: string | null
+          rating: number | null
+          service_area: string | null
+          services: string[] | null
+          updated_at: string | null
+          user_ratings_total: number | null
+          verified: boolean | null
+          website: string | null
+        }
+        Insert: {
+          availability?: string | null
+          business_name?: string | null
+          created_at?: string | null
+          email?: string | null
+          id?: string
+          name: string
+          phone?: string | null
+          rating?: number | null
+          service_area?: string | null
+          services?: string[] | null
+          updated_at?: string | null
+          user_ratings_total?: number | null
+          verified?: boolean | null
+          website?: string | null
+        }
+        Update: {
+          availability?: string | null
+          business_name?: string | null
+          created_at?: string | null
+          email?: string | null
+          id?: string
+          name?: string
+          phone?: string | null
+          rating?: number | null
+          service_area?: string | null
+          services?: string[] | null
+          updated_at?: string | null
+          user_ratings_total?: number | null
+          verified?: boolean | null
+          website?: string | null
+        }
+        Relationships: []
       }
       weight_records: {
         Row: {
@@ -2792,18 +3026,22 @@ export type Database = {
         Args: { search_term: string }
         Returns: {
           address: string
+          business_status: string | null
           created_at: string
           email: string | null
+          google_place_id: string | null
+          google_types: string[] | null
           hours: Json | null
           id: string
           latitude: number | null
           longitude: number | null
           name: string
-          osm_place_id: string | null
-          osm_type: string | null
+          opening_hours: string | null
           phone: string | null
+          rating: number | null
           services: string[] | null
           updated_at: string
+          user_ratings_total: number | null
           verified: boolean | null
           website: string | null
         }[]

@@ -42,7 +42,6 @@ export function VetClinicsSection({ dogId }: VetClinicsSectionProps) {
     }
 
     const timeoutId = setTimeout(async () => {
-      setSortBy('distance');
       setMinRating('all');
       setIsSearching(true);
       setIsSearchMode(true);
@@ -54,6 +53,10 @@ export function VetClinicsSection({ dogId }: VetClinicsSectionProps) {
           userLocation?.longitude
         );
         setSearchResults(results);
+        
+        // Default to distance sort if distances are available, otherwise rating
+        const hasDistances = results.some(c => typeof c.distance === 'number');
+        setSortBy(hasDistances ? 'distance' : 'rating');
         
         if (results.length === 0) {
           toast({
@@ -132,12 +135,35 @@ export function VetClinicsSection({ dogId }: VetClinicsSectionProps) {
       );
     }
 
+    // Compute missing distances client-side if possible
+    if (userLocation) {
+      const { latitude: lat0, longitude: lon0 } = userLocation;
+      const toRad = (x: number) => (x * Math.PI) / 180;
+      const haversine = (lat1: number, lon1: number, lat2: number, lon2: number) => {
+        const R = 6371; // Earth radius in km
+        const dLat = toRad(lat2 - lat1);
+        const dLon = toRad(lon2 - lon1);
+        const a =
+          Math.sin(dLat / 2) ** 2 +
+          Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon / 2) ** 2;
+        return 2 * R * Math.asin(Math.sqrt(a));
+      };
+
+      results = results.map(r =>
+        r.distance == null && r.latitude != null && r.longitude != null
+          ? { ...r, distance: haversine(lat0, lon0, Number(r.latitude), Number(r.longitude)) }
+          : r
+      );
+    }
+
     // Apply sorting
-    if (sortBy === 'distance' && userLocation) {
+    if (sortBy === 'distance') {
       results.sort((a, b) => {
         const distA = a.distance ?? Infinity;
         const distB = b.distance ?? Infinity;
-        return distA - distB;
+        if (distA !== distB) return distA - distB;
+        // Tie-breaker: rating
+        return (b.rating ?? 0) - (a.rating ?? 0);
       });
     } else if (sortBy === 'rating') {
       results.sort((a, b) => {
@@ -262,7 +288,7 @@ export function VetClinicsSection({ dogId }: VetClinicsSectionProps) {
             onSortChange={setSortBy}
             minRating={minRating}
             onMinRatingChange={setMinRating}
-            hasLocation={!!userLocation}
+            hasLocation={searchResults.some(r => typeof r.distance === 'number')}
           />
         </div>
       )}

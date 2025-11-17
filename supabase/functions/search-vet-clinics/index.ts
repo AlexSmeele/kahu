@@ -299,25 +299,26 @@ serve(async (req) => {
       combinedClinics.push(googleClinic);
     }
 
-    // Step 4: Sort results by relevance and distance
+    // Step 4: Sort results by distance first (if location available), then relevance
     combinedClinics.sort((a: any, b: any) => {
-      // Prioritize verified clinics from database
+      // When location is provided, prioritize distance
+      if (hasLocation) {
+        const distA = a.distance ?? Infinity;
+        const distB = b.distance ?? Infinity;
+        if (distA !== distB) return distA - distB;
+      }
+
+      // Calculate relevance scores as tie-breaker
+      const scoreA = calculateRelevanceScore(a.name, query, a.rating);
+      const scoreB = calculateRelevanceScore(b.name, query, b.rating);
+      if (scoreA !== scoreB) return scoreB - scoreA;
+
+      // Final tie-breaker: verified status
       if (a.verified && !b.verified) return -1;
       if (!a.verified && b.verified) return 1;
 
-      // Calculate relevance scores
-      const scoreA = calculateRelevanceScore(a.name, query, a.rating);
-      const scoreB = calculateRelevanceScore(b.name, query, b.rating);
-
-      // If scores are very close, sort by distance (if available)
-      if (Math.abs(scoreA - scoreB) < 5 && hasLocation) {
-        const distA = a.distance || 999999;
-        const distB = b.distance || 999999;
-        return distA - distB;
-      }
-
-      // Otherwise sort by relevance score
-      return scoreB - scoreA;
+      // Last resort: rating
+      return (b.rating ?? 0) - (a.rating ?? 0);
     });
 
     // Return top 10 results
