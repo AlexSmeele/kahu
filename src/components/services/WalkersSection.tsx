@@ -263,149 +263,183 @@ export function WalkersSection({ dogId }: WalkersSectionProps) {
   }
 
   return (
-    <div className="space-y-4">
-
-      {/* Search bar - ALWAYS visible */}
-      <div className="flex gap-2">
-        <div className="flex-1 relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-          <Input
-            placeholder="Search for dog walkers..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-10 pr-9"
-          />
-          {isSearching && (
-            <Loader2 className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 animate-spin text-muted-foreground" />
-          )}
+    <div className="h-full flex flex-col">
+      {/* Fixed Header Area */}
+      <div className="flex-shrink-0 px-5 space-y-4">
+        {/* Search bar with location button */}
+        <div className="flex gap-2">
+          <div className="flex-1 relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+            <Input
+              placeholder="Search for dog walkers..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-10 pr-9"
+            />
+            {isSearching && (
+              <Loader2 className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 animate-spin text-muted-foreground" />
+            )}
+          </div>
+          <Button
+            variant={userLocation ? "secondary" : "outline"}
+            size="icon"
+            onClick={requestLocation}
+            disabled={isGettingLocation}
+            title={userLocation ? "Location enabled" : "Enable location"}
+          >
+            {isGettingLocation ? (
+              <Loader2 className="w-4 h-4 animate-spin" />
+            ) : (
+              <MapPin className={`w-4 h-4 ${userLocation ? 'text-primary' : ''}`} />
+            )}
+          </Button>
         </div>
-        <Button
-          variant={userLocation ? "secondary" : "outline"}
-          size="icon"
-          onClick={requestLocation}
-          disabled={isGettingLocation}
-          title={userLocation ? "Location enabled" : "Enable location"}
-        >
-          {isGettingLocation ? (
-            <Loader2 className="w-4 h-4 animate-spin" />
-          ) : (
-            <MapPin className={`w-4 h-4 ${userLocation ? 'text-primary' : ''}`} />
-          )}
-        </Button>
+
+        {/* Filter controls */}
+        {isSearchMode && searchResults.length > 0 && (
+          <div>
+            <SearchFilters
+              sortBy={sortBy}
+              onSortChange={setSortBy}
+              minRating={minRating}
+              onMinRatingChange={setMinRating}
+              hasLocation={searchResults.some(r => typeof r.distance === 'number')}
+            />
+          </div>
+        )}
       </div>
 
-      {/* Filter controls */}
-      {isSearchMode && searchResults.length > 0 && (
-        <div className="mb-4">
-          <SearchFilters
-            sortBy={sortBy}
-            onSortChange={setSortBy}
-            minRating={minRating}
-            onMinRatingChange={setMinRating}
-            hasLocation={searchResults.some(r => typeof r.distance === 'number')}
-          />
+      {/* Scrollable Results Area */}
+      <div className="flex-1 min-h-0 overflow-y-auto px-5 pb-5">
+        <div className="space-y-6 pt-4">
+          {/* Search Results Section */}
+          {isSearchMode && (
+            <>
+              <div className="flex items-center justify-between">
+                <h3 className="text-sm font-medium">
+                  Search Results ({searchResults.length})
+                </h3>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleClearSearch}
+                >
+                  <X className="w-4 h-4 mr-1" />
+                  Clear Search
+                </Button>
+              </div>
+
+              {searchResults.length > 0 && filteredAndSortedResults.length > 0 && (
+                <div className="space-y-3">
+                  {filteredAndSortedResults.map((walker) => (
+                    <SearchResultCard
+                      key={walker.id}
+                      name={walker.name}
+                      businessName={walker.business_name}
+                      phone={walker.phone}
+                      website={walker.website}
+                      rating={walker.rating}
+                      userRatingsTotal={walker.user_ratings_total}
+                      distance={walker.distance}
+                      source={walker.source || 'database'}
+                      services={walker.services}
+                      serviceArea={walker.service_area}
+                      onAdd={() => handleAddWalker(walker)}
+                      isAlreadyAdded={isWalkerAlreadyAdded(walker.id)}
+                    />
+                  ))}
+                </div>
+              )}
+
+              {searchResults.length > 0 && filteredAndSortedResults.length === 0 && (
+                <div className="text-center py-8 text-muted-foreground">
+                  <p>No results match your filters.</p>
+                  <p className="text-sm mt-1">Try adjusting the minimum rating or sort options.</p>
+                </div>
+              )}
+
+              {/* Divider before saved walkers */}
+              {dogWalkers.length > 0 && (
+                <div className="border-t pt-4 mt-6">
+                  <h3 className="text-sm font-medium mb-3">Your Saved Dog Walkers</h3>
+                </div>
+              )}
+            </>
+          )}
+
+          {/* Your Saved Dog Walkers Section */}
+          {!isSearchMode && (
+            <div className="space-y-4">
+              <h3 className="text-lg font-semibold">Your Saved Dog Walkers</h3>
+
+              {dogWalkers.length === 0 ? (
+                <div className="text-center py-8 space-y-2">
+                  <Footprints className="w-12 h-12 mx-auto text-muted-foreground/50" />
+                  <p className="text-sm text-muted-foreground">
+                    No dog walkers saved yet. Search above to find and add dog walkers.
+                  </p>
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  {dogWalkers.map((dw) => (
+                    <ServiceCard
+                      key={dw.id}
+                      name={dw.walker.name}
+                      businessName={dw.walker.business_name}
+                      phone={dw.walker.phone}
+                      website={dw.walker.website}
+                      rating={dw.walker.rating}
+                      userRatingsTotal={dw.walker.user_ratings_total}
+                      isPreferred={dw.is_preferred}
+                      services={dw.walker.services}
+                      onSetPreferred={() => handleSetPreferred(dw.id)}
+                      onEdit={() => setEditingWalker(dw)}
+                      onRemove={() => handleRemove(dw.id, dw.walker.name)}
+                      linkedDogs={[currentDog].filter(Boolean)}
+                    />
+                  ))}
+                </div>
+              )}
             </div>
           )}
 
-          {searchResults.length > 0 && filteredAndSortedResults.length === 0 && (
-            <div className="text-center py-8 text-muted-foreground">
-              <p>No results match your filters.</p>
-              <p className="text-sm mt-1">Try adjusting the minimum rating or sort options.</p>
-            </div>
-          )}
-
-      {isSearchMode && (
-        <>
-          <div className="flex items-center justify-between">
-            <h3 className="text-sm font-medium text-muted-foreground">
-              Search Results ({searchResults.length})
-            </h3>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={handleClearSearch}
-            >
-              <X className="w-4 h-4 mr-1" />
-              Clear Search
-            </Button>
-          </div>
-
-          {searchResults.length > 0 && filteredAndSortedResults.length > 0 && (
+          {/* Show saved walkers in search mode too */}
+          {isSearchMode && dogWalkers.length > 0 && (
             <div className="space-y-3">
-              {filteredAndSortedResults.map((walker) => (
-                <SearchResultCard
-                  key={walker.id}
-                  name={walker.name}
-                  businessName={walker.business_name}
-                  phone={walker.phone}
-                  website={walker.website}
-                  rating={walker.rating}
-                  userRatingsTotal={walker.user_ratings_total}
-                  distance={walker.distance}
-                  source={walker.source || 'database'}
-                  services={walker.services}
-                  serviceArea={walker.service_area}
-                  onAdd={() => handleAddWalker(walker)}
-                  isAlreadyAdded={isWalkerAlreadyAdded(walker.id)}
+              {dogWalkers.map((dw) => (
+                <ServiceCard
+                  key={dw.id}
+                  name={dw.walker.name}
+                  businessName={dw.walker.business_name}
+                  phone={dw.walker.phone}
+                  website={dw.walker.website}
+                  rating={dw.walker.rating}
+                  userRatingsTotal={dw.walker.user_ratings_total}
+                  isPreferred={dw.is_preferred}
+                  services={dw.walker.services}
+                  onSetPreferred={() => handleSetPreferred(dw.id)}
+                  onEdit={() => setEditingWalker(dw)}
+                  onRemove={() => handleRemove(dw.id, dw.walker.name)}
+                  linkedDogs={[currentDog].filter(Boolean)}
                 />
               ))}
             </div>
           )}
+        </div>
+      </div>
 
-          {dogWalkers.length > 0 && (
-            <div className="border-t pt-4 mt-6">
-              <h3 className="text-sm font-medium text-muted-foreground mb-3">
-                Your Saved Dog Walkers
-              </h3>
-            </div>
-          )}
-        </>
-      )}
-
-      {(!isSearchMode || (isSearchMode && dogWalkers.length > 0)) && (
-        <>
-          {!isSearchMode && dogWalkers.length > 0 && (
-            <h3 className="text-sm font-medium text-muted-foreground">
-              Your Saved Dog Walkers
-            </h3>
-          )}
-          <div className="space-y-3">
-            {dogWalkers.map((dw) => (
-              <ServiceCard
-                key={dw.id}
-                name={dw.walker.name}
-                businessName={dw.walker.business_name}
-                phone={dw.walker.phone}
-                website={dw.walker.website}
-                rating={dw.walker.rating}
-                userRatingsTotal={dw.walker.user_ratings_total}
-                isPreferred={dw.is_preferred}
-                services={dw.walker.services}
-                onSetPreferred={() => handleSetPreferred(dw.id)}
-                onEdit={() => setEditingWalker(dw)}
-                onRemove={() => handleRemove(dw.id, dw.walker.name)}
-                linkedDogs={[currentDog].filter(Boolean)}
-              />
-            ))}
-          </div>
-        </>
-      )}
-
-      {editingWalker && (
-        <EditWalkerModal
-          isOpen={!!editingWalker}
-          onClose={() => setEditingWalker(null)}
-          dogWalker={editingWalker}
-          dogName={currentDog?.name || ''}
-        />
-      )}
+      <EditWalkerModal
+        isOpen={!!editingWalker}
+        onClose={() => setEditingWalker(null)}
+        dogWalker={editingWalker!}
+        dogName={currentDog?.name || ''}
+      />
 
       <AddServiceToDogsModal
         open={addModalOpen}
         onOpenChange={setAddModalOpen}
         service={{
           name: selectedWalker?.name || '',
-          address: selectedWalker?.service_area,
           rating: selectedWalker?.rating,
           serviceType: 'walker',
         }}
