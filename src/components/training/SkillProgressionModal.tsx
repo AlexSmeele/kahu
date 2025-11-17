@@ -22,6 +22,10 @@ interface SkillProgressionModalProps {
     name: string;
     category?: string;
     difficulty?: number;
+    short_description?: string;
+    long_description?: string;
+    estimated_time_weeks?: number;
+    prerequisites?: string[];
   };
   dogTrickId: string;
   dogId: string;
@@ -54,9 +58,11 @@ export function SkillProgressionModal({
   onOpenChange, 
   skill, 
   dogTrickId,
-  dogId,
-  trick
+  dogId
 }: SkillProgressionModalProps) {
+  const { skill: skillData, dogTrickId: dtId, dogId: dId } = { skill, dogTrickId, dogId };
+
+  if (!skill) return null;
   const { progressData, requirements, loading } = useSkillProgression(dogTrickId);
   const { levelUpSkill, recordPracticeSession } = useSkills(dogId);
   
@@ -176,10 +182,10 @@ export function SkillProgressionModal({
                   Level {skill.difficulty}
                 </Badge>
               )}
-              {trick?.estimated_time_weeks && (
+              {skill.estimated_time_weeks && (
                 <Badge variant="outline" className="flex items-center gap-1 text-xs">
                   <Clock className="w-3 h-3" />
-                  {trick.estimated_time_weeks} weeks
+                  {skill.estimated_time_weeks} weeks
                 </Badge>
               )}
             </div>
@@ -218,20 +224,20 @@ export function SkillProgressionModal({
             return (
               <TabsContent key={level} value={level} className="space-y-4 mt-4">
                 {/* Overview section for first-time viewers */}
-                {isCurrent && progressData && progressData.sessionsCompleted === 0 && trick && (
+                {isCurrent && progressData && progressData.sessionsCompleted === 0 && skill && (
                   <Card className="p-4 bg-gradient-to-br from-primary/5 to-accent/5 border-primary/20">
                     <h4 className="font-semibold mb-2 flex items-center gap-2">
                       <BookOpen className="w-4 h-4" />
                       About This Skill
                     </h4>
-                    <p className="text-sm text-muted-foreground mb-3">{trick.description}</p>
+                    <p className="text-sm text-muted-foreground mb-3">{skill.short_description || skill.long_description}</p>
                     
                     {/* Prerequisites */}
-                    {trick.prerequisites && trick.prerequisites.length > 0 && (
+                    {skill.prerequisites && skill.prerequisites.length > 0 && (
                       <div className="mt-3 pt-3 border-t">
                         <p className="text-xs font-medium mb-2">Prerequisites:</p>
                         <div className="space-y-1">
-                          {trick.prerequisites.map((prereq, idx) => (
+                          {skill.prerequisites.map((prereq, idx) => (
                             <div key={idx} className="flex items-center gap-2 text-xs">
                               <Star className="w-3 h-3 text-yellow-500" />
                               <span>{prereq}</span>

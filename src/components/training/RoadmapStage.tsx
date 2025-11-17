@@ -107,16 +107,16 @@ export function RoadmapStage({ stage, isUnlocked, isActive, selectedDogId, unloc
                   }
                   
                   return (
-                  <SkillCard
-                    key={`${topic.id}-${topicRef.level || 'basic'}`}
-                    skill={topic as any}
-                    proficiencyLevel={topicRef.level || 'basic'}
-                    isUnlocked={isSkillUnlocked}
-                    prerequisiteName={prerequisiteName}
-                    minAgeWeeks={stage.ageRangeWeeks.min}
-                    dogSkill={dogSkill}
-                    onClick={() => navigate(`/training/skill/${topicRef.id}/detail`)}
-                  />
+                    <SkillCard
+                      key={`${topic.id}-${topicRef.level || 'basic'}`}
+                      skill={topic as any}
+                      proficiencyLevel={topicRef.level || 'basic'}
+                      isUnlocked={isSkillUnlocked}
+                      prerequisiteName={prerequisiteName}
+                      minAgeWeeks={stage.ageRangeWeeks.min}
+                      dogTrick={dogSkill}
+                      onClick={() => navigate(`/training/skill/${topicRef.id}/detail`)}
+                    />
                   );
                 }
                 

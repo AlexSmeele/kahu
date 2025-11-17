@@ -269,14 +269,14 @@ export default function SkillDetailPage() {
                   </div>
 
                   {/* Training Insights */}
-                  {skill.instructions && (
+                  {skill.training_insights && (
                     <div className="space-y-2">
                       <h4 className="font-semibold text-foreground flex items-center gap-2">
                         <BookOpen className="w-4 h-4 text-accent" />
                         Training Insights
                       </h4>
                       <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-wrap">
-                        {skill.instructions}
+                        {skill.training_insights}
                       </p>
                     </div>
                   )}

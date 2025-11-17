@@ -10,7 +10,7 @@ import { Slider } from "@/components/ui/slider";
 import { ChevronLeft, Radio, Play, Pause, RotateCcw, CheckCircle, Clock, Lightbulb, AlertTriangle } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
-import { useTricks } from "@/hooks/useTricks";
+import { useSkills } from "@/hooks/useSkills";
 import { useDogs } from "@/hooks/useDogs";
 import { toast } from "@/hooks/use-toast";
 import clickerSound from "@/assets/dog-clicker.mp3";
@@ -165,13 +165,13 @@ export default function TrainingSessionPage() {
     setSubmitting(true);
     
     try {
-      await recordPracticeSession(
-        dogTrickId,
+      await recordPracticeSession(dogTrickId, {
         context,
-        distractionLevel as 'none' | 'mild' | 'moderate' | 'high',
-        successRate[0],
+        distraction_level: distractionLevel,
+        success_rate: successRate[0],
+        duration_minutes: Math.round(timerDuration / 60),
         notes
-      );
+      });
       
       toast({
         title: "Session Complete! 🎉",
