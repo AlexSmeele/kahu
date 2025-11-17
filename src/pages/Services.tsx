@@ -16,6 +16,7 @@ export default function Services() {
   const { dogs } = useDogs();
   const [selectedDogId, setSelectedDogId] = useState(dogs[0]?.id || '');
   const [view, setView] = useState<'list' | 'map'>('list');
+  const [activeTab, setActiveTab] = useState('vets');
 
   if (!dogs.length) {
     return (
@@ -33,76 +34,76 @@ export default function Services() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="h-screen flex flex-col bg-background">
       <PageHeader title="Third-party services" onBack={() => navigate('/')} />
       
-      <div className="p-5 space-y-4">
-        {/* Dog Selector and View Toggle */}
-        <div className="flex items-center justify-between gap-4">
-          {dogs.length > 1 && (
-            <DogDropdown
-              selectedDogId={selectedDogId}
-              onDogChange={setSelectedDogId}
-              variant="inline"
-            />
-          )}
-          
-          <div className="flex gap-2 ml-auto">
-            <Button
-              variant={view === 'list' ? 'default' : 'outline'}
-              size="sm"
-              onClick={() => setView('list')}
-            >
-              <List className="w-4 h-4 mr-1" />
-              List
-            </Button>
-            <Button
-              variant={view === 'map' ? 'default' : 'outline'}
-              size="sm"
-              onClick={() => setView('map')}
-            >
-              <MapIcon className="w-4 h-4 mr-1" />
-              Map
-            </Button>
+      <div className="flex-1 flex flex-col overflow-hidden">
+        <div className="flex-shrink-0 p-5 pb-3 space-y-4">
+          {/* Dog Selector and View Toggle */}
+          <div className="flex items-center justify-between gap-4">
+            {dogs.length > 1 && (
+              <DogDropdown
+                selectedDogId={selectedDogId}
+                onDogChange={setSelectedDogId}
+                variant="inline"
+              />
+            )}
+            
+            <div className="flex gap-2 ml-auto">
+              <Button
+                variant={view === 'list' ? 'default' : 'outline'}
+                size="sm"
+                onClick={() => setView('list')}
+              >
+                <List className="w-4 h-4 mr-1" />
+                List
+              </Button>
+              <Button
+                variant={view === 'map' ? 'default' : 'outline'}
+                size="sm"
+                onClick={() => setView('map')}
+              >
+                <MapIcon className="w-4 h-4 mr-1" />
+                Map
+              </Button>
+            </div>
           </div>
+
+          {/* Tab Selector - Fixed at top */}
+          {view === 'list' && (
+            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+              <TabsList className="grid w-full grid-cols-3">
+                <TabsTrigger value="vets" className="gap-2">
+                  <Stethoscope className="w-4 h-4" />
+                  <span className="hidden sm:inline">Clinics</span>
+                  <span className="sm:hidden">Vets</span>
+                </TabsTrigger>
+                <TabsTrigger value="groomers" className="gap-2">
+                  <Scissors className="w-4 h-4" />
+                  <span className="hidden sm:inline">Groomers</span>
+                  <span className="sm:hidden">Groom</span>
+                </TabsTrigger>
+                <TabsTrigger value="walkers" className="gap-2">
+                  <Footprints className="w-4 h-4" />
+                  <span className="hidden sm:inline">Walkers</span>
+                  <span className="sm:hidden">Walk</span>
+                </TabsTrigger>
+              </TabsList>
+            </Tabs>
+          )}
         </div>
 
-        {/* Conditional rendering based on view */}
+        {/* Scrollable content area */}
         {view === 'map' ? (
-          selectedDogId && <ServicesMapView dogId={selectedDogId} />
+          <div className="flex-1 overflow-auto px-5 pb-5">
+            {selectedDogId && <ServicesMapView dogId={selectedDogId} />}
+          </div>
         ) : (
-          /* Service Tabs */
-          <Tabs defaultValue="vets" className="w-full">
-            <TabsList className="grid w-full grid-cols-3 mb-4">
-              <TabsTrigger value="vets" className="gap-2">
-                <Stethoscope className="w-4 h-4" />
-                <span className="hidden sm:inline">Clinics</span>
-                <span className="sm:hidden">Vets</span>
-              </TabsTrigger>
-              <TabsTrigger value="groomers" className="gap-2">
-                <Scissors className="w-4 h-4" />
-                <span className="hidden sm:inline">Groomers</span>
-                <span className="sm:hidden">Groom</span>
-              </TabsTrigger>
-              <TabsTrigger value="walkers" className="gap-2">
-                <Footprints className="w-4 h-4" />
-                <span className="hidden sm:inline">Walkers</span>
-                <span className="sm:hidden">Walk</span>
-              </TabsTrigger>
-            </TabsList>
-
-            <TabsContent value="vets" className="mt-0">
-              {selectedDogId && <VetClinicsSection dogId={selectedDogId} />}
-            </TabsContent>
-
-            <TabsContent value="groomers" className="mt-0">
-              {selectedDogId && <GroomersSection dogId={selectedDogId} />}
-            </TabsContent>
-
-            <TabsContent value="walkers" className="mt-0">
-              {selectedDogId && <WalkersSection dogId={selectedDogId} />}
-            </TabsContent>
-          </Tabs>
+          <div className="flex-1 overflow-auto px-5 pb-5">
+            {activeTab === 'vets' && selectedDogId && <VetClinicsSection dogId={selectedDogId} />}
+            {activeTab === 'groomers' && selectedDogId && <GroomersSection dogId={selectedDogId} />}
+            {activeTab === 'walkers' && selectedDogId && <WalkersSection dogId={selectedDogId} />}
+          </div>
         )}
       </div>
     </div>
