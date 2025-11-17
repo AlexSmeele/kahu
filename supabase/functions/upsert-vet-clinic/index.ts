@@ -14,10 +14,17 @@ interface VetClinicData {
   website?: string;
   latitude?: number;
   longitude?: number;
+  // Support both Google Places and OSM
+  google_place_id?: string;
+  google_types?: string[];
   osm_place_id?: string;
   osm_type?: string;
   hours?: Record<string, any>;
   services?: string[];
+  rating?: number;
+  user_ratings_total?: number;
+  opening_hours?: string;
+  business_status?: string;
 }
 
 serve(async (req) => {
@@ -76,7 +83,18 @@ serve(async (req) => {
 
     // Check if clinic already exists
     let clinic;
-    if (clinicData.osm_place_id) {
+    // Try Google Place ID first
+    if (clinicData.google_place_id) {
+      const { data: existingClinic } = await supabase
+        .from('vet_clinics')
+        .select('*')
+        .eq('google_place_id', clinicData.google_place_id)
+        .single();
+      
+      clinic = existingClinic;
+    }
+    // Fallback to OSM Place ID if no Google Place ID
+    else if (clinicData.osm_place_id) {
       const { data: existingClinic } = await supabase
         .from('vet_clinics')
         .select('*')
@@ -99,11 +117,17 @@ serve(async (req) => {
           website: clinicData.website,
           latitude: clinicData.latitude,
           longitude: clinicData.longitude,
+          google_place_id: clinicData.google_place_id,
+          google_types: clinicData.google_types,
           osm_place_id: clinicData.osm_place_id,
           osm_type: clinicData.osm_type,
           hours: clinicData.hours,
           services: clinicData.services || [],
-          verified: !!clinicData.osm_place_id // OSM places are considered verified
+          rating: clinicData.rating,
+          user_ratings_total: clinicData.user_ratings_total,
+          opening_hours: clinicData.opening_hours,
+          business_status: clinicData.business_status,
+          verified: !!(clinicData.google_place_id || clinicData.osm_place_id)
         })
         .select()
         .single();
@@ -163,9 +187,20 @@ serve(async (req) => {
     );
 
   } catch (error) {
-    console.error('Error in upsert-vet-clinic function:', error);
+    console.error('Error in upsert-vet-clinic function:', {
+      error: error.message,
+      clinicData: { 
+        name: clinicData?.name,
+        hasGooglePlaceId: !!clinicData?.google_place_id,
+        hasOsmPlaceId: !!clinicData?.osm_place_id
+      },
+      dogId
+    });
     return new Response(
-      JSON.stringify({ error: error.message }), 
+      JSON.stringify({ 
+        error: error.message,
+        details: 'Check edge function logs for more information'
+      }), 
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   }
