@@ -407,11 +407,7 @@ export function TricksScreen({ selectedDogId, onDogChange }: TricksScreenProps) 
             </div>
 
             {skillsByDifficulty.map(({ level, color, textColor, skills: levelTricks }) => {
-              // Filter out Foundation category skills from Skills section
-              const skillsTricks = levelTricks.filter(t => {
-                const primaryCategory = parsePrimaryCategory(t.category);
-                return primaryCategory !== 'Foundation';
-              });
+              const skillsTricks = levelTricks;
               if (skillsTricks.length === 0) return null;
               
               const levelCompleted = skillsTricks.filter(t => learnedSkillsMap.get(t.id)?.status === 'mastered').length;
