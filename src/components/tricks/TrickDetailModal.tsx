@@ -25,11 +25,11 @@ import { format } from "date-fns";
 interface TrickDetailModalProps {
   isOpen: boolean;
   onClose: () => void;
-  trick: Trick | null;
-  dogTrick?: DogTrick;
+  trick: Skill | null;
+  dogTrick?: DogSkill;
   onStartTrick: (trickId: string) => void;
   onPracticeSession: (dogTrickId: string) => void;
-  onUpdateStatus: (dogTrickId: string, status: DogTrick['status']) => void;
+  onUpdateStatus: (dogTrickId: string, status: DogSkill['status']) => void;
 }
 
 const categoryColors = {

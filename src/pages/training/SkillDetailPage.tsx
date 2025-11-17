@@ -44,30 +44,30 @@ export default function SkillDetailPage() {
   const [dogTrickId, setDogTrickId] = useState<string | null>(null);
   const [isStartingTrick, setIsStartingTrick] = useState(false);
 
-  const skill = tricks.find(t => t.id === trickId);
+  const skill = skills.find(s => s.id === trickId);
   const CategoryIcon = skill?.category ? categoryIcons[skill.category] : Award;
 
   // Create local map for quick lookup
-  const learnedTricksMap = new Map(dogTricks.map(dt => [dt.trick_id, dt]));
+  const learnedSkillsMap = new Map(dogSkills.map(ds => [ds.skill_id, ds]));
 
-  // Get or create dog_trick record
+  // Get or create dog_skill record
   useEffect(() => {
     if (!skill || !dogs[0]) return;
 
-    const existingDogTrick = learnedTricksMap.get(skill.id);
-    if (existingDogTrick) {
-      setDogTrickId(existingDogTrick.id);
+    const existingDogSkill = learnedSkillsMap.get(skill.id);
+    if (existingDogSkill) {
+      setDogTrickId(existingDogSkill.id);
       setIsStartingTrick(false);
     } else if (!isStartingTrick) {
-      // Auto-start the trick to create a tracking record
+      // Auto-start the skill to create a tracking record
       setIsStartingTrick(true);
-      startTrick(skill.id).then(async () => {
+      startSkill(skill.id).then(async () => {
         // Refetch to ensure we have the latest data
         await refetch();
         setIsStartingTrick(false);
       });
     }
-  }, [skill, dogs, learnedTricksMap, startTrick, dogTricks, refetch, isStartingTrick]);
+  }, [skill, dogs, learnedSkillsMap, startSkill, dogSkills, refetch, isStartingTrick]);
 
   const { progressData, loading } = useSkillProgression(dogTrickId);
 
@@ -158,7 +158,7 @@ export default function SkillDetailPage() {
               <div className="flex items-center justify-between">
                 <h3 className="font-semibold text-foreground">Your Progress</h3>
                 <Badge variant="default">
-                  {dogTricks.find(dt => dt.id === dogTrickId)?.proficiency_level || 'basic'}
+                  {dogSkills.find(ds => ds.id === dogTrickId)?.proficiency_level || 'basic'}
                 </Badge>
               </div>
               <Progress value={progressPercentage} className="h-2" />
@@ -189,9 +189,9 @@ export default function SkillDetailPage() {
               </h3>
               <div className="space-y-2">
                 {skill.prerequisites.map((prereqId, idx) => {
-                  const prereqTrick = tricks.find(t => t.id === prereqId);
-                  const prereqDogTrick = learnedTricksMap.get(prereqId);
-                  const isCompleted = prereqDogTrick?.mastered_at !== null;
+                  const prereqSkill = skills.find(s => s.id === prereqId);
+                  const prereqDogSkill = learnedSkillsMap.get(prereqId);
+                  const isCompleted = prereqDogSkill?.status === 'mastered';
 
                   return (
                     <div key={idx} className="flex items-center gap-2 text-sm">
@@ -204,8 +204,8 @@ export default function SkillDetailPage() {
                       <span className={cn(
                         isCompleted ? "text-foreground" : "text-muted-foreground"
                       )}>
-                        {prereqTrick?.name || `Skill ${idx + 1}`}
-                        {prereqDogTrick && !isCompleted && (
+                        {prereqSkill?.name || `Skill ${idx + 1}`}
+                        {prereqDogSkill && !isCompleted && (
                           <span className="text-xs ml-1">(In Progress)</span>
                         )}
                       </span>

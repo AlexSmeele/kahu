@@ -129,7 +129,7 @@ export function HomeScreen({ selectedDogId, onDogChange, onTabChange }: HomeScre
                   className="animate-fade-in [animation-delay:100ms]"
                 />
                 <TrainingGoalCard
-                  nextTrick={nextTrick ? { name: nextTrick.trick?.name || 'Unknown', total_sessions: nextTrick.total_sessions } : undefined}
+                  nextTrick={nextTrick ? { name: nextTrick.skill?.name || 'Unknown', total_sessions: nextTrick.total_sessions } : undefined}
                   onActionClick={() => onTabChange('tricks')}
                   className="animate-fade-in [animation-delay:150ms]"
                 />
