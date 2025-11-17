@@ -40,7 +40,7 @@ export default function ImportFoundationModules() {
       'module title': 'moduleTitle',
       'format': 'format',
       'estimated time': 'estimatedTime',
-      'ideal stage': 'idealStage',
+      'ideal stage of life': 'idealStage',
       'brief description': 'briefDescription',
       'detailed description': 'detailedDescription',
       'brief step 1': 'briefStep1',
