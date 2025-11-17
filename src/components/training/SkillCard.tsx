@@ -11,7 +11,7 @@ interface SkillCardProps {
     id: string;
     name: string;
     description?: string;
-    category?: string;
+    category?: string[];
     difficulty?: number;
   };
   proficiencyLevel: 'basic' | 'generalized' | 'proofed';
@@ -64,7 +64,10 @@ export function SkillCard({ skill, proficiencyLevel, isUnlocked, prerequisiteNam
     tricks: 'from-purple-500 to-purple-600',
   };
   
-  const iconColor = skill.category ? categoryColors[skill.category] || 'from-gray-500 to-gray-600' : 'from-blue-500 to-blue-600';
+  const primaryCategory = skill.category?.[0]?.toLowerCase();
+  const iconColor = primaryCategory 
+    ? categoryColors[primaryCategory] || 'from-gray-500 to-gray-600' 
+    : 'from-blue-500 to-blue-600';
 
   // Description content for both HoverCard and Dialog
   const descriptionContent = (

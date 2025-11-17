@@ -20,7 +20,7 @@ interface SkillProgressionModalProps {
   skill: {
     id: string;
     name: string;
-    category?: string;
+    category?: string[];
     difficulty?: number;
     short_description?: string;
     long_description?: string;
@@ -160,8 +160,9 @@ export function SkillProgressionModal({
     ? (progressData.contextsCompleted.length / currentReq.contexts_required.length) * 100 
     : 0;
 
-  const categoryColor = categoryColors[skill.category as keyof typeof categoryColors] || 'bg-primary';
-  const CategoryIcon = categoryIcons[skill.category as keyof typeof categoryIcons] || Award;
+  const primaryCategory = skill.category?.[0] || '';
+  const categoryColor = categoryColors[primaryCategory as keyof typeof categoryColors] || 'bg-primary';
+  const CategoryIcon = categoryIcons[primaryCategory as keyof typeof categoryIcons] || Award;
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>

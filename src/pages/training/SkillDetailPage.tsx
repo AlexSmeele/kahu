@@ -11,10 +11,10 @@ import { useDogs } from '@/hooks/useDogs';
 import { useSkillProgression } from '@/hooks/useSkillProgression';
 import { cn } from '@/lib/utils';
 
-// Helper to parse primary category from hierarchical categories like "Foundational / Focus / Engagement"
-function parsePrimaryCategory(category: string | null | undefined): string {
-  if (!category) return 'Foundation';
-  const primary = category.split('/')[0].trim();
+// Helper to parse primary category from array of categories
+function parsePrimaryCategory(category: string[] | null | undefined): string {
+  if (!category || category.length === 0) return 'Foundation';
+  const primary = category[0].trim();
   // Normalize "Foundational" to "Foundation"
   if (primary === 'Foundational') return 'Foundation';
   return primary;
@@ -152,13 +152,17 @@ export default function SkillDetailPage() {
                 <span className="ml-1">Difficulty</span>
               </Badge>
 
-              {/* Category */}
-              {skill.category && (
-                <Badge variant="outline" className="flex items-center gap-1">
-                  <CategoryIcon className="w-3 h-3" />
-                  {skill.category}
-                </Badge>
-              )}
+            {/* Category Badges */}
+            {skill.category && skill.category.length > 0 && (
+              <div className="flex items-center gap-1 flex-wrap">
+                {skill.category.map((tag, idx) => (
+                  <Badge key={idx} variant="outline" className="flex items-center gap-1">
+                    <CategoryIcon className="w-3 h-3" />
+                    {tag}
+                  </Badge>
+                ))}
+              </div>
+            )}
 
               {/* Estimated Time */}
               {skill.estimated_time_weeks && (

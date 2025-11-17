@@ -80,7 +80,8 @@ export function TrickDetailModal({
   const isInProgress = dogTrick && dogTrick.status !== 'not_started' && !isCompleted;
   const progress = isCompleted ? 100 : isInProgress ? Math.min((dogTrick.total_sessions / 10) * 100, 80) : 0;
   
-  const categoryColor = categoryColors[trick.category as keyof typeof categoryColors] || 'bg-gray-500';
+  const primaryCategory = trick.category?.[0] || '';
+  const categoryColor = categoryColors[primaryCategory as keyof typeof categoryColors] || 'bg-gray-500';
   const difficultyColor = difficultyColors[trick.difficulty_level as keyof typeof difficultyColors] || 'bg-gray-500';
 
   // Parse training steps from brief or detailed instructions

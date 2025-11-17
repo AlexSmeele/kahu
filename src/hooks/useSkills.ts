@@ -7,7 +7,7 @@ import { isMockDogId } from '@/lib/mockData';
 export interface Skill {
   id: string;
   name: string;
-  category: string;
+  category: string[];
   description?: string;
   short_description?: string;
   long_description?: string;
