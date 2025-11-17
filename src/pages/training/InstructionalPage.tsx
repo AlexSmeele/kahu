@@ -9,6 +9,7 @@ import { useSkills } from '@/hooks/useSkills';
 import useEmblaCarousel from 'embla-carousel-react';
 import { useToast } from '@/hooks/use-toast';
 import { MOCK_FOUNDATION_TOPICS, MOCK_TROUBLESHOOTING_TOPICS } from '@/lib/mockData';
+import { useFoundationModules } from '@/hooks/useFoundationModules';
 
 interface Step {
   number: number;
@@ -18,7 +19,7 @@ interface Step {
 }
 
 interface InstructionalPageProps {
-  type: 'skill' | 'foundation' | 'troubleshooting';
+  type: 'skill' | 'foundation' | 'troubleshooting' | 'foundation-module';
 }
 
 function parseInstructionsToSteps(instructions: string): Step[] {
@@ -149,10 +150,11 @@ function ProgressDots({ count, selected, onSelect }: ProgressDotsProps) {
 }
 
 export default function InstructionalPage({ type }: InstructionalPageProps) {
-  const { trickId, topicId, lessonId } = useParams<{ trickId: string; topicId: string; lessonId: string }>();
+  const { trickId, topicId, lessonId, moduleId } = useParams<{ trickId: string; topicId: string; lessonId: string; moduleId: string }>();
   const navigate = useNavigate();
   const { toast } = useToast();
   const { skills } = useSkills();
+  const { getModuleById, markModuleComplete } = useFoundationModules();
   
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [emblaRef, emblaApi] = useEmblaCarousel({
@@ -165,6 +167,10 @@ export default function InstructionalPage({ type }: InstructionalPageProps) {
   const content = useMemo(() => {
     if (type === 'skill' && trickId) {
       return skills.find(s => s.id === trickId);
+    }
+
+    if (type === 'foundation-module' && moduleId) {
+      return getModuleById(moduleId);
     }
     
     if (type === 'foundation' && topicId && lessonId) {
@@ -184,13 +190,18 @@ export default function InstructionalPage({ type }: InstructionalPageProps) {
     }
     
     return null;
-  }, [type, trickId, topicId, lessonId, skills]);
+  }, [type, trickId, topicId, lessonId, moduleId, skills, getModuleById]);
 
   const steps = useMemo(() => {
     if (type === 'skill' && content) {
       // For skills, use detailed_instructions or brief_instructions
       const skill = content as any;
       return skill.detailed_instructions || skill.brief_instructions || [];
+    }
+    if (type === 'foundation-module' && content) {
+      // For foundation modules, use detailed_steps array
+      const module = content as any;
+      return module.detailed_steps || module.brief_steps || [];
     }
     // For foundations/troubleshooting, parse instructions string
     if (content && 'instructions' in content && content.instructions) {
@@ -231,11 +242,27 @@ export default function InstructionalPage({ type }: InstructionalPageProps) {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [scrollPrev, scrollNext, navigate]);
 
-  const handleMarkComplete = () => {
-    toast({
-      title: "Lesson Complete! 🎉",
-      description: "Great job! Keep up the learning.",
-    });
+  const handleMarkComplete = async () => {
+    if (type === 'foundation-module' && moduleId) {
+      try {
+        await markModuleComplete(moduleId);
+        toast({
+          title: "Module Complete! 🎉",
+          description: "Great job! You've completed this foundation module.",
+        });
+      } catch (error) {
+        toast({
+          title: "Error",
+          description: "Failed to mark module as complete. Please try again.",
+          variant: "destructive",
+        });
+      }
+    } else {
+      toast({
+        title: "Lesson Complete! 🎉",
+        description: "Great job! Keep up the learning.",
+      });
+    }
     navigate(-1);
   };
 
