@@ -156,47 +156,47 @@ export function TricksScreen({ selectedDogId, onDogChange }: TricksScreenProps) 
     );
   }
 
-  // Create a map of learned tricks for quick lookup
-  const learnedTricksMap = new Map(dogTricks.map(dt => [dt.trick_id, dt]));
+  // Create a map of learned skills for quick lookup
+  const learnedSkillsMap = new Map(dogSkills.map(ds => [ds.skill_id, ds]));
 
   // Calculate stats
-  const totalTricks = tricks.length;
-  const completedCount = dogTricks.filter(dt => dt.status === 'mastered').length;
-  const inProgressCount = dogTricks.filter(dt => dt.status !== 'not_started' && dt.status !== 'mastered').length;
-  const overallProgress = totalTricks > 0 ? (completedCount / totalTricks) * 100 : 0;
+  const totalSkills = skills.length;
+  const completedCount = dogSkills.filter(ds => ds.status === 'mastered').length;
+  const inProgressCount = dogSkills.filter(ds => ds.status !== 'not_started' && ds.status !== 'mastered').length;
+  const overallProgress = totalSkills > 0 ? (completedCount / totalSkills) * 100 : 0;
 
-  // Group tricks by difficulty level
-  const tricksByDifficulty = Object.entries(difficultyRanges).map(([level, range]) => ({
+  // Group skills by difficulty level
+  const skillsByDifficulty = Object.entries(difficultyRanges).map(([level, range]) => ({
     level,
     ...range,
-    tricks: tricks.filter(t => t.difficulty_level >= range.min && t.difficulty_level <= range.max)
+    skills: skills.filter(s => s.difficulty_level >= range.min && s.difficulty_level <= range.max)
   }));
 
   // Check for unmet prerequisites
-  const getUnmetPrerequisites = (trick: any) => {
-    if (!trick.prerequisites || trick.prerequisites.length === 0) return [];
-    return trick.prerequisites.filter((prereq: string) => {
-      const prereqTrick = tricks.find(t => t.name === prereq);
-      if (!prereqTrick) return false;
-      const prereqDogTrick = learnedTricksMap.get(prereqTrick.id);
-      return prereqDogTrick?.status !== 'mastered';
+  const getUnmetPrerequisites = (skill: any) => {
+    if (!skill.prerequisites || skill.prerequisites.length === 0) return [];
+    return skill.prerequisites.filter((prereq: string) => {
+      const prereqSkill = skills.find(s => s.name === prereq);
+      if (!prereqSkill) return false;
+      const prereqDogSkill = learnedSkillsMap.get(prereqSkill.id);
+      return prereqDogSkill?.status !== 'mastered';
     });
   };
 
-  const handleStart = (trickId: string) => {
-    startTrick(trickId);
+  const handleStart = (skillId: string) => {
+    startSkill(skillId);
   };
 
-  const handlePractice = (trickId: string) => {
-    // Find the dogTrick for this trick
-    const dogTrick = learnedTricksMap.get(trickId);
-    if (dogTrick) {
-      addPracticeSession(dogTrick.id);
+  const handlePractice = (skillId: string) => {
+    // Find the dogSkill for this skill
+    const dogSkill = learnedSkillsMap.get(skillId);
+    if (dogSkill) {
+      addPracticeSession(dogSkill.id);
     }
   };
 
-  const handleTrickClick = (trick: Trick) => {
-    navigate(`/training/skill/${trick.id}/detail`);
+  const handleSkillClick = (skill: Skill) => {
+    navigate(`/training/skill/${skill.id}/detail`);
   };
 
   const handlePracticeSession = (dogTrickId: string) => {

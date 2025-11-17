@@ -164,7 +164,7 @@ export default function InstructionalPage({ type }: InstructionalPageProps) {
   // Fetch content based on type
   const content = useMemo(() => {
     if (type === 'skill' && trickId) {
-      return tricks.find(t => t.id === trickId);
+      return skills.find(s => s.id === trickId);
     }
     
     if (type === 'foundation' && topicId && lessonId) {
@@ -184,7 +184,7 @@ export default function InstructionalPage({ type }: InstructionalPageProps) {
     }
     
     return null;
-  }, [type, trickId, topicId, lessonId, tricks]);
+  }, [type, trickId, topicId, lessonId, skills]);
 
   const steps = useMemo(() => {
     if (!content?.instructions) return [];

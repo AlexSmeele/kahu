@@ -25,7 +25,6 @@ interface SkillProgressionModalProps {
   };
   dogTrickId: string;
   dogId: string;
-  trick?: Skill;
 }
 
 const categoryColors = {
@@ -101,12 +100,13 @@ export function SkillProgressionModal({
     }
 
     try {
-      await recordPracticeSession(
-        dogTrickId,
-        practiceContext,
-        distractionLevel as 'none' | 'mild' | 'moderate' | 'high',
-        successRate[0]
-      );
+      await recordPracticeSession(dogTrickId, {
+        context: practiceContext,
+        distraction_level: distractionLevel as 'none' | 'mild' | 'moderate' | 'high',
+        success_rate: successRate[0],
+        duration_minutes: 5,
+        notes: ''
+      });
 
       toast({
         title: 'Practice recorded',

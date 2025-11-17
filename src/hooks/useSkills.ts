@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
-import { MOCK_DOG_SKILLS, isMockDogId } from '@/lib/mockData';
+import { isMockDogId } from '@/lib/mockData';
 
 export interface Skill {
   id: string;
@@ -65,8 +65,7 @@ export function useSkills(dogId?: string) {
   const fetchSkills = async () => {
     // Return mock data for dev mode
     if (dogId && isMockDogId(dogId)) {
-      const { MOCK_SKILLS } = await import('@/lib/mockData');
-      setSkills(MOCK_SKILLS as Skill[]);
+      setSkills([]);
       setLoading(false);
       return;
     }
@@ -97,8 +96,7 @@ export function useSkills(dogId?: string) {
 
     // Return mock data for dev mode
     if (isMockDogId(dogId)) {
-      const mockData = MOCK_DOG_SKILLS.filter(ds => ds.dog_id === dogId);
-      setDogSkills(mockData);
+      setDogSkills([]);
       setLoading(false);
       return;
     }
@@ -231,8 +229,8 @@ export function useSkills(dogId?: string) {
       if (dogSkill) {
         await supabase.from('training_sessions').insert({
           dog_id: dogId,
-          skill_id: dogSkill.skill_id,
-          dog_skill_id: dogSkillId,
+          trick_id: dogSkill.skill_id,
+          dog_trick_id: dogSkillId,
           session_date: new Date().toISOString(),
           duration_minutes: 5,
           notes: 'Practice session completed'
@@ -390,13 +388,13 @@ export function useSkills(dogId?: string) {
         .from('training_sessions')
         .insert({
           dog_id: dogId,
-          skill_id: dogSkill.skill_id,
-          dog_skill_id: dogSkillId,
+          trick_id: dogSkill.skill_id,
+          dog_trick_id: dogSkillId,
           session_date: new Date().toISOString(),
           duration_minutes: sessionData.duration_minutes || 5,
-          context: sessionData.context,
+          practice_context: sessionData.context,
           distraction_level: sessionData.distraction_level,
-          success_rate: sessionData.success_rate,
+          success_rate_percentage: sessionData.success_rate,
           notes: sessionData.notes
         });
 
