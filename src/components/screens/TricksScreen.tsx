@@ -46,6 +46,30 @@ const difficultyRanges = {
   'Expert': { min: 7, max: 10, color: 'bg-red-500', textColor: 'text-red-700' }
 };
 
+// Parse multi-part category string and extract primary category
+const parsePrimaryCategory = (categoryString: string | null): string => {
+  if (!categoryString) return 'Practical';
+  
+  const parts = categoryString.split('/').map(p => p.trim());
+  const firstPart = parts[0];
+  
+  // Map variations to standard categories
+  const categoryMap: Record<string, string> = {
+    'Foundational': 'Foundation',
+    'Foundation': 'Foundation',
+    'Fun': 'Performance',
+    'Advanced': 'Performance',
+    'Obedience': 'Obedience',
+    'Practical': 'Practical',
+    'Impulse Control': 'Impulse Control',
+    'Body Control': 'Body Control',
+    'Prop Work': 'Prop Work',
+    'Chain': 'Chain'
+  };
+  
+  return categoryMap[firstPart] || 'Practical';
+};
+
 function TrickCard({ trick, dogTrick, onStart, onPractice, onTrickClick, hasUnmetPrerequisites, unmetPrerequisites }: any) {
   const isCompleted = dogTrick?.status === 'mastered';
   const isInProgress = dogTrick && dogTrick.status !== 'not_started' && !isCompleted;
@@ -66,8 +90,9 @@ function TrickCard({ trick, dogTrick, onStart, onPractice, onTrickClick, hasUnme
     return paws;
   };
 
-  const CategoryIcon = categoryIcons[trick.category as keyof typeof categoryIcons] || Award;
-  const categoryColor = categoryColors[trick.category as keyof typeof categoryColors] || 'bg-gray-500';
+  const primaryCategory = parsePrimaryCategory(trick.category);
+  const CategoryIcon = categoryIcons[primaryCategory as keyof typeof categoryIcons] || Award;
+  const categoryColor = categoryColors[primaryCategory as keyof typeof categoryColors] || 'bg-gray-500';
 
   return (
     <div 
@@ -383,7 +408,10 @@ export function TricksScreen({ selectedDogId, onDogChange }: TricksScreenProps) 
 
             {skillsByDifficulty.map(({ level, color, textColor, skills: levelTricks }) => {
               // Filter out Foundation category skills from Skills section
-              const skillsTricks = levelTricks.filter(t => t.category !== 'Foundation');
+              const skillsTricks = levelTricks.filter(t => {
+                const primaryCategory = parsePrimaryCategory(t.category);
+                return primaryCategory !== 'Foundation';
+              });
               if (skillsTricks.length === 0) return null;
               
               const levelCompleted = skillsTricks.filter(t => learnedSkillsMap.get(t.id)?.status === 'mastered').length;
