@@ -164,7 +164,6 @@ serve(async (req) => {
         mastery_criteria: skill.mastery_criteria,
         priority_order: 0, // Will be updated later if needed
         min_age_weeks: null,
-        skill_type: 'trick',
         recommended_practice_frequency_days: 1
       };
     });
