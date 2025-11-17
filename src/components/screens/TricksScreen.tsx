@@ -9,6 +9,7 @@ import { TopicCard } from "@/components/training/TopicCard";
 import { RoadmapContent } from "@/components/training/RoadmapContent";
 import { useDogs } from "@/hooks/useDogs";
 import { useSkills, Skill } from "@/hooks/useSkills";
+import { useFoundationModules } from "@/hooks/useFoundationModules";
 import { HeaderBar } from "@/components/headers/HeaderBar";
 import { DogDropdown } from "@/components/dogs/DogDropdown";
 import { ClickerButton } from "@/components/training/ClickerButton";
@@ -137,7 +138,8 @@ export function TricksScreen({ selectedDogId, onDogChange }: TricksScreenProps) 
     }
   }, [searchParams]);
 
-  // Load foundation topics for mock dogs
+  // Load foundation modules from database
+  const { groupedModules, isModuleCompleted, loading: modulesLoading } = useFoundationModules();
   const foundationTopics = isMockDogId(currentDog?.id || '') ? MOCK_FOUNDATION_TOPICS : [];
   const troubleshootingTopics = isMockDogId(currentDog?.id || '') ? MOCK_TROUBLESHOOTING_TOPICS : [];
 
@@ -458,12 +460,72 @@ export function TricksScreen({ selectedDogId, onDogChange }: TricksScreenProps) 
               )}
             </div>
 
-            {/* Foundation Topics Gallery */}
-            <div className="grid grid-cols-2 gap-3">
-              {foundationTopics.map((topic) => (
-                <TopicCard key={topic.id} topic={topic} type="foundation" />
-              ))}
-            </div>
+            {/* Foundation Modules by Category */}
+            {Object.keys(groupedModules).length === 0 ? (
+              <div className="text-center py-12">
+                <BookOpen className="w-12 h-12 text-muted-foreground mx-auto mb-3 opacity-50" />
+                <p className="text-sm text-muted-foreground">No foundation modules available yet</p>
+              </div>
+            ) : (
+              <div className="space-y-6">
+                {Object.entries(groupedModules).map(([category, modules]) => (
+                  <div key={category} className="space-y-3">
+                    <h3 className="text-sm font-semibold text-foreground pl-1">{category}</h3>
+                    <div className="grid grid-cols-2 gap-3">
+                      {modules.map((module) => {
+                        const isCompleted = isModuleCompleted(module.id);
+                        
+                        return (
+                          <Card 
+                            key={module.id}
+                            onClick={() => navigate(`/training/foundation-module/${module.id}`)}
+                            className="relative overflow-hidden cursor-pointer transition-all duration-200 hover:scale-[1.02] hover:shadow-lg active:scale-[0.98] aspect-[3/4]"
+                          >
+                            {/* Color bar at top */}
+                            <div className="bg-gradient-to-br from-emerald-500 to-emerald-600 h-2 w-full" />
+
+                            {/* Card Content */}
+                            <div className="flex-1 flex flex-col p-3">
+                              {/* Icon Section */}
+                              <div className="flex-1 flex items-center justify-center py-2">
+                                <div className="w-20 h-20 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl flex items-center justify-center shadow-sm">
+                                  <GraduationCap className="w-10 h-10 text-white" />
+                                </div>
+                              </div>
+
+                              {/* Info Section */}
+                              <div className="space-y-1.5 text-center pb-1">
+                                <h3 className="font-bold text-base leading-tight line-clamp-2 min-h-[2.5rem]">
+                                  {module.title}
+                                </h3>
+                                
+                                {/* Format and time */}
+                                <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground">
+                                  <span>{module.format}</span>
+                                  <span>•</span>
+                                  <div className="flex items-center gap-1">
+                                    <Clock className="w-3 h-3" />
+                                    <span>{module.estimated_minutes}m</span>
+                                  </div>
+                                </div>
+                                
+                                {/* Completion status */}
+                                {isCompleted && (
+                                  <div className="flex items-center justify-center gap-1 text-xs text-success font-medium">
+                                    <CheckCircle2 className="w-3 h-3" />
+                                    <span>Completed</span>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          </Card>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
 
           </div>
         )}
