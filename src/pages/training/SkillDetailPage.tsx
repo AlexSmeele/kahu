@@ -11,6 +11,15 @@ import { useDogs } from '@/hooks/useDogs';
 import { useSkillProgression } from '@/hooks/useSkillProgression';
 import { cn } from '@/lib/utils';
 
+// Helper to parse primary category from hierarchical categories like "Foundational / Focus / Engagement"
+function parsePrimaryCategory(category: string | null | undefined): string {
+  if (!category) return 'Foundation';
+  const primary = category.split('/')[0].trim();
+  // Normalize "Foundational" to "Foundation"
+  if (primary === 'Foundational') return 'Foundation';
+  return primary;
+}
+
 const categoryColors: Record<string, string> = {
   Foundation: 'bg-emerald-500',
   Obedience: 'bg-blue-500',
@@ -21,6 +30,10 @@ const categoryColors: Record<string, string> = {
   Practical: 'bg-teal-500',
   Chain: 'bg-amber-500',
   Assistance: 'bg-cyan-500',
+  Advanced: 'bg-indigo-600',
+  Calmness: 'bg-teal-600',
+  Focus: 'bg-blue-600',
+  Engagement: 'bg-purple-600',
 };
 
 const categoryIcons: Record<string, any> = {
@@ -33,6 +46,10 @@ const categoryIcons: Record<string, any> = {
   Practical: Lightbulb,
   Chain: TrendingUp,
   Assistance: Award,
+  Advanced: TrendingUp,
+  Calmness: Lightbulb,
+  Focus: Target,
+  Engagement: Award,
 };
 
 export default function SkillDetailPage() {
@@ -45,7 +62,8 @@ export default function SkillDetailPage() {
   const [isStartingTrick, setIsStartingTrick] = useState(false);
 
   const skill = skills.find(s => s.id === trickId);
-  const CategoryIcon = skill?.category ? categoryIcons[skill.category] : Award;
+  const primaryCategory = parsePrimaryCategory(skill?.category);
+  const CategoryIcon = categoryIcons[primaryCategory] || Award;
 
   // Create local map for quick lookup
   const learnedSkillsMap = new Map(dogSkills.map(ds => [ds.skill_id, ds]));
@@ -115,7 +133,7 @@ export default function SkillDetailPage() {
             <div className="flex items-center gap-2">
               <div className={cn(
                 "w-10 h-10 rounded-lg flex items-center justify-center text-white",
-                skill.category ? categoryColors[skill.category] : 'bg-muted'
+                categoryColors[primaryCategory] || 'bg-muted'
               )}>
                 <CategoryIcon className="w-6 h-6" />
               </div>
