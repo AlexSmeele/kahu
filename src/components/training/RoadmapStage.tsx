@@ -29,7 +29,7 @@ export function RoadmapStage({ stage, isUnlocked, isActive, selectedDogId, unloc
     } else if (type === 'troubleshooting') {
       return MOCK_TROUBLESHOOTING_TOPICS.find(t => t.id === topicId);
     } else if (type === 'skill') {
-      return tricks.find(t => t.id === topicId);
+      return skills.find(t => t.id === topicId);
     }
     return null;
   };
@@ -92,17 +92,17 @@ export function RoadmapStage({ stage, isUnlocked, isActive, selectedDogId, unloc
                 
                 // Render skill card for skills
                 if (topicRef.type === 'skill') {
-                  const dogTrick = dogTricks.find(dt => dt.trick_id === topicRef.id);
+                  const dogSkill = dogSkills.find(dt => dt.skill_id === topicRef.id);
                   const isSkillUnlocked = unlockedSkills.has(`${topicRef.id}-${topicRef.level || 'basic'}`);
                   
                   // Look up prerequisite name from skill progression map
                   let prerequisiteName: string | undefined;
                   const skillProgression = getSkillProgression(topicRef.id, topicRef.level || 'basic');
                   if (skillProgression?.prerequisite) {
-                    const prerequisiteTrick = tricks.find(t => t.id === skillProgression.prerequisite?.trickId);
-                    if (prerequisiteTrick && skillProgression.prerequisite.level) {
+                    const prerequisiteSkill = skills.find(t => t.id === skillProgression.prerequisite?.skillId);
+                    if (prerequisiteSkill && skillProgression.prerequisite.level) {
                       const levelLabel = skillProgression.prerequisite.level.charAt(0).toUpperCase() + skillProgression.prerequisite.level.slice(1);
-                      prerequisiteName = `${prerequisiteTrick.name} (${levelLabel})`;
+                      prerequisiteName = `${prerequisiteSkill.name} (${levelLabel})`;
                     }
                   }
                   

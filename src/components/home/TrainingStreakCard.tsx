@@ -13,38 +13,38 @@ export function TrainingStreakCard({ dogId, onTabChange, className = "" }: Train
   
   // Calculate streak based on started_at dates (simplified version)
   const calculateStreak = (): number => {
-    if (!dogTricks || dogTricks.length === 0) return 0;
+    if (!dogSkills || dogSkills.length === 0) return 0;
     
-    // Count tricks in learning or practicing status as indication of active training
-    const activeTricks = dogTricks.filter(
-      trick => trick.status === 'learning' || trick.status === 'practicing'
+    // Count skills in learning or practicing status as indication of active training
+    const activeSkills = dogSkills.filter(
+      skill => skill.status === 'learning' || skill.status === 'practicing'
     );
     
     // Simple streak: if there are active tricks with recent started_at dates
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     
-    const recentActiveTricks = activeTricks.filter(trick => {
-      if (!trick.started_at) return false;
-      const startDate = new Date(trick.started_at);
+    const recentActiveSkills = activeSkills.filter(skill => {
+      if (!skill.started_at) return false;
+      const startDate = new Date(skill.started_at);
       const daysDiff = Math.floor((today.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
       return daysDiff <= 30; // Active within last 30 days
     });
     
-    return recentActiveTricks.length;
+    return recentActiveSkills.length;
   };
   
   const streak = calculateStreak();
   
   // Find last training date based on started_at
   const getLastTrainingDate = (): string => {
-    if (!dogTricks || dogTricks.length === 0) return 'Never';
+    if (!dogSkills || dogSkills.length === 0) return 'Never';
     
     let latestDate: Date | null = null;
     
-    dogTricks.forEach(trick => {
-      if (trick.started_at) {
-        const startDate = new Date(trick.started_at);
+    dogSkills.forEach(skill => {
+      if (skill.started_at) {
+        const startDate = new Date(skill.started_at);
         if (!latestDate || startDate > latestDate) {
           latestDate = startDate;
         }

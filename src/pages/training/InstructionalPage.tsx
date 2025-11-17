@@ -5,7 +5,7 @@ import { Card } from '@/components/ui/card';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { X, ChevronLeft, ChevronRight, ArrowRight, CheckCircle, Lightbulb, ImageIcon, AlertCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { useTricks } from '@/hooks/useTricks';
+import { useSkills } from '@/hooks/useSkills';
 import useEmblaCarousel from 'embla-carousel-react';
 import { useToast } from '@/hooks/use-toast';
 import { MOCK_FOUNDATION_TOPICS, MOCK_TROUBLESHOOTING_TOPICS } from '@/lib/mockData';
@@ -152,7 +152,7 @@ export default function InstructionalPage({ type }: InstructionalPageProps) {
   const { trickId, topicId, lessonId } = useParams<{ trickId: string; topicId: string; lessonId: string }>();
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { tricks } = useTricks();
+  const { skills } = useSkills();
   
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [emblaRef, emblaApi] = useEmblaCarousel({

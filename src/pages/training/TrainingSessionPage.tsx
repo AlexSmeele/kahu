@@ -21,7 +21,7 @@ export default function TrainingSessionPage() {
   const { user } = useAuth();
   const { dogs } = useDogs();
   const selectedDog = dogs[0];
-  const { dogTricks, recordPracticeSession } = useTricks(selectedDog?.id);
+  const { dogSkills, recordPracticeSession } = useSkills(selectedDog?.id);
   
   const [trick, setTrick] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -49,7 +49,7 @@ export default function TrainingSessionPage() {
       if (!trickId) return;
       
       const { data, error } = await supabase
-        .from("tricks")
+        .from("skills")
         .select("*")
         .eq("id", trickId)
         .single();
@@ -67,17 +67,17 @@ export default function TrainingSessionPage() {
       
       setTrick(data);
       
-      // Find the dog_trick record
-      const dogTrick = dogTricks.find(dt => dt.trick_id === trickId);
-      if (dogTrick) {
-        setDogTrickId(dogTrick.id);
+      // Find the dog_skill record
+      const dogSkill = dogSkills.find(dt => dt.skill_id === trickId);
+      if (dogSkill) {
+        setDogTrickId(dogSkill.id);
       }
       
       setLoading(false);
     }
     
     fetchTrick();
-  }, [trickId, dogTricks, navigate]);
+  }, [trickId, dogSkills, navigate]);
 
   // Timer logic
   useEffect(() => {

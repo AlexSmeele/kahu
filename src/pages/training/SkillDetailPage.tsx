@@ -6,7 +6,7 @@ import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
-import { useTricks } from '@/hooks/useTricks';
+import { useSkills } from '@/hooks/useSkills';
 import { useDogs } from '@/hooks/useDogs';
 import { useSkillProgression } from '@/hooks/useSkillProgression';
 import { cn } from '@/lib/utils';
@@ -39,7 +39,7 @@ export default function SkillDetailPage() {
   const { trickId } = useParams<{ trickId: string }>();
   const navigate = useNavigate();
   const { dogs } = useDogs();
-  const { tricks, dogTricks, startTrick, refetch } = useTricks(dogs[0]?.id);
+  const { skills, dogSkills, startSkill, refetch } = useSkills(dogs[0]?.id);
   const [seeMoreOpen, setSeeMoreOpen] = useState(false);
   const [dogTrickId, setDogTrickId] = useState<string | null>(null);
   const [isStartingTrick, setIsStartingTrick] = useState(false);

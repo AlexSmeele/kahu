@@ -39,20 +39,20 @@ export function useSkillProgression(dogTrickId: string | null) {
     try {
       setLoading(true);
 
-      // Get dog trick details
-      const { data: dogTrick, error: dogTrickError } = await supabase
-        .from('dog_tricks')
-        .select('trick_id, proficiency_level, last_practiced_at, practice_contexts')
+      // Get dog skill details
+      const { data: dogSkill, error: dogSkillError } = await supabase
+        .from('dog_skills')
+        .select('skill_id, proficiency_level, last_practiced_at, practice_contexts')
         .eq('id', dogTrickId)
         .single();
 
-      if (dogTrickError) throw dogTrickError;
+      if (dogSkillError) throw dogSkillError;
 
       // Get requirements for all levels
       const { data: reqs, error: reqsError } = await supabase
         .from('skill_progression_requirements')
         .select('*')
-        .eq('trick_id', dogTrick.trick_id)
+        .eq('skill_id', dogSkill.skill_id)
         .order('proficiency_level');
 
       if (reqsError) throw reqsError;
@@ -68,7 +68,7 @@ export function useSkillProgression(dogTrickId: string | null) {
       if (sessionsError) throw sessionsError;
 
       // Calculate progress
-      const currentLevel = dogTrick.proficiency_level as 'basic' | 'generalized' | 'proofed';
+      const currentLevel = dogSkill.proficiency_level as 'basic' | 'generalized' | 'proofed';
       const currentRequirement = reqs?.find(r => r.proficiency_level === currentLevel) as SkillRequirement | undefined;
       const nextRequirement = getNextRequirement((reqs || []) as SkillRequirement[], currentLevel);
 
@@ -90,8 +90,8 @@ export function useSkillProgression(dogTrickId: string | null) {
 
       // Calculate days since last practice
       let daysSinceLastPractice = null;
-      if (dogTrick.last_practiced_at) {
-        const lastPractice = new Date(dogTrick.last_practiced_at);
+      if (dogSkill.last_practiced_at) {
+        const lastPractice = new Date(dogSkill.last_practiced_at);
         const now = new Date();
         daysSinceLastPractice = Math.floor((now.getTime() - lastPractice.getTime()) / (1000 * 60 * 60 * 24));
       }
