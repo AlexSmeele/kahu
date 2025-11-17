@@ -329,7 +329,7 @@ export function TrickDetailModal({
                         </div>
                       </div>
                       <div className="flex-1">
-                        <p className="text-sm leading-relaxed">{step}</p>
+                        <p className="text-sm leading-relaxed">{typeof step === 'string' ? step : step.content}</p>
                       </div>
                     </div>
                   ))}

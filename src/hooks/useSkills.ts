@@ -11,8 +11,18 @@ export interface Skill {
   description?: string;
   short_description?: string;
   long_description?: string;
-  brief_instructions?: string[];
-  detailed_instructions?: string[];
+  brief_instructions?: Array<{
+    number: number;
+    title: string;
+    content: string;
+    tip?: string;
+  }>;
+  detailed_instructions?: Array<{
+    number: number;
+    title: string;
+    content: string;
+    tip?: string;
+  }>;
   general_tips?: string;
   troubleshooting?: string;
   progressions?: string;
@@ -26,7 +36,7 @@ export interface Skill {
     level2?: string;
     level3?: string;
   };
-  ideal_stage_weeks?: {
+  ideal_stage_timeline?: {
     level1?: number;
     level2?: number;
     level3?: number;
@@ -78,7 +88,7 @@ export function useSkills(dogId?: string) {
         .order('difficulty_level', { ascending: true });
 
       if (error) throw error;
-      setSkills((data as Skill[]) || []);
+      setSkills((data as unknown as Skill[]) || []);
     } catch (error) {
       console.error('Error fetching skills:', error);
       toast({
@@ -133,7 +143,7 @@ export function useSkills(dogId?: string) {
         skill: skillsMap.get(dogSkill.skill_id)
       })).filter(ds => ds.skill) || [];
 
-      setDogSkills(combinedData as DogSkill[]);
+      setDogSkills(combinedData as unknown as DogSkill[]);
     } catch (error) {
       console.error('Error fetching dog skills:', error);
       toast({
