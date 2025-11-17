@@ -2156,12 +2156,15 @@ export type Database = {
           detailed_instructions: Json | null
           difficulty_level: number
           estimated_time_weeks: number | null
+          fail_criteria: string | null
           general_tips: string | null
           id: string
           ideal_stage_timeline: Json | null
           long_description: string | null
+          mastery_criteria: string | null
           min_age_weeks: number | null
           name: string
+          pass_criteria: string | null
           preparation_tips: string | null
           prerequisites: string[] | null
           priority_order: number | null
@@ -2180,12 +2183,15 @@ export type Database = {
           detailed_instructions?: Json | null
           difficulty_level: number
           estimated_time_weeks?: number | null
+          fail_criteria?: string | null
           general_tips?: string | null
           id?: string
           ideal_stage_timeline?: Json | null
           long_description?: string | null
+          mastery_criteria?: string | null
           min_age_weeks?: number | null
           name: string
+          pass_criteria?: string | null
           preparation_tips?: string | null
           prerequisites?: string[] | null
           priority_order?: number | null
@@ -2204,12 +2210,15 @@ export type Database = {
           detailed_instructions?: Json | null
           difficulty_level?: number
           estimated_time_weeks?: number | null
+          fail_criteria?: string | null
           general_tips?: string | null
           id?: string
           ideal_stage_timeline?: Json | null
           long_description?: string | null
+          mastery_criteria?: string | null
           min_age_weeks?: number | null
           name?: string
+          pass_criteria?: string | null
           preparation_tips?: string | null
           prerequisites?: string[] | null
           priority_order?: number | null
