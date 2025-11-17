@@ -61,7 +61,7 @@ export function RoadmapContent({ selectedDogId }: RoadmapContentProps) {
     });
     
     return unlocked;
-  }, [dogAgeWeeks, dogTricks, tricks]);
+  }, [dogAgeWeeks, dogSkills, skills]);
 
   // Determine which stages are unlocked and which is active
   const stagesWithStatus = useMemo(() => {

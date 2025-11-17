@@ -603,7 +603,7 @@ export type Database = {
           },
         ]
       }
-      dog_tricks: {
+      dog_skills: {
         Row: {
           basic_completed_at: string | null
           created_at: string
@@ -615,10 +615,10 @@ export type Database = {
           practice_contexts: Json | null
           proficiency_level: string
           proofed_completed_at: string | null
+          skill_id: string
           started_at: string | null
           status: string
           total_sessions: number | null
-          trick_id: string
           updated_at: string
         }
         Insert: {
@@ -632,10 +632,10 @@ export type Database = {
           practice_contexts?: Json | null
           proficiency_level?: string
           proofed_completed_at?: string | null
+          skill_id: string
           started_at?: string | null
           status?: string
           total_sessions?: number | null
-          trick_id: string
           updated_at?: string
         }
         Update: {
@@ -649,25 +649,25 @@ export type Database = {
           practice_contexts?: Json | null
           proficiency_level?: string
           proofed_completed_at?: string | null
+          skill_id?: string
           started_at?: string | null
           status?: string
           total_sessions?: number | null
-          trick_id?: string
           updated_at?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "dog_skills_skill_id_fkey"
+            columns: ["skill_id"]
+            isOneToOne: false
+            referencedRelation: "skills"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "dog_tricks_dog_id_fkey"
             columns: ["dog_id"]
             isOneToOne: false
             referencedRelation: "dogs"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "dog_tricks_trick_id_fkey"
-            columns: ["trick_id"]
-            isOneToOne: false
-            referencedRelation: "tricks"
             referencedColumns: ["id"]
           },
         ]
@@ -2141,10 +2141,91 @@ export type Database = {
             foreignKeyName: "skill_progression_requirements_trick_id_fkey"
             columns: ["trick_id"]
             isOneToOne: false
-            referencedRelation: "tricks"
+            referencedRelation: "skills"
             referencedColumns: ["id"]
           },
         ]
+      }
+      skills: {
+        Row: {
+          achievement_levels: Json | null
+          brief_instructions: Json | null
+          category: string
+          created_at: string
+          criteria: Json | null
+          description: string
+          detailed_instructions: Json | null
+          difficulty_level: number
+          estimated_time_weeks: number | null
+          general_tips: string | null
+          id: string
+          ideal_stage_timeline: Json | null
+          instructions: string
+          long_description: string | null
+          min_age_weeks: number | null
+          name: string
+          preparation_tips: string | null
+          prerequisites: string[] | null
+          priority_order: number | null
+          recommended_practice_frequency_days: number | null
+          short_description: string | null
+          skill_type: string | null
+          training_insights: string | null
+          troubleshooting: string | null
+        }
+        Insert: {
+          achievement_levels?: Json | null
+          brief_instructions?: Json | null
+          category: string
+          created_at?: string
+          criteria?: Json | null
+          description: string
+          detailed_instructions?: Json | null
+          difficulty_level: number
+          estimated_time_weeks?: number | null
+          general_tips?: string | null
+          id?: string
+          ideal_stage_timeline?: Json | null
+          instructions: string
+          long_description?: string | null
+          min_age_weeks?: number | null
+          name: string
+          preparation_tips?: string | null
+          prerequisites?: string[] | null
+          priority_order?: number | null
+          recommended_practice_frequency_days?: number | null
+          short_description?: string | null
+          skill_type?: string | null
+          training_insights?: string | null
+          troubleshooting?: string | null
+        }
+        Update: {
+          achievement_levels?: Json | null
+          brief_instructions?: Json | null
+          category?: string
+          created_at?: string
+          criteria?: Json | null
+          description?: string
+          detailed_instructions?: Json | null
+          difficulty_level?: number
+          estimated_time_weeks?: number | null
+          general_tips?: string | null
+          id?: string
+          ideal_stage_timeline?: Json | null
+          instructions?: string
+          long_description?: string | null
+          min_age_weeks?: number | null
+          name?: string
+          preparation_tips?: string | null
+          prerequisites?: string[] | null
+          priority_order?: number | null
+          recommended_practice_frequency_days?: number | null
+          short_description?: string | null
+          skill_type?: string | null
+          training_insights?: string | null
+          troubleshooting?: string | null
+        }
+        Relationships: []
       }
       training_program_lessons: {
         Row: {
@@ -2349,7 +2430,7 @@ export type Database = {
             foreignKeyName: "training_sessions_dog_trick_id_fkey"
             columns: ["dog_trick_id"]
             isOneToOne: false
-            referencedRelation: "dog_tricks"
+            referencedRelation: "dog_skills"
             referencedColumns: ["id"]
           },
         ]
@@ -2412,54 +2493,6 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
-      }
-      tricks: {
-        Row: {
-          category: string
-          created_at: string
-          description: string
-          difficulty_level: number
-          estimated_time_weeks: number | null
-          id: string
-          instructions: string
-          min_age_weeks: number | null
-          name: string
-          prerequisites: string[] | null
-          priority_order: number | null
-          recommended_practice_frequency_days: number | null
-          skill_type: string | null
-        }
-        Insert: {
-          category: string
-          created_at?: string
-          description: string
-          difficulty_level: number
-          estimated_time_weeks?: number | null
-          id?: string
-          instructions: string
-          min_age_weeks?: number | null
-          name: string
-          prerequisites?: string[] | null
-          priority_order?: number | null
-          recommended_practice_frequency_days?: number | null
-          skill_type?: string | null
-        }
-        Update: {
-          category?: string
-          created_at?: string
-          description?: string
-          difficulty_level?: number
-          estimated_time_weeks?: number | null
-          id?: string
-          instructions?: string
-          min_age_weeks?: number | null
-          name?: string
-          prerequisites?: string[] | null
-          priority_order?: number | null
-          recommended_practice_frequency_days?: number | null
-          skill_type?: string | null
-        }
-        Relationships: []
       }
       user_breed_recommendations: {
         Row: {
