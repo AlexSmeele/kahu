@@ -2150,7 +2150,7 @@ export type Database = {
         Row: {
           achievement_levels: Json | null
           brief_instructions: Json | null
-          category: string
+          category: string[]
           created_at: string
           criteria: Json | null
           detailed_instructions: Json | null
@@ -2177,7 +2177,7 @@ export type Database = {
         Insert: {
           achievement_levels?: Json | null
           brief_instructions?: Json | null
-          category: string
+          category: string[]
           created_at?: string
           criteria?: Json | null
           detailed_instructions?: Json | null
@@ -2204,7 +2204,7 @@ export type Database = {
         Update: {
           achievement_levels?: Json | null
           brief_instructions?: Json | null
-          category?: string
+          category?: string[]
           created_at?: string
           criteria?: Json | null
           detailed_instructions?: Json | null
