@@ -53,6 +53,8 @@ import Relaxation from "./pages/Relaxation";
 import VaccineSchedule from "./pages/VaccineSchedule";
 import MealHistory from "./pages/MealHistory";
 import ImportSkills from "./pages/ImportSkills";
+import ImportFoundationModules from "./pages/ImportFoundationModules";
+import FoundationModuleDetailPage from "./pages/training/FoundationModuleDetailPage";
 import { PasswordGate } from "@/components/PasswordGate";
 import { logger } from "@/lib/logger";
 
@@ -294,6 +296,25 @@ const App = () => {
                     <Route path="/import-skills" element={
                       <ProtectedRoute>
                         <ImportSkills />
+                      </ProtectedRoute>
+                    } />
+                    
+                    {/* Import Foundation Modules Page */}
+                    <Route path="/import-foundation-modules" element={
+                      <ProtectedRoute>
+                        <ImportFoundationModules />
+                      </ProtectedRoute>
+                    } />
+                    
+                    {/* Foundation Module Routes */}
+                    <Route path="/training/foundation-module/:moduleId" element={
+                      <ProtectedRoute>
+                        <FoundationModuleDetailPage />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="/training/instructional/foundation-module/:moduleId" element={
+                      <ProtectedRoute>
+                        <InstructionalPage type="foundation-module" />
                       </ProtectedRoute>
                     } />
                     
