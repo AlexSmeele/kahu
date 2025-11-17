@@ -49,14 +49,11 @@ export function useSkillProgression(dogTrickId: string | null) {
       if (dogSkillError) throw dogSkillError;
 
       // Get requirements for all levels
-      const result = await supabase
-        .from('skill_progression_requirements')
+      const { data: reqs, error: reqsError } = await (supabase
+        .from('skill_progression_requirements') as any)
         .select('*')
         .eq('skill_id', dogSkill.skill_id)
         .order('proficiency_level');
-      
-      const reqs = result.data;
-      const reqsError = result.error;
 
       if (reqsError) throw reqsError;
       setRequirements((reqs || []) as SkillRequirement[]);
