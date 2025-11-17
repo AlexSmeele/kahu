@@ -187,9 +187,17 @@ export default function InstructionalPage({ type }: InstructionalPageProps) {
   }, [type, trickId, topicId, lessonId, skills]);
 
   const steps = useMemo(() => {
-    if (!content?.instructions) return [];
-    return parseInstructionsToSteps(content.instructions);
-  }, [content]);
+    if (type === 'skill' && content) {
+      // For skills, use detailed_instructions or brief_instructions
+      const skill = content as any;
+      return skill.detailed_instructions || skill.brief_instructions || [];
+    }
+    // For foundations/troubleshooting, parse instructions string
+    if (content && 'instructions' in content && content.instructions) {
+      return parseInstructionsToSteps(content.instructions);
+    }
+    return [];
+  }, [content, type]);
 
   const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
   const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);

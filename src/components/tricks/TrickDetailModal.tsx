@@ -83,8 +83,8 @@ export function TrickDetailModal({
   const categoryColor = categoryColors[trick.category as keyof typeof categoryColors] || 'bg-gray-500';
   const difficultyColor = difficultyColors[trick.difficulty_level as keyof typeof difficultyColors] || 'bg-gray-500';
 
-  // Parse training steps from instructions
-  const trainingSteps = trick.instructions.split('\n').filter(step => step.trim().length > 0);
+  // Parse training steps from brief or detailed instructions
+  const trainingSteps = trick.brief_instructions || trick.detailed_instructions || [];
 
   // Enhanced training data with common problems and troubleshooting
   const getEnhancedTrainingData = (trickName: string) => {

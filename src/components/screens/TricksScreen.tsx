@@ -203,8 +203,8 @@ export function TricksScreen({ selectedDogId, onDogChange }: TricksScreenProps) 
     addPracticeSession(dogTrickId);
   };
 
-  const handleUpdateStatus = (dogTrickId: string, status: any) => {
-    updateTrickStatus(dogTrickId, status);
+  const handleUpdateStatus = (dogSkillId: string, status: any) => {
+    updateSkillStatus(dogSkillId, status);
   };
 
   return (
@@ -246,7 +246,7 @@ export function TricksScreen({ selectedDogId, onDogChange }: TricksScreenProps) 
             <div className="text-[10px] text-muted-foreground">In Progress</div>
           </div>
           <div className="flex-1">
-            <div className="text-base font-bold text-gray-600">{totalTricks - completedCount - inProgressCount}</div>
+            <div className="text-base font-bold text-gray-600">{totalSkills - completedCount - inProgressCount}</div>
             <div className="text-[10px] text-muted-foreground">Remaining</div>
           </div>
         </div>
@@ -379,12 +379,12 @@ export function TricksScreen({ selectedDogId, onDogChange }: TricksScreenProps) 
               )}
             </div>
 
-            {tricksByDifficulty.map(({ level, color, textColor, tricks: levelTricks }) => {
-              // Filter out Foundation category tricks from Skills section
+            {skillsByDifficulty.map(({ level, color, textColor, skills: levelTricks }) => {
+              // Filter out Foundation category skills from Skills section
               const skillsTricks = levelTricks.filter(t => t.category !== 'Foundation');
               if (skillsTricks.length === 0) return null;
               
-              const levelCompleted = skillsTricks.filter(t => learnedTricksMap.get(t.id)?.status === 'mastered').length;
+              const levelCompleted = skillsTricks.filter(t => learnedSkillsMap.get(t.id)?.status === 'mastered').length;
               const levelProgress = (levelCompleted / skillsTricks.length) * 100;
 
               return (
@@ -413,10 +413,10 @@ export function TricksScreen({ selectedDogId, onDogChange }: TricksScreenProps) 
                         <TrickCard
                           key={trick.id}
                           trick={trick}
-                          dogTrick={learnedTricksMap.get(trick.id)}
+                          dogTrick={learnedSkillsMap.get(trick.id)}
                           onStart={handleStart}
                           onPractice={handlePractice}
-                          onTrickClick={handleTrickClick}
+                          onTrickClick={handleSkillClick}
                           hasUnmetPrerequisites={unmetPrereqs.length > 0}
                           unmetPrerequisites={unmetPrereqs}
                         />
