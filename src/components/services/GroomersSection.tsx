@@ -7,6 +7,7 @@ import { ServiceCard } from './ServiceCard';
 import { SearchResultCard } from './SearchResultCard';
 import { SearchFilters, type SortOption, type MinRatingOption } from './SearchFilters';
 import { EditGroomerModal } from './EditGroomerModal';
+import { AddServiceToDogsModal } from './AddServiceToDogsModal';
 import { useGroomers, type DogGroomer, type Groomer } from '@/hooks/useGroomers';
 import { useDogs } from '@/hooks/useDogs';
 import { useToast } from '@/hooks/use-toast';
@@ -29,6 +30,8 @@ export function GroomersSection({ dogId }: GroomersSectionProps) {
   const [isGettingLocation, setIsGettingLocation] = useState(false);
   const [sortBy, setSortBy] = useState<SortOption>('distance');
   const [minRating, setMinRating] = useState<MinRatingOption>('all');
+  const [addModalOpen, setAddModalOpen] = useState(false);
+  const [selectedGroomer, setSelectedGroomer] = useState<Groomer | null>(null);
 
   const currentDog = dogs.find(d => d.id === dogId);
 
@@ -176,19 +179,36 @@ export function GroomersSection({ dogId }: GroomersSectionProps) {
     return results;
   }, [searchResults, sortBy, minRating, userLocation]);
 
-  const handleAddGroomer = async (groomer: Groomer) => {
+  const handleAddGroomer = (groomer: Groomer) => {
+    setSelectedGroomer(groomer);
+    setAddModalOpen(true);
+  };
+
+  const handleConfirmAddGroomer = async (
+    selections: Array<{ dogId: string; isPrimary: boolean; notes: string }>
+  ) => {
+    if (!selectedGroomer) return;
+
+    const dogNames: string[] = [];
+    
     try {
-      // Auto-set first groomer as preferred
-      const isFirstGroomer = dogGroomers.length === 0;
-      
-      await addGroomer(dogId, groomer, isFirstGroomer, '');
-      
+      for (const selection of selections) {
+        await addGroomer(
+          selection.dogId,
+          selectedGroomer,
+          selection.isPrimary,
+          selection.notes
+        );
+        const dog = dogs.find(d => d.id === selection.dogId);
+        if (dog) dogNames.push(dog.name);
+      }
+
       toast({
         title: "Groomer added",
-        description: isFirstGroomer
-          ? `${groomer.name} has been added as ${currentDog?.name}'s preferred groomer.`
-          : `${groomer.name} has been added to ${currentDog?.name}'s profile.`,
+        description: `${selectedGroomer.name} has been added to ${dogNames.join(', ')}.`,
       });
+      
+      setSelectedGroomer(null);
     } catch (error) {
       toast({
         title: "Error",
@@ -367,6 +387,7 @@ export function GroomersSection({ dogId }: GroomersSectionProps) {
                 onSetPreferred={() => handleSetPreferred(dg.id)}
                 onEdit={() => setEditingGroomer(dg)}
                 onRemove={() => handleRemove(dg.id, dg.groomer.name)}
+                linkedDogs={[currentDog].filter(Boolean)}
               />
             ))}
           </div>
@@ -381,6 +402,19 @@ export function GroomersSection({ dogId }: GroomersSectionProps) {
           dogName={currentDog?.name || ''}
         />
       )}
+
+      <AddServiceToDogsModal
+        open={addModalOpen}
+        onOpenChange={setAddModalOpen}
+        service={{
+          name: selectedGroomer?.name || '',
+          address: selectedGroomer?.address,
+          rating: selectedGroomer?.rating,
+          serviceType: 'groomer',
+        }}
+        dogs={dogs}
+        onConfirm={handleConfirmAddGroomer}
+      />
     </div>
   );
 }

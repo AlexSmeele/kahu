@@ -2,6 +2,9 @@ import { MapPin, Phone, Globe, Star, Edit2, Trash2, StarOff } from 'lucide-react
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { Dog } from '@/hooks/useDogs';
 
 interface ServiceCardProps {
   name: string;
@@ -17,6 +20,7 @@ interface ServiceCardProps {
   onSetPreferred?: () => void;
   onEdit?: () => void;
   onRemove?: () => void;
+  linkedDogs?: Dog[];
 }
 
 export function ServiceCard({
@@ -33,6 +37,7 @@ export function ServiceCard({
   onSetPreferred,
   onEdit,
   onRemove,
+  linkedDogs = [],
 }: ServiceCardProps) {
   return (
     <Card className="hover:shadow-md transition-all duration-base">
@@ -50,8 +55,40 @@ export function ServiceCard({
             {businessName && name !== businessName && (
               <p className="text-sm text-muted-foreground">{name}</p>
             )}
+
+            {linkedDogs.length > 0 && (
+              <TooltipProvider>
+                <div className="flex items-center gap-2 mt-2">
+                  <div className="flex -space-x-2">
+                    {linkedDogs.slice(0, 3).map((dog) => (
+                      <Tooltip key={dog.id}>
+                        <TooltipTrigger asChild>
+                          <Avatar className="h-6 w-6 border-2 border-background">
+                            <AvatarImage src={dog.avatar_url} alt={dog.name} />
+                            <AvatarFallback className="text-[10px]">
+                              {dog.name.charAt(0)}
+                            </AvatarFallback>
+                          </Avatar>
+                        </TooltipTrigger>
+                        <TooltipContent side="top">
+                          <p className="text-xs">{dog.name}</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    ))}
+                  </div>
+                  <span className="text-xs text-muted-foreground">
+                    {linkedDogs.length === 1
+                      ? linkedDogs[0].name
+                      : linkedDogs.length === 2
+                      ? `${linkedDogs[0].name}, ${linkedDogs[1].name}`
+                      : `${linkedDogs[0].name} +${linkedDogs.length - 1} more`}
+                  </span>
+                </div>
+              </TooltipProvider>
+            )}
+
             {rating && (
-              <div className="flex items-center gap-1 mt-1">
+              <div className="flex items-center gap-1 mt-2">
                 <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
                 <span className="text-sm font-medium">{rating.toFixed(1)}</span>
                 {userRatingsTotal && (

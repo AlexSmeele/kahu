@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input';
 import { ServiceCard } from './ServiceCard';
 import { SearchResultCard } from './SearchResultCard';
 import { SearchFilters, type SortOption, type MinRatingOption } from './SearchFilters';
+import { AddServiceToDogsModal } from './AddServiceToDogsModal';
 import { useVetClinics, type VetClinic } from '@/hooks/useVetClinics';
 import { useDogs } from '@/hooks/useDogs';
 import { useToast } from '@/hooks/use-toast';
@@ -28,6 +29,8 @@ export function VetClinicsSection({ dogId }: VetClinicsSectionProps) {
   const [isGettingLocation, setIsGettingLocation] = useState(false);
   const [sortBy, setSortBy] = useState<SortOption>('distance');
   const [minRating, setMinRating] = useState<MinRatingOption>('all');
+  const [addModalOpen, setAddModalOpen] = useState(false);
+  const [selectedClinic, setSelectedClinic] = useState<VetClinic | null>(null);
 
   const currentDog = dogs.find(d => d.id === dogId);
 
@@ -177,19 +180,36 @@ export function VetClinicsSection({ dogId }: VetClinicsSectionProps) {
   }, [searchResults, sortBy, minRating, userLocation]);
 
   // Add clinic
-  const handleAddClinic = async (clinic: VetClinic) => {
+  const handleAddClinic = (clinic: VetClinic) => {
+    setSelectedClinic(clinic);
+    setAddModalOpen(true);
+  };
+
+  const handleConfirmAddClinic = async (
+    selections: Array<{ dogId: string; isPrimary: boolean; notes: string }>
+  ) => {
+    if (!selectedClinic) return;
+
+    const dogNames: string[] = [];
+    
     try {
-      // Auto-set first clinic as preferred
-      const isFirstClinic = dogVetClinics.length === 0;
-      
-      await addVetClinic(dogId, clinic, isFirstClinic, '');
-      
+      for (const selection of selections) {
+        await addVetClinic(
+          selection.dogId,
+          selectedClinic,
+          selection.isPrimary,
+          selection.notes
+        );
+        const dog = dogs.find(d => d.id === selection.dogId);
+        if (dog) dogNames.push(dog.name);
+      }
+
       toast({
         title: "Vet clinic added",
-        description: isFirstClinic 
-          ? `${clinic.name} has been added as ${currentDog?.name}'s primary vet.`
-          : `${clinic.name} has been added to ${currentDog?.name}'s profile.`,
+        description: `${selectedClinic.name} has been added to ${dogNames.join(', ')}.`,
       });
+      
+      setSelectedClinic(null);
     } catch (error) {
       toast({
         title: "Error",
@@ -365,11 +385,25 @@ export function VetClinicsSection({ dogId }: VetClinicsSectionProps) {
                 isPreferred={dvc.is_primary}
                 onSetPreferred={() => handleSetPreferred(dvc.id)}
                 onRemove={() => handleRemove(dvc.id, dvc.vet_clinic.name)}
+                linkedDogs={[currentDog].filter(Boolean)}
               />
             ))}
           </div>
         </>
       )}
+
+      <AddServiceToDogsModal
+        open={addModalOpen}
+        onOpenChange={setAddModalOpen}
+        service={{
+          name: selectedClinic?.name || '',
+          address: selectedClinic?.address,
+          rating: selectedClinic?.rating,
+          serviceType: 'vet',
+        }}
+        dogs={dogs}
+        onConfirm={handleConfirmAddClinic}
+      />
     </div>
   );
 }
