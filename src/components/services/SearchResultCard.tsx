@@ -18,6 +18,7 @@ interface SearchResultCardProps {
   serviceArea?: string;
   onAdd: () => void;
   isAlreadyAdded?: boolean;
+  linkedDogCount?: number;
 }
 
 export function SearchResultCard({
@@ -35,6 +36,7 @@ export function SearchResultCard({
   serviceArea,
   onAdd,
   isAlreadyAdded,
+  linkedDogCount = 0,
 }: SearchResultCardProps) {
   return (
     <Card className="hover:border-primary/50 transition-colors">
@@ -112,7 +114,9 @@ export function SearchResultCard({
 
           <div className="shrink-0">
             {isAlreadyAdded ? (
-              <Badge variant="secondary">Added</Badge>
+              <Badge variant="secondary">
+                Added {linkedDogCount > 0 && `(${linkedDogCount})`}
+              </Badge>
             ) : (
               <Button
                 variant="primary"

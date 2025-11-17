@@ -7,6 +7,7 @@ import { ServiceCard } from './ServiceCard';
 import { SearchResultCard } from './SearchResultCard';
 import { SearchFilters, type SortOption, type MinRatingOption } from './SearchFilters';
 import { EditWalkerModal } from './EditWalkerModal';
+import { AddServiceToDogsModal } from './AddServiceToDogsModal';
 import { useDogWalkers, type DogWalker, type Walker } from '@/hooks/useDogWalkers';
 import { useDogs } from '@/hooks/useDogs';
 import { useToast } from '@/hooks/use-toast';
@@ -29,6 +30,8 @@ export function WalkersSection({ dogId }: WalkersSectionProps) {
   const [isGettingLocation, setIsGettingLocation] = useState(false);
   const [sortBy, setSortBy] = useState<SortOption>('distance');
   const [minRating, setMinRating] = useState<MinRatingOption>('all');
+  const [addModalOpen, setAddModalOpen] = useState(false);
+  const [selectedWalker, setSelectedWalker] = useState<Walker | null>(null);
 
   const currentDog = dogs.find(d => d.id === dogId);
 
@@ -176,19 +179,36 @@ export function WalkersSection({ dogId }: WalkersSectionProps) {
     return results;
   }, [searchResults, sortBy, minRating, userLocation]);
 
-  const handleAddWalker = async (walker: Walker) => {
+  const handleAddWalker = (walker: Walker) => {
+    setSelectedWalker(walker);
+    setAddModalOpen(true);
+  };
+
+  const handleConfirmAddWalker = async (
+    selections: Array<{ dogId: string; isPrimary: boolean; notes: string }>
+  ) => {
+    if (!selectedWalker) return;
+
+    const dogNames: string[] = [];
+    
     try {
-      // Auto-set first walker as preferred
-      const isFirstWalker = dogWalkers.length === 0;
-      
-      await addWalker(dogId, walker, isFirstWalker, '');
-      
+      for (const selection of selections) {
+        await addWalker(
+          selection.dogId,
+          selectedWalker,
+          selection.isPrimary,
+          selection.notes
+        );
+        const dog = dogs.find(d => d.id === selection.dogId);
+        if (dog) dogNames.push(dog.name);
+      }
+
       toast({
         title: "Dog walker added",
-        description: isFirstWalker
-          ? `${walker.name} has been added as ${currentDog?.name}'s preferred walker.`
-          : `${walker.name} has been added to ${currentDog?.name}'s profile.`,
+        description: `${selectedWalker.name} has been added to ${dogNames.join(', ')}.`,
       });
+      
+      setSelectedWalker(null);
     } catch (error) {
       toast({
         title: "Error",
@@ -364,6 +384,7 @@ export function WalkersSection({ dogId }: WalkersSectionProps) {
                 onSetPreferred={() => handleSetPreferred(dw.id)}
                 onEdit={() => setEditingWalker(dw)}
                 onRemove={() => handleRemove(dw.id, dw.walker.name)}
+                linkedDogs={[currentDog].filter(Boolean)}
               />
             ))}
           </div>
@@ -378,6 +399,19 @@ export function WalkersSection({ dogId }: WalkersSectionProps) {
           dogName={currentDog?.name || ''}
         />
       )}
+
+      <AddServiceToDogsModal
+        open={addModalOpen}
+        onOpenChange={setAddModalOpen}
+        service={{
+          name: selectedWalker?.name || '',
+          address: selectedWalker?.service_area,
+          rating: selectedWalker?.rating,
+          serviceType: 'walker',
+        }}
+        dogs={dogs}
+        onConfirm={handleConfirmAddWalker}
+      />
     </div>
   );
 }
