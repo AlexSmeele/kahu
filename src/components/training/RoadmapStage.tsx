@@ -6,7 +6,7 @@ import { TopicCard } from './TopicCard';
 import { SkillCard } from './SkillCard';
 import { RoadmapStage as RoadmapStageType } from '@/data/roadmapData';
 import { MOCK_FOUNDATION_TOPICS, MOCK_TROUBLESHOOTING_TOPICS } from '@/lib/mockData';
-import { useTricks } from '@/hooks/useTricks';
+import { useSkills } from '@/hooks/useSkills';
 import { getSkillProgression } from '@/data/skillProgressionMap';
 
 interface RoadmapStageProps {
@@ -20,7 +20,7 @@ interface RoadmapStageProps {
 export function RoadmapStage({ stage, isUnlocked, isActive, selectedDogId, unlockedSkills }: RoadmapStageProps) {
   const navigate = useNavigate();
   const IconComponent = (LucideIcons as any)[stage.icon] || LucideIcons.MapPin;
-  const { tricks, dogTricks } = useTricks(selectedDogId);
+  const { skills, dogSkills } = useSkills(selectedDogId);
 
   // Get topic data from mock data
   const getTopicData = (topicId: string, type: 'foundation' | 'troubleshooting' | 'skill') => {

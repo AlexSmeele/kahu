@@ -1,5 +1,5 @@
 import { Flame } from "lucide-react";
-import { useTricks } from "@/hooks/useTricks";
+import { useSkills } from "@/hooks/useSkills";
 import type { TabType } from "@/components/layout/BottomNavigation";
 
 interface TrainingStreakCardProps {
@@ -9,7 +9,7 @@ interface TrainingStreakCardProps {
 }
 
 export function TrainingStreakCard({ dogId, onTabChange, className = "" }: TrainingStreakCardProps) {
-  const { dogTricks } = useTricks(dogId);
+  const { dogSkills } = useSkills(dogId);
   
   // Calculate streak based on started_at dates (simplified version)
   const calculateStreak = (): number => {
