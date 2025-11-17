@@ -8,6 +8,57 @@ export default function ImportSkills() {
   const [importing, setImporting] = useState(false);
   const [result, setResult] = useState<string>('');
 
+  // Proper CSV parser that handles quoted fields with commas
+  const parseCSV = (text: string) => {
+    const lines: string[][] = [];
+    let currentLine: string[] = [];
+    let currentField = '';
+    let insideQuotes = false;
+    
+    for (let i = 0; i < text.length; i++) {
+      const char = text[i];
+      const nextChar = text[i + 1];
+      
+      if (char === '"') {
+        if (insideQuotes && nextChar === '"') {
+          // Escaped quote
+          currentField += '"';
+          i++; // Skip next quote
+        } else {
+          // Toggle quote state
+          insideQuotes = !insideQuotes;
+        }
+      } else if (char === ',' && !insideQuotes) {
+        // End of field
+        currentLine.push(currentField);
+        currentField = '';
+      } else if ((char === '\n' || char === '\r') && !insideQuotes) {
+        // End of line
+        if (char === '\r' && nextChar === '\n') {
+          i++; // Skip \n in \r\n
+        }
+        currentLine.push(currentField);
+        if (currentLine.some(field => field.trim())) {
+          lines.push(currentLine);
+        }
+        currentLine = [];
+        currentField = '';
+      } else {
+        currentField += char;
+      }
+    }
+    
+    // Handle last field and line
+    if (currentField || currentLine.length > 0) {
+      currentLine.push(currentField);
+      if (currentLine.some(field => field.trim())) {
+        lines.push(currentLine);
+      }
+    }
+    
+    return lines;
+  };
+
   const handleImport = async () => {
     setImporting(true);
     setResult('');
@@ -17,14 +68,13 @@ export default function ImportSkills() {
       const response = await fetch('/supabase/functions/import-skills-data/skills_data.csv');
       const csvText = await response.text();
       
-      // Parse CSV to JSON
-      const lines = csvText.split('\n');
-      const headers = lines[0].split(',');
-      const skills = lines.slice(1).filter(line => line.trim()).map(line => {
-        const values = line.split(',');
+      // Parse CSV properly handling quoted fields
+      const lines = parseCSV(csvText);
+      const headers = lines[0].map(h => h.trim());
+      const skills = lines.slice(1).map(line => {
         const skill: any = {};
         headers.forEach((header, i) => {
-          skill[header.trim()] = values[i]?.trim() || '';
+          skill[header] = line[i]?.trim() || '';
         });
         return skill;
       });
