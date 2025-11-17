@@ -5,7 +5,7 @@ import { RoadmapStage } from '@/components/training/RoadmapStage';
 import { TRAINING_ROADMAP } from '@/data/roadmapData';
 import { SKILL_PROGRESSION_MAP } from '@/data/skillProgressionMap';
 import { useDogs } from '@/hooks/useDogs';
-import { useTricks } from '@/hooks/useTricks';
+import { useSkills } from '@/hooks/useSkills';
 import { differenceInWeeks } from 'date-fns';
 
 interface RoadmapContentProps {
@@ -14,7 +14,7 @@ interface RoadmapContentProps {
 
 export function RoadmapContent({ selectedDogId }: RoadmapContentProps) {
   const { dogs } = useDogs();
-  const { tricks, dogTricks } = useTricks(selectedDogId);
+  const { skills, dogSkills } = useSkills(selectedDogId);
   const currentDog = dogs.find(dog => dog.id === selectedDogId);
 
   // Calculate dog's age in weeks
@@ -31,8 +31,8 @@ export function RoadmapContent({ selectedDogId }: RoadmapContentProps) {
     
     // Check each skill in the progression map
     Object.entries(SKILL_PROGRESSION_MAP).forEach(([skillKey, progression]) => {
-      const trick = tricks.find(t => t.id === progression.trickId);
-      if (!trick) return;
+      const skill = skills.find(s => s.id === progression.skillId);
+      if (!skill) return;
       
       // Find the stage that contains this skill
       const stage = TRAINING_ROADMAP.find(s => s.id === progression.stage);
@@ -41,17 +41,17 @@ export function RoadmapContent({ selectedDogId }: RoadmapContentProps) {
       // Check prerequisite requirement
       let meetsPrerequisite = true;
       if (progression.prerequisite) {
-        const prereqDogTrick = dogTricks.find(dt => dt.trick_id === progression.prerequisite?.trickId);
+        const prereqDogSkill = dogSkills.find(ds => ds.skill_id === progression.prerequisite?.skillId);
         const requiredLevel = progression.prerequisite.level;
         
-        if (!prereqDogTrick) {
+        if (!prereqDogSkill) {
           meetsPrerequisite = false;
         } else if (requiredLevel === 'basic') {
-          meetsPrerequisite = !!prereqDogTrick.basic_completed_at;
+          meetsPrerequisite = !!prereqDogSkill.basic_completed_at;
         } else if (requiredLevel === 'generalized') {
-          meetsPrerequisite = !!prereqDogTrick.generalized_completed_at;
+          meetsPrerequisite = !!prereqDogSkill.generalized_completed_at;
         } else if (requiredLevel === 'proofed') {
-          meetsPrerequisite = !!prereqDogTrick.proofed_completed_at;
+          meetsPrerequisite = !!prereqDogSkill.proofed_completed_at;
         }
       }
       

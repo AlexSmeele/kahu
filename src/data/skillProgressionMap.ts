@@ -1,26 +1,26 @@
 // Skill Progression Map - Defines when skills appear in the roadmap and their prerequisites
 
 export interface SkillProgression {
-  trickId: string;
+  skillId: string;
   level: 'basic' | 'generalized' | 'proofed';
   stage: string;
-  prerequisite: { trickId: string; level: 'basic' | 'generalized' | 'proofed' } | null;
+  prerequisite: { skillId: string; level: 'basic' | 'generalized' | 'proofed' } | null;
 }
 
 // Maps skill ID + level to roadmap stage and prerequisite
 export const SKILL_PROGRESSION_MAP: Record<string, SkillProgression> = {
   // Sit progression
   'bbc0357d-2d9e-4ae1-8ac8-e9af77a82852-basic': {
-    trickId: 'bbc0357d-2d9e-4ae1-8ac8-e9af77a82852',
+    skillId: 'bbc0357d-2d9e-4ae1-8ac8-e9af77a82852',
     level: 'basic',
     stage: 'stage-003',
     prerequisite: null,
   },
   'bbc0357d-2d9e-4ae1-8ac8-e9af77a82852-generalized': {
-    trickId: 'bbc0357d-2d9e-4ae1-8ac8-e9af77a82852',
+    skillId: 'bbc0357d-2d9e-4ae1-8ac8-e9af77a82852',
     level: 'generalized',
     stage: 'stage-005',
-    prerequisite: { trickId: 'bbc0357d-2d9e-4ae1-8ac8-e9af77a82852', level: 'basic' },
+    prerequisite: { skillId: 'bbc0357d-2d9e-4ae1-8ac8-e9af77a82852', level: 'basic' },
   },
   'bbc0357d-2d9e-4ae1-8ac8-e9af77a82852-proofed': {
     trickId: 'bbc0357d-2d9e-4ae1-8ac8-e9af77a82852',
