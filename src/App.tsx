@@ -52,6 +52,7 @@ import MealPlanning from "./pages/MealPlanning";
 import Relaxation from "./pages/Relaxation";
 import VaccineSchedule from "./pages/VaccineSchedule";
 import MealHistory from "./pages/MealHistory";
+import ImportSkills from "./pages/ImportSkills";
 import { PasswordGate } from "@/components/PasswordGate";
 import { logger } from "@/lib/logger";
 
@@ -286,6 +287,13 @@ const App = () => {
                     <Route path="/training/skill/:trickId/session" element={
                       <ProtectedRoute>
                         <TrainingSessionPage />
+                      </ProtectedRoute>
+                    } />
+                    
+                    {/* Import Skills Page */}
+                    <Route path="/import-skills" element={
+                      <ProtectedRoute>
+                        <ImportSkills />
                       </ProtectedRoute>
                     } />
                     
