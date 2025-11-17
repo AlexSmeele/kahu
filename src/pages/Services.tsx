@@ -93,16 +93,24 @@ export default function Services() {
           )}
         </div>
 
-        {/* Scrollable content area */}
+        {/* Content area - no scroll on parent */}
         {view === 'map' ? (
-          <div className="flex-1 overflow-auto px-5 pb-5">
+          <div className="flex-1 min-h-0 px-5 pb-5">
             {selectedDogId && <ServicesMapView dogId={selectedDogId} />}
           </div>
         ) : (
-          <div className="flex-1 overflow-auto px-5 pb-5">
-            {activeTab === 'vets' && selectedDogId && <VetClinicsSection dogId={selectedDogId} />}
-            {activeTab === 'groomers' && selectedDogId && <GroomersSection dogId={selectedDogId} />}
-            {activeTab === 'walkers' && selectedDogId && <WalkersSection dogId={selectedDogId} />}
+          <div className="flex-1 min-h-0">
+            <Tabs value={activeTab} onValueChange={setActiveTab} className="h-full flex flex-col">
+              <TabsContent value="vets" className="flex-1 min-h-0 mt-0">
+                {selectedDogId && <VetClinicsSection dogId={selectedDogId} />}
+              </TabsContent>
+              <TabsContent value="groomers" className="flex-1 min-h-0 mt-0">
+                {selectedDogId && <GroomersSection dogId={selectedDogId} />}
+              </TabsContent>
+              <TabsContent value="walkers" className="flex-1 min-h-0 mt-0">
+                {selectedDogId && <WalkersSection dogId={selectedDogId} />}
+              </TabsContent>
+            </Tabs>
           </div>
         )}
       </div>
