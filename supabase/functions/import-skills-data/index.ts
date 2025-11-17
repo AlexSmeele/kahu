@@ -136,14 +136,24 @@ serve(async (req) => {
           skill.brief_step_1,
           skill.brief_step_2,
           skill.brief_step_3
-        ].filter(Boolean),
+        ].filter(Boolean).map((content, idx) => ({
+          number: idx + 1,
+          title: `Step ${idx + 1}`,
+          content: content,
+          tip: undefined
+        })),
         detailed_instructions: [
           skill.detailed_step_1,
           skill.detailed_step_2,
           skill.detailed_step_3,
           skill.detailed_step_4,
           skill.detailed_step_5
-        ].filter(Boolean),
+        ].filter(Boolean).map((content, idx) => ({
+          number: idx + 1,
+          title: `Step ${idx + 1}`,
+          content: content,
+          tip: undefined
+        })),
         general_tips: skill.general_tips,
         troubleshooting: skill.troubleshooting,
         prerequisites: prerequisitesList,
