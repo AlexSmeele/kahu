@@ -269,10 +269,12 @@ export function VetClinicsSection({ dogId }: VetClinicsSectionProps) {
 
   // Main render
   return (
-    <div className="space-y-4">
+    <div className="h-full flex flex-col">
+      {/* Fixed Header Area */}
+      <div className="flex-shrink-0 px-5 space-y-4">
 
-      {/* Search bar - ALWAYS visible */}
-      <div className="flex gap-2">
+        {/* Search bar */}
+        <div className="relative">
         <div className="flex-1 relative">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
           <Input
@@ -310,11 +312,14 @@ export function VetClinicsSection({ dogId }: VetClinicsSectionProps) {
             onMinRatingChange={setMinRating}
             hasLocation={searchResults.some(r => typeof r.distance === 'number')}
           />
-        </div>
-      )}
+        )}
+      </div>
 
-      {/* Search results section */}
-      {isSearchMode && (
+      {/* Scrollable Results Area */}
+      <div className="flex-1 min-h-0 overflow-y-auto px-5 pb-5">
+        <div className="space-y-6 pt-4">
+          {/* Search Results Section */}
+          {isSearchMode && (
         <>
           <div className="flex items-center justify-between">
             <h3 className="text-sm font-medium">
@@ -363,16 +368,21 @@ export function VetClinicsSection({ dogId }: VetClinicsSectionProps) {
               <h3 className="text-sm font-medium mb-3">Your Saved Vet Clinics</h3>
             </div>
           )}
-        </>
-      )}
 
-      {/* Saved vet clinics section */}
-      {(!isSearchMode || (isSearchMode && dogVetClinics.length > 0)) && (
+          {/* Your Saved Vet Clinics Section */}
+          <div className="space-y-4">
         <>
-          {!isSearchMode && dogVetClinics.length > 0 && (
-            <h3 className="text-sm font-medium">Your Saved Vet Clinics</h3>
-          )}
-          <div className="space-y-3">
+            <h3 className="text-lg font-semibold">Your Saved Vet Clinics</h3>
+
+            {dogVetClinics.length === 0 ? (
+              <div className="text-center py-8 space-y-2">
+                <Stethoscope className="w-12 h-12 mx-auto text-muted-foreground/50" />
+                <p className="text-sm text-muted-foreground">
+                  No vet clinics saved yet. Search above to find and add clinics.
+                </p>
+              </div>
+            ) : (
+              <div className="space-y-3">
             {dogVetClinics.map((dvc) => (
               <ServiceCard
                 key={dvc.id}
@@ -388,9 +398,11 @@ export function VetClinicsSection({ dogId }: VetClinicsSectionProps) {
                 linkedDogs={[currentDog].filter(Boolean)}
               />
             ))}
+              </div>
+            )}
           </div>
-        </>
-      )}
+        </div>
+      </div>
 
       <AddServiceToDogsModal
         open={addModalOpen}
