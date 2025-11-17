@@ -263,145 +263,182 @@ export function GroomersSection({ dogId }: GroomersSectionProps) {
   }
 
   return (
-    <div className="space-y-4">
-
-      {/* Search bar - ALWAYS visible */}
-      <div className="flex gap-2">
-        <div className="flex-1 relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-          <Input
-            placeholder="Search for groomers..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-10 pr-9"
-          />
-          {isSearching && (
-            <Loader2 className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 animate-spin text-muted-foreground" />
-          )}
+    <div className="h-full flex flex-col">
+      {/* Fixed Header Area */}
+      <div className="flex-shrink-0 px-5 space-y-4">
+        {/* Search bar with location button */}
+        <div className="flex gap-2">
+          <div className="flex-1 relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+            <Input
+              placeholder="Search for groomers..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-10 pr-9"
+            />
+            {isSearching && (
+              <Loader2 className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 animate-spin text-muted-foreground" />
+            )}
+          </div>
+          <Button
+            variant={userLocation ? "secondary" : "outline"}
+            size="icon"
+            onClick={requestLocation}
+            disabled={isGettingLocation}
+            title={userLocation ? "Location enabled" : "Enable location"}
+          >
+            {isGettingLocation ? (
+              <Loader2 className="w-4 h-4 animate-spin" />
+            ) : (
+              <MapPin className={`w-4 h-4 ${userLocation ? 'text-primary' : ''}`} />
+            )}
+          </Button>
         </div>
-        <Button
-          variant={userLocation ? "secondary" : "outline"}
-          size="icon"
-          onClick={requestLocation}
-          disabled={isGettingLocation}
-          title={userLocation ? "Location enabled" : "Enable location"}
-        >
-          {isGettingLocation ? (
-            <Loader2 className="w-4 h-4 animate-spin" />
-          ) : (
-            <MapPin className={`w-4 h-4 ${userLocation ? 'text-primary' : ''}`} />
-          )}
-        </Button>
+
+        {/* Filter controls */}
+        {isSearchMode && searchResults.length > 0 && (
+          <div>
+            <SearchFilters
+              sortBy={sortBy}
+              onSortChange={setSortBy}
+              minRating={minRating}
+              onMinRatingChange={setMinRating}
+              hasLocation={searchResults.some(r => typeof r.distance === 'number')}
+            />
+          </div>
+        )}
       </div>
 
-      {/* Filter controls */}
-      {isSearchMode && searchResults.length > 0 && (
-        <div className="mb-4">
-          <SearchFilters
-            sortBy={sortBy}
-            onSortChange={setSortBy}
-            minRating={minRating}
-            onMinRatingChange={setMinRating}
-            hasLocation={searchResults.some(r => typeof r.distance === 'number')}
-          />
+      {/* Scrollable Results Area */}
+      <div className="flex-1 min-h-0 overflow-y-auto px-5 pb-5">
+        <div className="space-y-6 pt-4">
+          {/* Search Results Section */}
+          {isSearchMode && (
+            <>
+              <div className="flex items-center justify-between">
+                <h3 className="text-sm font-medium">
+                  Search Results ({searchResults.length})
+                </h3>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleClearSearch}
+                >
+                  <X className="w-4 h-4 mr-1" />
+                  Clear Search
+                </Button>
+              </div>
+
+              {searchResults.length > 0 && filteredAndSortedResults.length > 0 && (
+                <div className="space-y-3">
+                  {filteredAndSortedResults.map((groomer) => (
+                    <SearchResultCard
+                      key={groomer.id}
+                      name={groomer.name}
+                      businessName={groomer.business_name}
+                      address={groomer.address}
+                      phone={groomer.phone}
+                      website={groomer.website}
+                      rating={groomer.rating}
+                      userRatingsTotal={groomer.user_ratings_total}
+                      distance={groomer.distance}
+                      source={groomer.source || 'database'}
+                      services={groomer.services}
+                      specialties={groomer.specialties}
+                      onAdd={() => handleAddGroomer(groomer)}
+                      isAlreadyAdded={isGroomerAlreadyAdded(groomer.id)}
+                    />
+                  ))}
+                </div>
+              )}
+
+              {searchResults.length > 0 && filteredAndSortedResults.length === 0 && (
+                <div className="text-center py-8 text-muted-foreground">
+                  <p>No results match your filters.</p>
+                  <p className="text-sm mt-1">Try adjusting the minimum rating or sort options.</p>
+                </div>
+              )}
+
+              {/* Divider before saved groomers */}
+              {dogGroomers.length > 0 && (
+                <div className="border-t pt-4 mt-6">
+                  <h3 className="text-sm font-medium mb-3">Your Saved Groomers</h3>
+                </div>
+              )}
+            </>
+          )}
+
+          {/* Your Saved Groomers Section */}
+          {!isSearchMode && (
+            <div className="space-y-4">
+              <h3 className="text-lg font-semibold">Your Saved Groomers</h3>
+
+              {dogGroomers.length === 0 ? (
+                <div className="text-center py-8 space-y-2">
+                  <Scissors className="w-12 h-12 mx-auto text-muted-foreground/50" />
+                  <p className="text-sm text-muted-foreground">
+                    No groomers saved yet. Search above to find and add groomers.
+                  </p>
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  {dogGroomers.map((dg) => (
+                    <ServiceCard
+                      key={dg.id}
+                      name={dg.groomer.name}
+                      businessName={dg.groomer.business_name}
+                      address={dg.groomer.address}
+                      phone={dg.groomer.phone}
+                      website={dg.groomer.website}
+                      rating={dg.groomer.rating}
+                      userRatingsTotal={dg.groomer.user_ratings_total}
+                      isPreferred={dg.is_preferred}
+                      services={dg.groomer.services}
+                      specialties={dg.groomer.specialties}
+                      onSetPreferred={() => handleSetPreferred(dg.id)}
+                      onEdit={() => setEditingGroomer(dg)}
+                      onRemove={() => handleRemove(dg.id, dg.groomer.name)}
+                      linkedDogs={[currentDog].filter(Boolean)}
+                    />
+                  ))}
+                </div>
+              )}
             </div>
           )}
 
-          {searchResults.length > 0 && filteredAndSortedResults.length === 0 && (
-            <div className="text-center py-8 text-muted-foreground">
-              <p>No results match your filters.</p>
-              <p className="text-sm mt-1">Try adjusting the minimum rating or sort options.</p>
-            </div>
-          )}
-
-      {isSearchMode && (
-        <>
-          <div className="flex items-center justify-between">
-            <h3 className="text-sm font-medium text-muted-foreground">
-              Search Results ({searchResults.length})
-            </h3>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={handleClearSearch}
-            >
-              <X className="w-4 h-4 mr-1" />
-              Clear Search
-            </Button>
-          </div>
-
-          {searchResults.length > 0 && filteredAndSortedResults.length > 0 && (
+          {/* Show saved groomers in search mode too */}
+          {isSearchMode && dogGroomers.length > 0 && (
             <div className="space-y-3">
-              {filteredAndSortedResults.map((groomer) => (
-                <SearchResultCard
-                  key={groomer.id}
-                  name={groomer.name}
-                  businessName={groomer.business_name}
-                  address={groomer.address}
-                  phone={groomer.phone}
-                  website={groomer.website}
-                  rating={groomer.rating}
-                  userRatingsTotal={groomer.user_ratings_total}
-                  distance={groomer.distance}
-                  source={groomer.source || 'database'}
-                  services={groomer.services}
-                  specialties={groomer.specialties}
-                  onAdd={() => handleAddGroomer(groomer)}
-                  isAlreadyAdded={isGroomerAlreadyAdded(groomer.id)}
+              {dogGroomers.map((dg) => (
+                <ServiceCard
+                  key={dg.id}
+                  name={dg.groomer.name}
+                  businessName={dg.groomer.business_name}
+                  address={dg.groomer.address}
+                  phone={dg.groomer.phone}
+                  website={dg.groomer.website}
+                  rating={dg.groomer.rating}
+                  userRatingsTotal={dg.groomer.user_ratings_total}
+                  isPreferred={dg.is_preferred}
+                  services={dg.groomer.services}
+                  specialties={dg.groomer.specialties}
+                  onSetPreferred={() => handleSetPreferred(dg.id)}
+                  onEdit={() => setEditingGroomer(dg)}
+                  onRemove={() => handleRemove(dg.id, dg.groomer.name)}
+                  linkedDogs={[currentDog].filter(Boolean)}
                 />
               ))}
             </div>
           )}
+        </div>
+      </div>
 
-          {dogGroomers.length > 0 && (
-            <div className="border-t pt-4 mt-6">
-              <h3 className="text-sm font-medium text-muted-foreground mb-3">
-                Your Saved Groomers
-              </h3>
-            </div>
-          )}
-        </>
-      )}
-
-      {(!isSearchMode || (isSearchMode && dogGroomers.length > 0)) && (
-        <>
-          {!isSearchMode && dogGroomers.length > 0 && (
-            <h3 className="text-sm font-medium text-muted-foreground">
-              Your Saved Groomers
-            </h3>
-          )}
-          <div className="space-y-3">
-            {dogGroomers.map((dg) => (
-              <ServiceCard
-                key={dg.id}
-                name={dg.groomer.name}
-                businessName={dg.groomer.business_name}
-                address={dg.groomer.address}
-                phone={dg.groomer.phone}
-                website={dg.groomer.website}
-                rating={dg.groomer.rating}
-                userRatingsTotal={dg.groomer.user_ratings_total}
-                isPreferred={dg.is_preferred}
-                specialties={dg.groomer.specialties}
-                services={dg.groomer.services}
-                onSetPreferred={() => handleSetPreferred(dg.id)}
-                onEdit={() => setEditingGroomer(dg)}
-                onRemove={() => handleRemove(dg.id, dg.groomer.name)}
-                linkedDogs={[currentDog].filter(Boolean)}
-              />
-            ))}
-          </div>
-        </>
-      )}
-
-      {editingGroomer && (
-        <EditGroomerModal
-          isOpen={!!editingGroomer}
-          onClose={() => setEditingGroomer(null)}
-          dogGroomer={editingGroomer}
-          dogName={currentDog?.name || ''}
-        />
-      )}
+      <EditGroomerModal
+        isOpen={!!editingGroomer}
+        onClose={() => setEditingGroomer(null)}
+        dogGroomer={editingGroomer!}
+        dogName={currentDog?.name || ''}
+      />
 
       <AddServiceToDogsModal
         open={addModalOpen}
