@@ -1041,6 +1041,57 @@ export type Database = {
         }
         Relationships: []
       }
+      foundation_modules: {
+        Row: {
+          brief_description: string
+          brief_steps: Json
+          category: string
+          created_at: string
+          detailed_description: string
+          detailed_steps: Json
+          estimated_minutes: number
+          format: string
+          id: string
+          ideal_stage: string
+          is_published: boolean
+          order_index: number
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          brief_description: string
+          brief_steps?: Json
+          category: string
+          created_at?: string
+          detailed_description: string
+          detailed_steps?: Json
+          estimated_minutes: number
+          format: string
+          id?: string
+          ideal_stage: string
+          is_published?: boolean
+          order_index?: number
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          brief_description?: string
+          brief_steps?: Json
+          category?: string
+          created_at?: string
+          detailed_description?: string
+          detailed_steps?: Json
+          estimated_minutes?: number
+          format?: string
+          id?: string
+          ideal_stage?: string
+          is_published?: boolean
+          order_index?: number
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       groomers: {
         Row: {
           address: string
@@ -2504,6 +2555,44 @@ export type Database = {
             columns: ["lesson_id"]
             isOneToOne: false
             referencedRelation: "training_program_lessons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_module_completions: {
+        Row: {
+          completed_at: string
+          created_at: string
+          id: string
+          module_id: string
+          notes: string | null
+          rating: number | null
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string
+          created_at?: string
+          id?: string
+          module_id: string
+          notes?: string | null
+          rating?: number | null
+          user_id: string
+        }
+        Update: {
+          completed_at?: string
+          created_at?: string
+          id?: string
+          module_id?: string
+          notes?: string | null
+          rating?: number | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_module_completions_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "foundation_modules"
             referencedColumns: ["id"]
           },
         ]
