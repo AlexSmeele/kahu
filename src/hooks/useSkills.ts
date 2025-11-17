@@ -73,12 +73,8 @@ export function useSkills(dogId?: string) {
   const { toast } = useToast();
 
   const fetchSkills = async () => {
-    // Return mock data for dev mode
-    if (dogId && isMockDogId(dogId)) {
-      setSkills([]);
-      setLoading(false);
-      return;
-    }
+    // Skills are universal content - load them even for mock dogs
+    // Only dog-specific progress (dogSkills) is mocked
 
     try {
       const { data, error } = await supabase
