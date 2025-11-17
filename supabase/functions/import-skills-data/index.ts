@@ -74,6 +74,20 @@ function parseWeekNumber(stageStr: string): number | null {
   return match ? parseInt(match[1]) : null;
 }
 
+function extractSkillType(category: string): string {
+  // Category format: "Foundational / Obedience" or "Foundational / Obedience / Impulse Control"
+  // Extract the skill type from category
+  const normalized = category.toLowerCase();
+  
+  if (normalized.includes('obedience')) return 'obedience';
+  if (normalized.includes('body control')) return 'body_control';
+  if (normalized.includes('practical')) return 'practical';
+  if (normalized.includes('performance')) return 'performance';
+  
+  // Default to obedience for foundational skills
+  return 'obedience';
+}
+
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders })
@@ -113,6 +127,7 @@ serve(async (req) => {
         id: skillId,
         name: skill.name,
         category: skill.category,
+        skill_type: extractSkillType(skill.category),
         difficulty_level: mapDifficultyToLevel(skill.difficulty),
         estimated_time_weeks: parseEstimatedTime(skill.estimated_time),
         short_description: skill.short_description,
