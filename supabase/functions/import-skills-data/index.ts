@@ -132,7 +132,6 @@ serve(async (req) => {
         general_tips: skill.general_tips,
         troubleshooting: skill.troubleshooting,
         prerequisites: prerequisitesList,
-        progressions: skill.progressions,
         preparation_tips: skill.preparation_tips,
         training_insights: skill.training_insights,
         achievement_levels: {
@@ -140,7 +139,7 @@ serve(async (req) => {
           level2: skill.achievement_level_2,
           level3: skill.achievement_level_3
         },
-        ideal_stage_weeks: {
+        ideal_stage_timeline: {
           level1: parseWeekNumber(skill.ideal_stage_level_1),
           level2: parseWeekNumber(skill.ideal_stage_level_2),
           level3: parseWeekNumber(skill.ideal_stage_level_3)
