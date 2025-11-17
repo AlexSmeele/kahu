@@ -139,13 +139,18 @@ Deno.serve(async (req) => {
       }
     }
 
-    // Sort results: database first, then by distance (if available), then by rating
+    // Sort results: distance first (if available), then by rating
     allResults.sort((a, b) => {
-      if (a.source === 'database' && b.source !== 'database') return -1;
-      if (b.source === 'database' && a.source !== 'database') return 1;
+      // Prioritize by distance when available
       if (a.distance !== undefined && b.distance !== undefined) {
-        return a.distance - b.distance;
+        const distDiff = a.distance - b.distance;
+        if (distDiff !== 0) return distDiff;
       }
+      // If one has distance and other doesn't, prioritize the one with distance
+      if (a.distance !== undefined && b.distance === undefined) return -1;
+      if (b.distance !== undefined && a.distance === undefined) return 1;
+      
+      // Tie-breaker: rating
       if (a.rating && b.rating) {
         return b.rating - a.rating;
       }
