@@ -8,6 +8,41 @@ export default function ImportSkills() {
   const [importing, setImporting] = useState(false);
   const [result, setResult] = useState<string>('');
 
+  // Map CSV column names to expected property names
+  const normalizeColumnName = (header: string): string => {
+    const normalized = header.trim().toLowerCase();
+    
+    // Special mappings
+    const mappings: Record<string, string> = {
+      'brief instructions step 1': 'brief_step_1',
+      'brief instructions step 2': 'brief_step_2',
+      'brief instructions step 3': 'brief_step_3',
+      'detailed instructions step 1': 'detailed_step_1',
+      'detailed instructions step 2': 'detailed_step_2',
+      'detailed instructions step 3': 'detailed_step_3',
+      'detailed instructions step 4': 'detailed_step_4',
+      'detailed instructions step 5': 'detailed_step_5',
+      'achievement level 1': 'achievement_level_1',
+      'achievement level 2': 'achievement_level_2',
+      'achievement level 3': 'achievement_level_3',
+      'ideal stage level 1': 'ideal_stage_level_1',
+      'ideal stage level 2': 'ideal_stage_level_2',
+      'ideal stage level 3': 'ideal_stage_level_3',
+      'estimated time': 'estimated_time',
+      'ideal stage': 'ideal_stage',
+      'short description': 'short_description',
+      'long description': 'long_description',
+      'general tips': 'general_tips',
+      'preparation tips': 'preparation_tips',
+      'training insights': 'training_insights',
+      'pass criteria': 'pass_criteria',
+      'fail criteria': 'fail_criteria',
+      'mastery criteria': 'mastery_criteria',
+    };
+    
+    return mappings[normalized] || normalized.replace(/\s+/g, '_');
+  };
+
   // Proper CSV parser that handles quoted fields with commas
   const parseCSV = (text: string) => {
     const lines: string[][] = [];
@@ -70,7 +105,7 @@ export default function ImportSkills() {
       
       // Parse CSV properly handling quoted fields
       const lines = parseCSV(csvText);
-      const headers = lines[0].map(h => h.trim());
+      const headers = lines[0].map(h => normalizeColumnName(h));
       const skills = lines.slice(1).map(line => {
         const skill: any = {};
         headers.forEach((header, i) => {
