@@ -10,7 +10,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { CheckCircle2, Lock, ArrowUp, Plus, MapPin, Zap, Award, Star, Clock, Target, BookOpen } from 'lucide-react';
 import { useSkillProgression } from '@/hooks/useSkillProgression';
-import { useTricks, Trick } from '@/hooks/useTricks';
+import { useSkills } from "@/hooks/useSkills";
 import { toast } from '@/hooks/use-toast';
 import { PRACTICE_CONTEXTS, DISTRACTION_LEVELS } from '@/data/skillProgressionMap';
 
@@ -25,7 +25,7 @@ interface SkillProgressionModalProps {
   };
   dogTrickId: string;
   dogId: string;
-  trick?: Trick;
+  trick?: Skill;
 }
 
 const categoryColors = {
@@ -59,7 +59,7 @@ export function SkillProgressionModal({
   trick
 }: SkillProgressionModalProps) {
   const { progressData, requirements, loading } = useSkillProgression(dogTrickId);
-  const { levelUpSkill, recordPracticeSession } = useTricks(dogId);
+  const { levelUpSkill, recordPracticeSession } = useSkills(dogId);
   
   const [showPracticeForm, setShowPracticeForm] = useState(false);
   const [practiceContext, setPracticeContext] = useState('');

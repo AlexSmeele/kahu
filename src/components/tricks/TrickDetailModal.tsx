@@ -19,7 +19,7 @@ import {
   Trophy,
   RotateCcw
 } from "lucide-react";
-import { Trick, DogTrick } from "@/hooks/useTricks";
+import { Skill, DogSkill, useSkills } from "@/hooks/useSkills";
 import { format } from "date-fns";
 
 interface TrickDetailModalProps {

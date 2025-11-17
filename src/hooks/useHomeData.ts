@@ -1,14 +1,14 @@
 import { useMemo } from 'react';
-import { useTricks } from './useTricks';
+import { useSkills } from './useSkills';
 
 export const useHomeData = (dogId: string) => {
-  const { dogTricks, loading } = useTricks(dogId);
+  const { dogSkills, loading } = useSkills(dogId);
 
-  // Get next trick to practice
+  // Get next skill to practice
   const nextTrick = useMemo(() => {
-    const learningTricks = dogTricks.filter(dt => dt.status === 'learning' || dt.status === 'practicing');
-    return learningTricks.length > 0 ? learningTricks[0] : null;
-  }, [dogTricks]);
+    const learningSkills = dogSkills.filter(dt => dt.status === 'learning' || dt.status === 'practicing');
+    return learningSkills.length > 0 ? learningSkills[0] : null;
+  }, [dogSkills]);
 
   return {
     loading,

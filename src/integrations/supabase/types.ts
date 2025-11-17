@@ -2153,14 +2153,12 @@ export type Database = {
           category: string
           created_at: string
           criteria: Json | null
-          description: string
           detailed_instructions: Json | null
           difficulty_level: number
           estimated_time_weeks: number | null
           general_tips: string | null
           id: string
           ideal_stage_timeline: Json | null
-          instructions: string
           long_description: string | null
           min_age_weeks: number | null
           name: string
@@ -2179,14 +2177,12 @@ export type Database = {
           category: string
           created_at?: string
           criteria?: Json | null
-          description: string
           detailed_instructions?: Json | null
           difficulty_level: number
           estimated_time_weeks?: number | null
           general_tips?: string | null
           id?: string
           ideal_stage_timeline?: Json | null
-          instructions: string
           long_description?: string | null
           min_age_weeks?: number | null
           name: string
@@ -2205,14 +2201,12 @@ export type Database = {
           category?: string
           created_at?: string
           criteria?: Json | null
-          description?: string
           detailed_instructions?: Json | null
           difficulty_level?: number
           estimated_time_weeks?: number | null
           general_tips?: string | null
           id?: string
           ideal_stage_timeline?: Json | null
-          instructions?: string
           long_description?: string | null
           min_age_weeks?: number | null
           name?: string

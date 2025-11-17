@@ -8,7 +8,7 @@ import { Progress } from "@/components/ui/progress";
 import { TopicCard } from "@/components/training/TopicCard";
 import { RoadmapContent } from "@/components/training/RoadmapContent";
 import { useDogs } from "@/hooks/useDogs";
-import { useTricks, Trick } from "@/hooks/useTricks";
+import { useSkills, Skill } from "@/hooks/useSkills";
 import { HeaderBar } from "@/components/headers/HeaderBar";
 import { DogDropdown } from "@/components/dogs/DogDropdown";
 import { ClickerButton } from "@/components/training/ClickerButton";
@@ -118,7 +118,7 @@ export function TricksScreen({ selectedDogId, onDogChange }: TricksScreenProps) 
   const [searchParams] = useSearchParams();
   const { dogs } = useDogs();
   const currentDog = dogs.find(dog => dog.id === selectedDogId);
-  const { tricks, dogTricks, loading, startTrick, addPracticeSession, updateTrickStatus, refetch } = useTricks(currentDog?.id);
+  const { skills, dogSkills, loading, startSkill, addPracticeSession, updateSkillStatus, refetch } = useSkills(currentDog?.id);
   const [selectedDifficulty, setSelectedDifficulty] = useState<string>('all');
   const [isClickerOpen, setIsClickerOpen] = useState(false);
   const [selectedSection, setSelectedSection] = useState<'program' | 'foundations' | 'skills' | 'troubleshooting'>('program');
