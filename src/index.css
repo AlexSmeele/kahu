@@ -79,7 +79,7 @@
     --gradient-glass: linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, rgba(249, 250, 251, 1) 100%);
     --gradient-primary: linear-gradient(180deg, rgba(236, 253, 245, 1) 0%, rgba(255, 255, 255, 1) 50%, rgba(249, 250, 251, 1) 100%);
     --gradient-amber: linear-gradient(180deg, rgba(255, 251, 235, 1) 0%, rgba(255, 247, 237, 1) 50%, rgba(249, 250, 251, 1) 100%);
-    --gradient-button-emerald: linear-gradient(90deg, #10b981 0%, #059669 100%);
+    --gradient-button-emerald: linear-gradient(90deg, #047857 0%, #065f46 100%);
     --gradient-button-amber: linear-gradient(90deg, #f59e0b 0%, #d97706 100%);
     --gradient-button-blue: linear-gradient(90deg, #3b82f6 0%, #2563eb 100%);
     --gradient-button-purple: linear-gradient(90deg, #a855f7 0%, #9333ea 100%);
@@ -220,7 +220,7 @@
     --gradient-glass: linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
     --gradient-primary: linear-gradient(180deg, rgba(6, 78, 59, 0.2) 0%, rgba(255, 255, 255, 0.05) 50%, rgba(255, 255, 255, 0.02) 100%);
     --gradient-amber: linear-gradient(180deg, rgba(120, 53, 15, 0.2) 0%, rgba(124, 45, 18, 0.15) 50%, rgba(255, 255, 255, 0.02) 100%);
-    --gradient-button-emerald: linear-gradient(90deg, #10b981 0%, #059669 100%);
+    --gradient-button-emerald: linear-gradient(90deg, #047857 0%, #065f46 100%);
     --gradient-button-amber: linear-gradient(90deg, #f59e0b 0%, #d97706 100%);
     --gradient-button-blue: linear-gradient(90deg, #3b82f6 0%, #2563eb 100%);
     --gradient-button-purple: linear-gradient(90deg, #a855f7 0%, #9333ea 100%);
